@@ -20,7 +20,7 @@ export function Navbar({
   return (
     <nav className="flex justify-center pt-5 px-4 relative z-20">
       <div className="flex items-center gap-8 rounded-full bg-white px-6 py-3 shadow-[0_1px_10px_rgba(0,0,0,0.08)] border border-black/[0.06]">
-        <Image src="/logo.svg" alt="Waldo" width={88} height={24} priority />
+        <Image src="/logo.svg" alt="Waldo" width={142} height={44} style={{ height: "28px", width: "auto" }} priority />
         {/* Hover on the links group triggers page dim */}
         <div
           className="flex items-center gap-8"
