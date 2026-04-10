@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   // Acquisition tagline as the meta description — what Google and social previews show
   description: "Waldo knows how you\u2019re really doing.",
   metadataBase: new URL("https://heywaldo.in"),
+  icons: { icon: "/logodots.svg" },
   openGraph: {
     title: "Waldo \u2014 already on it.",
     // Layer 1 hook — what makes someone click a social share
