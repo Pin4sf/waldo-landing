@@ -41,10 +41,8 @@ function SleepingWaldo() {
   );
 
   return (
-    /* centers horizontally with marginLeft instead of transform to avoid animation conflict */
     <div
-      className="absolute select-none"
-      style={{ bottom: "clamp(56px, 8%, 96px)", left: "50%", marginLeft: "-75px" }}
+      className="relative select-none flex flex-col items-center"
       onPointerEnter={() => setHovered(true)}
       onPointerLeave={() => setHovered(false)}
     >
@@ -168,7 +166,7 @@ function NightScreen({ onDismiss }: { onDismiss: () => void }) {
         }}
       />
 
-      {/* Text — staggered per element */}
+      {/* Text + Waldo — single centered column, pointer-events-none lets taps pass to dismiss */}
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 text-center px-8 pointer-events-none">
         <p
           className="text-white/40 text-[11px] tracking-[0.3em] uppercase"
@@ -196,11 +194,14 @@ function NightScreen({ onDismiss }: { onDismiss: () => void }) {
         >
           we&apos;ll be here in the morning.
         </p>
-      </div>
 
-      {/* Sleeping Waldo — bottom-right, appears after reveal settles */}
-      <div style={{ animation: "float-up 0.6s 1.0s ease-out both" }}>
-        <SleepingWaldo />
+        {/* Waldo — pointer-events-auto so hover works, clicks still propagate to dismiss */}
+        <div
+          className="pointer-events-auto mt-4"
+          style={{ animation: "float-up 0.6s 1.05s ease-out both" }}
+        >
+          <SleepingWaldo />
+        </div>
       </div>
 
       {/* Dismiss hint — fades in after all animations settle */}
