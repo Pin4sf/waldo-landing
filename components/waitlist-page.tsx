@@ -1,17 +1,17 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { Illustration } from "./illustration";
 import { EmailForm } from "./email-form";
 
 type PageState = "default" | "error" | "success";
 type Phase     = "entering" | "exit" | "idle";
 
-// Golden-ratio distribution — deterministic, evenly spread, no Math.random()
+// Two algebraically independent irrationals (√2 and √3) guarantee x and y
+// have no correlation — stars scatter evenly with no diagonal pattern.
 const STARS = Array.from({ length: 90 }, (_, i) => {
-  const phi  = 1.6180339887;
-  const left = ((i / phi) % 1) * 96 + 2;       // 2 – 98 %
-  const top  = ((i * 0.6180339887) % 1) * 96 + 2;
+  const left = ((i * 1.41421356) % 1) * 94 + 3;   // √2  → x
+  const top  = ((i * 1.73205080) % 1) * 94 + 3;   // √3  → y
   const large  = i % 7  === 0;
   const bright = i % 11 === 0;
   return {
@@ -19,19 +19,40 @@ const STARS = Array.from({ length: 90 }, (_, i) => {
     left:     `${left.toFixed(2)}%`,
     top:      `${top.toFixed(2)}%`,
     size:     `${(large ? 2.8 : bright ? 1.9 : 1.3).toFixed(1)}px`,
-    opacity:  bright ? 0.9 : large ? 0.7 : 0.5,
+    opacity:  bright ? 0.90 : large ? 0.70 : 0.50,
     delay:    `${((i * 0.41) % 7).toFixed(2)}s`,
     duration: `${(3 + (i % 6) * 0.55).toFixed(2)}s`,
   };
 });
 
-function NightScreen() {
+function NightScreen({ onDismiss }: { onDismiss: () => void }) {
+  const [leaving,    setLeaving]    = useState(false);
+  const [canDismiss, setCanDismiss] = useState(false);
+
+  // Let the entrance animations finish before accepting clicks
+  useEffect(() => {
+    const t = setTimeout(() => setCanDismiss(true), 1600);
+    return () => clearTimeout(t);
+  }, []);
+
+  const handleClick = () => {
+    if (!canDismiss) return;
+    setLeaving(true);
+    // Start the main-page enter while the night sky is still mid-fade
+    // → true crossfade, feels like toggling dark mode
+    setTimeout(onDismiss, 350);
+  };
+
   return (
     <div
+      onClick={handleClick}
       className="fixed inset-0 z-50 overflow-hidden"
       style={{
+        cursor:     canDismiss ? "pointer" : "default",
         background: "radial-gradient(ellipse at 50% 0%, #1e1b4b 0%, #0c0c24 50%, #030308 100%)",
-        animation:  "night-reveal 0.75s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards",
+        animation:  leaving
+          ? "night-leave 650ms ease-in forwards"
+          : "night-reveal 0.75s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards",
       }}
     >
       {/* Stars */}
@@ -40,17 +61,17 @@ function NightScreen() {
           key={s.id}
           className="absolute rounded-full bg-white"
           style={{
-            left:     s.left,
-            top:      s.top,
-            width:    s.size,
-            height:   s.size,
-            opacity:  s.opacity,
+            left:      s.left,
+            top:       s.top,
+            width:     s.size,
+            height:    s.size,
+            opacity:   s.opacity,
             animation: `twinkle ${s.duration} ${s.delay} ease-in-out infinite`,
           }}
         />
       ))}
 
-      {/* Moon — rises in, then softly pulses */}
+      {/* Moon */}
       <div
         style={{
           position:     "absolute",
@@ -65,7 +86,7 @@ function NightScreen() {
         }}
       />
 
-      {/* Text — staggered float-up per element */}
+      {/* Text — staggered per element */}
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 text-center px-8 pointer-events-none">
         <p
           className="text-white/40 text-[11px] tracking-[0.3em] uppercase"
@@ -94,6 +115,16 @@ function NightScreen() {
           we&apos;ll be here in the morning.
         </p>
       </div>
+
+      {/* Dismiss hint — fades in after all animations settle */}
+      {canDismiss && (
+        <p
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/20 text-[11px] tracking-[0.2em] uppercase pointer-events-none select-none"
+          style={{ fontFamily: "var(--font-body)", animation: "float-up 0.5s ease-out both" }}
+        >
+          tap anywhere to return
+        </p>
+      )}
     </div>
   );
 }
@@ -137,7 +168,13 @@ export function WaitlistPage() {
     setTimeout(() => {
       setDisplayState(next);
       setPhase("entering");
-    }, 220); // must match content-exit duration
+    }, 220);
+  }, []);
+
+  // Crossfade: night sky mid-fade when main content starts entering
+  const handleNightDismiss = useCallback(() => {
+    setShowNight(false);
+    setPhase("entering");
   }, []);
 
   const contentStyle: React.CSSProperties =
@@ -151,7 +188,7 @@ export function WaitlistPage() {
 
   return (
     <>
-      {showNight && <NightScreen />}
+      {showNight && <NightScreen onDismiss={handleNightDismiss} />}
 
       <main className="flex h-[calc(100vh-68px)] items-center justify-center px-8">
         <div
@@ -191,7 +228,7 @@ export function WaitlistPage() {
             {displayState === "success" ? (
               <button
                 onClick={() => setShowNight(true)}
-                className="w-fit cursor-pointer rounded-[12px] bg-[#F97316] px-6 py-3 text-[15px] font-medium text-white transition-opacity hover:opacity-90 active:scale-[0.97]"
+                className="w-fit cursor-pointer rounded-[12px] bg-[#F97316] px-6 py-3 text-[15px] font-medium text-white hover:opacity-90 active:scale-[0.97]"
                 style={{ fontFamily: "var(--font-body)", transition: "opacity 150ms, transform 100ms" }}
               >
                 Go get some sleep.
