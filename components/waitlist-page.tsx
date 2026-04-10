@@ -41,21 +41,22 @@ function SleepingWaldo() {
   );
 
   return (
+    /* centers horizontally with marginLeft instead of transform to avoid animation conflict */
     <div
       className="absolute select-none"
-      style={{ bottom: "8%", right: "10%" }}
+      style={{ bottom: "clamp(56px, 8%, 96px)", left: "50%", marginLeft: "-75px" }}
       onPointerEnter={() => setHovered(true)}
       onPointerLeave={() => setHovered(false)}
     >
-      {/* Zzz — three letters with staggered drift */}
-      <div className="pointer-events-none absolute" style={{ top: "-38px", right: "10px" }}>
+      {/* Zzz — drift up-right (toward the moon), all within the centered safe zone */}
+      <div className="pointer-events-none absolute" style={{ top: "-38px", left: "80px" }}>
         {(["z", "z", "Z"] as const).map((letter, i) => (
           <span
             key={i}
             className="absolute font-bold text-white"
             style={{
               fontSize:  `${11 + i * 3}px`,
-              right:     `${i * -10}px`,
+              left:      `${i * 10}px`,
               top:       `${i * -10}px`,
               animation: `zzz-float 3.2s ${i * 0.9}s ease-in infinite`,
             }}
@@ -65,34 +66,32 @@ function SleepingWaldo() {
         ))}
       </div>
 
-      {/* Speech bubble on hover */}
+      {/* Speech bubble — max-w keeps it from overflowing on narrow screens */}
       {hovered && (
         <div
-          className="pointer-events-none absolute bottom-full mb-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-xl px-4 py-2 text-[12px] italic text-white/80"
+          className="pointer-events-none absolute bottom-full mb-3 left-1/2 -translate-x-1/2 max-w-[220px] w-max rounded-xl px-4 py-2 text-center text-[12px] italic text-white/80"
           style={{
-            background:   "rgba(255,255,255,0.08)",
+            background:     "rgba(255,255,255,0.08)",
             backdropFilter: "blur(8px)",
-            border:       "1px solid rgba(255,255,255,0.12)",
-            animation:    "float-up 0.2s ease-out both",
-            fontFamily:   "var(--font-body)",
+            border:         "1px solid rgba(255,255,255,0.12)",
+            animation:      "float-up 0.2s ease-out both",
+            fontFamily:     "var(--font-body)",
           }}
         >
           {line}
-          {/* Tail */}
           <span
             className="absolute left-1/2 -translate-x-1/2 -bottom-[7px]"
             style={{
               width: 0, height: 0,
-              borderLeft: "7px solid transparent",
+              borderLeft:  "7px solid transparent",
               borderRight: "7px solid transparent",
-              borderTop: "7px solid rgba(255,255,255,0.08)",
+              borderTop:   "7px solid rgba(255,255,255,0.08)",
             }}
           />
         </div>
       )}
 
-      {/* Waldo — inverted so he's a glowing white outline (constellation look),
-          tilted + gently bobbing to imply deep sleep */}
+      {/* Waldo — glowing white constellation outline, tilted + gentle bob */}
       <Image
         src="/illustrations/success.svg"
         alt="Waldo sleeping"
