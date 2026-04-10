@@ -8,17 +8,42 @@
   --color-border: rgba(26, 26, 26, 0.1);
 }
 
-@keyframes twinkle {
-  0%, 100% { opacity: 0.15; transform: scale(0.8); }
-  50%       { opacity: 1;    transform: scale(1.2); }
+/* ── Page state transitions ─────────────────────────────────── */
+
+@keyframes content-enter {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0);    }
 }
 
-@keyframes night-in {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+@keyframes content-exit {
+  from { opacity: 1; transform: translateY(0);     }
+  to   { opacity: 0; transform: translateY(-10px); }
+}
+
+/* ── Night sky ──────────────────────────────────────────────── */
+
+/* Expands from approx. where the CTA button lives (left-center, lower third) */
+@keyframes night-reveal {
+  from { clip-path: circle(0%   at 35% 78%); }
+  to   { clip-path: circle(170% at 35% 78%); }
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.15; transform: scale(0.85); }
+  50%       { opacity: 1;    transform: scale(1.15); }
+}
+
+@keyframes moon-rise {
+  from { opacity: 0; transform: scale(0.5) translateY(14px); }
+  to   { opacity: 1; transform: scale(1)   translateY(0);    }
+}
+
+@keyframes moon-glow {
+  0%, 100% { box-shadow: 0 0 40px rgba(253,230,138,0.25), 0 0 90px  rgba(253,230,138,0.10); }
+  50%       { box-shadow: 0 0 60px rgba(253,230,138,0.40), 0 0 130px rgba(253,230,138,0.18); }
 }
 
 @keyframes float-up {
-  from { opacity: 0; transform: translateY(16px); }
+  from { opacity: 0; transform: translateY(18px); }
   to   { opacity: 1; transform: translateY(0);    }
 }

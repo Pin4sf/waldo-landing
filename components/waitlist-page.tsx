@@ -5,65 +5,71 @@ import { Illustration } from "./illustration";
 import { EmailForm } from "./email-form";
 
 type PageState = "default" | "error" | "success";
+type Phase     = "entering" | "exit" | "idle";
 
-// Generated once at module load — stable, no hydration issues
-const STARS = Array.from({ length: 80 }, (_, i) => ({
-  id: i,
-  left: `${(((i * 137.508) % 100) + Math.sin(i) * 3 + 1).toFixed(2)}%`,
-  top: `${(((i * 97.3) % 100) + Math.cos(i) * 3 + 1).toFixed(2)}%`,
-  size: `${((i % 3) * 0.7 + 0.9).toFixed(1)}px`,
-  delay: `${((i * 0.37) % 6).toFixed(2)}s`,
-  duration: `${(2.5 + (i % 7) * 0.5).toFixed(2)}s`,
-}));
+// Golden-ratio distribution — deterministic, evenly spread, no Math.random()
+const STARS = Array.from({ length: 90 }, (_, i) => {
+  const phi  = 1.6180339887;
+  const left = ((i / phi) % 1) * 96 + 2;       // 2 – 98 %
+  const top  = ((i * 0.6180339887) % 1) * 96 + 2;
+  const large  = i % 7  === 0;
+  const bright = i % 11 === 0;
+  return {
+    id:       i,
+    left:     `${left.toFixed(2)}%`,
+    top:      `${top.toFixed(2)}%`,
+    size:     `${(large ? 2.8 : bright ? 1.9 : 1.3).toFixed(1)}px`,
+    opacity:  bright ? 0.9 : large ? 0.7 : 0.5,
+    delay:    `${((i * 0.41) % 7).toFixed(2)}s`,
+    duration: `${(3 + (i % 6) * 0.55).toFixed(2)}s`,
+  };
+});
 
 function NightScreen() {
   return (
     <div
       className="fixed inset-0 z-50 overflow-hidden"
       style={{
-        background:
-          "radial-gradient(ellipse at 50% 0%, #1e1b4b 0%, #0a0a1f 55%, #030308 100%)",
-        animation: "night-in 0.9s ease-out forwards",
+        background: "radial-gradient(ellipse at 50% 0%, #1e1b4b 0%, #0c0c24 50%, #030308 100%)",
+        animation:  "night-reveal 0.75s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards",
       }}
     >
-      {/* Star field */}
+      {/* Stars */}
       {STARS.map((s) => (
         <div
           key={s.id}
           className="absolute rounded-full bg-white"
           style={{
-            left: s.left,
-            top: s.top,
-            width: s.size,
-            height: s.size,
+            left:     s.left,
+            top:      s.top,
+            width:    s.size,
+            height:   s.size,
+            opacity:  s.opacity,
             animation: `twinkle ${s.duration} ${s.delay} ease-in-out infinite`,
           }}
         />
       ))}
 
-      {/* Moon */}
+      {/* Moon — rises in, then softly pulses */}
       <div
-        className="absolute"
         style={{
-          top: "10%",
-          right: "12%",
-          width: "56px",
-          height: "56px",
+          position:     "absolute",
+          top:          "10%",
+          right:        "12%",
+          width:        "58px",
+          height:       "58px",
           borderRadius: "50%",
-          background: "radial-gradient(circle at 38% 38%, #fffbeb, #fde68a)",
-          boxShadow:
-            "0 0 40px rgba(253, 230, 138, 0.25), 0 0 80px rgba(253, 230, 138, 0.1)",
+          background:   "radial-gradient(circle at 36% 34%, #fffbeb, #fde68a)",
+          boxShadow:    "0 0 40px rgba(253,230,138,0.25), 0 0 90px rgba(253,230,138,0.10)",
+          animation:    "moon-rise 0.6s 0.45s ease-out both, moon-glow 4.5s 1.1s ease-in-out infinite",
         }}
       />
 
-      {/* Message */}
-      <div
-        className="absolute inset-0 flex flex-col items-center justify-center gap-5 text-center px-8"
-        style={{ animation: "float-up 1s 0.3s ease-out both" }}
-      >
+      {/* Text — staggered float-up per element */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 text-center px-8 pointer-events-none">
         <p
           className="text-white/40 text-[11px] tracking-[0.3em] uppercase"
-          style={{ fontFamily: "var(--font-body)" }}
+          style={{ fontFamily: "var(--font-body)", animation: "float-up 0.55s 0.50s ease-out both" }}
         >
           waldo&apos;s got the watch.
         </p>
@@ -71,14 +77,19 @@ function NightScreen() {
           className="text-white leading-none"
           style={{
             fontFamily: "var(--font-headline)",
-            fontSize: "clamp(2.5rem, 7vw, 5rem)",
+            fontSize:   "clamp(2.5rem, 7vw, 5rem)",
+            animation:  "float-up 0.60s 0.65s ease-out both",
           }}
         >
           sleep well.
         </h2>
         <p
           className="text-white/30 text-[14px]"
-          style={{ fontFamily: "var(--font-body)", fontStyle: "italic" }}
+          style={{
+            fontFamily: "var(--font-body)",
+            fontStyle:  "italic",
+            animation:  "float-up 0.55s 0.85s ease-out both",
+          }}
         >
           we&apos;ll be here in the morning.
         </p>
@@ -116,17 +127,25 @@ const COPY = {
 };
 
 export function WaitlistPage() {
-  const [visible, setVisible] = useState(true);
+  const [phase,        setPhase]        = useState<Phase>("entering");
   const [displayState, setDisplayState] = useState<PageState>("default");
-  const [showNight, setShowNight] = useState(false);
+  const [showNight,    setShowNight]    = useState(false);
 
-  const transition = useCallback((next: PageState) => {
-    setVisible(false);
+  // Exit → swap content → enter
+  const transitionTo = useCallback((next: PageState) => {
+    setPhase("exit");
     setTimeout(() => {
       setDisplayState(next);
-      setVisible(true);
-    }, 300);
+      setPhase("entering");
+    }, 220); // must match content-exit duration
   }, []);
+
+  const contentStyle: React.CSSProperties =
+    phase === "exit"
+      ? { animation: "content-exit 220ms ease-in forwards" }
+      : phase === "entering"
+      ? { animation: "content-enter 340ms ease-out forwards" }
+      : {};
 
   const copy = COPY[displayState];
 
@@ -136,10 +155,10 @@ export function WaitlistPage() {
 
       <main className="flex h-[calc(100vh-68px)] items-center justify-center px-8">
         <div
-          className="flex w-full max-w-5xl items-center justify-between gap-16 transition-opacity duration-300"
-          style={{ opacity: visible ? 1 : 0 }}
+          className="flex w-full max-w-5xl items-center justify-between gap-16"
+          style={contentStyle}
         >
-          {/* Left column — copy */}
+          {/* Left — copy */}
           <div className="flex max-w-lg flex-col gap-6">
             <h1
               className="text-[clamp(2rem,4vw,3rem)] leading-[1.1] font-bold"
@@ -172,17 +191,17 @@ export function WaitlistPage() {
             {displayState === "success" ? (
               <button
                 onClick={() => setShowNight(true)}
-                className="w-fit cursor-pointer rounded-[12px] bg-[#F97316] px-6 py-3 text-[15px] font-medium text-white transition-opacity hover:opacity-90"
-                style={{ fontFamily: "var(--font-body)" }}
+                className="w-fit cursor-pointer rounded-[12px] bg-[#F97316] px-6 py-3 text-[15px] font-medium text-white transition-opacity hover:opacity-90 active:scale-[0.97]"
+                style={{ fontFamily: "var(--font-body)", transition: "opacity 150ms, transform 100ms" }}
               >
                 Go get some sleep.
               </button>
             ) : (
-              <EmailForm state={displayState} onStateChange={transition} />
+              <EmailForm state={displayState} onStateChange={transitionTo} />
             )}
           </div>
 
-          {/* Right column — illustration */}
+          {/* Right — illustration */}
           <div className="hidden lg:block">
             <Illustration state={displayState} />
           </div>
