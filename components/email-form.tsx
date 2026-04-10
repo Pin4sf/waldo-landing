@@ -6,20 +6,6 @@ import { submitEmail } from "@/actions/submit-email";
 
 type PageState = "default" | "error" | "success";
 
-const COPY: Record<
-  "default" | "error",
-  { placeholder: string; button: string }
-> = {
-  default: {
-    placeholder: "the one you actually check.",
-    button: "About time.",
-  },
-  error: {
-    placeholder: "enter your email \u2014 the one you actually check.",
-    button: "Retry.",
-  },
-};
-
 export function EmailForm({
   state,
   onStateChange,
@@ -31,15 +17,12 @@ export function EmailForm({
 
   if (state === "success") return null;
 
-  const copy = COPY[state];
-
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const form = e.currentTarget;
-    const fd = new FormData(form);
-    const email = fd.get("email") as string;
+    const fd  = new FormData(e.currentTarget);
+    const val = fd.get("email") as string;
 
-    if (!email || !isValidEmail(email)) {
+    if (!val || !isValidEmail(val)) {
       onStateChange("error");
       return;
     }
@@ -56,23 +39,28 @@ export function EmailForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex w-full max-w-md gap-3">
+    <form onSubmit={handleSubmit} className="flex w-full flex-col gap-3">
       <input
         name="email"
         type="email"
-        placeholder={copy.placeholder}
+        placeholder={
+          state === "error"
+            ? "enter your email \u2014 the one you actually check"
+            : "enter your email \u2013 the one you actually check"
+        }
         autoComplete="email"
+        inputMode="email"
         disabled={pending}
-        className="flex-1 rounded-[10px] border border-[rgba(26,26,26,0.1)] bg-white px-4 py-3 text-[15px] text-[#1A1A1A] placeholder-[#9CA3AF] outline-none focus:border-[#1A1A1A] disabled:opacity-50"
+        className="w-full rounded-xl border border-black/10 bg-white px-4 py-3 text-[14px] text-center text-[#1A1A1A] placeholder-[#9CA3AF] outline-none focus:border-[#1A1A1A]/30 disabled:opacity-50"
         style={{ fontFamily: "var(--font-body)" }}
       />
       <button
         type="submit"
         disabled={pending}
-        className="cursor-pointer whitespace-nowrap rounded-[12px] bg-[#F97316] px-6 py-3 text-[15px] font-medium text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
-        style={{ fontFamily: "var(--font-body)" }}
+        className="w-full rounded-xl bg-[#1A1A1A] py-3 text-[14px] font-medium text-white transition-opacity hover:opacity-80 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
+        style={{ fontFamily: "var(--font-body)", transition: "opacity 150ms, transform 100ms" }}
       >
-        {pending ? "Sending…" : copy.button}
+        {pending ? "Sending\u2026" : state === "error" ? "Retry." : "About time."}
       </button>
     </form>
   );

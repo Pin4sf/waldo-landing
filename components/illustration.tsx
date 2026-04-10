@@ -6,16 +6,22 @@ const illustrations: Record<string, string> = {
   success: "/illustrations/success.svg",
 };
 
-export function Illustration({ state }: { state: string }) {
+export function Illustration({
+  state,
+  className = "w-24 h-24",
+}: {
+  state: string;
+  className?: string;
+}) {
   return (
     <Image
       src={illustrations[state] || illustrations.default}
       alt="Waldo the dalmatian"
       width={400}
       height={400}
-      sizes="(max-width: 1024px) 160px, 400px"
+      sizes="120px"
       priority
-      className="w-40 h-40 lg:w-[400px] lg:h-[400px]"
+      className={className}
     />
   );
 }

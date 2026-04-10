@@ -31,7 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${corben.variable} ${dmSans.variable}`}>
       <body
-        className="bg-[#FAFAF8] text-[#1A1A1A] antialiased"
+        className="bg-[#EDEAE3] text-[#1A1A1A] antialiased"
         style={{ fontFamily: "var(--font-body)" }}
       >
         {children}
