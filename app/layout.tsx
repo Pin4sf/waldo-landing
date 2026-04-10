@@ -3,23 +3,25 @@ import { corben, dmSans } from "@/lib/fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Waldo \u2014 something\u2019s off.",
-  description:
-    "ChatGPT knows your tasks. Your calendar knows your time. Neither knows you slept three hours.",
+  // Brand tagline in the tab — what people see when they bookmark or share the URL
+  title: "Waldo \u2014 already on it.",
+  // Acquisition tagline as the meta description — what Google and social previews show
+  description: "Waldo knows how you\u2019re really doing.",
   metadataBase: new URL("https://heywaldo.in"),
   openGraph: {
-    title: "Waldo \u2014 something\u2019s off.",
+    title: "Waldo \u2014 already on it.",
+    // Layer 1 hook — what makes someone click a social share
     description:
-      "ChatGPT knows your tasks. Your calendar knows your time. Neither knows you slept three hours.",
+      "Your AI knows what you need to do. Waldo knows if you can actually do it.",
     url: "https://heywaldo.in",
     siteName: "Waldo",
     type: "website",
   },
   twitter: {
     card: "summary",
-    title: "Waldo \u2014 something\u2019s off.",
+    title: "Waldo \u2014 already on it.",
     description:
-      "ChatGPT knows your tasks. Your calendar knows your time. Neither knows you slept three hours.",
+      "Your AI knows what you need to do. Waldo knows if you can actually do it.",
   },
 };
 
