@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
+import Image from "next/image";
 import { Illustration } from "./illustration";
 import { EmailForm } from "./email-form";
 
@@ -24,6 +25,88 @@ const STARS = Array.from({ length: 90 }, (_, i) => {
     duration: `${(3 + (i % 6) * 0.55).toFixed(2)}s`,
   };
 });
+
+// Hover lines — Waldo is always on it, even while asleep
+const WALDO_SLEEP_LINES = [
+  "don't wake me. i'm working.",
+  "ssh. your sleep debt is recovering.",
+  "i'm right here. go to sleep.",
+  "already on it. literally.",
+];
+
+function SleepingWaldo() {
+  const [hovered, setHovered] = useState(false);
+  const [line] = useState(
+    () => WALDO_SLEEP_LINES[Math.floor(Math.random() * WALDO_SLEEP_LINES.length)]
+  );
+
+  return (
+    <div
+      className="absolute select-none"
+      style={{ bottom: "8%", right: "10%" }}
+      onPointerEnter={() => setHovered(true)}
+      onPointerLeave={() => setHovered(false)}
+    >
+      {/* Zzz — three letters with staggered drift */}
+      <div className="pointer-events-none absolute" style={{ top: "-38px", right: "10px" }}>
+        {(["z", "z", "Z"] as const).map((letter, i) => (
+          <span
+            key={i}
+            className="absolute font-bold text-white"
+            style={{
+              fontSize:  `${11 + i * 3}px`,
+              right:     `${i * -10}px`,
+              top:       `${i * -10}px`,
+              animation: `zzz-float 3.2s ${i * 0.9}s ease-in infinite`,
+            }}
+          >
+            {letter}
+          </span>
+        ))}
+      </div>
+
+      {/* Speech bubble on hover */}
+      {hovered && (
+        <div
+          className="pointer-events-none absolute bottom-full mb-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-xl px-4 py-2 text-[12px] italic text-white/80"
+          style={{
+            background:   "rgba(255,255,255,0.08)",
+            backdropFilter: "blur(8px)",
+            border:       "1px solid rgba(255,255,255,0.12)",
+            animation:    "float-up 0.2s ease-out both",
+            fontFamily:   "var(--font-body)",
+          }}
+        >
+          {line}
+          {/* Tail */}
+          <span
+            className="absolute left-1/2 -translate-x-1/2 -bottom-[7px]"
+            style={{
+              width: 0, height: 0,
+              borderLeft: "7px solid transparent",
+              borderRight: "7px solid transparent",
+              borderTop: "7px solid rgba(255,255,255,0.08)",
+            }}
+          />
+        </div>
+      )}
+
+      {/* Waldo — inverted so he's a glowing white outline (constellation look),
+          tilted + gently bobbing to imply deep sleep */}
+      <Image
+        src="/illustrations/success.svg"
+        alt="Waldo sleeping"
+        width={150}
+        height={150}
+        style={{
+          filter:    "invert(1) brightness(0.65)",
+          opacity:   0.72,
+          animation: "sleep-bob 4s ease-in-out infinite",
+        }}
+      />
+    </div>
+  );
+}
 
 function NightScreen({ onDismiss }: { onDismiss: () => void }) {
   const [leaving,    setLeaving]    = useState(false);
@@ -116,10 +199,15 @@ function NightScreen({ onDismiss }: { onDismiss: () => void }) {
         </p>
       </div>
 
+      {/* Sleeping Waldo — bottom-right, appears after reveal settles */}
+      <div style={{ animation: "float-up 0.6s 1.0s ease-out both" }}>
+        <SleepingWaldo />
+      </div>
+
       {/* Dismiss hint — fades in after all animations settle */}
       {canDismiss && (
         <p
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/20 text-[11px] tracking-[0.2em] uppercase pointer-events-none select-none"
+          className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/20 text-[11px] tracking-[0.2em] uppercase pointer-events-none select-none"
           style={{ fontFamily: "var(--font-body)", animation: "float-up 0.5s ease-out both" }}
         >
           tap anywhere to return
