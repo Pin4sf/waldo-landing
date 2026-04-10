@@ -1,5 +1,11 @@
-import { WaldoWaitlist } from "@/components/waldo-waitlist";
+import { Navbar } from "@/components/navbar";
+import { WaitlistPage } from "@/components/waitlist-page";
 
-export default function Page() {
-  return <WaldoWaitlist />;
+export default function Home() {
+  return (
+    <div className="h-screen overflow-hidden">
+      <Navbar />
+      <WaitlistPage />
+    </div>
+  );
 }

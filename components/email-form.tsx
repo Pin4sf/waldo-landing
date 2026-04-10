@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { isValidEmail } from "@/lib/validate-email";
 import { submitEmail } from "@/actions/submit-email";
 
@@ -26,6 +27,8 @@ export function EmailForm({
   state: PageState;
   onStateChange: (s: PageState) => void;
 }) {
+  const [pending, setPending] = useState(false);
+
   if (state === "success") return null;
 
   const copy = COPY[state];
@@ -41,11 +44,13 @@ export function EmailForm({
       return;
     }
 
+    setPending(true);
     const result = await submitEmail(fd);
+    setPending(false);
 
     if (result.success) {
       onStateChange("success");
-    } else if (result.error === "invalid_email") {
+    } else {
       onStateChange("error");
     }
   }
@@ -57,15 +62,17 @@ export function EmailForm({
         type="email"
         placeholder={copy.placeholder}
         autoComplete="email"
-        className="flex-1 rounded-[10px] border border-[rgba(26,26,26,0.1)] bg-white px-4 py-3 text-[15px] text-[#1A1A1A] placeholder-[#9CA3AF] outline-none focus:border-[#1A1A1A]"
+        disabled={pending}
+        className="flex-1 rounded-[10px] border border-[rgba(26,26,26,0.1)] bg-white px-4 py-3 text-[15px] text-[#1A1A1A] placeholder-[#9CA3AF] outline-none focus:border-[#1A1A1A] disabled:opacity-50"
         style={{ fontFamily: "var(--font-body)" }}
       />
       <button
         type="submit"
-        className="cursor-pointer whitespace-nowrap rounded-[12px] bg-[#F97316] px-6 py-3 text-[15px] font-medium text-white transition-opacity hover:opacity-90"
+        disabled={pending}
+        className="cursor-pointer whitespace-nowrap rounded-[12px] bg-[#F97316] px-6 py-3 text-[15px] font-medium text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
         style={{ fontFamily: "var(--font-body)" }}
       >
-        {copy.button}
+        {pending ? "Sending…" : copy.button}
       </button>
     </form>
   );

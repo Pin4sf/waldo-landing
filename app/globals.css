@@ -1,69 +1,9 @@
 @import "tailwindcss";
 
-:root {
-  --waldo-bg: #f4f3f0;
-  --waldo-surface: #fafaf8;
-  --waldo-ink: #1a1a1a;
-  --waldo-muted: #6b6b68;
-  --waldo-placeholder: #9a9a96;
-  --waldo-nav: #c4c3bf;
-  --waldo-tooltip: #9ca3af;
-  --waldo-border: rgba(26, 26, 26, 0.08);
-}
-
-* {
-  box-sizing: border-box;
-}
-
-html,
-body {
-  width: 100%;
-  min-height: 100%;
-}
-
-body {
-  margin: 0;
-  background: var(--waldo-bg);
-  color: var(--waldo-ink);
-  font-family: var(--font-dm-sans), sans-serif;
-}
-
-button,
-input {
-  font: inherit;
-}
-
-img {
-  display: block;
-}
-
-.font-waldo-heading {
-  font-family: var(--font-corben), serif;
-}
-
-.font-waldo-body {
-  font-family: var(--font-dm-sans), sans-serif;
-}
-
-.waldo-nav-label {
-  font-size: 10px;
-  white-space: nowrap;
-}
-
-.waldo-input {
-  height: 44px;
-  padding-inline: 17px;
-  font-size: 12px;
-}
-
-@media (min-width: 1024px) {
-  .waldo-nav-label {
-    font-size: 12px;
-  }
-
-  .waldo-input {
-    height: 63px;
-    padding-inline: 24px;
-    font-size: 18px;
-  }
+@theme inline {
+  --color-bg: #FAFAF8;
+  --color-text: #1A1A1A;
+  --color-text-muted: #6B6B68;
+  --color-accent: #F97316;
+  --color-border: rgba(26, 26, 26, 0.1);
 }

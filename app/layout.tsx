@@ -1,49 +1,39 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
-
+import { corben, dmSans } from "@/lib/fonts";
 import "./globals.css";
 
-const corben = localFont({
-  src: "./fonts/corben-400.ttf",
-  variable: "--font-corben",
-  display: "swap",
-});
-
-const dmSans = localFont({
-  src: [
-    {
-      path: "./fonts/dm-sans-400.ttf",
-      weight: "400",
-      style: "normal",
-    },
-    {
-      path: "./fonts/dm-sans-500.ttf",
-      weight: "500",
-      style: "normal",
-    },
-    {
-      path: "./fonts/dm-sans-400-italic.ttf",
-      weight: "400",
-      style: "italic",
-    },
-  ],
-  variable: "--font-dm-sans",
-  display: "swap",
-});
-
 export const metadata: Metadata = {
-  title: "Waldo Waitlist",
-  description: "heywaldo.in waitlist page",
+  title: "Waldo \u2014 something\u2019s off.",
+  description:
+    "ChatGPT knows your tasks. Your calendar knows your time. Neither knows you slept three hours.",
+  metadataBase: new URL("https://heywaldo.in"),
+  openGraph: {
+    title: "Waldo \u2014 something\u2019s off.",
+    description:
+      "ChatGPT knows your tasks. Your calendar knows your time. Neither knows you slept three hours.",
+    url: "https://heywaldo.in",
+    siteName: "Waldo",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "Waldo \u2014 something\u2019s off.",
+    description:
+      "ChatGPT knows your tasks. Your calendar knows your time. Neither knows you slept three hours.",
+  },
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en">
-      <body className={`${corben.variable} ${dmSans.variable} antialiased`}>
+    <html lang="en" className={`${corben.variable} ${dmSans.variable}`}>
+      <body
+        className="bg-[#FAFAF8] text-[#1A1A1A] antialiased"
+        style={{ fontFamily: "var(--font-body)" }}
+      >
         {children}
       </body>
     </html>
