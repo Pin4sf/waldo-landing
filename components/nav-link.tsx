@@ -5,11 +5,18 @@ import { useState } from "react";
 export function NavLink({
   label,
   tooltip,
+  align = "center",
 }: {
   label: string;
   tooltip: string;
+  align?: "center" | "right";
 }) {
   const [show, setShow] = useState(false);
+
+  const tooltipPosition =
+    align === "right"
+      ? "absolute right-0 top-full mt-2"
+      : "absolute left-1/2 top-full mt-2 -translate-x-1/2";
 
   return (
     <span
@@ -21,7 +28,7 @@ export function NavLink({
       {label}
       {show && (
         <span
-          className="absolute left-1/2 top-full mt-2 -translate-x-1/2 whitespace-nowrap rounded-lg bg-[#1A1A1A] px-3 py-1.5 text-[12px] italic text-[#FAFAF8]"
+          className={`${tooltipPosition} z-50 whitespace-nowrap rounded-lg bg-[#1A1A1A] px-3 py-1.5 text-[12px] italic text-[#FAFAF8]`}
           style={{ fontFamily: "var(--font-body)" }}
         >
           {tooltip}
