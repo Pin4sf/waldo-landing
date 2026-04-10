@@ -190,13 +190,18 @@ export function WaitlistPage() {
     <>
       {showNight && <NightScreen onDismiss={handleNightDismiss} />}
 
-      <main className="flex h-[calc(100vh-68px)] items-center justify-center px-8">
+      <main className="flex min-h-[calc(100vh-68px)] items-center justify-center px-6 py-10 lg:px-8 lg:py-0">
         <div
-          className="flex w-full max-w-5xl items-center justify-between gap-16"
+          className="flex w-full max-w-5xl flex-col items-center gap-8 lg:flex-row lg:items-center lg:justify-between lg:gap-16"
           style={contentStyle}
         >
-          {/* Left — copy */}
-          <div className="flex max-w-lg flex-col gap-6">
+          {/* Illustration — top on mobile, right on desktop */}
+          <div className="order-1 lg:order-2">
+            <Illustration state={displayState} />
+          </div>
+
+          {/* Copy — below illustration on mobile, left on desktop */}
+          <div className="order-2 flex w-full max-w-lg flex-col gap-6 lg:order-1">
             <h1
               className="text-[clamp(2rem,4vw,3rem)] leading-[1.1] font-bold"
               style={{ fontFamily: "var(--font-headline)" }}
@@ -236,11 +241,6 @@ export function WaitlistPage() {
             ) : (
               <EmailForm state={displayState} onStateChange={transitionTo} />
             )}
-          </div>
-
-          {/* Right — illustration */}
-          <div className="hidden lg:block">
-            <Illustration state={displayState} />
           </div>
         </div>
       </main>

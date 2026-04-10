@@ -13,7 +13,9 @@ export function Illustration({ state }: { state: string }) {
       alt="Waldo the dalmatian"
       width={400}
       height={400}
+      sizes="(max-width: 1024px) 160px, 400px"
       priority
+      className="w-40 h-40 lg:w-[400px] lg:h-[400px]"
     />
   );
 }
