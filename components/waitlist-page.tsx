@@ -197,7 +197,7 @@ function NightScreen({ onDismiss }: { onDismiss: () => void }) {
 
         {/* Waldo — pointer-events-auto so hover works, clicks still propagate to dismiss */}
         <div
-          className="pointer-events-auto mt-4"
+          className="pointer-events-auto mt-10"
           style={{ animation: "float-up 0.6s 1.05s ease-out both" }}
         >
           <SleepingWaldo />
