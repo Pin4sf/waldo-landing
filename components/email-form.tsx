@@ -50,6 +50,7 @@ export function EmailForm({
         }
         autoComplete="email"
         inputMode="email"
+        maxLength={254}
         disabled={pending}
         className="w-full rounded-xl border border-black/10 bg-white px-4 py-3 text-[14px] text-center text-[#1A1A1A] placeholder-[#9CA3AF] outline-none focus:border-[#1A1A1A]/30 disabled:opacity-50"
         style={{ fontFamily: "var(--font-body)" }}
