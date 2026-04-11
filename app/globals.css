@@ -22,15 +22,30 @@
 
 /* ── Night sky ──────────────────────────────────────────────── */
 
-/* Expands from approx. where the CTA button lives (left-center, lower third) */
+/* Expands from card center — matches new centered card layout */
 @keyframes night-reveal {
-  from { clip-path: circle(0%   at 35% 78%); }
-  to   { clip-path: circle(170% at 35% 78%); }
+  from { clip-path: circle(0%   at 50% 65%); opacity: 1; }
+  to   { clip-path: circle(170% at 50% 65%); opacity: 1; }
 }
 
+/* Collapses back to center — satisfying reverse of the reveal */
 @keyframes night-leave {
-  from { opacity: 1; }
-  to   { opacity: 0; }
+  from { clip-path: circle(170% at 50% 65%); opacity: 1; }
+  to   { clip-path: circle(0%   at 50% 65%); opacity: 0; }
+}
+
+/* Shooting star — streaks for 6% of the cycle, waits the rest */
+@keyframes shoot {
+  0%,  6.1% { opacity: 0; transform: translate(0, 0);           }
+  1%         { opacity: 1;                                       }
+  6%         { opacity: 0; transform: translate(220px, 110px);   }
+  100%       { opacity: 0; transform: translate(0, 0);           }
+}
+
+/* Gentle pulse to hint the night trigger is interactive */
+@keyframes hint-pulse {
+  0%, 100% { opacity: 0.35; }
+  50%       { opacity: 0.65; }
 }
 
 @keyframes twinkle {

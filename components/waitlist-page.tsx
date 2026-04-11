@@ -8,7 +8,7 @@ import { EmailForm } from "./email-form";
 type PageState = "default" | "error" | "success";
 type Phase     = "entering" | "exit" | "idle";
 
-// √2 and √3 — algebraically independent, no diagonal pattern
+// √2 and √3 — algebraically independent, no diagonal star pattern
 const STARS = Array.from({ length: 90 }, (_, i) => {
   const left = ((i * 1.41421356) % 1) * 94 + 3;
   const top  = ((i * 1.73205080) % 1) * 94 + 3;
@@ -25,11 +25,24 @@ const STARS = Array.from({ length: 90 }, (_, i) => {
   };
 });
 
+// Deterministic shooting stars — different positions, speeds, timing
+const SHOOTING_STARS = Array.from({ length: 5 }, (_, i) => ({
+  id:       i,
+  top:      `${8 + i * 13}%`,
+  left:     `${5 + i * 17}%`,
+  width:    `${65 + i * 18}px`,
+  delay:    `${1.5 + i * 3.8}s`,
+  period:   `${8 + i * 2.5}s`,  // total loop duration — star shoots briefly then waits
+}));
+
 const WALDO_SLEEP_LINES = [
   "don't wake me. i'm working.",
   "ssh. your sleep debt is recovering.",
   "i'm right here. go to sleep.",
   "already on it. literally.",
+  "hrv looking better already. see?",
+  "still here. always.",
+  "the patrol never sleeps. even when waldo does.",
 ];
 
 function SleepingWaldo() {
@@ -44,6 +57,7 @@ function SleepingWaldo() {
       onPointerEnter={() => setHovered(true)}
       onPointerLeave={() => setHovered(false)}
     >
+      {/* Zzz letters */}
       <div className="pointer-events-none absolute" style={{ top: "-38px", left: "80px" }}>
         {(["z", "z", "Z"] as const).map((letter, i) => (
           <span
@@ -61,6 +75,7 @@ function SleepingWaldo() {
         ))}
       </div>
 
+      {/* Speech bubble */}
       {hovered && (
         <div
           className="pointer-events-none absolute bottom-full mb-3 left-1/2 -translate-x-1/2 max-w-[220px] w-max rounded-xl px-4 py-2 text-center text-[12px] italic text-white/80"
@@ -85,6 +100,7 @@ function SleepingWaldo() {
         </div>
       )}
 
+      {/* Waldo — white constellation silhouette, gently bobbing */}
       <Image
         src="/illustrations/success.svg"
         alt="Waldo sleeping"
@@ -112,7 +128,7 @@ function NightScreen({ onDismiss }: { onDismiss: () => void }) {
   const handleClick = () => {
     if (!canDismiss) return;
     setLeaving(true);
-    setTimeout(onDismiss, 350);
+    setTimeout(onDismiss, 550);   // matches night-leave duration
   };
 
   return (
@@ -123,10 +139,11 @@ function NightScreen({ onDismiss }: { onDismiss: () => void }) {
         cursor:     canDismiss ? "pointer" : "default",
         background: "radial-gradient(ellipse at 50% 0%, #1e1b4b 0%, #0c0c24 50%, #030308 100%)",
         animation:  leaving
-          ? "night-leave 650ms ease-in forwards"
+          ? "night-leave 550ms cubic-bezier(0.4, 0, 0.6, 1) forwards"
           : "night-reveal 0.75s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards",
       }}
     >
+      {/* Stars */}
       {STARS.map((s) => (
         <div
           key={s.id}
@@ -142,6 +159,25 @@ function NightScreen({ onDismiss }: { onDismiss: () => void }) {
         />
       ))}
 
+      {/* Shooting stars */}
+      {SHOOTING_STARS.map((s) => (
+        <div
+          key={s.id}
+          className="absolute pointer-events-none"
+          style={{
+            top:          s.top,
+            left:         s.left,
+            width:        s.width,
+            height:       "1.5px",
+            borderRadius: "1px",
+            background:   "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.9) 50%, transparent 100%)",
+            transform:    "rotate(-28deg)",
+            animation:    `shoot ${s.period} ${s.delay} linear infinite`,
+          }}
+        />
+      ))}
+
+      {/* Moon */}
       <div
         style={{
           position:     "absolute",
@@ -156,6 +192,7 @@ function NightScreen({ onDismiss }: { onDismiss: () => void }) {
         }}
       />
 
+      {/* Content — staggered float-up */}
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 text-center px-8 pointer-events-none">
         <p
           className="text-white/40 text-[11px] tracking-[0.3em] uppercase"
@@ -183,6 +220,8 @@ function NightScreen({ onDismiss }: { onDismiss: () => void }) {
         >
           we&apos;ll be here in the morning.
         </p>
+
+        {/* Sleeping Waldo */}
         <div
           className="pointer-events-auto mt-10"
           style={{ animation: "float-up 0.6s 1.05s ease-out both" }}
@@ -191,6 +230,7 @@ function NightScreen({ onDismiss }: { onDismiss: () => void }) {
         </div>
       </div>
 
+      {/* Dismiss hint */}
       {canDismiss && (
         <p
           className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/20 text-[11px] tracking-[0.2em] uppercase pointer-events-none select-none"
@@ -203,7 +243,6 @@ function NightScreen({ onDismiss }: { onDismiss: () => void }) {
   );
 }
 
-// Matches Figma copy exactly for all three states
 const COPY = {
   default: {
     headline: "Something\u2019s off.",
@@ -254,15 +293,12 @@ export function WaitlistPage() {
       {showNight && <NightScreen onDismiss={handleNightDismiss} />}
 
       <main className="flex min-h-[calc(100vh-72px)] items-center justify-center px-4 py-8">
-        {/* White card — matches Figma: centered, rounded, white on cream */}
         <div
           className="w-full max-w-[440px] rounded-3xl bg-white px-8 py-10 flex flex-col items-center gap-5 text-center shadow-[0_2px_20px_rgba(0,0,0,0.07)]"
           style={cardStyle}
         >
-          {/* Illustration above headline */}
           <Illustration state={displayState} className="w-24 h-24" />
 
-          {/* Headline */}
           <h1
             className="text-[2.5rem] leading-[1.1] font-bold"
             style={{ fontFamily: "var(--font-headline)" }}
@@ -270,7 +306,6 @@ export function WaitlistPage() {
             {copy.headline}
           </h1>
 
-          {/* Body text */}
           <p
             className="text-[#6B6B68] text-[15px] leading-relaxed"
             style={{ fontFamily: "var(--font-body)" }}
@@ -278,22 +313,31 @@ export function WaitlistPage() {
             {copy.subtext}
           </p>
 
-          {/* Italic closer — clickable in success state to trigger night sky */}
-          {copy.closer && (
+          {/* Closer text — plain in default, interactive night trigger in success */}
+          {copy.closer && displayState !== "success" && (
             <p
-              className={`text-[13px] italic leading-relaxed transition-colors ${
-                displayState === "success"
-                  ? "text-[#1A1A1A]/40 cursor-pointer hover:text-[#1A1A1A]/70"
-                  : "text-[#6B6B68]"
-              }`}
+              className="text-[#6B6B68] text-[13px] italic leading-relaxed"
               style={{ fontFamily: "var(--font-body)" }}
-              onClick={displayState === "success" ? () => setShowNight(true) : undefined}
             >
               {copy.closer}
             </p>
           )}
 
-          {/* Form — only shown in default + error states */}
+          {/* Night sky trigger — visible pill button in success state */}
+          {displayState === "success" && (
+            <button
+              onClick={() => setShowNight(true)}
+              className="flex items-center gap-2 px-5 py-2 rounded-full border border-[#1A1A1A]/[0.08] text-[12px] italic text-[#1A1A1A]/40 hover:border-[#1A1A1A]/20 hover:text-[#1A1A1A]/70 hover:bg-[#1A1A1A]/[0.02] active:scale-[0.97] transition-all cursor-pointer"
+              style={{
+                fontFamily: "var(--font-body)",
+                animation:  "hint-pulse 3s ease-in-out infinite",
+              }}
+            >
+              {copy.closer}
+              <span className="not-italic text-[15px] leading-none">🌙</span>
+            </button>
+          )}
+
           {displayState !== "success" && (
             <EmailForm state={displayState} onStateChange={transitionTo} />
           )}
