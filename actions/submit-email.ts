@@ -1,7 +1,6 @@
 "use server";
 
 import { promises as dns } from "dns";
-import { LoopsClient } from "loops";
 import disposableDomains from "disposable-email-domains";
 import { supabase } from "@/lib/supabase";
 import { isValidEmail } from "@/lib/validate-email";
@@ -10,8 +9,6 @@ type Result =
   | { success: true }
   | { success: false; error: "invalid_email" | "server_error" };
 
-const loops = new LoopsClient(process.env.LOOPS_API_KEY!);
-
 async function domainHasMx(domain: string): Promise<boolean> {
   try {
     const records = await dns.resolveMx(domain);
@@ -19,6 +16,25 @@ async function domainHasMx(domain: string): Promise<boolean> {
   } catch {
     return false;
   }
+}
+
+// Direct fetch instead of SDK — avoids module-level init issues with env vars
+async function sendLoopsEvent(email: string): Promise<void> {
+  const apiKey = process.env.LOOPS_API_KEY;
+  if (!apiKey) return;
+
+  await fetch("https://app.loops.so/api/v1/events/send", {
+    method:  "POST",
+    headers: {
+      "Authorization": `Bearer ${apiKey}`,
+      "Content-Type":  "application/json",
+    },
+    body: JSON.stringify({
+      email,
+      eventName:        "waitlist_signup",
+      eventProperties:  { source: "heywaldo.in" },
+    }),
+  });
 }
 
 export async function submitEmail(formData: FormData): Promise<Result> {
@@ -52,18 +68,13 @@ export async function submitEmail(formData: FormData): Promise<Result> {
     if (error.code !== "23505") {
       return { success: false, error: "server_error" };
     }
-    // Duplicate — already on waitlist, still fire success (no confirmation re-send)
+    // Duplicate — already on waitlist, silent success
     return { success: true };
   }
 
-  // 5. Add to Loops + fire waitlist_signup event → triggers confirmation email
+  // 5. Fire Loops event — triggers confirmation email in Loop Builder
   //    Fire-and-forget: email failure never blocks the user's success state
-  loops.sendEvent({
-    email,
-    eventName: "waitlist_signup",
-    eventProperties: { source: "heywaldo.in" },
-  }).catch(() => {
-    // Log silently — Supabase already captured the signup
+  sendLoopsEvent(email).catch(() => {
     console.error("[loops] failed to send waitlist_signup event for", email);
   });
 
