@@ -73,8 +73,9 @@ export async function submitEmail(formData: FormData): Promise<Result> {
   }
 
   // 5. Fire Loops event — triggers confirmation email in Loop Builder
-  //    Fire-and-forget: email failure never blocks the user's success state
-  sendLoopsEvent(email).catch(() => {
+  //    Awaited so Vercel doesn't kill the fetch before it completes.
+  //    Email failure is caught and logged but never blocks the success state.
+  await sendLoopsEvent(email).catch(() => {
     console.error("[loops] failed to send waitlist_signup event for", email);
   });
 
