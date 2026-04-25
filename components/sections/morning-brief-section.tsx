@@ -8,6 +8,7 @@ import goodSleepDarkMode from "@/components/assets/good-sleep-dark-mode.svg";
 import vectorSpot        from "@/components/assets/Vector-1.svg";
 import vectorBrief       from "@/components/assets/Vector.svg";
 import { useCardStack }  from "@/hooks/use-card-stack";
+import { MobileDots }   from "@/components/mobile-dots";
 import { EASE, DUR_SETTLE, AUTO_CARD_MS } from "@/lib/motion";
 
 function ArrowRightIcon() {
@@ -32,14 +33,26 @@ const BACK: { rotate: string; left: string; top: string }[] = [
 const T = `all ${DUR_SETTLE}ms ${EASE}`;
 
 export function MorningBriefSection() {
-  const { slotOf, offset, onClick, onMouseEnter, onMouseLeave } = useCardStack(CARDS.length, AUTO_CARD_MS);
+  const { slotOf, offset, frontIndex, onClick, onMouseEnter, onMouseLeave, onTouchStart, onTouchEnd } = useCardStack(CARDS.length, AUTO_CARD_MS);
   const FRONT = CARDS.length - 1;
-  const frontCardIdx = ((CARDS.length - 1 - (offset % CARDS.length)) + CARDS.length) % CARDS.length;
+  const frontCardIdx = frontIndex;
+  const frontCard = CARDS[frontCardIdx];
 
   return (
     <section className="flex flex-col gap-[70px] items-center py-[90px] w-full" style={{ borderRadius: "30px" }}>
+      {/* Mobile: single card + swipe */}
+      <div className="lg:hidden w-full px-4" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd} onClick={onClick}>
+        <div className="bg-[#fafaf8] border-[1.5px] border-[rgba(26,26,26,0.16)] border-solid flex flex-col gap-[24px] items-start overflow-clip mx-auto" style={{ padding: "28px", borderRadius: "20px", maxWidth: "440px" }}>
+          <Image src={frontCard.icon} alt="" width={frontCard.iconW} height={frontCard.iconH} unoptimized />
+          <p className="text-[#1a1a1a]" style={{ fontFamily: "var(--font-headline)", fontSize: "22px", lineHeight: 1.1, whiteSpace: "pre-wrap" }}>{frontCard.body}</p>
+          <p className="font-medium italic text-[#6b6b68]" style={{ fontFamily: "var(--font-body)", fontVariationSettings: "'opsz' 14", fontStyle: "italic", fontSize: "14px", lineHeight: 1.3 }}>{frontCard.footnote}</p>
+        </div>
+        <MobileDots count={CARDS.length} current={frontCardIdx} />
+      </div>
+
+      {/* Desktop: fan stack */}
       <div
-        className="relative shrink-0 cursor-pointer"
+        className="hidden lg:block relative shrink-0 cursor-pointer"
         style={{ height: "562px", width: "1004px" }}
         onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}
         role="button" aria-label="Card stack — click to advance" tabIndex={0}
@@ -74,10 +87,10 @@ export function MorningBriefSection() {
             </div>
           );
         })}
-      </div>
+      </div>  {/* end desktop fan */}
 
-      {/* Nav dots */}
-      <div className="flex gap-[8px] items-center justify-center">
+      {/* Desktop nav dots */}
+      <div className="hidden lg:flex gap-[8px] items-center justify-center">
         {CARDS.map((_, i) => (
           <button
             key={i}
@@ -89,8 +102,8 @@ export function MorningBriefSection() {
       </div>
 
       <div className="flex flex-col gap-[40px] items-center w-full">
-        <h2 className="text-[#1a1a1a] text-[48px] text-center" style={{ fontFamily: "var(--font-headline)", lineHeight: 1.1 }}>With Waldo, this is what{" "}<br />you wake up to instead.</h2>
-        <p className="font-normal text-[#6b6b68] text-[14px] text-center" style={{ fontFamily: "var(--font-body)", fontVariationSettings: "'opsz' 14", lineHeight: 1.3, width: "455px" }}>
+        <h2 className="text-[#1a1a1a] text-[32px] lg:text-[48px] text-center px-4 lg:px-0" style={{ fontFamily: "var(--font-headline)", lineHeight: 1.1 }}>With Waldo, this is what{" "}<br />you wake up to instead.</h2>
+        <p className="font-normal text-[#6b6b68] text-[14px] text-center px-6 lg:px-0" style={{ fontFamily: "var(--font-body)", fontVariationSettings: "'opsz' 14", lineHeight: 1.3, maxWidth: "455px" }}>
           It reschedules meetings, reprioritises tasks, and intervenes based on HRV, sleep, and circadian patterns - without being asked. You never open a dashboard to manage health. Waldo handles it.
         </p>
         <a href="/waitlist" className="flex items-center gap-[4px] justify-center bg-[#1a1a1a] border border-[rgba(26,26,26,0.08)] border-solid text-[#fafaf8] text-[18px] text-center px-[36px] py-[22px] hover:bg-[#333] hover:scale-[1.02] transition-all" style={{ fontFamily: "var(--font-headline)", lineHeight: 1.3, borderRadius: "40px" }}>

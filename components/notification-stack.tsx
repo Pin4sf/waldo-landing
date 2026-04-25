@@ -1,4 +1,5 @@
-// Hero notification stack — Figma-exact 2D layout.
+// Hero notification stack.
+// Desktop (lg+): Figma-exact 2D pyramid. Mobile: single card, swipe left/right.
 //
 // Each card has a different width AND explicit height from Figma.
 // The pyramid/converging effect comes from progressively wider cards
@@ -12,6 +13,7 @@
 
 import { useState } from "react";
 import { useCardStack } from "@/hooks/use-card-stack";
+import { MobileDots } from "@/components/mobile-dots";
 import { EASE, DUR_SETTLE, AUTO_HERO_MS } from "@/lib/motion";
 
 type Slot = {
@@ -44,12 +46,39 @@ const TRANSITION = `all ${DUR_SETTLE}ms ${EASE}`;
 
 export function NotificationStack() {
   const [hovered, setHovered] = useState(false);
-  const { slotOf, dragDelta, onPointerDown, onPointerMove, onPointerUp, onClick, onMouseEnter, onMouseLeave } =
+  const { slotOf, frontIndex, dragDelta, onPointerDown, onPointerMove, onPointerUp, onClick, onMouseEnter, onMouseLeave, advance, retreat, onTouchStart, onTouchEnd } =
     useCardStack(NOTIFICATIONS.length, AUTO_HERO_MS);
 
+  const frontNotif = NOTIFICATIONS[frontIndex];
+
   return (
+    <>
+    {/* ── Mobile: single swipeable card ─────────────────────────── */}
     <div
-      className="relative shrink-0 select-none"
+      className="lg:hidden w-full select-none"
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
+    >
+      <div
+        className="bg-[#fafaf8] border-solid border-[rgba(26,26,26,0.16)] flex flex-col items-start mx-auto"
+        style={{ padding: "24px", borderRadius: "20px", borderWidth: "1.5px", maxWidth: "480px", boxShadow: "0 4px 24px rgba(0,0,0,0.08)" }}
+      >
+        <p className="font-medium text-[#1a1a1a] whitespace-nowrap" style={{ fontFamily: "var(--font-body)", fontVariationSettings: "'opsz' 14", fontSize: "13px", lineHeight: 1.3 }}>
+          {frontNotif.app}
+        </p>
+        <p className="text-[#1a1a1a]" style={{ fontFamily: "var(--font-headline)", fontSize: "16px", lineHeight: 1.15, whiteSpace: "pre-wrap", marginTop: "10px" }}>
+          {frontNotif.message}
+        </p>
+        <p className="font-medium italic text-[#717171]" style={{ fontFamily: "var(--font-body)", fontVariationSettings: "'opsz' 14", fontStyle: "italic", fontSize: "13px", lineHeight: 1.3, marginTop: "10px" }}>
+          {frontNotif.comment}
+        </p>
+      </div>
+      <MobileDots count={NOTIFICATIONS.length} current={frontIndex} />
+    </div>
+
+    {/* ── Desktop: pyramid stack ─────────────────────────────────── */}
+    <div
+      className="hidden lg:block relative shrink-0 select-none"
       style={{ width: "477px", height: "384px" }}
       onClick={onClick}
       onPointerDown={onPointerDown}
@@ -122,5 +151,6 @@ export function NotificationStack() {
         );
       })}
     </div>
+    </>
   );
 }

@@ -10,7 +10,7 @@ export function HealthDataSection() {
       style={{ borderRadius: "30px" }}
     >
       {/* Header copy */}
-      <div className="flex flex-col gap-[40px] items-center text-center">
+      <div className="flex flex-col gap-[24px] lg:gap-[40px] items-center text-center px-4 lg:px-0">
         <p
           className="font-normal italic text-[#6b6b68] text-[14px] min-w-full w-min"
           style={{
@@ -22,12 +22,8 @@ export function HealthDataSection() {
           You already have everything Waldo needs.
         </p>
         <h2
-          className="text-[#1a1a1a] text-[48px]"
-          style={{
-            fontFamily: "var(--font-headline)",
-            lineHeight: 1.1,
-            width: "458px",
-          }}
+          className="text-[#1a1a1a] text-[32px] lg:text-[48px]"
+          style={{ fontFamily: "var(--font-headline)", lineHeight: 1.1, maxWidth: "458px" }}
         >
           Months of health data sitting unused.
         </h2>
@@ -38,16 +34,17 @@ export function HealthDataSection() {
             fontFamily: "var(--font-body)",
             fontVariationSettings: "'opsz' 14",
             lineHeight: 1.3,
-            width: "538px",
+            maxWidth: "538px",
+            width: "100%",
           }}
         >
           {`Your watch has been collecting sleep, HRV, recovery, and stress data every single day. While you slept. While you worked. While you ignored it. That data has been sitting in an app you open twice a year. Waldo reads every day of it.`}
         </BalancedParagraph>
       </div>
 
-      {/* Health screenshots — overflowing at bottom for visual crop effect */}
+      {/* Health screenshots — desktop only */}
       <div
-        className="relative shrink-0 overflow-clip"
+        className="relative shrink-0 overflow-clip hidden lg:block"
         style={{ height: "242.168px", width: "737.812px" }}
       >
         {/* AFIB history — right */}

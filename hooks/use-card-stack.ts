@@ -8,9 +8,9 @@ export function useCardStack(count: number, autoMs: number) {
   const [paused,    setPaused]    = useState(false);
   const [dragDelta, setDragDelta] = useState(0);
   const dragStart  = useRef<number | null>(null);
+  const touchStartX = useRef<number | null>(null);
   const resumeRef  = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Auto-advance
   useEffect(() => {
     if (paused) return;
     const id = setInterval(() => setOffset(o => o + 1), autoMs);
@@ -30,8 +30,17 @@ export function useCardStack(count: number, autoMs: number) {
     pauseFor(PAUSE_MS);
   }, [pauseFor]);
 
+  const retreat = useCallback(() => {
+    setOffset(o => o - 1);
+    pauseFor(PAUSE_MS);
+  }, [pauseFor]);
+
   const slotOf = (i: number) => ((i - offset) % count + count) % count;
 
+  // Front card index — for mobile single-card view
+  const frontIndex = ((offset + count - 1) % count + count) % count;
+
+  // Vertical drag (desktop stack dismiss)
   const onPointerDown = (e: React.PointerEvent) => {
     dragStart.current = e.clientY;
     setDragDelta(0);
@@ -53,11 +62,24 @@ export function useCardStack(count: number, autoMs: number) {
     advance();
   }, [dragDelta, advance]);
 
-  const onMouseEnter = useCallback(() => pauseFor(PAUSE_MS),   [pauseFor]);
+  const onMouseEnter = useCallback(() => pauseFor(PAUSE_MS), [pauseFor]);
   const onMouseLeave = useCallback(() => {
     if (resumeRef.current) clearTimeout(resumeRef.current);
     setPaused(false);
   }, []);
 
-  return { offset, dragDelta, slotOf, advance, onPointerDown, onPointerMove, onPointerUp, onClick, onMouseEnter, onMouseLeave } as const;
+  // Horizontal touch swipe (mobile carousel)
+  const onTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.targetTouches[0].clientX;
+  };
+  const onTouchEnd = useCallback((e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const diff = touchStartX.current - e.changedTouches[0].clientX;
+    touchStartX.current = null;
+    if (Math.abs(diff) > 44) {
+      if (diff > 0) advance(); else retreat();
+    }
+  }, [advance, retreat]);
+
+  return { offset, dragDelta, slotOf, frontIndex, advance, retreat, onPointerDown, onPointerMove, onPointerUp, onClick, onMouseEnter, onMouseLeave, onTouchStart, onTouchEnd } as const;
 }

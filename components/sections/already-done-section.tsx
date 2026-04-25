@@ -50,9 +50,9 @@ function SidebarItem({
 export function AlreadyDoneSection() {
   return (
     <section className="flex flex-col gap-[50px] items-center pb-[30px] w-full">
-      {/* Waldo chat UI mockup */}
+      {/* Waldo chat UI mockup — desktop only */}
       <div
-        className="bg-[#fafaf8] border-2 border-[rgba(26,26,26,0.08)] border-solid flex flex-col items-center overflow-clip pt-[70px] w-full"
+        className="hidden lg:flex bg-[#fafaf8] border-2 border-[rgba(26,26,26,0.08)] border-solid flex-col items-center overflow-clip pt-[70px] w-full"
         style={{ height: "750px", borderRadius: "30px" }}
       >
         {/* Scaled mockup of Waldo interface */}
@@ -137,15 +137,15 @@ export function AlreadyDoneSection() {
       </div>
 
       {/* Copy */}
-      <div className="flex flex-col gap-[30px] items-center text-center w-full">
+      <div className="flex flex-col gap-[24px] lg:gap-[30px] items-center text-center w-full px-4 lg:px-0">
         <h2
-          className="text-[#1a1a1a] text-[48px] whitespace-nowrap"
+          className="text-[#1a1a1a] text-[32px] lg:text-[48px]"
           style={{ fontFamily: "var(--font-headline)", lineHeight: 1.1 }}
         >
           Already done.
         </h2>
         <p
-          className="text-[#1a1a1a] text-[25px] whitespace-nowrap"
+          className="text-[#1a1a1a] text-[18px] lg:text-[25px]"
           style={{ fontFamily: "var(--font-headline)", lineHeight: 1.2 }}
         >
           Not just a suggestion or a notification.
@@ -156,7 +156,8 @@ export function AlreadyDoneSection() {
             fontFamily: "var(--font-body)",
             fontVariationSettings: "'opsz' 14",
             lineHeight: 1.3,
-            width: "455px",
+            maxWidth: "455px",
+            width: "100%",
           }}
         >
           Every other health app shows you the data and leaves the rest to you. Waldo reads your

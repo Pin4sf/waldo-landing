@@ -10,6 +10,7 @@ import goodWeekDarkMode  from "@/components/assets/good-week-dark-mode.svg";
 import goodDarkMode      from "@/components/assets/good-dark-mode.svg";
 import watchingDarkMode  from "@/components/assets/watching-dark-mode.svg";
 import { useCardStack }  from "@/hooks/use-card-stack";
+import { MobileDots }   from "@/components/mobile-dots";
 import { EASE, DUR_SETTLE, AUTO_CARD_MS } from "@/lib/motion";
 
 function ArrowRightIcon() {
@@ -40,14 +41,28 @@ const SLOTS = [
 const T = `all ${DUR_SETTLE}ms ${EASE}`;
 
 export function FiveThingsSection() {
-  const { slotOf, offset, onClick, onMouseEnter, onMouseLeave } = useCardStack(CARDS.length, AUTO_CARD_MS);
+  const { slotOf, offset, frontIndex, onClick, onMouseEnter, onMouseLeave, onTouchStart, onTouchEnd } = useCardStack(CARDS.length, AUTO_CARD_MS);
   const FRONT = SLOTS.length - 1;
-  const frontCardIdx = ((CARDS.length - 1 - (offset % CARDS.length)) + CARDS.length) % CARDS.length;
+  const frontCardIdx = frontIndex;
+  const frontCard = CARDS[frontCardIdx];
 
   return (
     <section className="flex flex-col gap-[20px] items-center py-[40px] w-full" style={{ borderRadius: "30px" }}>
+
+      {/* Mobile: single card + swipe */}
+      <div className="lg:hidden w-full px-4" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd} onClick={onClick}>
+        <div className="bg-[#fafaf8] border-[1.5px] border-[rgba(26,26,26,0.16)] border-solid flex flex-col items-start overflow-clip mx-auto" style={{ padding: "28px", borderRadius: "20px", maxWidth: "440px" }}>
+          <Image src={frontCard.icon} alt="" width={frontCard.iconW} height={frontCard.iconH} unoptimized />
+          <p className="text-[#1a1a1a] whitespace-nowrap mt-5" style={{ fontFamily: "var(--font-headline)", fontSize: "28px", lineHeight: 1.2 }}>{frontCard.title}</p>
+          <p className="text-[#1a1a1a] mt-4" style={{ fontFamily: "var(--font-headline)", fontSize: "17px", lineHeight: 1.15, whiteSpace: "pre-wrap" }}>{frontCard.body}</p>
+          <p className="font-normal italic text-[#717171] mt-5" style={{ fontFamily: "var(--font-body)", fontVariationSettings: "'opsz' 14", fontSize: "13px", lineHeight: 1.3 }}>{frontCard.footnote}</p>
+        </div>
+        <MobileDots count={CARDS.length} current={frontCardIdx} />
+      </div>
+
+      {/* Desktop: fan */}
       <div
-        className="relative shrink-0 cursor-pointer"
+        className="hidden lg:block relative shrink-0 cursor-pointer"
         style={{ height: "603.034px", width: "1004.31px" }}
         onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}
         role="button" aria-label="Card fan — click to advance" tabIndex={0}
@@ -107,8 +122,8 @@ export function FiveThingsSection() {
         })}
       </div>
 
-      {/* Nav dots */}
-      <div className="flex gap-[8px] items-center justify-center">
+      {/* Desktop nav dots */}
+      <div className="hidden lg:flex gap-[8px] items-center justify-center">
         {CARDS.map((_, i) => (
           <button
             key={i}
@@ -129,8 +144,8 @@ export function FiveThingsSection() {
       </div>
 
       <div className="flex flex-col gap-[40px] items-center w-full">
-        <h2 className="text-[#1a1a1a] text-[48px] text-center" style={{ fontFamily: "var(--font-headline)", lineHeight: 1.1 }}>Five things Waldo does<br />while you get on with your day.</h2>
-        <p className="text-[#1a1a1a] text-[25px] text-center whitespace-nowrap" style={{ fontFamily: "var(--font-headline)", lineHeight: 1.2 }}>Not just a suggestion or a notification.</p>
+        <h2 className="text-[#1a1a1a] text-[32px] lg:text-[48px] text-center px-4 lg:px-0" style={{ fontFamily: "var(--font-headline)", lineHeight: 1.1 }}>Five things Waldo does<br />while you get on with your day.</h2>
+        <p className="text-[#1a1a1a] text-[18px] lg:text-[25px] text-center px-4 lg:px-0" style={{ fontFamily: "var(--font-headline)", lineHeight: 1.2 }}>Not just a suggestion or a notification.</p>
         <a href="/waitlist" className="flex items-center gap-[4px] justify-center bg-[#1a1a1a] border border-[rgba(26,26,26,0.08)] border-solid text-[#fafaf8] text-[18px] text-center px-[36px] py-[22px] hover:bg-[#333] hover:scale-[1.02] transition-all" style={{ fontFamily: "var(--font-headline)", lineHeight: 1.3, borderRadius: "40px" }}>
           Get Started <ArrowRightIcon />
         </a>
