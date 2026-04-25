@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useCallback } from "react";
-import Image from "next/image";
+import { WaldoLogoFull } from "./waldo-logo-full";
 import { NavLink } from "./nav-link";
 
 const links = [
@@ -106,15 +106,7 @@ export function Navbar({
           onAnimationEnd={() => setLogoWag(false)}
           aria-label="Waldo home"
         >
-          <Image
-            src="/logodots.svg"
-            alt="Waldo"
-            width={28}
-            height={24}
-            className={logoWag ? "waldo-wagging" : ""}
-            style={{ height: "24px", width: "auto" }}
-            priority
-          />
+          <WaldoLogoFull wagging={logoWag} width={118} />
         </a>
 
         {/* Desktop — nav links */}

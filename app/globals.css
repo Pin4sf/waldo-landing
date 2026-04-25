@@ -62,6 +62,20 @@
 }
 @media (prefers-reduced-motion: reduce) { .waldo-breathe { animation: none; } }
 
+/* Spot bloom — each petal scales up when logo is hovered (.waldo-wagging on parent SVG) */
+@keyframes spot-bloom-kf {
+  0%   { transform: scale(1);    }
+  40%  { transform: scale(1.28); }
+  100% { transform: scale(1);    }
+}
+.waldo-spot {
+  transition: transform 0.15s ease;
+}
+.waldo-wagging .waldo-spot {
+  animation: spot-bloom-kf 0.55s cubic-bezier(0.32, 0.72, 0.24, 1.05) var(--spot-delay, 0ms) both;
+}
+@media (prefers-reduced-motion: reduce) { .waldo-wagging .waldo-spot { animation: none; } }
+
 /* Logo wag — triggered by adding .waldo-wagging class */
 @keyframes waldo-wag {
   0%   { transform: rotate(0deg); }
