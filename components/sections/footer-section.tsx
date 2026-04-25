@@ -1,5 +1,5 @@
 // Footer — "Your health isn't going to fix itself."
-// Full-bleed illustration of Waldo watching a sunset, with CTA + legal links.
+// Three layers: z-0 gradient sky, z-1 illustration SVG, z-2 copy + CTA
 
 function ArrowRightIcon() {
   return (
@@ -9,23 +9,68 @@ function ArrowRightIcon() {
   );
 }
 
+function FooterIllustration() {
+  return (
+    <svg
+      viewBox="0 0 1440 1047"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
+      style={{ position: "absolute", bottom: 0, left: 0, width: "100%", height: "auto" }}
+      aria-hidden="true"
+    >
+      {/* hills */}
+      <image href="/figma-assets/layers/hills.png" x="-14.59" y="555.35" width="1462.38" height="162.38" />
+      {/* clouds */}
+      <image href="/figma-assets/layers/cloud-left-large.png" x="61.14" y="250.32" width="284" height="129" />
+      <image href="/figma-assets/layers/cloud-right.png" x="1335.46" y="215" width="346.95" height="204.31" />
+      <image href="/figma-assets/layers/cloud-left-small.png" x="301.14" y="345.32" width="167" height="87" />
+      {/* water */}
+      <image href="/figma-assets/layers/water-ripple-left.png" x="24.96" y="861.01" width="606.21" height="103.63" />
+      <image href="/figma-assets/layers/water-ripple-right.png" x="1180.33" y="746.08" width="638.27" height="112.86" />
+      <image href="/figma-assets/layers/water-detail-2.png" x="436.87" y="768.43" width="415.20" height="74.69" />
+      <image href="/figma-assets/layers/water-detail-3.png" x="745.39" y="760.65" width="198.58" height="95.35" />
+      <image href="/figma-assets/layers/water-detail-1.png" x="801.73" y="766.49" width="365.84" height="56.43" />
+      <image href="/figma-assets/layers/water-detail-4.png" x="1323.15" y="974.70" width="159.66" height="56.43" />
+      {/* dock */}
+      <image href="/figma-assets/layers/dock.png" x="104" y="873" width="1231" height="194" />
+      {/* posts */}
+      <image href="/figma-assets/layers/post-left.png" x="275.35" y="523.24" width="67.93" height="381.13" />
+      <image href="/figma-assets/layers/post-right.png" x="1196.58" y="523.24" width="67.93" height="381.13" />
+      {/* waldo */}
+      <image href="/figma-assets/layers/waldo.png" x="525.54" y="622.01" width="165.75" height="355.53" />
+      {/* flowers */}
+      <image href="/figma-assets/layers/flower-stem.png" x="1362.72" y="538.14" width="16.37" height="83.68" />
+      <image href="/figma-assets/layers/flower-heads.png" x="1351.89" y="499.22" width="52.54" height="46.70" />
+      <image href="/figma-assets/layers/flower-overlay.png" x="1355.27" y="534.59" width="46" height="41" />
+    </svg>
+  );
+}
+
 export function FooterSection() {
   return (
-    <footer className="relative w-full bg-[#f4f3f0] overflow-clip" style={{ minHeight: "1119px" }}>
-
-      {/* Illustration — full-width, sits behind content */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        alt=""
-        src="/figma-assets/footer-illustration.png"
-        className="absolute left-0 w-full pointer-events-none select-none"
-        style={{ top: "72px", height: "1047px", objectFit: "cover", objectPosition: "center top" }}
+    <footer
+      className="relative w-full overflow-hidden"
+      style={{ aspectRatio: "1440 / 1119", minHeight: "600px" }}
+    >
+      {/* z-0: gradient sky background */}
+      <div
+        className="absolute inset-0"
+        style={{
+          zIndex: 0,
+          background:
+            "radial-gradient(ellipse 100% 100% at 50% 100%, rgba(255,140,0,0.9) 0%, rgba(255,185,5,0.85) 15%, rgba(255,242,0,0) 79%), #f4f3f0",
+        }}
       />
 
-      {/* Centered content — positioned above the illustration */}
+      {/* z-1: illustration */}
+      <div className="absolute inset-0 pointer-events-none select-none" style={{ zIndex: 1 }}>
+        <FooterIllustration />
+      </div>
+
+      {/* z-2: copy + CTA */}
       <div
         className="absolute left-1/2 flex flex-col gap-[60px] items-center"
-        style={{ top: "153px", transform: "translateX(-50%)", width: "422px" }}
+        style={{ top: "13.67%", transform: "translateX(-50%)", width: "422px", zIndex: 2 }}
       >
         {/* Copy + CTA */}
         <div className="flex flex-col gap-[50px] items-center w-full">
