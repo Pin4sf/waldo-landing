@@ -1,12 +1,16 @@
-// Sunflower click effect — site-wide delight.
+// Waldo logo click effect — site-wide delight.
 //
-// On any click on the page background, spawn a sunflower at the click coordinates that
-// scales up, rotates a quarter turn, and fades out over ~700ms. Skips clicks that originated
-// on interactive elements (buttons, links, inputs) so it doesn't fire when the user is trying
-// to do something. Brand-orange palette: #F97316 + accent #1A1A1A.
+// On any click on the page background, the Waldo logo splash-blooms at the click point:
+// 7 petals start clustered at the logo center, fly outward to their natural positions
+// with rotational variance, hold for a beat, then fade outward (~700ms total).
+// Skips clicks on interactive elements so it never blocks an action.
 //
-// Lightweight — pure React state + CSS transitions, no animation library, no global listeners
-// when the page is unmounted.
+// Implementation note on SVG transforms:
+//   CSS pixel transforms on SVG elements behave like HTML — pixel = CSS pixel.
+//   By rendering the SVG at its natural 195×199 viewBox size (via CSS px), pixel
+//   translations map cleanly to user-units. The wrapper then `scale()`s the whole
+//   SVG to the desired display size. This avoids the "transforms in the wrong unit"
+//   pitfall that hits inline-SVG animation.
 
 "use client";
 
@@ -16,46 +20,85 @@ type Bloom = {
   id: number;
   x: number;
   y: number;
-  rotation: number;   // degrees, randomized per spawn
-  size: number;       // px, slight variation per spawn
+  size: number;
+  rotation: number; // overall rotation jitter for organic variety
 };
 
-const BLOOM_LIFETIME_MS = 750;
-const SIZE_MIN = 40;
-const SIZE_MAX = 64;
+const BLOOM_LIFETIME_MS = 700;
+const SIZE_MIN = 56;
+const SIZE_MAX = 88;
 
-// Skip clicks on these elements — they're "doing something else"
+// Skip clicks on interactive elements
 const INTERACTIVE_SELECTOR = "a, button, input, textarea, select, label, [role='button'], [role='link'], [data-no-bloom]";
 
-function Sunflower({ size }: { size: number }) {
-  // 12-petal sunflower in Waldo brand orange. Center seed disc in deep ink so it reads on any background.
-  const petalCount = 12;
+// ── Logo geometry ─────────────────────────────────────────────────────────
+// Each petal's `d` is the original Figma path. `cx, cy` is the petal's
+// approximate visual center in the 195×199 viewBox; used to compute the
+// translate-to-center offset for the burst start state.
+const LOGO_VIEWBOX = { w: 195, h: 199, cx: 100, cy: 100 };
+
+const PETALS: { d: string; cx: number; cy: number }[] = [
+  { d: "M105.107 86.4265C81.571 89.3821 68.9744 40.4184 94.0459 31.2918C119.445 28.4777 130.141 79.0354 105.107 86.4265Z", cx: 99,  cy: 59  },
+  { d: "M79.9086 102.061C68.3123 125.496 17.4838 108.985 24.559 80.5855C37.4045 55.5118 88.4934 74.6938 79.9086 102.061Z", cx: 52,  cy: 90  },
+  { d: "M133.65 97.4584C117.74 81.3178 139.319 48.0464 159.825 62.3265C176.77 79.9275 153.1 112.556 133.65 97.4584Z",     cx: 147, cy: 80  },
+  { d: "M142.596 120.58C145.942 105.726 176.556 107.868 176.401 124.885C172.576 140.839 141.459 137.227 142.596 120.58Z",  cx: 159, cy: 122 },
+  { d: "M124.679 134.593C132.31 129.131 148.648 154.176 141.969 163.302C133.643 168.988 117.592 142.752 124.679 134.593Z", cx: 133, cy: 149 },
+  { d: "M107.796 142.31C115.982 143.084 115.132 163.865 105.794 165.449C96.9988 164.463 98.6496 143.198 107.796 142.31Z",  cx: 106, cy: 154 },
+  { d: "M78.8035 147.117C72.9944 149.199 67.222 150.007 61.26 147.984C55.433 146.07 51.678 140.481 54.103 134.435C56.1195 129.408 60.8072 126.183 65.589 124.105C88.9014 114.17 103.742 136.894 78.8035 147.117Z", cx: 77, cy: 132 },
+];
+
+function WaldoLogoBurst({ size }: { size: number }) {
+  const scale = size / LOGO_VIEWBOX.w;
+
   return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="-50 -50 100 100"
-      aria-hidden
-      style={{ display: "block" }}
+    <div
+      style={{
+        width: size,
+        height: size,
+        position: "relative",
+        pointerEvents: "none",
+      }}
     >
-      {Array.from({ length: petalCount }).map((_, i) => {
-        const angle = (i * 360) / petalCount;
-        return (
-          <ellipse
-            key={i}
-            cx="0"
-            cy="-26"
-            rx="8"
-            ry="20"
-            fill="#F97316"
-            transform={`rotate(${angle})`}
-            opacity={0.95}
-          />
-        );
-      })}
-      <circle cx="0" cy="0" r="12" fill="#1A1A1A" />
-      <circle cx="0" cy="0" r="6" fill="#F97316" opacity={0.55} />
-    </svg>
+      <svg
+        width={LOGO_VIEWBOX.w}
+        height={LOGO_VIEWBOX.h}
+        viewBox={`0 0 ${LOGO_VIEWBOX.w} ${LOGO_VIEWBOX.h}`}
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          transform: `scale(${scale})`,
+          transformOrigin: "top left",
+          overflow: "visible",
+        }}
+      >
+        {PETALS.map((p, i) => {
+          const tx = LOGO_VIEWBOX.cx - p.cx; // translate to logo center for burst start
+          const ty = LOGO_VIEWBOX.cy - p.cy;
+          const startRot = (Math.random() - 0.5) * 80; // jitter -40°…+40°
+          const endRot   = (Math.random() - 0.5) * 30;
+          return (
+            <path
+              key={i}
+              d={p.d}
+              fill="#FB943F"
+              style={
+                {
+                  transformBox: "fill-box",
+                  transformOrigin: "center",
+                  "--tx":        `${tx}px`,
+                  "--ty":        `${ty}px`,
+                  "--rot-start": `${startRot}deg`,
+                  "--rot-end":   `${endRot}deg`,
+                  animation: `petal-burst ${BLOOM_LIFETIME_MS}ms cubic-bezier(0.22, 1, 0.36, 1) ${i * 30}ms both`,
+                  willChange: "transform, opacity",
+                } as React.CSSProperties
+              }
+            />
+          );
+        })}
+      </svg>
+    </div>
   );
 }
 
@@ -69,14 +112,14 @@ export function SunflowerCursor({ children }: { children: React.ReactNode }) {
       if (target?.closest?.(INTERACTIVE_SELECTOR)) return;
 
       const id  = ++idCounter.current;
-      const rot = (Math.random() - 0.5) * 90;        // -45° to +45°
       const sz  = SIZE_MIN + Math.random() * (SIZE_MAX - SIZE_MIN);
+      const rot = (Math.random() - 0.5) * 30;
 
-      setBlooms((prev) => [...prev, { id, x: e.clientX, y: e.clientY, rotation: rot, size: sz }]);
+      setBlooms((prev) => [...prev, { id, x: e.clientX, y: e.clientY, size: sz, rotation: rot }]);
 
       window.setTimeout(() => {
         setBlooms((prev) => prev.filter((b) => b.id !== id));
-      }, BLOOM_LIFETIME_MS);
+      }, BLOOM_LIFETIME_MS + 300);
     };
 
     window.addEventListener("click", onClick);
@@ -94,34 +137,34 @@ export function SunflowerCursor({ children }: { children: React.ReactNode }) {
         {blooms.map((b) => (
           <span
             key={b.id}
-            style={
-              {
-                position: "fixed",
-                left: b.x,
-                top: b.y,
-                "--start-rot": `${b.rotation}deg`,
-                "--end-rot":   `${b.rotation + 180}deg`,
-                animation: `bloom-pop ${BLOOM_LIFETIME_MS}ms cubic-bezier(0.22, 1, 0.36, 1) forwards`,
-                willChange: "transform, opacity",
-              } as React.CSSProperties
-            }
+            style={{
+              position: "fixed",
+              left: b.x,
+              top: b.y,
+              transform: `translate(-50%, -50%) rotate(${b.rotation}deg)`,
+              willChange: "transform, opacity",
+            }}
           >
-            <Sunflower size={b.size} />
+            <WaldoLogoBurst size={b.size} />
           </span>
         ))}
       </div>
       <style jsx global>{`
-        @keyframes bloom-pop {
+        @keyframes petal-burst {
           0% {
+            transform: translate(var(--tx, 0), var(--ty, 0)) scale(0) rotate(var(--rot-start, 0deg));
             opacity: 0;
-            transform: translate(-50%, -50%) rotate(var(--start-rot, 0deg)) scale(0.2);
           }
-          25% {
+          18% {
+            opacity: 1;
+          }
+          55% {
+            transform: translate(0, 0) scale(1) rotate(0deg);
             opacity: 1;
           }
           100% {
+            transform: translate(0, 0) scale(1.35) rotate(var(--rot-end, 0deg));
             opacity: 0;
-            transform: translate(-50%, -50%) rotate(var(--end-rot, 180deg)) scale(1.4);
           }
         }
       `}</style>
