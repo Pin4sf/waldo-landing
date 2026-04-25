@@ -1,6 +1,8 @@
 // "The longer it runs, the smarter Waldo gets."
 // White card section with health screenshots — mirrors HealthDataSection layout.
 
+import { BalancedParagraph } from "@/components/balanced-paragraph";
+
 export function SmarterSection() {
   return (
     <section
@@ -17,7 +19,8 @@ export function SmarterSection() {
           <br />
           the smarter Waldo gets.
         </h2>
-        <p
+        <BalancedParagraph
+          pretextify
           className="font-normal text-[#6b6b68] text-[14px]"
           style={{
             fontFamily: "var(--font-body)",
@@ -26,11 +29,8 @@ export function SmarterSection() {
             width: "502px",
           }}
         >
-          Six weeks of Tuesdays and Thursdays that looked ordinary - until they didn&apos;t. The fact
-          that your worst sleep always follows your heaviest meeting days. The fact that your focus
-          peaks in November and dips in March - every year, without fail. You were too close to see
-          it. Waldo wasn&apos;t.
-        </p>
+          {`Six weeks of Tuesdays and Thursdays that looked ordinary - until they didn't. The fact that your worst sleep always follows your heaviest meeting days. The fact that your focus peaks in November and dips in March - every year, without fail. You were too close to see it. Waldo wasn't.`}
+        </BalancedParagraph>
       </div>
 
       {/* Health screenshots — same layout as HealthDataSection */}

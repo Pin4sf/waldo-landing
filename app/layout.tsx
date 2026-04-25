@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { corben, dmSans } from "@/lib/fonts";
+import { SunflowerCursor } from "@/components/sunflower-cursor";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -37,7 +38,7 @@ export default function RootLayout({
         className="bg-[#EDEAE3] text-[#1A1A1A] antialiased"
         style={{ fontFamily: "var(--font-body)" }}
       >
-        {children}
+        <SunflowerCursor>{children}</SunflowerCursor>
       </body>
     </html>
   );

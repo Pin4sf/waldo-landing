@@ -1,6 +1,8 @@
 // "Months of health data sitting unused."
 // White card section with Apple Health screenshots at the bottom.
 
+import { BalancedParagraph } from "@/components/balanced-paragraph";
+
 export function HealthDataSection() {
   return (
     <section
@@ -29,7 +31,8 @@ export function HealthDataSection() {
         >
           Months of health data sitting unused.
         </h2>
-        <p
+        <BalancedParagraph
+          pretextify
           className="font-normal text-[#6b6b68] text-[14px]"
           style={{
             fontFamily: "var(--font-body)",
@@ -38,10 +41,8 @@ export function HealthDataSection() {
             width: "538px",
           }}
         >
-          Your watch has been collecting sleep, HRV, recovery, and stress data every single day.
-          While you slept. While you worked. While you ignored it. That data has been sitting in an
-          app you open twice a year. Waldo reads every day of it.
-        </p>
+          {`Your watch has been collecting sleep, HRV, recovery, and stress data every single day. While you slept. While you worked. While you ignored it. That data has been sitting in an app you open twice a year. Waldo reads every day of it.`}
+        </BalancedParagraph>
       </div>
 
       {/* Health screenshots — overflowing at bottom for visual crop effect */}
