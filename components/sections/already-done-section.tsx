@@ -1,6 +1,7 @@
 // "Already done." — Waldo chat UI mockup + copy about autonomous action.
 
 import type { ReactNode } from "react";
+import Image from "next/image";
 
 function PlusIcon() {
   return (
@@ -69,8 +70,7 @@ export function AlreadyDoneSection() {
             }}
           >
             {/* Logo */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img alt="Waldo" src="/figma-assets/logo-small.png" style={{ height: "10.676px", width: "44.162px" }} />
+            <Image src="/logo.svg" alt="Waldo" width={44} height={11} unoptimized style={{ height: "10.676px", width: "44.162px" }} />
 
             {/* Top nav items */}
             <div className="flex flex-col gap-[7.279px] items-start w-full">
