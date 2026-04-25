@@ -1,11 +1,12 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-bg: #EDEAE3;
-  --color-text: #1A1A1A;
+  --color-bg:      #f4f3f0;
+  --color-surface: #fafaf8;
+  --color-text:    #1A1A1A;
   --color-text-muted: #6B6B68;
-  --color-accent: #F97316;
-  --color-border: rgba(26, 26, 26, 0.1);
+  --color-accent:  #F97316;
+  --color-border:  rgba(26, 26, 26, 0.1);
 }
 
 /* ── Page state transitions ─────────────────────────────────── */
@@ -47,6 +48,48 @@
   0%, 100% { opacity: 0.35; }
   50%       { opacity: 0.65; }
 }
+
+/* ── Waldo brand motions ────────────────────────────────────── */
+
+/* Dalmatian breath — very subtle scale, 8s cycle, only on .waldo-breathe */
+@keyframes waldo-breath {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.018); }
+}
+.waldo-breathe {
+  animation: waldo-breath var(--breath-duration, 8000ms) ease-in-out infinite var(--breath-delay, 0ms);
+  transform-origin: center bottom;
+}
+@media (prefers-reduced-motion: reduce) { .waldo-breathe { animation: none; } }
+
+/* Spot bloom — each petal scales up when logo is hovered (.waldo-wagging on parent SVG) */
+@keyframes spot-bloom-kf {
+  0%   { transform: scale(1);    }
+  40%  { transform: scale(1.28); }
+  100% { transform: scale(1);    }
+}
+.waldo-spot {
+  transition: transform 0.15s ease;
+}
+.waldo-wagging .waldo-spot {
+  animation: spot-bloom-kf 0.55s cubic-bezier(0.32, 0.72, 0.24, 1.05) var(--spot-delay, 0ms) both;
+}
+@media (prefers-reduced-motion: reduce) { .waldo-wagging .waldo-spot { animation: none; } }
+
+/* Logo wag — triggered by adding .waldo-wagging class */
+@keyframes waldo-wag {
+  0%   { transform: rotate(0deg); }
+  20%  { transform: rotate(5deg); }
+  50%  { transform: rotate(-3deg); }
+  75%  { transform: rotate(2deg); }
+  100% { transform: rotate(0deg); }
+}
+.waldo-wagging {
+  animation: waldo-wag 0.6s cubic-bezier(0.32, 0.72, 0.24, 1.05) both;
+}
+@media (prefers-reduced-motion: reduce) { .waldo-wagging { animation: none; } }
+
+/* ────────────────────────────────────────────────────────────── */
 
 @keyframes twinkle {
   0%, 100% { opacity: 0.15; transform: scale(0.85); }

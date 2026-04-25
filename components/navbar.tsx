@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useRef } from "react";
-import Image from "next/image";
+import { useState, useRef, useCallback } from "react";
+import { WaldoLogoFull } from "./waldo-logo-full";
 import { NavLink } from "./nav-link";
 
 const links = [
@@ -56,11 +56,16 @@ export function Navbar({
   onNavEnter?: () => void;
   onNavLeave?: () => void;
 }) {
-  const [menuOpen,    setMenuOpen]    = useState(false);
-  const [activeItem,  setActiveItem]  = useState<string | null>(null);
+  const [menuOpen,   setMenuOpen]   = useState(false);
+  const [activeItem, setActiveItem] = useState<string | null>(null);
+  const [logoWag,    setLogoWag]    = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Desktop hover — debounced to prevent flicker between links
+  const handleLogoHover = useCallback(() => {
+    setLogoWag(false);
+    requestAnimationFrame(() => requestAnimationFrame(() => setLogoWag(true)));
+  }, []);
+
   const handleDesktopEnter = () => {
     if (timerRef.current) clearTimeout(timerRef.current);
     onNavEnter?.();
@@ -72,13 +77,13 @@ export function Navbar({
   const openMenu = () => {
     setMenuOpen(true);
     setActiveItem(null);
-    onNavEnter?.();           // dim the page behind
+    onNavEnter?.();
   };
 
   const closeMenu = () => {
     setMenuOpen(false);
     setActiveItem(null);
-    onNavLeave?.();           // un-dim
+    onNavLeave?.();
   };
 
   const toggleItem = (label: string) => {
@@ -86,23 +91,27 @@ export function Navbar({
   };
 
   return (
-    // Relative wrapper so the dropdown can position absolutely below the pill
     <div className="relative flex flex-col items-center pt-5 px-4 z-20">
 
       {/* ── Pill ──────────────────────────────────────────────── */}
-      <div className="flex items-center gap-6 rounded-full bg-white px-6 py-3 shadow-[0_1px_10px_rgba(0,0,0,0.08)] border border-black/[0.06]">
-        <Image
-          src="/logo.svg"
-          alt="Waldo"
-          width={142}
-          height={44}
-          style={{ height: "28px", width: "auto" }}
-          priority
-        />
+      <div
+        className="flex items-center p-[5px] rounded-[50px] bg-[#fafaf8] border border-[rgba(26,26,26,0.08)]"
+        style={{ boxShadow: "0 1px 10px rgba(0,0,0,0.05)" }}
+      >
+        {/* Logo area — links to home */}
+        <a
+          href="/"
+          className="relative flex items-center justify-center w-[142px] h-[44px] shrink-0 cursor-pointer"
+          onMouseEnter={handleLogoHover}
+          onAnimationEnd={() => setLogoWag(false)}
+          aria-label="Waldo home"
+        >
+          <WaldoLogoFull wagging={logoWag} width={118} />
+        </a>
 
-        {/* Desktop — full link row, hover to dim */}
+        {/* Desktop — nav links */}
         <div
-          className="hidden lg:flex items-center gap-8"
+          className="hidden lg:flex items-center gap-[6px] px-[40px]"
           onMouseEnter={handleDesktopEnter}
           onMouseLeave={handleDesktopLeave}
         >
@@ -119,17 +128,14 @@ export function Navbar({
         {/* Mobile — dots button */}
         <button
           onClick={menuOpen ? closeMenu : openMenu}
-          className="lg:hidden flex items-center justify-center w-7 h-7 text-[#9CA3AF] hover:text-[#1A1A1A] transition-colors"
+          className="lg:hidden flex items-center justify-center w-7 h-7 text-[#9CA3AF] hover:text-[#1A1A1A] transition-colors mx-3"
           aria-label={menuOpen ? "Close menu" : "Open menu"}
-          style={{ fontFamily: "var(--font-body)" }}
         >
           {menuOpen ? (
-            // × close
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
             </svg>
           ) : (
-            // ··· dots
             <svg width="16" height="4" viewBox="0 0 16 4" fill="currentColor">
               <circle cx="2"  cy="2" r="1.5"/>
               <circle cx="8"  cy="2" r="1.5"/>
@@ -137,21 +143,27 @@ export function Navbar({
             </svg>
           )}
         </button>
+
+        {/* CTA */}
+        <a
+          href="/waitlist"
+          className="hidden lg:flex items-center justify-center bg-[#1a1a1a] text-[#fafaf8] px-[24px] py-[18px] rounded-[30px] whitespace-nowrap shrink-0 hover:bg-[#333] transition-colors"
+          style={{ fontFamily: "var(--font-headline)", fontSize: "14px", lineHeight: 1.3 }}
+        >
+          Get early access
+        </a>
       </div>
 
       {/* ── Mobile dropdown ───────────────────────────────────── */}
       {menuOpen && (
         <>
-          {/* Invisible backdrop — tap outside to close */}
           <div
             className="fixed inset-0 z-[-1]"
             onClick={closeMenu}
             aria-hidden="true"
           />
-
-          {/* Dropdown card */}
           <div
-            className="absolute top-full mt-2 w-[calc(100vw-32px)] max-w-[360px] rounded-2xl bg-white shadow-[0_4px_20px_rgba(0,0,0,0.10)] border border-black/[0.06] overflow-hidden"
+            className="absolute top-full mt-2 w-[calc(100vw-32px)] max-w-[360px] rounded-2xl bg-[#fafaf8] shadow-[0_4px_20px_rgba(0,0,0,0.10)] border border-black/[0.06] overflow-hidden"
             style={{ animation: "content-enter 200ms ease-out both" }}
           >
             {links.map((l, i) => (
@@ -162,12 +174,21 @@ export function Navbar({
                   open={activeItem === l.label}
                   onTap={() => toggleItem(l.label)}
                 />
-                {/* Divider between items, not after last */}
                 {i < links.length - 1 && (
                   <div className="mx-5 h-px bg-black/[0.05]" />
                 )}
               </div>
             ))}
+            <div className="p-4">
+              <a
+                href="/waitlist"
+                onClick={closeMenu}
+                className="flex items-center justify-center bg-[#1a1a1a] text-[#fafaf8] px-6 py-4 rounded-[24px] w-full"
+                style={{ fontFamily: "var(--font-headline)", fontSize: "14px" }}
+              >
+                Get early access
+              </a>
+            </div>
           </div>
         </>
       )}

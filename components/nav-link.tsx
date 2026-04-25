@@ -20,8 +20,8 @@ export function NavLink({
 
   return (
     <span
-      className="relative cursor-default select-none text-[13px] text-[#9CA3AF]"
-      style={{ fontFamily: "var(--font-body)", fontStyle: "normal" }}
+      className="relative cursor-default select-none px-[20px] py-[8px] rounded-[90px] text-[12px] font-medium text-[#1a1a1a] hover:bg-[rgba(26,26,26,0.04)] transition-colors"
+      style={{ fontFamily: "var(--font-body)", fontVariationSettings: "'opsz' 14", fontStyle: "normal" }}
       onMouseEnter={() => setShow(true)}
       onMouseLeave={() => setShow(false)}
     >
