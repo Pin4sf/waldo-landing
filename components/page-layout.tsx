@@ -8,8 +8,7 @@ import { MorningBriefSection } from "./sections/morning-brief-section";
 import { AlreadyDoneSection } from "./sections/already-done-section";
 import { FiveThingsSection } from "./sections/five-things-section";
 import { SmarterSection } from "./sections/smarter-section";
-import { ClosingSceneSection } from "./sections/closing-scene-section";
-import { Footer } from "./footer";
+import { FooterSection } from "./sections/footer-section";
 
 export function PageLayout() {
   const [dimmed, setDimmed] = useState(false);
@@ -52,9 +51,10 @@ export function PageLayout() {
           <AlreadyDoneSection />
           <FiveThingsSection />
           <SmarterSection />
-          <ClosingSceneSection />
         </div>
-        <Footer />
+
+        {/* Footer — full-bleed, outside the padded column */}
+        <FooterSection />
       </div>
     </div>
   );
