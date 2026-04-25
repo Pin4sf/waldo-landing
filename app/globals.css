@@ -1,11 +1,12 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-bg: #EDEAE3;
-  --color-text: #1A1A1A;
+  --color-bg:      #f4f3f0;
+  --color-surface: #fafaf8;
+  --color-text:    #1A1A1A;
   --color-text-muted: #6B6B68;
-  --color-accent: #F97316;
-  --color-border: rgba(26, 26, 26, 0.1);
+  --color-accent:  #F97316;
+  --color-border:  rgba(26, 26, 26, 0.1);
 }
 
 /* ── Page state transitions ─────────────────────────────────── */

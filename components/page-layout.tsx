@@ -3,6 +3,12 @@
 import { useRef, useState } from "react";
 import { Navbar } from "./navbar";
 import { WaitlistPage } from "./waitlist-page";
+import { HeroSection } from "./sections/hero-section";
+import { HealthDataSection } from "./sections/health-data-section";
+import { MorningBriefSection } from "./sections/morning-brief-section";
+import { AlreadyDoneSection } from "./sections/already-done-section";
+import { FiveThingsSection } from "./sections/five-things-section";
+import { SmarterSection } from "./sections/smarter-section";
 
 export function PageLayout() {
   const [dimmed, setDimmed] = useState(false);
@@ -13,14 +19,20 @@ export function PageLayout() {
     setDimmed(true);
   };
 
-  // Small debounce so moving between nav items doesn't flicker
   const handleNavLeave = () => {
     timerRef.current = setTimeout(() => setDimmed(false), 80);
   };
 
   return (
-    <div className="min-h-screen" style={{ background: "#EDEAE3" }}>
-      <Navbar onNavEnter={handleNavEnter} onNavLeave={handleNavLeave} />
+    <div className="min-h-screen bg-[#f4f3f0]">
+      {/* Nav sits outside the dimmed wrapper so it stays sharp */}
+      <div className="sticky top-0 z-20 flex justify-center" style={{ paddingTop: "20px", paddingBottom: "0" }}>
+        <div className="w-full max-w-[1440px] px-4">
+          <Navbar onNavEnter={handleNavEnter} onNavLeave={handleNavLeave} />
+        </div>
+      </div>
+
+      {/* Page content */}
       <div
         style={{
           opacity:       dimmed ? 0.4 : 1,
@@ -28,7 +40,23 @@ export function PageLayout() {
           pointerEvents: dimmed ? "none" : undefined,
         }}
       >
-        <WaitlistPage />
+        {/* Marketing sections — centered column with 30px gaps, 200px side padding on desktop */}
+        <div
+          className="flex flex-col gap-[30px] items-center px-4 lg:px-[200px] py-[20px] mx-auto"
+          style={{ maxWidth: "1440px" }}
+        >
+          <HeroSection />
+          <HealthDataSection />
+          <MorningBriefSection />
+          <AlreadyDoneSection />
+          <FiveThingsSection />
+          <SmarterSection />
+        </div>
+
+        {/* Email signup — anchored for "Get early access" CTA */}
+        <div id="signup">
+          <WaitlistPage />
+        </div>
       </div>
     </div>
   );
