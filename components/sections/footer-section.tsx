@@ -38,7 +38,7 @@ export function FooterSection() {
       {/* z-2: copy + CTA */}
       <div
         className="absolute left-1/2 flex flex-col gap-[60px] items-center"
-        style={{ top: "13.67%", transform: "translateX(-50%)", width: "422px", zIndex: 2 }}
+        style={{ top: "22%", transform: "translateX(-50%)", width: "422px", zIndex: 2 }}
       >
         <div className="flex flex-col gap-[50px] items-center w-full">
           <p
