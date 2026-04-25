@@ -29,9 +29,10 @@ export function FooterSection() {
         }}
       />
 
-      {/* Text block — grows to fill all space above the illustration */}
+      {/* Text block — grows to fill all space above the illustration.
+          pt values match Figma frame y offsets: mobile/tablet = 92px, desktop = 48px */}
       <div
-        className="relative flex flex-1 flex-col justify-center items-center gap-6 lg:gap-10 px-4"
+        className="relative flex flex-1 flex-col justify-start items-center gap-6 lg:gap-10 px-4 pt-[92px] lg:pt-[48px]"
         style={{ zIndex: 1 }}
       >
         <p
