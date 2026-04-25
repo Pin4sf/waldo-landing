@@ -8,6 +8,7 @@ import { MorningBriefSection } from "./sections/morning-brief-section";
 import { AlreadyDoneSection } from "./sections/already-done-section";
 import { FiveThingsSection } from "./sections/five-things-section";
 import { SmarterSection } from "./sections/smarter-section";
+import { FooterSection } from "./sections/footer-section";
 
 export function PageLayout() {
   const [dimmed, setDimmed] = useState(false);
@@ -51,6 +52,9 @@ export function PageLayout() {
           <FiveThingsSection />
           <SmarterSection />
         </div>
+
+        {/* Footer — full-bleed, outside the padded column */}
+        <FooterSection />
       </div>
     </div>
   );
