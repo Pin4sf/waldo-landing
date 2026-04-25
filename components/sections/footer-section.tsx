@@ -1,5 +1,6 @@
 // Footer — "Your health isn't going to fix itself."
-// z-0: gradient sky, z-1: dock illustration SVG, z-2: copy + CTA
+// Text in normal flow, illustration full-width at bottom in normal flow.
+// Gradient covers the whole footer as a background.
 
 function ArrowRightIcon() {
   return (
@@ -13,33 +14,13 @@ export function FooterSection() {
   return (
     <footer
       className="relative w-full overflow-hidden"
-      style={{ aspectRatio: "1440 / 1119", minHeight: "600px" }}
+      style={{
+        background:
+          "radial-gradient(ellipse 120% 80% at 50% 100%, rgba(255,140,0,0.9) 0%, rgba(255,185,5,0.85) 18%, rgba(255,242,0,0) 72%), #f4f3f0",
+      }}
     >
-      {/* z-0: gradient sky background */}
-      <div
-        className="absolute inset-0"
-        style={{
-          zIndex: 0,
-          background:
-            "radial-gradient(ellipse 100% 100% at 50% 100%, rgba(255,140,0,0.9) 0%, rgba(255,185,5,0.85) 15%, rgba(255,242,0,0) 79%), #f4f3f0",
-        }}
-      />
-
-      {/* z-1: dock illustration — scales with viewport, anchored to bottom */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src="/assets/footer-bg.svg"
-        alt=""
-        aria-hidden="true"
-        className="absolute bottom-0 left-0 w-full h-auto pointer-events-none select-none"
-        style={{ zIndex: 1 }}
-      />
-
-      {/* z-2: copy + CTA */}
-      <div
-        className="absolute left-1/2 flex flex-col gap-[60px] items-center"
-        style={{ top: "22%", transform: "translateX(-50%)", width: "422px", zIndex: 2 }}
-      >
+      {/* Copy + CTA — centered, sits above the illustration */}
+      <div className="flex flex-col gap-[60px] items-center pt-[140px] pb-[60px] px-4">
         <div className="flex flex-col gap-[50px] items-center w-full">
           <p
             className="font-medium italic text-[#6b6b68] text-[14px] whitespace-nowrap"
@@ -49,13 +30,13 @@ export function FooterSection() {
           </p>
 
           <div
-            className="flex flex-col gap-[40px] items-start text-[#1a1a1a] text-center w-full"
+            className="flex flex-col gap-[40px] items-center text-[#1a1a1a] text-center"
             style={{ fontFamily: "var(--font-headline)" }}
           >
-            <p className="text-[48px] w-[422px]" style={{ lineHeight: 1.1 }}>
+            <p className="text-[48px] max-w-[422px]" style={{ lineHeight: 1.1 }}>
               Your health isn&apos;t going to fix itself.
             </p>
-            <div className="text-[25px] w-full" style={{ lineHeight: 1.2 }}>
+            <div className="text-[25px]" style={{ lineHeight: 1.2 }}>
               <p style={{ marginBottom: 0 }}>Waldo already knows what&apos;s wrong.</p>
               <p>You just have to let it in.</p>
             </div>
@@ -81,6 +62,16 @@ export function FooterSection() {
           <span>© 2026 Waldo</span>
         </div>
       </div>
+
+      {/* Illustration — full-width, anchored to bottom in normal flow */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/assets/footer-bg.svg"
+        alt=""
+        aria-hidden="true"
+        className="w-full block pointer-events-none select-none"
+        style={{ display: "block", marginBottom: 0 }}
+      />
     </footer>
   );
 }
