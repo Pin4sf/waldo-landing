@@ -49,7 +49,7 @@ function SidebarItem({
 
 export function AlreadyDoneSection() {
   return (
-    <section className="flex flex-col gap-[50px] items-center pb-[70px] w-full">
+    <section className="flex flex-col gap-[50px] items-center pb-[30px] w-full">
       {/* Waldo chat UI mockup */}
       <div
         className="bg-[#fafaf8] border-2 border-[rgba(26,26,26,0.08)] border-solid flex flex-col items-center overflow-clip pt-[70px] w-full"

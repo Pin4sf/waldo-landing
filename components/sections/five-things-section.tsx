@@ -6,7 +6,7 @@
 import Image from "next/image";
 import goodSleepDarkMode from "@/components/assets/good-sleep-dark-mode.svg";
 import vectorSpot        from "@/components/assets/Vector-1.svg";
-import roughDarkMode     from "@/components/assets/rough-dark-mode.svg";
+import goodWeekDarkMode  from "@/components/assets/good-week-dark-mode.svg";
 import goodDarkMode      from "@/components/assets/good-dark-mode.svg";
 import watchingDarkMode  from "@/components/assets/watching-dark-mode.svg";
 import { useCardStack }  from "@/hooks/use-card-stack";
@@ -23,7 +23,7 @@ function ArrowRightIcon() {
 const CARDS = [
   { icon: goodSleepDarkMode, iconW: 89,  iconH: 66, title: "The Constellation", body: "One Spot is a data point. Twelve Spots across four months is a Constellation. The fact that your worst sleep always follows your heaviest meeting days. The fact that your focus peaks in November and dips in March - every year, without fail. Waldo connected these dots for the long term goals.", footnote: "on it while you sleep." },
   { icon: vectorSpot,        iconW: 90,  iconH: 69, title: "The Spot",          body: "Not a trend. Not a report. One thing, clearly said. That's a Spot. Waldo found it in six weeks of Tuesdays and Thursdays that looked ordinary. \n\nYou wouldn't have found it. Spots show up when there's something worth saying. Not before.",                                                    footnote: "something Waldo noticed." },
-  { icon: roughDarkMode,     iconW: 100, iconH: 77, title: "The Adjustment",    body: "Not a notification asking if you want to reschedule. Moved. Done. You get a note after the fact.\n\nWaldo doesn't ask. It acts. You stay in charge - you can always undo it - but you usually won't.",                                                                                              footnote: "already moved." },
+  { icon: goodWeekDarkMode,  iconW: 100, iconH: 77, title: "The Adjustment",    body: "Not a notification asking if you want to reschedule. Moved. Done. You get a note after the fact.\n\nWaldo doesn't ask. It acts. You stay in charge - you can always undo it - but you usually won't.",                                                                                              footnote: "already moved." },
   { icon: goodDarkMode,      iconW: 77,  iconH: 79, title: "The Patrol",        body: "The Patrol doesn't take breaks.\nWhile you were watching those four episodes on Sunday (the ones you told no one about), The Patrol was noting the time, reading the signal, and adjusting tomorrow's plan.You only see the result.",                                                                 footnote: "on it while you sleep." },
   { icon: watchingDarkMode,  iconW: 99,  iconH: 75, title: "The Daily Brief",   body: "Every morning, one message. Not a dashboard. Not a chart. Not four apps open before your coffee. Waldo tells you what last night meant for today, and what it already did about it.",                                                                                                              footnote: "mornings, sorted." },
 ] as const;
@@ -45,7 +45,7 @@ export function FiveThingsSection() {
   const frontCardIdx = ((CARDS.length - 1 - (offset % CARDS.length)) + CARDS.length) % CARDS.length;
 
   return (
-    <section className="flex flex-col gap-[40px] items-center py-[90px] w-full" style={{ borderRadius: "30px" }}>
+    <section className="flex flex-col gap-[20px] items-center py-[40px] w-full" style={{ borderRadius: "30px" }}>
       <div
         className="relative shrink-0 cursor-pointer"
         style={{ height: "603.034px", width: "1004.31px" }}

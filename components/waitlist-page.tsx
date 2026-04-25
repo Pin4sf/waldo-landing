@@ -456,6 +456,16 @@ export function WaitlistPage() {
           {displayState !== "success" && (
             <EmailForm state={displayState} onStateChange={transitionTo} />
           )}
+
+          {displayState === "success" && (
+            <a
+              href="/"
+              className="flex items-center gap-1 text-[11px] text-[#1A1A1A]/40 hover:text-[#1A1A1A]/70 transition-colors mt-2"
+              style={{ fontFamily: "var(--font-body)" }}
+            >
+              ← Back to home
+            </a>
+          )}
         </div>
       </main>
     </>

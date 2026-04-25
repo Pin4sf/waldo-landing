@@ -98,11 +98,13 @@ export function Navbar({
         className="flex items-center p-[5px] rounded-[50px] bg-[#fafaf8] border border-[rgba(26,26,26,0.08)]"
         style={{ boxShadow: "0 1px 10px rgba(0,0,0,0.05)" }}
       >
-        {/* Logo area */}
-        <div
+        {/* Logo area — links to home */}
+        <a
+          href="/"
           className="relative flex items-center justify-center w-[142px] h-[44px] shrink-0 cursor-pointer"
           onMouseEnter={handleLogoHover}
           onAnimationEnd={() => setLogoWag(false)}
+          aria-label="Waldo home"
         >
           <Image
             src="/logodots.svg"
@@ -113,7 +115,7 @@ export function Navbar({
             style={{ height: "24px", width: "auto" }}
             priority
           />
-        </div>
+        </a>
 
         {/* Desktop — nav links */}
         <div
