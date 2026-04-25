@@ -149,7 +149,7 @@ export function Navbar({
 
         {/* CTA */}
         <a
-          href="#signup"
+          href="/waitlist"
           className="hidden lg:flex items-center justify-center bg-[#1a1a1a] text-[#fafaf8] px-[24px] py-[18px] rounded-[30px] whitespace-nowrap shrink-0 hover:bg-[#333] transition-colors"
           style={{ fontFamily: "var(--font-headline)", fontSize: "14px", lineHeight: 1.3 }}
         >
@@ -184,7 +184,7 @@ export function Navbar({
             ))}
             <div className="p-4">
               <a
-                href="#signup"
+                href="/waitlist"
                 onClick={closeMenu}
                 className="flex items-center justify-center bg-[#1a1a1a] text-[#fafaf8] px-6 py-4 rounded-[24px] w-full"
                 style={{ fontFamily: "var(--font-headline)", fontSize: "14px" }}

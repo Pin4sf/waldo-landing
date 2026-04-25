@@ -2,7 +2,6 @@
 
 import { useRef, useState } from "react";
 import { Navbar } from "./navbar";
-import { WaitlistPage } from "./waitlist-page";
 import { HeroSection } from "./sections/hero-section";
 import { HealthDataSection } from "./sections/health-data-section";
 import { MorningBriefSection } from "./sections/morning-brief-section";
@@ -51,11 +50,6 @@ export function PageLayout() {
           <AlreadyDoneSection />
           <FiveThingsSection />
           <SmarterSection />
-        </div>
-
-        {/* Email signup — anchored for "Get early access" CTA */}
-        <div id="signup">
-          <WaitlistPage />
         </div>
       </div>
     </div>

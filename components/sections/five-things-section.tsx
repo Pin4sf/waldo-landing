@@ -210,7 +210,7 @@ export function FiveThingsSection() {
           Not just a suggestion or a notification.
         </p>
         <a
-          href="#signup"
+          href="/waitlist"
           className="flex items-center gap-[4px] justify-center bg-[#1a1a1a] border border-[rgba(26,26,26,0.08)] border-solid text-[#fafaf8] text-[18px] text-center px-[36px] py-[22px] hover:bg-[#333] transition-colors"
           style={{ fontFamily: "var(--font-headline)", lineHeight: 1.3, borderRadius: "40px" }}
         >
