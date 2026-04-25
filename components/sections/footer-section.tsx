@@ -16,10 +16,10 @@ function ArrowRightIcon() {
 export function FooterSection() {
   return (
     <footer
-      className="relative w-full flex flex-col overflow-hidden bg-[#f4f3f0]"
-      style={{ minHeight: "100svh" }}
+      className="relative w-full overflow-hidden bg-[#f4f3f0]"
+      style={{ height: "100svh" }}
     >
-      {/* Gradient sky — behind everything */}
+      {/* z-0: gradient sky */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -29,11 +29,23 @@ export function FooterSection() {
         }}
       />
 
-      {/* Text block — grows to fill all space above the illustration.
-          pt values match Figma frame y offsets: mobile/tablet = 92px, desktop = 48px */}
+      {/* z-1: illustration — absolute bottom-0, width 100%, height auto.
+          If taller than viewport, the top (sky) is clipped — dock always visible. */}
+      <div className="absolute bottom-0 left-0 w-full pointer-events-none select-none" style={{ zIndex: 1 }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <picture>
+          <source media="(max-width: 639px) and (orientation: portrait)" srcSet="/assets/footer-bg-mobile.svg" />
+          <source media="(orientation: landscape) and (max-height: 600px)" srcSet="/assets/footer-bg-mobile-landscape.svg" />
+          <source media="(min-width: 640px) and (max-width: 1024px) and (orientation: portrait)" srcSet="/assets/footer-bg-tablet.svg" />
+          <img src="/assets/footer-bg.svg" alt="" aria-hidden="true" className="w-full block" />
+        </picture>
+      </div>
+
+      {/* z-2: text — sits above illustration.
+          pt from Figma: 48px desktop (y=48 in 1440-frame), 92px tablet/mobile (y=92). */}
       <div
-        className="relative flex flex-1 flex-col justify-start items-center gap-6 lg:gap-10 px-4 pt-[92px] lg:pt-[48px]"
-        style={{ zIndex: 1 }}
+        className="relative flex flex-col items-center gap-6 lg:gap-10 px-4 pt-[92px] lg:pt-[48px]"
+        style={{ zIndex: 2 }}
       >
         <p
           className="font-medium italic text-[#6b6b68] text-[12px] lg:text-[14px] whitespace-nowrap"
@@ -72,26 +84,6 @@ export function FooterSection() {
           <span>[Contact]</span>
           <span>© 2026 Waldo</span>
         </div>
-      </div>
-
-      {/* Illustration — natural height, always flush to bottom */}
-      <div className="relative w-full shrink-0" style={{ zIndex: 1 }}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <picture>
-          {/* Mobile portrait */}
-          <source media="(max-width: 639px) and (orientation: portrait)" srcSet="/assets/footer-bg-mobile.svg" />
-          {/* Mobile landscape */}
-          <source media="(orientation: landscape) and (max-height: 600px)" srcSet="/assets/footer-bg-mobile-landscape.svg" />
-          {/* Tablet portrait */}
-          <source media="(min-width: 640px) and (max-width: 1024px) and (orientation: portrait)" srcSet="/assets/footer-bg-tablet.svg" />
-          {/* Desktop default */}
-          <img
-            src="/assets/footer-bg.svg"
-            alt=""
-            aria-hidden="true"
-            className="w-full block pointer-events-none select-none"
-          />
-        </picture>
       </div>
     </footer>
   );
