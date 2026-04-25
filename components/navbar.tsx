@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useCallback } from "react";
 import Image from "next/image";
 import { NavLink } from "./nav-link";
 
@@ -58,7 +58,13 @@ export function Navbar({
 }) {
   const [menuOpen,   setMenuOpen]   = useState(false);
   const [activeItem, setActiveItem] = useState<string | null>(null);
+  const [logoWag,    setLogoWag]    = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleLogoHover = useCallback(() => {
+    setLogoWag(false);
+    requestAnimationFrame(() => requestAnimationFrame(() => setLogoWag(true)));
+  }, []);
 
   const handleDesktopEnter = () => {
     if (timerRef.current) clearTimeout(timerRef.current);
@@ -93,12 +99,17 @@ export function Navbar({
         style={{ boxShadow: "0 1px 10px rgba(0,0,0,0.05)" }}
       >
         {/* Logo area */}
-        <div className="relative flex items-center justify-center w-[142px] h-[44px] shrink-0">
+        <div
+          className="relative flex items-center justify-center w-[142px] h-[44px] shrink-0 cursor-pointer"
+          onMouseEnter={handleLogoHover}
+          onAnimationEnd={() => setLogoWag(false)}
+        >
           <Image
             src="/logodots.svg"
             alt=""
             width={23}
             height={20}
+            className={logoWag ? "waldo-wagging" : ""}
             style={{ position: "absolute", left: "12px", height: "20px", width: "auto" }}
             priority
           />

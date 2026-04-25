@@ -49,6 +49,34 @@
   50%       { opacity: 0.65; }
 }
 
+/* ── Waldo brand motions ────────────────────────────────────── */
+
+/* Dalmatian breath — very subtle scale, 8s cycle, only on .waldo-breathe */
+@keyframes waldo-breath {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.018); }
+}
+.waldo-breathe {
+  animation: waldo-breath var(--breath-duration, 8000ms) ease-in-out infinite var(--breath-delay, 0ms);
+  transform-origin: center bottom;
+}
+@media (prefers-reduced-motion: reduce) { .waldo-breathe { animation: none; } }
+
+/* Logo wag — triggered by adding .waldo-wagging class */
+@keyframes waldo-wag {
+  0%   { transform: rotate(0deg); }
+  20%  { transform: rotate(5deg); }
+  50%  { transform: rotate(-3deg); }
+  75%  { transform: rotate(2deg); }
+  100% { transform: rotate(0deg); }
+}
+.waldo-wagging {
+  animation: waldo-wag 0.6s cubic-bezier(0.32, 0.72, 0.24, 1.05) both;
+}
+@media (prefers-reduced-motion: reduce) { .waldo-wagging { animation: none; } }
+
+/* ────────────────────────────────────────────────────────────── */
+
 @keyframes twinkle {
   0%, 100% { opacity: 0.15; transform: scale(0.85); }
   50%       { opacity: 1;    transform: scale(1.15); }
