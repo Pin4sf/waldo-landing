@@ -59,5 +59,5 @@ export function useCardStack(count: number, autoMs: number) {
     setPaused(false);
   }, []);
 
-  return { offset, dragDelta, slotOf, advance, onPointerDown, onPointerMove, onPointerUp, onClick, onMouseEnter, onMouseLeave };
+  return { offset, dragDelta, slotOf, advance, onPointerDown, onPointerMove, onPointerUp, onClick, onMouseEnter, onMouseLeave } as const;
 }

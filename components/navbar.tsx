@@ -106,19 +106,11 @@ export function Navbar({
         >
           <Image
             src="/logodots.svg"
-            alt=""
-            width={23}
-            height={20}
-            className={logoWag ? "waldo-wagging" : ""}
-            style={{ position: "absolute", left: "12px", height: "20px", width: "auto" }}
-            priority
-          />
-          <Image
-            src="/logo.svg"
             alt="Waldo"
-            width={80}
-            height={19}
-            style={{ height: "19px", width: "auto", marginLeft: "16px" }}
+            width={28}
+            height={24}
+            className={logoWag ? "waldo-wagging" : ""}
+            style={{ height: "24px", width: "auto" }}
             priority
           />
         </div>

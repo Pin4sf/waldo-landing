@@ -32,8 +32,9 @@ const BACK: { rotate: string; left: string; top: string }[] = [
 const T = `all ${DUR_SETTLE}ms ${EASE}`;
 
 export function MorningBriefSection() {
-  const { slotOf, onClick, onMouseEnter, onMouseLeave } = useCardStack(CARDS.length, AUTO_CARD_MS);
+  const { slotOf, offset, onClick, onMouseEnter, onMouseLeave } = useCardStack(CARDS.length, AUTO_CARD_MS);
   const FRONT = CARDS.length - 1;
+  const frontCardIdx = ((CARDS.length - 1 - (offset % CARDS.length)) + CARDS.length) % CARDS.length;
 
   return (
     <section className="flex flex-col gap-[70px] items-center py-[90px] w-full" style={{ borderRadius: "30px" }}>
@@ -73,6 +74,18 @@ export function MorningBriefSection() {
             </div>
           );
         })}
+      </div>
+
+      {/* Nav dots */}
+      <div className="flex gap-[8px] items-center justify-center">
+        {CARDS.map((_, i) => (
+          <button
+            key={i}
+            aria-label={`Card ${i + 1}`}
+            onClick={e => { e.stopPropagation(); const steps = ((i - frontCardIdx) % CARDS.length + CARDS.length) % CARDS.length; for (let s = 0; s < steps; s++) onClick(e as unknown as React.MouseEvent); }}
+            style={{ width: i === frontCardIdx ? "20px" : "6px", height: "6px", borderRadius: "3px", background: i === frontCardIdx ? "#1a1a1a" : "rgba(26,26,26,0.2)", transition: "all 0.4s ease", border: "none", padding: 0, cursor: "pointer" }}
+          />
+        ))}
       </div>
 
       <div className="flex flex-col gap-[40px] items-center w-full">

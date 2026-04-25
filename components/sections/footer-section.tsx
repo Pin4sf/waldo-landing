@@ -25,17 +25,21 @@ export function FooterSection() {
     let raf = 0;
     const update = () => {
       raf = 0;
-      const r = el.getBoundingClientRect();
-      setProgress(Math.max(0, Math.min(1, (window.innerHeight - r.top) / window.innerHeight)));
+      const r  = el.getBoundingClientRect();
+      const vh = window.innerHeight;
+      // 0 = footer just entering from bottom; 1 = footer fully scrolled into view
+      const p  = Math.max(0, Math.min(1, (vh - r.top) / vh));
+      setProgress(p);
     };
     const onScroll = () => { if (!raf) raf = requestAnimationFrame(update); };
     update();
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => { window.removeEventListener("scroll", onScroll); window.removeEventListener("resize", onScroll); if (raf) cancelAnimationFrame(raf); };
+    window.addEventListener("resize", update);
+    return () => { window.removeEventListener("scroll", onScroll); window.removeEventListener("resize", update); if (raf) cancelAnimationFrame(raf); };
   }, []);
 
-  const sceneShift = (1 - progress) * 22;
+  // Stronger parallax: scene drifts down 50px as footer enters, settles to 0
+  const sceneShift = (1 - progress) * 50;
 
   return (
     <footer ref={ref} className="relative w-full overflow-hidden bg-[#f4f3f0]" style={{ height: "100svh" }}>
