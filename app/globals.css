@@ -71,10 +71,14 @@
 .waldo-spot {
   transition: transform 0.15s ease;
 }
-.waldo-wagging .waldo-spot {
+.waldo-wagging .waldo-spot,
+.waldo-spots-active .waldo-spot {
   animation: spot-bloom-kf 0.55s cubic-bezier(0.32, 0.72, 0.24, 1.05) var(--spot-delay, 0ms) both;
 }
-@media (prefers-reduced-motion: reduce) { .waldo-wagging .waldo-spot { animation: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .waldo-wagging .waldo-spot,
+  .waldo-spots-active .waldo-spot { animation: none; }
+}
 
 /* Logo wag — triggered by adding .waldo-wagging class */
 @keyframes waldo-wag {

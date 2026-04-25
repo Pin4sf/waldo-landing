@@ -28,7 +28,7 @@ export function WaldoLogoFull({ wagging, width = 120 }: Props) {
       viewBox="0 0 525 160"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={wagging ? "waldo-wagging" : ""}
+      className={wagging ? "waldo-spots-active" : ""}
       aria-label="Waldo"
     >
       {/* Wordmark */}
