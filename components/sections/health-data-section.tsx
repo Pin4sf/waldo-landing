@@ -45,14 +45,39 @@ export function HealthDataSection() {
         </div>
       </div>
 
-      {/* Health screenshots — desktop only */}
+      {/* Device mockups — desktop only */}
       <div
         className="relative shrink-0 overflow-clip hidden lg:block"
-        style={{ height: "242.168px", width: "737.812px" }}
+        style={{ height: "320px", width: "742px" }}
       >
-        {/* AFIB history — right */}
+        {/* iPad — center back layer */}
         <div
-         
+          className="absolute pointer-events-none"
+          style={{ height: "316.675px", left: "127.46px", top: 0, width: "521.415px" }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            alt=""
+            className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
+            src="/figma-assets/health-ipad.png"
+          />
+        </div>
+
+        {/* iPhone left — Last Night's Sleep */}
+        <div
+          className="absolute pointer-events-none"
+          style={{ height: "225.132px", left: "42.64px", top: "74.74px", width: "136.012px" }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            alt=""
+            className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
+            src="/figma-assets/health-iphone-left.png"
+          />
+        </div>
+
+        {/* iPhone right — Heart Rate Highlights */}
+        <div
           className="absolute overflow-hidden pointer-events-none"
           style={{ height: "204.705px", left: "498.66px", top: "111.69px", width: "242.954px" }}
         >
@@ -60,50 +85,21 @@ export function HealthDataSection() {
           <img
             alt=""
             className="absolute max-w-none"
-            src="/figma-assets/health-afib.png"
+            src="/figma-assets/health-iphone-right.png"
             style={{ height: "100.07%", left: "-21.57%", top: "-0.03%", width: "143.15%" }}
           />
         </div>
 
-        {/* Main health screenshot — center */}
+        {/* Apple Watch — bottom left */}
         <div
-         
-          className="absolute pointer-events-none"
-          style={{ height: "316.675px", left: "127.46px", top: 0, width: "521.415px" }}
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            alt=""
-            className="absolute inset-0 max-w-none object-cover size-full"
-            src="/figma-assets/health-main.png"
-          />
-        </div>
-
-        {/* Optimize sleep — left */}
-        <div
-         
-          className="absolute pointer-events-none"
-          style={{ height: "225.132px", left: "42.64px", top: "74.74px", width: "136.012px" }}
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            alt=""
-            className="absolute inset-0 max-w-none object-cover size-full"
-            src="/figma-assets/optimize-sleep.png"
-          />
-        </div>
-
-        {/* Sleep overnight — far left */}
-        <div
-         
           className="absolute overflow-hidden pointer-events-none"
-          style={{ height: "63.826px", left: "-0.19px", top: "191.48px", width: "59.627px" }}
+          style={{ height: "63.826px", left: "-0.19px", top: "202.42px", width: "59.627px" }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             alt=""
             className="absolute max-w-none"
-            src="/figma-assets/health-sleep-overnight.png"
+            src="/figma-assets/health-watch.png"
             style={{ height: "203.6%", left: "-42.25%", top: "-51.45%", width: "178.87%" }}
           />
         </div>
