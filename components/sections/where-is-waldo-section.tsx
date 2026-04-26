@@ -246,34 +246,36 @@ export function WhereIsWaldoSection() {
           })}
         </div>
 
-        {/* "Already on it." — streams as the agent's conclusion */}
-        {finalWords > 0 && (
-          <p
-            className="mt-[28px] lg:mt-[36px]"
-            style={{
-              fontFamily: "var(--font-headline)",
-              fontSize:   "clamp(22px, 4vw, 32px)",
-              lineHeight: 1.1,
-              color:      "#FB943F",
-            }}
-          >
-            {finalText}
-            {finalWords < FINAL_LINE.split(" ").length && (
-              <span
-                style={{
-                  display:    "inline-block",
-                  width:      "2px",
-                  height:     "0.85em",
-                  background: "#FB943F",
-                  marginLeft: "3px",
-                  verticalAlign: "text-top",
-                  animation:  "hint-pulse 0.7s ease-in-out infinite",
-                }}
-                aria-hidden
-              />
-            )}
-          </p>
-        )}
+        {/* "Already on it." — always rendered; maxHeight/marginTop animate in so card grows smoothly */}
+        <p
+          style={{
+            fontFamily:  "var(--font-headline)",
+            fontSize:    "clamp(22px, 4vw, 32px)",
+            lineHeight:  1.1,
+            color:       "#FB943F",
+            overflow:    "hidden",
+            maxHeight:   finalWords > 0 ? "80px"  : "0px",
+            marginTop:   finalWords > 0 ? "clamp(28px, 4vw, 36px)" : "0px",
+            opacity:     finalWords > 0 ? 1 : 0,
+            transition:  "max-height 0.45s ease, margin-top 0.45s ease, opacity 0.35s ease",
+          }}
+        >
+          {finalText}
+          {finalWords > 0 && finalWords < FINAL_LINE.split(" ").length && (
+            <span
+              style={{
+                display:       "inline-block",
+                width:         "2px",
+                height:        "0.85em",
+                background:    "#FB943F",
+                marginLeft:    "3px",
+                verticalAlign: "text-top",
+                animation:     "hint-pulse 0.7s ease-in-out infinite",
+              }}
+              aria-hidden
+            />
+          )}
+        </p>
       </div>
     </section>
   );
