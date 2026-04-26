@@ -41,19 +41,19 @@ export function SmarterSection() {
         className="relative shrink-0 overflow-clip hidden lg:block"
         style={{ height: "242.168px", width: "737.812px" }}
       >
-        <div data-parallax-y="-75" className="absolute overflow-hidden pointer-events-none" style={{ height: "204.705px", left: "498.66px", top: "111.69px", width: "242.954px" }}>
+        <div className="absolute overflow-hidden pointer-events-none" style={{ height: "204.705px", left: "498.66px", top: "111.69px", width: "242.954px" }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img alt="" className="absolute max-w-none" src="/figma-assets/health-afib.png" style={{ height: "100.07%", left: "-21.57%", top: "-0.03%", width: "143.15%" }} />
         </div>
-        <div data-parallax-y="-35" className="absolute pointer-events-none" style={{ height: "316.675px", left: "127.46px", top: 0, width: "521.415px" }}>
+        <div className="absolute pointer-events-none" style={{ height: "316.675px", left: "127.46px", top: 0, width: "521.415px" }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img alt="" className="absolute inset-0 max-w-none object-cover size-full" src="/figma-assets/health-main.png" />
         </div>
-        <div data-parallax-y="-55" className="absolute pointer-events-none" style={{ height: "225.132px", left: "42.64px", top: "74.74px", width: "136.012px" }}>
+        <div className="absolute pointer-events-none" style={{ height: "225.132px", left: "42.64px", top: "74.74px", width: "136.012px" }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img alt="" className="absolute inset-0 max-w-none object-cover size-full" src="/figma-assets/optimize-sleep.png" />
         </div>
-        <div data-parallax-y="-20" className="absolute overflow-hidden pointer-events-none" style={{ height: "63.826px", left: "-0.19px", top: "191.48px", width: "59.627px" }}>
+        <div className="absolute overflow-hidden pointer-events-none" style={{ height: "63.826px", left: "-0.19px", top: "191.48px", width: "59.627px" }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img alt="" className="absolute max-w-none" src="/figma-assets/health-sleep-overnight.png" style={{ height: "203.6%", left: "-42.25%", top: "-51.45%", width: "178.87%" }} />
         </div>
