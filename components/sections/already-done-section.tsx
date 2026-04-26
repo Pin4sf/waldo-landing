@@ -52,6 +52,7 @@ export function AlreadyDoneSection() {
     <section className="flex flex-col gap-[50px] items-center pb-[30px] w-full">
       {/* Waldo chat UI mockup — desktop only */}
       <div
+        data-animate="fade-up"
         className="hidden lg:flex bg-[#fafaf8] border-2 border-[rgba(26,26,26,0.08)] border-solid flex-col items-center overflow-clip pt-[70px] w-full"
         style={{ height: "750px", borderRadius: "30px" }}
       >
@@ -139,18 +140,21 @@ export function AlreadyDoneSection() {
       {/* Copy */}
       <div className="flex flex-col gap-[24px] lg:gap-[30px] items-center text-center w-full px-4 lg:px-0">
         <h2
+          data-animate="headline"
           className="text-[#1a1a1a] text-[32px] lg:text-[48px]"
           style={{ fontFamily: "var(--font-headline)", lineHeight: 1.1 }}
         >
           Already done.
         </h2>
         <p
+          data-animate="fade-up"
           className="text-[#1a1a1a] text-[18px] lg:text-[25px]"
           style={{ fontFamily: "var(--font-headline)", lineHeight: 1.2 }}
         >
           Not just a suggestion or a notification.
         </p>
         <p
+          data-animate="fade-up"
           className="font-normal text-[#717171] text-[14px]"
           style={{
             fontFamily: "var(--font-body)",

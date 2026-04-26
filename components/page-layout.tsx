@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { Navbar } from "./navbar";
+import { ScrollAnimations } from "./scroll-animations";
 import { HeroSection } from "./sections/hero-section";
 import { HealthDataSection } from "./sections/health-data-section";
 import { MorningBriefSection } from "./sections/morning-brief-section";
@@ -26,6 +27,7 @@ export function PageLayout() {
 
   return (
     <div className="min-h-screen bg-[#f4f3f0]">
+      <ScrollAnimations />
       {/* Nav sits outside the dimmed wrapper so it stays sharp */}
       <div className="sticky top-0 z-20 flex justify-center" style={{ paddingTop: "20px", paddingBottom: "0" }}>
         <div className="w-full max-w-[1440px] px-4">

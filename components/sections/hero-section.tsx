@@ -10,6 +10,7 @@ export function HeroSection() {
       style={{ borderRadius: "30px" }}
     >
       <h1
+        data-animate="headline"
         className="text-[#1a1a1a] text-[36px] sm:text-[42px] lg:text-[48px] text-center"
         style={{ fontFamily: "var(--font-headline)", lineHeight: 1.1 }}
       >

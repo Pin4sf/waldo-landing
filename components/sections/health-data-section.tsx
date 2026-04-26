@@ -22,11 +22,13 @@ export function HealthDataSection() {
           You already have everything Waldo needs.
         </p>
         <h2
+          data-animate="headline"
           className="text-[#1a1a1a] text-[32px] lg:text-[48px]"
           style={{ fontFamily: "var(--font-headline)", lineHeight: 1.1, maxWidth: "458px" }}
         >
           Months of health data sitting unused.
         </h2>
+        <div data-animate="fade-up">
         <BalancedParagraph
           pretextify
           className="font-normal text-[#6b6b68] text-[14px]"
@@ -40,6 +42,7 @@ export function HealthDataSection() {
         >
           {`Your watch has been collecting sleep, HRV, recovery, and stress data every single day. While you slept. While you worked. While you ignored it. That data has been sitting in an app you open twice a year. Waldo reads every day of it.`}
         </BalancedParagraph>
+        </div>
       </div>
 
       {/* Health screenshots — desktop only */}
@@ -49,6 +52,7 @@ export function HealthDataSection() {
       >
         {/* AFIB history — right */}
         <div
+          data-parallax-y="-75"
           className="absolute overflow-hidden pointer-events-none"
           style={{ height: "204.705px", left: "498.66px", top: "111.69px", width: "242.954px" }}
         >
@@ -63,6 +67,7 @@ export function HealthDataSection() {
 
         {/* Main health screenshot — center */}
         <div
+          data-parallax-y="-35"
           className="absolute pointer-events-none"
           style={{ height: "316.675px", left: "127.46px", top: 0, width: "521.415px" }}
         >
@@ -76,6 +81,7 @@ export function HealthDataSection() {
 
         {/* Optimize sleep — left */}
         <div
+          data-parallax-y="-55"
           className="absolute pointer-events-none"
           style={{ height: "225.132px", left: "42.64px", top: "74.74px", width: "136.012px" }}
         >
@@ -89,6 +95,7 @@ export function HealthDataSection() {
 
         {/* Sleep overnight — far left */}
         <div
+          data-parallax-y="-20"
           className="absolute overflow-hidden pointer-events-none"
           style={{ height: "63.826px", left: "-0.19px", top: "191.48px", width: "59.627px" }}
         >

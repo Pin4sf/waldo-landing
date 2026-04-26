@@ -102,8 +102,8 @@ export function MorningBriefSection() {
       </div>
 
       <div className="flex flex-col gap-[40px] items-center w-full">
-        <h2 className="text-[#1a1a1a] text-[32px] lg:text-[48px] text-center px-4 lg:px-0" style={{ fontFamily: "var(--font-headline)", lineHeight: 1.1 }}>With Waldo, this is what{" "}<br />you wake up to instead.</h2>
-        <p className="font-normal text-[#6b6b68] text-[14px] text-center px-6 lg:px-0" style={{ fontFamily: "var(--font-body)", fontVariationSettings: "'opsz' 14", lineHeight: 1.3, maxWidth: "455px" }}>
+        <h2 data-animate="headline" className="text-[#1a1a1a] text-[32px] lg:text-[48px] text-center px-4 lg:px-0" style={{ fontFamily: "var(--font-headline)", lineHeight: 1.1 }}>With Waldo, this is what{" "}<br />you wake up to instead.</h2>
+        <p data-animate="fade-up" className="font-normal text-[#6b6b68] text-[14px] text-center px-6 lg:px-0" style={{ fontFamily: "var(--font-body)", fontVariationSettings: "'opsz' 14", lineHeight: 1.3, maxWidth: "455px" }}>
           It reschedules meetings, reprioritises tasks, and intervenes based on HRV, sleep, and circadian patterns - without being asked. You never open a dashboard to manage health. Waldo handles it.
         </p>
         <a href="/waitlist" className="flex items-center gap-[4px] justify-center bg-[#1a1a1a] border border-[rgba(26,26,26,0.08)] border-solid text-[#fafaf8] text-[18px] text-center px-[36px] py-[22px] hover:bg-[#333] hover:scale-[1.02] transition-all" style={{ fontFamily: "var(--font-headline)", lineHeight: 1.3, borderRadius: "40px" }}>

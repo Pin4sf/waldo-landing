@@ -144,8 +144,8 @@ export function FiveThingsSection() {
       </div>
 
       <div className="flex flex-col gap-[40px] items-center w-full">
-        <h2 className="text-[#1a1a1a] text-[32px] lg:text-[48px] text-center px-4 lg:px-0" style={{ fontFamily: "var(--font-headline)", lineHeight: 1.1 }}>Five things Waldo does<br />while you get on with your day.</h2>
-        <p className="text-[#1a1a1a] text-[18px] lg:text-[25px] text-center px-4 lg:px-0" style={{ fontFamily: "var(--font-headline)", lineHeight: 1.2 }}>Not just a suggestion or a notification.</p>
+        <h2 data-animate="headline" className="text-[#1a1a1a] text-[32px] lg:text-[48px] text-center px-4 lg:px-0" style={{ fontFamily: "var(--font-headline)", lineHeight: 1.1 }}>Five things Waldo does<br />while you get on with your day.</h2>
+        <p data-animate="fade-up" className="text-[#1a1a1a] text-[18px] lg:text-[25px] text-center px-4 lg:px-0" style={{ fontFamily: "var(--font-headline)", lineHeight: 1.2 }}>Not just a suggestion or a notification.</p>
         <a href="/waitlist" className="flex items-center gap-[4px] justify-center bg-[#1a1a1a] border border-[rgba(26,26,26,0.08)] border-solid text-[#fafaf8] text-[18px] text-center px-[36px] py-[22px] hover:bg-[#333] hover:scale-[1.02] transition-all" style={{ fontFamily: "var(--font-headline)", lineHeight: 1.3, borderRadius: "40px" }}>
           Get Started <ArrowRightIcon />
         </a>
