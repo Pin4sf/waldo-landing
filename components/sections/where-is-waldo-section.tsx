@@ -1,54 +1,71 @@
 // Where's Waldo? — The agency section.
 //
-// Answers the implicit question every visitor has: what is Waldo actually DOING?
-// Each line reveals like an iOS picker drum tick × agent-thinking state:
-// comes in from below with a blur, rotates forward, lands crisp.
-// Fires once via IntersectionObserver when section enters 35% into viewport.
-// "Already on it." appears last in brand orange — the conclusive beat.
+// Lines appear ONE BY ONE, 700ms apart, like an agent activity log being written.
+// A blinking cursor sits after the last visible line while the next one is loading.
+// "Already on it." lands last in orange after a deliberate pause.
+// Each line triggers a fresh roll-in animation (iOS picker × agent-thinking feel)
+// because it's mounted fresh to the DOM — not just a CSS class toggle.
 
 "use client";
 
 import { useEffect, useRef, useState } from "react";
 
-const LINES: { text: string; orange?: boolean }[] = [
-  { text: "Rescheduling your meeting." },
-  { text: "Already on your 2am HRV dip." },
-  { text: "Protecting your Friday afternoon." },
-  { text: "Making sure your best hours go to your hardest work." },
-  { text: "Already on it.", orange: true },
+const ACTIVITIES = [
+  "Rescheduling your meeting.",
+  "Already on your 2am HRV dip.",
+  "Protecting your Friday afternoon.",
+  "Making sure your best hours go to your hardest work.",
 ];
 
-const STAGGER_MS   = 300;
-const EXTRA_PAUSE  = 250; // extra delay before the orange line
+const STEP_MS      = 700;  // gap between each activity line appearing
+const START_MS     = 400;  // delay after section enters view before first line
+const FINAL_GAP_MS = 900;  // extra pause before "Already on it."
 
 export function WhereIsWaldoSection() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const [triggered, setTriggered] = useState(false);
+  const sectionRef                     = useRef<HTMLElement>(null);
+  const [started,    setStarted]       = useState(false);
+  const [visibleCount, setVisibleCount] = useState(0);
+  const [showFinal,  setShowFinal]     = useState(false);
+  const [showCursor, setShowCursor]    = useState(false);
 
+  // Trigger once when 30% of section enters viewport
   useEffect(() => {
     const el = sectionRef.current;
     if (!el) return;
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setTriggered(true);
-          observer.disconnect(); // fires once only
-        }
-      },
-      { threshold: 0.35 }
+      ([entry]) => { if (entry.isIntersecting) { setStarted(true); observer.disconnect(); } },
+      { threshold: 0.3 }
     );
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
 
+  // Sequential reveal once started
+  useEffect(() => {
+    if (!started) return;
+    const timers: ReturnType<typeof setTimeout>[] = [];
+
+    // Show cursor immediately, then add lines one by one
+    timers.push(setTimeout(() => setShowCursor(true), START_MS - 200));
+
+    ACTIVITIES.forEach((_, i) => {
+      const t = START_MS + i * STEP_MS;
+      timers.push(setTimeout(() => setVisibleCount(i + 1), t));
+    });
+
+    // After last activity: hide cursor, pause, show "Already on it."
+    const finalStart = START_MS + ACTIVITIES.length * STEP_MS;
+    timers.push(setTimeout(() => setShowCursor(false), finalStart));
+    timers.push(setTimeout(() => setShowFinal(true),   finalStart + FINAL_GAP_MS));
+
+    return () => timers.forEach(clearTimeout);
+  }, [started]);
+
   return (
     <section
       ref={sectionRef}
-      className={`flex flex-col items-center gap-[50px] lg:gap-[60px] py-[70px] lg:py-[100px] w-full text-center${triggered ? " waldo-roll-triggered" : ""}`}
-      style={{
-        perspective:       "500px",
-        perspectiveOrigin: "50% 50%",
-      }}
+      className="flex flex-col items-center gap-[40px] lg:gap-[56px] py-[70px] lg:py-[100px] w-full text-center"
+      style={{ perspective: "500px", perspectiveOrigin: "50% 50%" }}
     >
       {/* Headline */}
       <h2
@@ -58,35 +75,58 @@ export function WhereIsWaldoSection() {
         Where&apos;s Waldo?
       </h2>
 
-      {/* Activity lines */}
-      <div className="flex flex-col gap-[18px] lg:gap-[22px] items-center px-6 lg:px-0">
-        {LINES.map((line, i) => {
-          const isOrange = line.orange;
-          // Each regular line staggered 300ms; orange line gets extra 250ms on top
-          const delay = i < LINES.length - 1
-            ? i * STAGGER_MS
-            : (LINES.length - 1) * STAGGER_MS + EXTRA_PAUSE;
+      {/* Activity log */}
+      <div className="flex flex-col gap-[16px] lg:gap-[20px] items-center px-6 lg:px-0 min-h-[220px] lg:min-h-[260px]">
 
-          return (
-            <p
-              key={i}
-              className="waldo-roll-line"
-              style={
-                {
-                  fontFamily:   "var(--font-headline)",
-                  fontSize:     isOrange ? "clamp(22px, 4vw, 28px)" : "clamp(18px, 3.5vw, 26px)",
-                  lineHeight:   1.2,
-                  color:        isOrange ? "#FB943F" : "#1A1A1A",
-                  fontWeight:   isOrange ? 600 : 400,
-                  maxWidth:     "640px",
-                  "--roll-delay": `${delay}ms`,
-                } as React.CSSProperties
-              }
-            >
-              {line.text}
-            </p>
-          );
-        })}
+        {/* Visible activity lines — each mounts fresh so roll-in animation fires */}
+        {ACTIVITIES.slice(0, visibleCount).map((text, i) => (
+          <p
+            key={i}
+            className="waldo-roll-line waldo-roll-triggered"
+            style={{
+              fontFamily:        "var(--font-headline)",
+              fontSize:          "clamp(17px, 3vw, 24px)",
+              lineHeight:        1.25,
+              color:             "#1A1A1A",
+              maxWidth:          "600px",
+              "--roll-delay":    "0ms",
+            } as React.CSSProperties}
+          >
+            {text}
+          </p>
+        ))}
+
+        {/* Blinking cursor — shows between lines while agent "thinks" */}
+        {showCursor && !showFinal && (
+          <span
+            style={{
+              display:   "inline-block",
+              width:     "6px",
+              height:    "6px",
+              borderRadius: "50%",
+              background: "#1A1A1A",
+              animation: "hint-pulse 0.8s ease-in-out infinite",
+            }}
+            aria-hidden
+          />
+        )}
+
+        {/* "Already on it." — the conclusive beat */}
+        {showFinal && (
+          <p
+            className="waldo-roll-line waldo-roll-triggered"
+            style={{
+              fontFamily:     "var(--font-headline)",
+              fontSize:       "clamp(20px, 3.5vw, 28px)",
+              lineHeight:     1.2,
+              color:          "#FB943F",
+              maxWidth:       "600px",
+              "--roll-delay": "0ms",
+            } as React.CSSProperties}
+          >
+            Already on it.
+          </p>
+        )}
       </div>
     </section>
   );
