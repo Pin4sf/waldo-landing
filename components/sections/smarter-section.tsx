@@ -41,7 +41,12 @@ export function SmarterSection() {
         className="relative shrink-0 overflow-clip hidden lg:block"
         style={{ height: "180px", width: "742px" }}
       >
-        {/* iPad — center back layer */}
+        {/* AFib iPad — DOM first = furthest back */}
+        <div className="absolute overflow-hidden pointer-events-none" style={{ height: "204.705px", left: "498.66px", top: "111.69px", width: "242.954px" }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img alt="" className="absolute max-w-none" src="/figma-assets/health-iphone-right.png" style={{ height: "100.07%", left: "-21.57%", top: "-0.03%", width: "143.15%" }} />
+        </div>
+        {/* iPad — center, in front of AFib */}
         <div className="absolute pointer-events-none" style={{ height: "316.675px", left: "127.46px", top: 0, width: "521.415px" }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figma-assets/health-ipad.png" />
@@ -50,11 +55,6 @@ export function SmarterSection() {
         <div className="absolute pointer-events-none" style={{ height: "225.132px", left: "42.64px", top: "74.74px", width: "136.012px" }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figma-assets/health-iphone-left.png" />
-        </div>
-        {/* iPhone right */}
-        <div className="absolute overflow-hidden pointer-events-none" style={{ height: "204.705px", left: "498.66px", top: "111.69px", width: "242.954px" }}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img alt="" className="absolute max-w-none" src="/figma-assets/health-iphone-right.png" style={{ height: "100.07%", left: "0%", top: "-0.03%", width: "143.15%" }} />
         </div>
         {/* Apple Watch */}
         <div className="absolute overflow-hidden pointer-events-none" style={{ height: "63.826px", left: "-0.19px", top: "148px", width: "59.627px" }}>

@@ -50,7 +50,21 @@ export function HealthDataSection() {
         className="relative shrink-0 overflow-clip hidden lg:block"
         style={{ height: "180px", width: "742px" }}
       >
-        {/* iPad — center back layer */}
+        {/* AFib iPad — furthest back (DOM first = lowest z-order) */}
+        <div
+          className="absolute overflow-hidden pointer-events-none"
+          style={{ height: "204.705px", left: "498.66px", top: "111.69px", width: "242.954px" }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            alt=""
+            className="absolute max-w-none"
+            src="/figma-assets/health-iphone-right.png"
+            style={{ height: "100.07%", left: "-21.57%", top: "-0.03%", width: "143.15%" }}
+          />
+        </div>
+
+        {/* iPad — center, in front of AFib */}
         <div
           className="absolute pointer-events-none"
           style={{ height: "316.675px", left: "127.46px", top: 0, width: "521.415px" }}
@@ -73,20 +87,6 @@ export function HealthDataSection() {
             alt=""
             className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
             src="/figma-assets/health-iphone-left.png"
-          />
-        </div>
-
-        {/* iPhone right — Heart Rate Highlights */}
-        <div
-          className="absolute overflow-hidden pointer-events-none"
-          style={{ height: "204.705px", left: "498.66px", top: "111.69px", width: "242.954px" }}
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            alt=""
-            className="absolute max-w-none"
-            src="/figma-assets/health-iphone-right.png"
-            style={{ height: "100.07%", left: "0%", top: "-0.03%", width: "143.15%" }}
           />
         </div>
 
