@@ -6,7 +6,7 @@ import { BalancedParagraph } from "@/components/balanced-paragraph";
 export function HealthDataSection() {
   return (
     <section
-      className="bg-[#fafaf8] border-2 border-[rgba(26,26,26,0.08)] border-solid flex flex-col gap-[100px] items-center overflow-clip pt-[70px] w-full"
+      className="bg-[#fafaf8] border-2 border-[rgba(26,26,26,0.08)] border-solid flex flex-col gap-[48px] items-center overflow-clip pt-[70px] w-full"
       style={{ borderRadius: "30px" }}
     >
       {/* Header copy */}
@@ -48,7 +48,7 @@ export function HealthDataSection() {
       {/* Device mockups — desktop only */}
       <div
         className="relative shrink-0 overflow-clip hidden lg:block"
-        style={{ height: "320px", width: "742px" }}
+        style={{ height: "180px", width: "742px" }}
       >
         {/* iPad — center back layer */}
         <div
@@ -93,7 +93,7 @@ export function HealthDataSection() {
         {/* Apple Watch — bottom left */}
         <div
           className="absolute overflow-hidden pointer-events-none"
-          style={{ height: "63.826px", left: "-0.19px", top: "202.42px", width: "59.627px" }}
+          style={{ height: "63.826px", left: "-0.19px", top: "148px", width: "59.627px" }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img

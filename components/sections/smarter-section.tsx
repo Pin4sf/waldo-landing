@@ -6,7 +6,7 @@ import { BalancedParagraph } from "@/components/balanced-paragraph";
 export function SmarterSection() {
   return (
     <section
-      className="bg-[#fafaf8] border-2 border-[rgba(26,26,26,0.08)] border-solid flex flex-col gap-[60px] lg:gap-[100px] items-center overflow-clip pt-[50px] lg:pt-[70px] pb-[30px] lg:pb-0 w-full"
+      className="bg-[#fafaf8] border-2 border-[rgba(26,26,26,0.08)] border-solid flex flex-col gap-[30px] lg:gap-[48px] items-center overflow-clip pt-[50px] lg:pt-[70px] pb-[30px] lg:pb-0 w-full"
       style={{ borderRadius: "30px" }}
     >
       <div className="flex flex-col gap-[24px] lg:gap-[40px] items-center text-center px-4 lg:px-0">
@@ -39,7 +39,7 @@ export function SmarterSection() {
       {/* Device mockups — desktop only */}
       <div
         className="relative shrink-0 overflow-clip hidden lg:block"
-        style={{ height: "320px", width: "742px" }}
+        style={{ height: "180px", width: "742px" }}
       >
         {/* iPad — center back layer */}
         <div className="absolute pointer-events-none" style={{ height: "316.675px", left: "127.46px", top: 0, width: "521.415px" }}>
@@ -57,7 +57,7 @@ export function SmarterSection() {
           <img alt="" className="absolute max-w-none" src="/figma-assets/health-iphone-right.png" style={{ height: "100.07%", left: "-21.57%", top: "-0.03%", width: "143.15%" }} />
         </div>
         {/* Apple Watch */}
-        <div className="absolute overflow-hidden pointer-events-none" style={{ height: "63.826px", left: "-0.19px", top: "202.42px", width: "59.627px" }}>
+        <div className="absolute overflow-hidden pointer-events-none" style={{ height: "63.826px", left: "-0.19px", top: "148px", width: "59.627px" }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img alt="" className="absolute max-w-none" src="/figma-assets/health-watch.png" style={{ height: "203.6%", left: "-42.25%", top: "-51.45%", width: "178.87%" }} />
         </div>
