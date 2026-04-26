@@ -49,6 +49,42 @@
   50%       { opacity: 0.65; }
 }
 
+/* ── Where's Waldo roll-in ──────────────────────────────────── */
+/* Each line ticks off a drum into the foreground: iOS-picker × agent-thinking */
+@keyframes waldo-roll-in {
+  from {
+    opacity:   0;
+    transform: translateY(20px) rotateX(14deg);
+    filter:    blur(4px);
+  }
+  to {
+    opacity:   1;
+    transform: translateY(0)    rotateX(0deg);
+    filter:    blur(0);
+  }
+}
+
+.waldo-roll-line {
+  opacity:    0;
+  transform:  translateY(20px) rotateX(14deg);
+  filter:     blur(4px);
+  will-change: transform, opacity, filter;
+}
+
+.waldo-roll-triggered .waldo-roll-line {
+  animation: waldo-roll-in 0.45s cubic-bezier(0.32, 0.72, 0.24, 1.05)
+             var(--roll-delay, 0ms) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .waldo-roll-triggered .waldo-roll-line {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
 /* ── Waldo brand motions ────────────────────────────────────── */
 
 /* Dalmatian breath — very subtle scale, 8s cycle, only on .waldo-breathe */

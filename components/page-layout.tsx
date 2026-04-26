@@ -7,6 +7,7 @@ import { HealthDataSection } from "./sections/health-data-section";
 import { MorningBriefSection } from "./sections/morning-brief-section";
 import { AlreadyDoneSection } from "./sections/already-done-section";
 import { FiveThingsSection } from "./sections/five-things-section";
+import { WhereIsWaldoSection } from "./sections/where-is-waldo-section";
 import { SmarterSection } from "./sections/smarter-section";
 import { FooterSection } from "./sections/footer-section";
 
@@ -50,6 +51,7 @@ export function PageLayout() {
           <MorningBriefSection />
           <AlreadyDoneSection />
           <FiveThingsSection />
+          <WhereIsWaldoSection />
           <SmarterSection />
         </div>
 
