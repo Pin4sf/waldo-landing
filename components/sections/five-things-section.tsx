@@ -51,7 +51,7 @@ export function FiveThingsSection() {
 
       {/* Mobile: stacked card depth — 2 behind strips peek from top, front in flow */}
       <div className="lg:hidden w-full px-4" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd} onClick={onClick}>
-        <div className="relative mx-auto" style={{ width: "min(400px, calc(100vw - 32px))", paddingTop: "18px" }}>
+        <div className="relative w-full max-w-[400px] mx-auto" style={{ paddingTop: "18px" }}>
           {/* Behind card strips */}
           <div className="absolute border-solid border-[rgba(26,26,26,0.14)] bg-[#fafaf8]"
                style={{ top: 0, left: "14px", right: "14px", bottom: 0, borderRadius: "20px", borderWidth: "1.5px", opacity: 0.5, zIndex: 1 }} />
