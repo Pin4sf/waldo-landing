@@ -49,6 +49,12 @@
   50%       { opacity: 0.65; }
 }
 
+/* ── Where's Waldo word-flipper ─────────────────────────────── */
+@keyframes waldo-progress {
+  from { width: 0%; }
+  to   { width: 100%; }
+}
+
 /* ── Where's Waldo roll-in ──────────────────────────────────── */
 /* Each line ticks off a drum into the foreground: iOS-picker × agent-thinking */
 @keyframes waldo-roll-in {
