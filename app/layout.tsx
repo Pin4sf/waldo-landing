@@ -4,7 +4,6 @@ import { SunflowerCursor } from "@/components/sunflower-cursor";
 import "./globals.css";
 
 const SITE_URL = "https://heywaldo.in";
-const OG_IMAGE = `${SITE_URL}/og-image.png`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -34,7 +33,6 @@ export const metadata: Metadata = {
     siteName: "Waldo",
     type: "website",
     locale: "en_US",
-    images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: "Waldo — AI Health Agent" }],
   },
 
   twitter: {
@@ -42,7 +40,6 @@ export const metadata: Metadata = {
     title: "Waldo — Already on it.",
     description:
       "Your AI knows what you need to do. Waldo knows if you can actually do it.",
-    images: [OG_IMAGE],
     creator: "@heywaldo",
   },
 
