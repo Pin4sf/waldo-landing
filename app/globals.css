@@ -168,6 +168,14 @@
   50%       { box-shadow: 0 0 60px rgba(253,230,138,0.40), 0 0 130px rgba(253,230,138,0.18); }
 }
 
+/* Clamp text to N lines — used for mobile notification card consistency */
+.clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 @keyframes float-up {
   from { opacity: 0; transform: translateY(18px); }
   to   { opacity: 1; transform: translateY(0);    }

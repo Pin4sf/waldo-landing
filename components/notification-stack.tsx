@@ -53,25 +53,91 @@ export function NotificationStack() {
 
   return (
     <>
-    {/* ── Mobile: single swipeable card ─────────────────────────── */}
+    {/* ── Mobile: 3-card pyramid stack ──────────────────────────── */}
+    {/* Mirrors desktop pyramid — fixed 140px card height so no height jitter */}
     <div
       className="lg:hidden w-full select-none"
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
     >
+      {/* Container height = card(140) + max-peek(40) + buffer(10) */}
       <div
-        className="bg-[#fafaf8] border-solid border-[rgba(26,26,26,0.16)] flex flex-col items-start mx-auto"
-        style={{ padding: "24px", borderRadius: "20px", borderWidth: "1.5px", maxWidth: "480px", boxShadow: "0 4px 24px rgba(0,0,0,0.08)" }}
+        className="relative mx-auto"
+        style={{ width: "min(420px, calc(100vw - 48px))", height: "190px" }}
       >
-        <p className="font-medium text-[#1a1a1a] whitespace-nowrap" style={{ fontFamily: "var(--font-body)", fontVariationSettings: "'opsz' 14", fontSize: "13px", lineHeight: 1.3 }}>
-          {frontNotif.app}
-        </p>
-        <p className="text-[#1a1a1a]" style={{ fontFamily: "var(--font-headline)", fontSize: "16px", lineHeight: 1.15, whiteSpace: "pre-wrap", marginTop: "10px" }}>
-          {frontNotif.message}
-        </p>
-        <p className="font-medium italic text-[#717171]" style={{ fontFamily: "var(--font-body)", fontVariationSettings: "'opsz' 14", fontStyle: "italic", fontSize: "13px", lineHeight: 1.3, marginTop: "10px" }}>
-          {frontNotif.comment}
-        </p>
+        {(
+          [
+            { dist: 2, yOffset: -40, scale: 0.86, opacity: 0.45, zIndex: 1 },
+            { dist: 1, yOffset: -20, scale: 0.93, opacity: 0.70, zIndex: 2 },
+            { dist: 0, yOffset:   0, scale: 1.00, opacity: 1.00, zIndex: 3 },
+          ] as const
+        ).map(({ dist, yOffset, scale, opacity, zIndex }) => {
+          const N         = NOTIFICATIONS.length;
+          const ni        = (frontIndex - dist + N) % N;
+          const n         = NOTIFICATIONS[ni];
+          const isFront   = dist === 0;
+
+          return (
+            <div
+              key={dist}
+              className="absolute left-0 right-0 bottom-0 bg-[#fafaf8] border-solid border-[rgba(26,26,26,0.16)] flex flex-col items-start overflow-hidden"
+              style={{
+                height:          "140px",
+                padding:         "20px 22px",
+                borderRadius:    "18px",
+                borderWidth:     "1.5px",
+                transform:       `translateY(${yOffset}px) scale(${scale})`,
+                transformOrigin: "bottom center",
+                opacity,
+                zIndex,
+                boxShadow: isFront ? "0 4px 24px rgba(0,0,0,0.08)" : "none",
+              }}
+            >
+              {/* App label — always visible */}
+              <p
+                className="font-medium text-[#1a1a1a] whitespace-nowrap"
+                style={{ fontFamily: "var(--font-body)", fontVariationSettings: "'opsz' 14", fontSize: "12px", lineHeight: 1.3 }}
+              >
+                {n.app}
+              </p>
+
+              {/* Full content — front card only, animates in on card change */}
+              {isFront && (
+                <div key={frontIndex} style={{ width: "100%", minWidth: 0 }}>
+                  <p
+                    className="clamp-2 text-[#1a1a1a]"
+                    style={{
+                      fontFamily: "var(--font-headline)",
+                      fontSize:   "14px",
+                      lineHeight: 1.2,
+                      marginTop:  "8px",
+                      animation:  "content-enter 0.3s 0.18s both",
+                    }}
+                  >
+                    {n.message}
+                  </p>
+                  <p
+                    className="font-medium italic text-[#717171]"
+                    style={{
+                      fontFamily:            "var(--font-body)",
+                      fontVariationSettings: "'opsz' 14",
+                      fontStyle:             "italic",
+                      fontSize:              "11px",
+                      lineHeight:            1.3,
+                      marginTop:             "8px",
+                      whiteSpace:            "nowrap",
+                      overflow:              "hidden",
+                      textOverflow:          "ellipsis",
+                      animation:             "content-enter 0.3s 0.28s both",
+                    }}
+                  >
+                    {n.comment}
+                  </p>
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
       <MobileDots count={NOTIFICATIONS.length} current={frontIndex} />
     </div>
