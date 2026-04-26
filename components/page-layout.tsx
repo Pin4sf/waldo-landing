@@ -29,7 +29,20 @@ export function PageLayout() {
     <div className="min-h-screen bg-[#f4f3f0]">
       <ScrollAnimations />
       {/* Nav sits outside the dimmed wrapper so it stays sharp */}
-      <div className="sticky top-0 z-20 flex justify-center" style={{ paddingTop: "20px", paddingBottom: "0" }}>
+      <div
+        className="sticky top-0 z-20 flex justify-center"
+        style={{ paddingTop: "20px", paddingBottom: "16px" }}
+      >
+        {/* Blur layer — absolute so mask-image never clips tooltip children */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backdropFilter:     "blur(16px)",
+            WebkitBackdropFilter: "blur(16px)",
+            maskImage:          "linear-gradient(to bottom, black 55%, transparent 100%)",
+            WebkitMaskImage:    "linear-gradient(to bottom, black 55%, transparent 100%)",
+          }}
+        />
         <div className="w-full max-w-[1440px] px-4">
           <Navbar onNavEnter={handleNavEnter} onNavLeave={handleNavLeave} />
         </div>
