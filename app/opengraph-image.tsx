@@ -26,21 +26,34 @@ export default async function Image() {
         }}
       >
         {/* Left — wordmark + headline + sub */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+            gap: 20,
+          }}
+        >
           {/* Brand pill */}
           <div
             style={{
               display: "flex",
               alignItems: "center",
-              gap: 10,
               background: "#fafaf8",
               border: "1.5px solid rgba(26,26,26,0.12)",
               borderRadius: 40,
               padding: "8px 20px",
-              width: "fit-content",
             }}
           >
-            <span style={{ fontSize: 22, fontWeight: 700, color: "#1a1a1a", letterSpacing: -0.5 }}>
+            <span
+              style={{
+                display: "flex",
+                fontSize: 22,
+                fontWeight: 700,
+                color: "#1a1a1a",
+                letterSpacing: -0.5,
+              }}
+            >
               Waldo
             </span>
           </div>
@@ -48,47 +61,50 @@ export default async function Image() {
           {/* Headline */}
           <div
             style={{
+              display: "flex",
+              flexDirection: "column",
               fontSize: 82,
               fontWeight: 800,
               color: "#1a1a1a",
               lineHeight: 1.0,
               letterSpacing: -2,
-              maxWidth: 560,
             }}
           >
-            Already
-            <br />
-            on it.
+            <span style={{ display: "flex" }}>Already</span>
+            <span style={{ display: "flex" }}>on it.</span>
           </div>
 
           {/* Sub */}
           <div
             style={{
+              display: "flex",
+              flexDirection: "column",
               fontSize: 24,
               color: "#6b6b68",
               lineHeight: 1.4,
-              maxWidth: 480,
               fontWeight: 400,
             }}
           >
-            AI health agent for WHOOP & Apple Watch.
-            <br />
-            Reads your body. Acts before you burn out.
+            <span style={{ display: "flex" }}>
+              AI health agent for WHOOP &amp; Apple Watch.
+            </span>
+            <span style={{ display: "flex" }}>
+              Reads your body. Acts before you burn out.
+            </span>
           </div>
 
           {/* Accent tag */}
           <div
             style={{
               display: "flex",
+              alignItems: "center",
               marginTop: 8,
               background: "#FB943F",
               borderRadius: 30,
               padding: "10px 24px",
-              width: "fit-content",
               fontSize: 18,
               fontWeight: 600,
               color: "#fff",
-              letterSpacing: 0.2,
             }}
           >
             heywaldo.in
