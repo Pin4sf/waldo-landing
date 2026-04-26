@@ -62,8 +62,8 @@ export function NotificationStack() {
     >
       {/* Container height = card(140) + max-peek(40) + buffer(10) */}
       <div
-        className="relative mx-auto"
-        style={{ width: "min(420px, calc(100vw - 48px))", height: "190px" }}
+        className="relative w-full max-w-[420px] mx-auto"
+        style={{ height: "190px" }}
       >
         {(
           [
