@@ -28,7 +28,7 @@ export function HealthDataSection() {
         >
           Months of health data sitting unused.
         </h2>
-        <div data-animate="fade-up">
+        <div data-animate="fade-up" style={{ paddingBottom: "24px" }}>
         <BalancedParagraph
           pretextify
           className="font-normal text-[#6b6b68] text-[14px]"
