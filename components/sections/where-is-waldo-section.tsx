@@ -1,218 +1,147 @@
-// Where's Waldo? — Word-flipper / cycling text rotator.
+// Where's Waldo? — Continuous ticker drum.
 //
-// One phrase at a time in a fixed viewport window:
-//   enter from below → stay 2.2s → exit to top → next enters from below
-// Classic "Claude thinking state" / word-flipper pattern used by Linear, Vercel, Arc.
-// Ends with "Already on it." sliding in and staying permanently in brand orange.
-// Micro-interactions: pulsing orange dot (thinking indicator) + progress bar.
+// Hierarchy:
+//   "Where's Waldo?"       ← section headline
+//   "Right now, Waldo is"  ← eyebrow context label
+//   [ rotating phrase ]    ← the focal point — large, always cycling
+//   "Already on it."       ← permanent brand promise below
+//
+// Animation: pure CSS drum roll — 5 items (4 phrases + duplicate first for
+// seamless loop), translateY cycling through positions. Each phrase shows
+// ~2.5s, transitions in ~0.5s. No dramatic reveals — quietly always working.
 
 "use client";
 
 import { useEffect, useRef, useState } from "react";
 
-const ACTIVITIES = [
+const PHRASES = [
   "Rescheduling your meeting.",
   "Already on your 2am HRV dip.",
   "Protecting your Friday afternoon.",
   "Making sure your best hours go to your hardest work.",
 ];
 
-const ENTER_MS      = 480;
-const VISIBLE_MS    = 2200;
-const EXIT_MS       = 360;
-const EASE_IN       = "cubic-bezier(0.22, 1, 0.36, 1)";
-const EASE_OUT      = "cubic-bezier(0.55, 0, 1, 0.45)";
+// Seamless loop: 4 phrases + first phrase repeated at end
+const TRACK = [...PHRASES, PHRASES[0]];
 
-type Phase = "idle" | "thinking" | "entering" | "visible" | "exiting" | "done";
+// Duration: (2.52s visible + 0.48s scroll) × 4 phrases = 12s
+const DURATION_S = 12;
 
 export function WhereIsWaldoSection() {
-  const sectionRef                          = useRef<HTMLElement>(null);
-  const [started,   setStarted]             = useState(false);
-  const [idx,       setIdx]                 = useState(0);
-  const [phase,     setPhase]               = useState<Phase>("idle");
-  const [progressKey, setProgressKey]       = useState(0);
+  const sectionRef = useRef<HTMLElement>(null);
+  const [animating, setAnimating] = useState(false);
 
-  // Fire once when 30% of section enters viewport
+  // Start animation when section enters viewport (plays paused until then)
   useEffect(() => {
     const el = sectionRef.current;
     if (!el) return;
     const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) { setStarted(true); obs.disconnect(); } },
-      { threshold: 0.3 }
+      ([e]) => { if (e.isIntersecting) { setAnimating(true); obs.disconnect(); } },
+      { threshold: 0.2 }
     );
     obs.observe(el);
     return () => obs.disconnect();
   }, []);
 
-  // State machine: idle → thinking → entering → visible → exiting → (loop or done)
-  useEffect(() => {
-    if (!started || phase === "done") return;
-    const go = (next: Phase, delay: number) => {
-      const t = setTimeout(() => setPhase(next), delay);
-      return () => clearTimeout(t);
-    };
-
-    if (phase === "idle")     return go("thinking", 400);
-    if (phase === "thinking") return go("entering",  600); // show dot 600ms then word enters
-    if (phase === "entering") {
-      const t = setTimeout(() => {
-        setPhase("visible");
-        setProgressKey(k => k + 1); // reset progress bar
-      }, ENTER_MS);
-      return () => clearTimeout(t);
-    }
-    if (phase === "visible")  return go("exiting", VISIBLE_MS);
-    if (phase === "exiting") {
-      const t = setTimeout(() => {
-        const next = idx + 1;
-        if (next >= ACTIVITIES.length) {
-          setPhase("done");
-        } else {
-          setIdx(next);
-          setPhase("thinking");
-        }
-      }, EXIT_MS);
-      return () => clearTimeout(t);
-    }
-  }, [started, phase, idx]);
-
-  // ── phrase transform ─────────────────────────────────────────
-  const isIn  = phase === "entering" || phase === "visible";
-  const isOut = phase === "exiting";
-
-  const phraseTransform =
-    isOut ? "translateY(-120%) scale(0.97)" :
-    isIn  ? "translateY(0)     scale(1)"    :
-            "translateY(120%)  scale(0.97)";
-
-  const phraseStyle: React.CSSProperties = {
-    transform:  phraseTransform,
-    opacity:    phase === "visible" ? 1 : 0,
-    filter:     phase === "visible" ? "blur(0)" : "blur(6px)",
-    transition: `transform ${isOut ? EXIT_MS : ENTER_MS}ms ${isOut ? EASE_OUT : EASE_IN},
-                 opacity   ${isOut ? EXIT_MS : ENTER_MS}ms ease,
-                 filter    ${isOut ? EXIT_MS : ENTER_MS}ms ease`,
-    transformOrigin: "center",
-  };
-
-  // ── final phrase ─────────────────────────────────────────────
-  const [showFinal, setShowFinal] = useState(false);
-  useEffect(() => {
-    if (phase !== "done") return;
-    const t = setTimeout(() => setShowFinal(true), 150);
-    return () => clearTimeout(t);
-  }, [phase]);
-
-  const finalStyle: React.CSSProperties = {
-    transform:  showFinal ? "translateY(0) scale(1)" : "translateY(60%) scale(0.96)",
-    opacity:    showFinal ? 1 : 0,
-    filter:     showFinal ? "blur(0)" : "blur(4px)",
-    transition: `transform 600ms ${EASE_IN}, opacity 600ms ease, filter 600ms ease`,
-  };
-
   return (
     <section
       ref={sectionRef}
-      className="flex flex-col items-center gap-[48px] lg:gap-[64px] py-[80px] lg:py-[120px] w-full text-center"
+      className="flex flex-col items-center gap-[32px] lg:gap-[48px] py-[80px] lg:py-[120px] w-full text-center"
     >
-      {/* Headline */}
-      <h2
-        className="text-[#1a1a1a] text-[36px] lg:text-[56px] px-4"
-        style={{ fontFamily: "var(--font-headline)", lineHeight: 1.05 }}
+      {/* ── Headline ─────────────────────────────────────── */}
+      <div className="flex flex-col gap-[12px] items-center px-4">
+        <p
+          className="font-normal italic text-[#6b6b68] text-[13px] lg:text-[14px]"
+          style={{ fontFamily: "var(--font-body)", fontVariationSettings: "'opsz' 14", lineHeight: 1.3 }}
+        >
+          Right now, Waldo is
+        </p>
+        <h2
+          className="text-[#1a1a1a] text-[36px] lg:text-[56px]"
+          style={{ fontFamily: "var(--font-headline)", lineHeight: 1.05 }}
+        >
+          Where&apos;s Waldo?
+        </h2>
+      </div>
+
+      {/* ── Ticker drum ──────────────────────────────────── */}
+      {/* Window: overflow hidden, sized to one phrase height */}
+      <div
+        className="w-full px-4 lg:px-0"
+        style={{
+          maxWidth:    "760px",
+          overflow:    "hidden",
+          // Height fits the tallest phrase at the largest font size
+          // Tallest phrase wraps to ~2 lines on mobile. Clamp guards smaller sizes.
+          height:      "clamp(72px, 18vw, 160px)",
+          position:    "relative",
+        }}
       >
-        Where&apos;s Waldo?
-      </h2>
+        {/* Subtle gradient masks top/bottom for drum-edge feel */}
+        <div
+          aria-hidden
+          style={{
+            position:   "absolute",
+            inset:      0,
+            background: "linear-gradient(to bottom, #f4f3f0 0%, transparent 30%, transparent 70%, #f4f3f0 100%)",
+            zIndex:     2,
+            pointerEvents: "none",
+          }}
+        />
 
-      {/* Word-flipper window */}
-      <div className="flex flex-col items-center gap-[28px] w-full px-6 lg:px-0">
-
-        {/* Fixed viewport — one phrase visible at a time */}
+        {/* The track — 5 items stacked, scrolling upward */}
         <div
           style={{
-            width:    "100%",
-            maxWidth: "720px",
-            height:   "clamp(80px, 15vw, 160px)",
-            overflow: "hidden",
-            position: "relative",
-            display:  "flex",
-            alignItems: "center",
-            justifyContent: "center",
+            display:               "flex",
+            flexDirection:         "column",
+            // Track height = 5 × window height (20% each)
+            height:                "500%",
+            animationName:         animating ? "waldo-ticker" : "none",
+            animationDuration:     `${DURATION_S}s`,
+            animationTimingFunction: "cubic-bezier(0.45, 0, 0.55, 1)",
+            animationIterationCount: "infinite",
+            animationFillMode:     "both",
           }}
         >
-          {/* Thinking dot — visible during "thinking" phase */}
-          {phase === "thinking" && (
-            <span
+          {TRACK.map((phrase, i) => (
+            <div
+              key={i}
               style={{
-                display:      "block",
-                width:        "10px",
-                height:       "10px",
-                borderRadius: "50%",
-                background:   "#FB943F",
-                animation:    "hint-pulse 0.6s ease-in-out infinite",
-                position:     "absolute",
-              }}
-              aria-hidden
-            />
-          )}
-
-          {/* The phrase */}
-          {phase !== "done" && phase !== "idle" && phase !== "thinking" && (
-            <p
-              style={{
-                ...phraseStyle,
-                fontFamily: "var(--font-headline)",
-                fontSize:   "clamp(26px, 5.5vw, 60px)",
-                lineHeight: 1.1,
-                color:      "#1A1A1A",
-                maxWidth:   "720px",
+                height:          "20%",         // 1/5 of track = 1 window-height
+                display:         "flex",
+                alignItems:      "center",
+                justifyContent:  "center",
+                padding:         "0 16px",
               }}
             >
-              {ACTIVITIES[idx]}
-            </p>
-          )}
-        </div>
-
-        {/* Progress bar — fills while phrase is visible */}
-        {phase !== "done" && phase !== "idle" && (
-          <div
-            style={{
-              width:        "100%",
-              maxWidth:     "200px",
-              height:       "2px",
-              background:   "rgba(26,26,26,0.1)",
-              borderRadius: "1px",
-              overflow:     "hidden",
-            }}
-          >
-            {phase === "visible" && (
-              <div
-                key={progressKey}
+              <p
                 style={{
-                  height:    "100%",
-                  background: "#1A1A1A",
-                  animation: `waldo-progress ${VISIBLE_MS}ms linear forwards`,
+                  fontFamily: "var(--font-headline)",
+                  fontSize:   "clamp(24px, 5vw, 56px)",
+                  lineHeight: 1.1,
+                  color:      "#1A1A1A",
+                  maxWidth:   "720px",
+                  textAlign:  "center",
                 }}
-              />
-            )}
-          </div>
-        )}
-
-        {/* "Already on it." — final state, stays permanently */}
-        {(phase === "done") && (
-          <p
-            style={{
-              ...finalStyle,
-              fontFamily: "var(--font-headline)",
-              fontSize:   "clamp(28px, 6vw, 64px)",
-              lineHeight: 1.05,
-              color:      "#FB943F",
-              maxWidth:   "720px",
-            }}
-          >
-            Already on it.
-          </p>
-        )}
+              >
+                {phrase}
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
+
+      {/* ── Brand promise — always visible ───────────────── */}
+      <p
+        style={{
+          fontFamily: "var(--font-headline)",
+          fontSize:   "clamp(20px, 3.5vw, 32px)",
+          lineHeight: 1.1,
+          color:      "#FB943F",
+        }}
+      >
+        Already on it.
+      </p>
     </section>
   );
 }

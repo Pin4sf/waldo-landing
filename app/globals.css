@@ -49,7 +49,17 @@
   50%       { opacity: 0.65; }
 }
 
-/* ── Where's Waldo word-flipper ─────────────────────────────── */
+/* ── Where's Waldo ticker drum ──────────────────────────────── */
+/* 5 items (4 phrases + phrase-1 duplicate for seamless loop).
+   Each item = 20% of track height. Hold 21%, scroll 4% = 2.52s + 0.48s per phrase. */
+@keyframes waldo-ticker {
+  0%,   21%  { transform: translateY(0);    }
+  25%,  46%  { transform: translateY(-20%); }
+  50%,  71%  { transform: translateY(-40%); }
+  75%,  96%  { transform: translateY(-60%); }
+  100%        { transform: translateY(-80%); }
+}
+
 @keyframes waldo-progress {
   from { width: 0%; }
   to   { width: 100%; }
