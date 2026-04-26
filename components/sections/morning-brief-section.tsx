@@ -40,12 +40,31 @@ export function MorningBriefSection() {
 
   return (
     <section className="flex flex-col gap-[70px] items-center py-[90px] w-full" style={{ borderRadius: "30px" }}>
-      {/* Mobile: single card + swipe */}
+      {/* Mobile: stacked card depth — 2 behind strips peek from top, front in flow */}
       <div className="lg:hidden w-full px-4" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd} onClick={onClick}>
-        <div className="bg-[#fafaf8] border-[1.5px] border-[rgba(26,26,26,0.16)] border-solid flex flex-col gap-[24px] items-start overflow-clip mx-auto" style={{ padding: "28px", borderRadius: "20px", maxWidth: "440px" }}>
-          <Image src={frontCard.icon} alt="" width={frontCard.iconW} height={frontCard.iconH} unoptimized />
-          <p className="text-[#1a1a1a]" style={{ fontFamily: "var(--font-headline)", fontSize: "22px", lineHeight: 1.1, whiteSpace: "pre-wrap" }}>{frontCard.body}</p>
-          <p className="font-medium italic text-[#6b6b68]" style={{ fontFamily: "var(--font-body)", fontVariationSettings: "'opsz' 14", fontStyle: "italic", fontSize: "14px", lineHeight: 1.3 }}>{frontCard.footnote}</p>
+        <div className="relative mx-auto" style={{ width: "min(400px, calc(100vw - 32px))", paddingTop: "18px" }}>
+          {/* Behind card strips — absolute, fill container, peek above front card */}
+          <div className="absolute border-solid border-[rgba(26,26,26,0.14)] bg-[#fafaf8]"
+               style={{ top: 0, left: "14px", right: "14px", bottom: 0, borderRadius: "20px", borderWidth: "1.5px", opacity: 0.5, zIndex: 1 }} />
+          <div className="absolute border-solid border-[rgba(26,26,26,0.14)] bg-[#fafaf8]"
+               style={{ top: "9px", left: "7px", right: "7px", bottom: 0, borderRadius: "20px", borderWidth: "1.5px", opacity: 0.72, zIndex: 2 }} />
+          {/* Front card — relative, defines height */}
+          <div
+            className="relative bg-[#fafaf8] border-solid border-[rgba(26,26,26,0.16)] flex flex-col items-start overflow-clip"
+            style={{ padding: "28px", borderRadius: "20px", borderWidth: "1.5px", zIndex: 3, boxShadow: "0 4px 24px rgba(0,0,0,0.08)" }}
+          >
+            <Image src={frontCard.icon} alt="" width={frontCard.iconW} height={frontCard.iconH} unoptimized />
+            <div key={frontCardIdx}>
+              <p className="text-[#1a1a1a]"
+                 style={{ fontFamily: "var(--font-headline)", fontSize: "22px", lineHeight: 1.1, whiteSpace: "pre-wrap", marginTop: "24px", animation: "content-enter 0.3s 0.18s both" }}>
+                {frontCard.body}
+              </p>
+              <p className="font-medium italic text-[#6b6b68]"
+                 style={{ fontFamily: "var(--font-body)", fontVariationSettings: "'opsz' 14", fontStyle: "italic", fontSize: "14px", lineHeight: 1.3, marginTop: "16px", animation: "content-enter 0.3s 0.28s both" }}>
+                {frontCard.footnote}
+              </p>
+            </div>
+          </div>
         </div>
         <MobileDots count={CARDS.length} current={frontCardIdx} />
       </div>

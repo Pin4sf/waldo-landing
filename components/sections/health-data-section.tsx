@@ -6,7 +6,7 @@ import { BalancedParagraph } from "@/components/balanced-paragraph";
 export function HealthDataSection() {
   return (
     <section
-      className="bg-[#fafaf8] border-2 border-[rgba(26,26,26,0.08)] border-solid flex flex-col gap-[48px] items-center overflow-clip pt-[70px] w-full"
+      className="bg-[#fafaf8] border-2 border-[rgba(26,26,26,0.08)] border-solid flex flex-col gap-[48px] items-center overflow-clip pt-[40px] lg:pt-[70px] w-full"
       style={{ borderRadius: "30px" }}
     >
       {/* Header copy */}
