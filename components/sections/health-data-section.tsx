@@ -86,7 +86,7 @@ export function HealthDataSection() {
             alt=""
             className="absolute max-w-none"
             src="/figma-assets/health-iphone-right.png"
-            style={{ height: "100.07%", left: "-21.57%", top: "-0.03%", width: "143.15%" }}
+            style={{ height: "100.07%", left: "0%", top: "-0.03%", width: "143.15%" }}
           />
         </div>
 
