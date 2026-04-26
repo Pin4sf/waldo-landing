@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1280, height=720" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Corben:wght@400;700&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;1,9..40,400&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 1280px; height: 720px;
+      overflow: hidden;
+      background: #f4f3f0;
+    }
+    #root {
+      position: relative;
+      width: 1280px; height: 720px;
+      background: #f4f3f0;
+      overflow: hidden;
+    }
+    .notif-card {
+      position: absolute;
+      left: 420px; width: 440px; height: 68px;
+      background: #fff;
+      border: 1px solid #e0ddd8;
+      border-radius: 12px;
+      padding: 10px 16px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+      opacity: 0;
+    }
+    .notif-app {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 10px;
+      color: #9a9a97;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .notif-msg {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      color: #1a1a1a;
+      line-height: 1.3;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .waldo-line { opacity: 0; }
+  </style>
+</head>
+<body>
+  <div
+    id="root"
+    data-composition-id="main"
+    data-start="0"
+    data-duration="15"
+    data-width="1280"
+    data-height="720"
+  >
+
+    <!-- ══ PHASE 1: Title (0–1.8s) ══════════════════════════════ -->
+    <div id="title-section"
+         class="clip" data-start="0" data-duration="15" data-track-index="1"
+         style="position:absolute; width:100%; top:0; height:720px;
+                display:flex; flex-direction:column; align-items:center; justify-content:center;
+                opacity:0; pointer-events:none">
+      <p id="ts-stamp"
+         style="font-family:'DM Sans',sans-serif; font-size:13px; color:#9a9a97;
+                letter-spacing:2px; text-transform:uppercase; margin-bottom:28px;
+                opacity:0">
+        6:58 AM · Monday
+      </p>
+      <h1 id="ts-line1"
+          style="font-family:'Corben',serif; font-size:68px; font-weight:400;
+                 color:#1a1a1a; line-height:1.05; text-align:center;
+                 opacity:0">
+        While you were sleeping,
+      </h1>
+      <p id="ts-line2"
+         style="font-family:'DM Sans',sans-serif; font-size:26px; color:#6b6b68;
+                margin-top:18px; text-align:center;
+                opacity:0">
+        your Monday was already arriving.
+      </p>
+    </div>
+
+    <!-- ══ PHASE 2: Chaos notifications (1.8–6.8s) ══════════════ -->
+    <div id="chaos-section"
+         class="clip" data-start="0" data-duration="15" data-track-index="2"
+         style="position:absolute; width:100%; height:720px; opacity:0; pointer-events:none">
+
+      <!-- 6 notification cards — stacked, centered (440px wide × 68px, 8px gap) -->
+      <!-- Total stack height: 6×68+5×8=448px. Top margin: (720-448)/2=136px → use 86px for label room -->
+      <div id="notif-1" class="notif-card" style="top:86px">
+        <p class="notif-app">Calendar</p>
+        <p class="notif-msg">96th Product Strategy Review — 9:00 AM today. 14 attendees.</p>
+      </div>
+      <div id="notif-2" class="notif-card" style="top:162px">
+        <p class="notif-app">Slack · Suyash</p>
+        <p class="notif-msg">We need to talk about the Q1 sales review before 9am.</p>
+      </div>
+      <div id="notif-3" class="notif-card" style="top:238px">
+        <p class="notif-app">Mail</p>
+        <p class="notif-msg">+104 from the health newsletter you forgot you subscribed to.</p>
+      </div>
+      <div id="notif-4" class="notif-card" style="top:314px">
+        <p class="notif-app">iMessage · Rohan</p>
+        <p class="notif-msg">hope you didn't watch the next episodes without me 👀</p>
+      </div>
+      <div id="notif-5" class="notif-card" style="top:390px">
+        <p class="notif-app">Calendar</p>
+        <p class="notif-msg">Finance sync — 10:00 AM. Deck not finalised.</p>
+      </div>
+      <div id="notif-6" class="notif-card" style="top:466px">
+        <p class="notif-app">News</p>
+        <p class="notif-msg">Markets open in 2 hours. Three things you missed this weekend.</p>
+      </div>
+
+      <!-- Chaos label -->
+      <p id="chaos-label"
+         style="position:absolute; width:100%; top:570px; text-align:center;
+                font-family:'DM Sans',sans-serif; font-size:13px; color:#9a9a97;
+                font-style:italic; letter-spacing:0.5px;
+                opacity:0">
+        everything, all at once, before 7am
+      </p>
+    </div>
+
+    <!-- Transition divider line (cream → orange → cream) -->
+    <div id="divider"
+         class="clip" data-start="0" data-duration="15" data-track-index="3"
+         style="position:absolute; top:349px; left:0; width:1280px; height:2px;
+                background:linear-gradient(to right, transparent, #FB943F 30%, #FB943F 70%, transparent);
+                opacity:0; transform:scaleX(0); transform-origin:center">
+    </div>
+
+    <!-- ══ PHASE 3: Resolution — Waldo card + tagline (7–13s) ════ -->
+    <div id="resolution-section"
+         class="clip" data-start="0" data-duration="15" data-track-index="4"
+         style="position:absolute; width:1280px; height:720px; opacity:0; pointer-events:none">
+
+      <!-- Waldo orange card — centered, tall enough for full message -->
+      <div id="waldo-card"
+           style="position:absolute; left:390px; top:140px; width:500px;
+                  background:#FB943F; border-radius:20px; padding:30px 36px;
+                  box-shadow:0 12px 48px rgba(249,115,62,0.35);
+                  opacity:0">
+        <p class="waldo-line"
+           style="font-family:'DM Sans',sans-serif; font-size:10px; color:rgba(255,255,255,0.65);
+                  letter-spacing:2px; text-transform:uppercase; font-weight:500; margin-bottom:16px">
+          🐾 &nbsp; Morning Wag · Waldo
+        </p>
+        <p class="waldo-line"
+           style="font-family:'Corben',serif; font-size:22px; color:#fff;
+                  line-height:1.2; margin-bottom:14px">
+          Morning. Bit of a rough night —
+        </p>
+        <p class="waldo-line"
+           style="font-family:'DM Sans',sans-serif; font-size:15px; color:rgba(255,255,255,0.88);
+                  line-height:1.55; margin-bottom:6px">
+          Sleep was short by 40 minutes. HRV is 14% below baseline.
+        </p>
+        <p class="waldo-line"
+           style="font-family:'DM Sans',sans-serif; font-size:15px; color:rgba(255,255,255,0.88);
+                  line-height:1.55; margin-bottom:6px">
+          Nudged the 9am to 10:30. Finance sync moved to 11.
+        </p>
+        <p class="waldo-line"
+           style="font-family:'DM Sans',sans-serif; font-size:15px; color:rgba(255,255,255,0.88);
+                  line-height:1.55; margin-bottom:18px">
+          Your morning is clear. Nothing drastic.
+        </p>
+        <p id="waldo-footer" class="waldo-line"
+           style="font-family:'DM Sans',sans-serif; font-size:11px; color:rgba(255,255,255,0.5);
+                  font-style:italic">
+          already done · you can undo it if you want, but you probably don't
+        </p>
+      </div>
+
+      <!-- Tagline — below the card -->
+      <div style="position:absolute; width:100%; top:448px; text-align:center">
+        <p id="tagline-1"
+           style="font-family:'Corben',serif; font-size:46px; font-weight:400; color:#1a1a1a;
+                  line-height:1.1; opacity:0">
+          You didn't manage your Monday.
+        </p>
+        <p id="tagline-2"
+           style="font-family:'Corben',serif; font-size:58px; font-weight:700; color:#FB943F;
+                  line-height:1.1; margin-top:6px; opacity:0">
+          Waldo did.
+        </p>
+      </div>
+    </div>
+
+    <!-- ══ PHASE 4: Outro (13.2–15s) ════════════════════════════ -->
+    <div id="outro"
+         class="clip" data-start="0" data-duration="15" data-track-index="5"
+         style="position:absolute; width:1280px; height:720px;
+                display:flex; flex-direction:column; align-items:center; justify-content:center;
+                opacity:0; pointer-events:none">
+      <!-- Paw mark -->
+      <svg width="56" height="49" viewBox="0 0 23 20" fill="none"
+           xmlns="http://www.w3.org/2000/svg" style="margin-bottom:22px">
+        <path d="M12.0455 8.19435C8.5546 8.63273 6.68628 1.37044 10.4049 0.0167778C14.1721 -0.400611 15.7586 7.09811 12.0455 8.19435Z" fill="#FB943F"/>
+        <path d="M8.3092 10.5135C6.58923 13.9893 -0.949651 11.5404 0.0997341 7.32816C2.00498 3.60923 9.58249 6.4543 8.3092 10.5135Z" fill="#FB943F"/>
+        <path d="M16.2786 9.83065C13.9189 7.43667 17.1194 2.50187 20.161 4.61989C22.6742 7.23047 19.1635 12.07 16.2786 9.83065Z" fill="#FB943F"/>
+        <path d="M17.6058 13.2603C18.102 11.0572 22.6427 11.375 22.6197 13.8989C22.0525 16.2652 17.4372 15.7294 17.6058 13.2603Z" fill="#FB943F"/>
+        <path d="M14.9478 15.3381C16.0796 14.5281 18.5029 18.2428 17.5123 19.5964C16.2774 20.4397 13.8966 16.5483 14.9478 15.3381Z" fill="#FB943F"/>
+        <path d="M12.4438 16.4828C13.658 16.5976 13.532 19.6799 12.1468 19.9149C10.8424 19.7685 11.0872 16.6145 12.4438 16.4828Z" fill="#FB943F"/>
+        <path d="M8.14378 17.1963C7.28218 17.5051 6.42602 17.6249 5.54174 17.3248C4.67747 17.041 4.12053 16.212 4.48021 15.3153C4.77929 14.5697 5.47458 14.0913 6.18381 13.7831C9.6415 12.3095 11.8426 15.68 8.14378 17.1963Z" fill="#FB943F"/>
+      </svg>
+      <p style="font-family:'Corben',serif; font-size:66px; font-weight:400; color:#FB943F;
+                line-height:1.0; margin-bottom:16px">
+        Already on it.
+      </p>
+      <p style="font-family:'DM Sans',sans-serif; font-size:18px; color:#9a9a97;
+                letter-spacing:1px">
+        heywaldo.in
+      </p>
+    </div>
+
+  </div><!-- #root -->
+
+  <script>
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+    const E = "power3.out";
+
+    // ── Initial states (all transforms set via GSAP, not CSS) ───
+    tl.set("#ts-stamp",   { y: 10 }, 0)
+      .set("#ts-line1",   { y: 30 }, 0)
+      .set("#ts-line2",   { y: 20 }, 0)
+      .set(".notif-card", { y: 20 }, 0)
+      .set("#waldo-card", { scale: 0.92 }, 0)
+      .set(".waldo-line", { y: 10 }, 0)
+      .set("#tagline-1",  { y: 24 }, 0)
+      .set("#tagline-2",  { y: 28 }, 0);
+
+    // ── Phase 1: Title (0–1.8s) ─────────────────────────────────
+    tl.to("#title-section",  { opacity: 1, duration: 0 }, 0)
+      .to("#ts-stamp",       { opacity: 1, y: 0, duration: 0.6, ease: E }, 0.1)
+      .to("#ts-line1",       { opacity: 1, y: 0, duration: 0.9, ease: E }, 0.35)
+      .to("#ts-line2",       { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }, 0.65)
+      // Title fades out at 1.4s
+      .to("#title-section",  { opacity: 0, y: -20, duration: 0.5, ease: "power2.in" }, 1.4);
+
+    // ── Phase 2: Chaos (1.8–6.8s) ───────────────────────────────
+    tl.to("#chaos-section",  { opacity: 1, duration: 0 }, 1.8);
+
+    // 6 notifications, 0.42s stagger
+    const notifs = ["#notif-1","#notif-2","#notif-3","#notif-4","#notif-5","#notif-6"];
+    notifs.forEach((id, i) => {
+      tl.to(id, { opacity: 1, y: 0, duration: 0.45, ease: E }, 1.8 + i * 0.42);
+    });
+
+    // Chaos label at ~5.5s
+    tl.to("#chaos-label", { opacity: 1, duration: 0.5, ease: "power2.out" }, 5.5);
+    // Notifications dim to give "noise" feeling
+    tl.to(notifs, { opacity: 0.22, duration: 0.6, ease: "power2.inOut", stagger: 0.05 }, 5.6);
+
+    // Divider line draws at 6.2s
+    tl.to("#divider", { opacity: 1, scaleX: 1, duration: 0.45, ease: "power2.inOut" }, 6.2);
+
+    // Fade out chaos at 6.6s
+    tl.to("#chaos-section", { opacity: 0, duration: 0.4, ease: "power2.in" }, 6.6);
+    tl.to("#divider",       { opacity: 0, duration: 0.3 }, 6.9);
+
+    // ── Phase 3: Resolution (7–13s) ─────────────────────────────
+    tl.to("#resolution-section", { opacity: 1, duration: 0 }, 7.0);
+
+    // Waldo card scales in
+    tl.to("#waldo-card", { opacity: 1, scale: 1, duration: 0.75, ease: "back.out(1.4)" }, 7.0);
+
+    // Message lines stagger in
+    tl.to(".waldo-line", { opacity: 1, y: 0, duration: 0.4, stagger: 0.18, ease: "power2.out" }, 7.55);
+
+    // Tagline fades in below
+    tl.to("#tagline-1", { opacity: 1, y: 0, duration: 0.75, ease: E }, 10.4);
+    tl.to("#tagline-2", { opacity: 1, y: 0, duration: 0.9,  ease: E }, 11.1);
+
+    // Fade resolution out before outro
+    tl.to("#resolution-section", { opacity: 0, duration: 0.55, ease: "power2.in" }, 12.75);
+
+    // ── Phase 4: Outro (13.2–15s) ───────────────────────────────
+    tl.to("#outro", { opacity: 1, scale: 1, duration: 0.7, ease: "power2.out" }, 13.2);
+
+    // Final fade for seamless loop
+    tl.to("#outro", { opacity: 0, duration: 0.7, ease: "power2.in" }, 14.3);
+
+    window.__timelines["main"] = tl;
+  </script>
+</body>
+</html>
