@@ -52,7 +52,7 @@ export function HealthDataSection() {
       >
         {/* AFib iPad — furthest back (DOM first = lowest z-order) */}
         <div
-          data-parallax-y="-18"
+          data-parallax-y="-35"
           className="absolute overflow-hidden pointer-events-none"
           style={{ height: "204.705px", left: "498.66px", top: "111.69px", width: "242.954px" }}
         >
@@ -67,7 +67,7 @@ export function HealthDataSection() {
 
         {/* iPad — center, in front of AFib */}
         <div
-          data-parallax-y="-10"
+          data-parallax-y="-20"
           className="absolute pointer-events-none"
           style={{ height: "316.675px", left: "127.46px", top: 0, width: "521.415px" }}
         >
@@ -81,7 +81,7 @@ export function HealthDataSection() {
 
         {/* iPhone left — Last Night's Sleep */}
         <div
-          data-parallax-y="-14"
+          data-parallax-y="-28"
           className="absolute pointer-events-none"
           style={{ height: "225.132px", left: "42.64px", top: "74.74px", width: "136.012px" }}
         >
@@ -95,7 +95,7 @@ export function HealthDataSection() {
 
         {/* Apple Watch — bottom left */}
         <div
-          data-parallax-y="-8"
+          data-parallax-y="-16"
           className="absolute overflow-hidden pointer-events-none"
           style={{ height: "63.826px", left: "-0.19px", top: "148px", width: "59.627px" }}
         >
