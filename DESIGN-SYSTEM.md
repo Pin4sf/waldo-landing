@@ -53,6 +53,8 @@ Tools (Codex, Antigravity) must read this file before touching any section. Item
 - **Action `#2388FF`** = functional UI state — checkbox tick, radio dot, toggle track, selected dropdown rows. Does **not** count toward the accent rule.
 
 **Color washes:** the **hero orange dome only**. Every other section uses neutral tier surfaces.
+The dome is the provided `public/assets/hero-bg.svg` asset — **never replaced or restyled**. Display
+it with `object-cover` at aspect **`1440 / 720`** (a shallow arc); never `object-fill` (it stretches/distorts the asset on narrow screens).
 
 ---
 
@@ -89,7 +91,7 @@ Smallest's DNA we adopt: **negative tracking** (`-0.01em` everywhere; headlines 
 
 | Token | Font | Size | Wt | LH | Tracking | Use |
 |---|---|---|---|---|---|---|
-| `display` | Corben | `clamp(2.25rem,1rem+5vw,3.875rem)` (36→62) | 400 | 1.06 | -0.02em | hero h1 |
+| `display` | Corben | `clamp(1.875rem,1.2rem+3vw,3.875rem)` (30→62) | 400 | 1.06 | -0.02em | hero h1 |
 | `h1` | Corben | `clamp(2rem,1.4rem+2.4vw,3rem)` (32→48) | 400 | 1.10 | -0.02em | section headline |
 | `h2` | Corben | `clamp(1.5rem,1.2rem+1.4vw,2rem)` (24→32) | 400 | 1.18 | -0.01em | sub-headline |
 | `h3` | SF Pro Rounded | `1.25rem` (20) | 500 | 1.30 | -0.01em | card title / subhead |
@@ -112,8 +114,8 @@ Smallest's DNA we adopt: **negative tracking** (`-0.01em` everywhere; headlines 
 
 - **Spacing** (8px base): `4 · 8 · 12 · 16 · 24 · 32 · 48 · 64 · 80 · 128`. Section rhythm `clamp(6rem, 4rem + 8vw, 10rem)` (96→160px).
 - **Grid** ⟡ DEFAULT: 12-col, content max **1200px**, gutters `clamp(1rem, .5rem + 3vw, 2.5rem)`, column gap `24px`.
-- **Radius:** card `24px` · bento `≤36px` · pill (text/number buttons, toggles) `999px` · input / icon-button / select `12px` · checkbox `6px` · small `12–16px`.
-- **Shadow:** card `0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.05)` · elevated `0 2px 4px/.04, 0 16px 40px/.06` · floating hero card `0 22px 46px rgba(26,26,26,.16)`.
+- **Radius:** card `24px` · bento `≤36px` · pill (text/number buttons, toggles) `999px` · input / icon-button / select `12px` · **small accessory tiles `16px`** (heart/stress-type tiles — keep `24px` only on main cards) · checkbox `6px`.
+- **Shadow:** card `0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.05)` · elevated `0 2px 4px/.04, 0 16px 40px/.06` · floating hero card `0 20px 48px rgba(26,26,26,.08), 0 2px 8px rgba(26,26,26,.04)`.
 
 ### Nested boxes ("boxes within boxes")
 
