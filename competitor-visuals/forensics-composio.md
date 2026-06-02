@@ -4409,3 +4409,108 @@
 - **Color system:** Promote the most frequent background/text colors into variables, then layer accent colors from buttons, links, and hero media.
 - **Media system:** Use listed images, videos, SVGs, canvas/WebGL presence, and background images to decide which visuals are real media versus CSS decoration.
 - **Motion system:** Copy only transitions/animations visible in computed styles, then add scroll/media movement where the DOM indicates video, canvas, marquees, or sticky positioning.
+---
+
+## BLOCK 7 — responsive-breakpoints.md
+
+**Responsive extraction:** 2026-06-02T09:02:17.684Z
+**Method:** headless Chrome measured live computed styles at 1440px, 1024px, 768px, 430px, 375px viewport widths; CSS media queries were read from inline styles and linked stylesheets when reachable.
+
+### CSS Breakpoint Inventory
+
+| Metric | Value |
+|---|---:|
+| Total media query rules found | 20 |
+| Unique media query expressions | 9 |
+
+#### Width Tokens Detected
+
+| Width token | Occurrences |
+|---|---:|
+| `40rem` | 2 |
+| `48rem` | 7 |
+| `64rem` | 4 |
+| `80rem` | 2 |
+| `96rem` | 1 |
+
+#### Most Frequent Media Queries
+
+| Query | Count |
+|---|---:|
+| `(min-width:48rem)` | 6 |
+| `(min-width:64rem)` | 4 |
+| `(min-width:40rem)` | 2 |
+| `(min-width:80rem)` | 2 |
+| `(hover:hover)` | 2 |
+| `(min-width:96rem)` | 1 |
+| `not all and (min-width:48rem)` | 1 |
+| `(prefers-color-scheme:dark)` | 1 |
+| `(prefers-reduced-motion:reduce)` | 1 |
+
+### Measured Breakpoint Behavior
+
+| Breakpoint | Document height | Body | Nav | H1 | H2 | Hero / first section | CTA | Primary media |
+|---|---:|---|---|---|---|---|---|---|
+| desktop-xl (1440x1000) | 8382px | abcDiatype, "abcDiatype Fallback", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; 16px; bg rgb(246, 246, 246) | <nav.flex.w-full.items-center.justify-between> static/flex 1222x33; links: Composio home, PRODUCTS, SOLUTIONS, COMPOSIO FOR YOU ..., DEVELOPER PLATFOR..., CLI Install tools..., ENTERPRISE Govern..., CLAUDE, CODEX, OPENCLAW; menu visible | Your agent decides what to do.; 64px/64px; 400; center; 817x64 | WATCH COMPOSIO IN ACTION; 14px/20px; 400; start; 306x20 | <header.fixed.top-0.left-0.z-50> 1240x51; flex; bg rgba(0, 0, 0, 0) | GET A DEMO; 116x43; radius 0px; padding 10px 16px | <canvas> 1440x660 |
+| desktop/tablet edge (1024x900) | 8495px | abcDiatype, "abcDiatype Fallback", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; 16px; bg rgb(246, 246, 246) | <nav.flex.w-full.items-center.justify-between> static/flex 974x33; links: Composio home, PRODUCTS, SOLUTIONS, COMPOSIO FOR YOU ..., DEVELOPER PLATFOR..., CLI Install tools..., ENTERPRISE Govern..., CLAUDE, CODEX, OPENCLAW; menu visible | Your agent decides what to do.; 64px/64px; 400; center; 817x64 | WATCH COMPOSIO IN ACTION; 14px/20px; 400; start; 247x20 | <header.fixed.top-0.left-0.z-50> 992x51; flex; bg rgba(0, 0, 0, 0) | GET A DEMO; 116x43; radius 0px; padding 10px 16px | <canvas> 1024x660 |
+| tablet (768x900) | 9828px | abcDiatype, "abcDiatype Fallback", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; 16px; bg rgb(246, 246, 246) | <nav.flex.w-full.items-center.justify-between> static/flex 718x33; links: Composio home, GET STARTED, Toggle menu; menu visible | Your agent decides what to do.; 48px/48px; 400; center; 613x48 | Your agents are smart. Their tools ...; 36px/39.6px; 400; start; 540x79 | <header.fixed.top-0.left-0.z-50> 736x51; flex; bg rgba(0, 0, 0, 0) | GET A DEMO; 116x43; radius 0px; padding 10px 16px | <canvas> 768x588 |
+| mobile (430x900) | 9591px | abcDiatype, "abcDiatype Fallback", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; 16px; bg rgb(246, 246, 246) | <nav.flex.w-full.items-center.justify-between> static/flex 414x33; links: Composio home, GET STARTED, Toggle menu; menu visible | Your agent decides what to do.; 36px/36px; 400; center; 287x72 | Your agents are smart. Their tools ...; 24px/26.4px; 400; start; 398x53 | <header.fixed.top-0.left-0.z-50> 430x50; flex; bg rgba(0, 0, 0, 0) | GET A DEMO; 116x43; radius 0px; padding 10px 16px | <canvas> 430x900 |
+| compact-mobile (375x812) | 9701px | abcDiatype, "abcDiatype Fallback", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; 16px; bg rgb(246, 246, 246) | <nav.flex.w-full.items-center.justify-between> static/flex 359x33; links: Composio home, GET STARTED, Toggle menu; menu visible | Your agent decides what to do.; 36px/36px; 400; center; 287x72 | Your agents are smart. Their tools ...; 24px/26.4px; 400; start; 343x53 | <header.fixed.top-0.left-0.z-50> 375x50; flex; bg rgba(0, 0, 0, 0) | GET A DEMO; 116x43; radius 0px; padding 10px 16px | <canvas> 375x812 |
+
+### Component/Card Samples by Breakpoint
+
+#### desktop-xl (1440px)
+- `<header.fixed.top-0.left-0.z-50>` 1240x51, display `flex`, flex `column`, grid `none` — PRODUCTS SOLUTIONS FOR YOU COMPOSIO FOR YOU Connect your AI to 1,000+
+- `<li.relative>` 224x21, display `list-item`, flex `row`, grid `none` — PRODUCTS SOLUTIONS FOR YOU COMPOSIO FOR YOU Connect your AI to 1,000+
+- `<div.grid.gap-0>` 600x342, display `grid`, flex `row`, grid `300px 300px` — FOR YOU COMPOSIO FOR YOU Connect your AI to 1,000+ apps with secure au
+- `<li>` 300x103, display `list-item`, flex `row`, grid `none` — COMPOSIO FOR YOU Connect your AI to 1,000+ apps with secure auth and d
+- `<li>` 300x104, display `list-item`, flex `row`, grid `none` — DEVELOPER PLATFORM SDK, tool execution, and agent infrastructure for p
+- `<li>` 300x104, display `list-item`, flex `row`, grid `none` — CLI Install tools, manage auth, and run workflows from the terminal.
+- Mobile/menu controls visible: `<button.flex.h-[56px].shrink-0.cursor-pointer>` 298x56 (Opennote →)
+
+#### desktop/tablet edge (1024px)
+- `<header.fixed.top-0.left-0.z-50>` 992x51, display `flex`, flex `column`, grid `none` — PRODUCTS SOLUTIONS FOR YOU COMPOSIO FOR YOU Connect your AI to 1,000+
+- `<li.relative>` 224x21, display `list-item`, flex `row`, grid `none` — PRODUCTS SOLUTIONS FOR YOU COMPOSIO FOR YOU Connect your AI to 1,000+
+- `<div.grid.gap-0>` 600x342, display `grid`, flex `row`, grid `300px 300px` — FOR YOU COMPOSIO FOR YOU Connect your AI to 1,000+ apps with secure au
+- `<li>` 300x103, display `list-item`, flex `row`, grid `none` — COMPOSIO FOR YOU Connect your AI to 1,000+ apps with secure auth and d
+- `<li>` 300x104, display `list-item`, flex `row`, grid `none` — DEVELOPER PLATFORM SDK, tool execution, and agent infrastructure for p
+- `<li>` 300x104, display `list-item`, flex `row`, grid `none` — CLI Install tools, manage auth, and run workflows from the terminal.
+- Mobile/menu controls visible: `<button.flex.h-[56px].shrink-0.cursor-pointer>` 298x56 (Opennote →)
+
+#### tablet (768px)
+- `<header.fixed.top-0.left-0.z-50>` 736x51, display `flex`, flex `column`, grid `none` — GET STARTED PRODUCTS FOR YOU COMPOSIO FOR YOU Connect your AI to 1,000
+- `<li>` 718x37, display `list-item`, flex `row`, grid `none` — PRODUCTS FOR YOU COMPOSIO FOR YOU Connect your AI to 1,000+ apps with
+- `<div.grid.grid-cols-2>` 718x319, display `grid`, flex `row`, grid `359px 359px` — FOR YOU COMPOSIO FOR YOU Connect your AI to 1,000+ apps with secure au
+- `<li>` 718x37, display `list-item`, flex `row`, grid `none` — SOLUTIONS FOR AGENTS CLAUDE CODEX OPENCLAW CURSOR HERMES BUILT FOR OFF
+- `<div.grid.grid-cols-2>` 718x132, display `grid`, flex `row`, grid `359px 359px` — CLAUDE CODEX OPENCLAW CURSOR HERMES
+- `<div.grid.grid-cols-2>` 718x246, display `grid`, flex `row`, grid `359px 359px` — OFFICE WORK SALES MARKETING PRODUCT & DESIGN CUSTOMER SUPPORT ENGINEER
+- Mobile/menu controls visible: `<button.flex.size-8.flex-col.items-center>` 32x32 (Toggle menu); `<button.flex.h-[56px].shrink-0.cursor-pointer>` 298x56 (Opennote →)
+
+#### mobile (430px)
+- `<header.fixed.top-0.left-0.z-50>` 430x50, display `flex`, flex `column`, grid `none` — GET STARTED PRODUCTS FOR YOU COMPOSIO FOR YOU Connect your AI to 1,000
+- `<li>` 414x37, display `list-item`, flex `row`, grid `none` — PRODUCTS FOR YOU COMPOSIO FOR YOU Connect your AI to 1,000+ apps with
+- `<div.grid.grid-cols-2>` 414x379, display `grid`, flex `row`, grid `207px 207px` — FOR YOU COMPOSIO FOR YOU Connect your AI to 1,000+ apps with secure au
+- `<li>` 414x37, display `list-item`, flex `row`, grid `none` — SOLUTIONS FOR AGENTS CLAUDE CODEX OPENCLAW CURSOR HERMES BUILT FOR OFF
+- `<div.grid.grid-cols-2>` 414x132, display `grid`, flex `row`, grid `207px 207px` — CLAUDE CODEX OPENCLAW CURSOR HERMES
+- `<div.grid.grid-cols-2>` 414x246, display `grid`, flex `row`, grid `207px 207px` — OFFICE WORK SALES MARKETING PRODUCT & DESIGN CUSTOMER SUPPORT ENGINEER
+- Mobile/menu controls visible: `<button.flex.size-8.flex-col.items-center>` 32x32 (Toggle menu)
+
+#### compact-mobile (375px)
+- `<header.fixed.top-0.left-0.z-50>` 375x50, display `flex`, flex `column`, grid `none` — GET STARTED PRODUCTS FOR YOU COMPOSIO FOR YOU Connect your AI to 1,000
+- `<li>` 359x37, display `list-item`, flex `row`, grid `none` — PRODUCTS FOR YOU COMPOSIO FOR YOU Connect your AI to 1,000+ apps with
+- `<div.grid.grid-cols-2>` 359x419, display `grid`, flex `row`, grid `179.5px 179.5px` — FOR YOU COMPOSIO FOR YOU Connect your AI to 1,000+ apps with secure au
+- `<li>` 359x37, display `list-item`, flex `row`, grid `none` — SOLUTIONS FOR AGENTS CLAUDE CODEX OPENCLAW CURSOR HERMES BUILT FOR OFF
+- `<div.grid.grid-cols-2>` 359x132, display `grid`, flex `row`, grid `179.5px 179.5px` — CLAUDE CODEX OPENCLAW CURSOR HERMES
+- `<div.grid.grid-cols-2>` 359x330, display `grid`, flex `row`, grid `179.5px 179.5px` — OFFICE WORK SALES MARKETING PRODUCT & DESIGN CUSTOMER SUPPORT ENGINEER
+- Mobile/menu controls visible: `<button.flex.size-8.flex-col.items-center>` 32x32 (Toggle menu)
+
+### Responsive Behavior Notes
+
+- H1 scales as desktop-xl: 64px/64px, 817x64, center; desktop/tablet edge: 64px/64px, 817x64, center; tablet: 48px/48px, 613x48, center; mobile: 36px/36px, 287x72, center; compact-mobile: 36px/36px, 287x72, center.
+- Navigation behavior: desktop-xl: static, flex, 1222x33, links=10, menu control visible; desktop/tablet edge: static, flex, 974x33, links=10, menu control visible; tablet: static, flex, 718x33, links=3, menu control visible; mobile: static, flex, 414x33, links=3, menu control visible; compact-mobile: static, flex, 359x33, links=3, menu control visible.
+- Hero/first-section geometry: desktop-xl: <header.fixed.top-0.left-0.z-50> 1240x51 at y=16; desktop/tablet edge: <header.fixed.top-0.left-0.z-50> 992x51 at y=16; tablet: <header.fixed.top-0.left-0.z-50> 736x51 at y=16; mobile: <header.fixed.top-0.left-0.z-50> 430x50 at y=0; compact-mobile: <header.fixed.top-0.left-0.z-50> 375x50 at y=0.
+- Primary CTA geometry: desktop-xl: 116x43, radius 0px, padding 10px 16px; desktop/tablet edge: 116x43, radius 0px, padding 10px 16px; tablet: 116x43, radius 0px, padding 10px 16px; mobile: 116x43, radius 0px, padding 10px 16px; compact-mobile: 116x43, radius 0px, padding 10px 16px.
+- Media scaling: desktop-xl: <canvas> 1440x660, object-fit ; desktop/tablet edge: <canvas> 1024x660, object-fit ; tablet: <canvas> 768x588, object-fit ; mobile: <canvas> 430x900, object-fit ; compact-mobile: <canvas> 375x812, object-fit .
+- Component density sample: desktop-xl: 8 sampled cards/components; desktop/tablet edge: 8 sampled cards/components; tablet: 8 sampled cards/components; mobile: 8 sampled cards/components; compact-mobile: 8 sampled cards/components.
+- Treat the CSS width tokens above as implementation breakpoints and the measured table as behavioral breakpoints; generated builders may use class changes, container constraints, and source-order overrides in addition to explicit media queries.
+- Rebuild priority: preserve the measured hierarchy changes first (type size, nav mode, hero/media dimensions, CTA geometry), then tune secondary card/grid wrapping from the component samples.

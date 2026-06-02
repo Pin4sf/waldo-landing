@@ -2900,3 +2900,122 @@
 - **Color system:** Promote the most frequent background/text colors into variables, then layer accent colors from buttons, links, and hero media.
 - **Media system:** Use listed images, videos, SVGs, canvas/WebGL presence, and background images to decide which visuals are real media versus CSS decoration.
 - **Motion system:** Copy only transitions/animations visible in computed styles, then add scroll/media movement where the DOM indicates video, canvas, marquees, or sticky positioning.
+---
+
+## BLOCK 7 — responsive-breakpoints.md
+
+**Responsive extraction:** 2026-06-02T09:03:26.034Z
+**Method:** headless Chrome measured live computed styles at 1440px, 1024px, 768px, 430px, 375px viewport widths; CSS media queries were read from inline styles and linked stylesheets when reachable.
+
+### CSS Breakpoint Inventory
+
+| Metric | Value |
+|---|---:|
+| Total media query rules found | 41 |
+| Unique media query expressions | 19 |
+
+#### Width Tokens Detected
+
+| Width token | Occurrences |
+|---|---:|
+| `40rem` | 6 |
+| `48rem` | 2 |
+| `64rem` | 2 |
+| `80rem` | 2 |
+| `96rem` | 2 |
+| `430px` | 1 |
+| `556px` | 1 |
+| `600px` | 1 |
+| `640px` | 1 |
+| `767px` | 1 |
+| `768px` | 5 |
+| `1630px` | 1 |
+
+#### Most Frequent Media Queries
+
+| Query | Count |
+|---|---:|
+| `(hover:hover)` | 9 |
+| `(min-width:40rem)` | 6 |
+| `(min-width:768px)` | 4 |
+| `(forced-colors:active)` | 3 |
+| `(min-width:48rem)` | 2 |
+| `(min-width:64rem)` | 2 |
+| `(min-width:80rem)` | 2 |
+| `(min-width:96rem)` | 2 |
+| `(hover:none) and (pointer:coarse)` | 1 |
+| `(max-width:600px)` | 1 |
+| `(prefers-reduced-motion)` | 1 |
+| `(max-width:768px)` | 1 |
+| `(prefers-contrast:high)` | 1 |
+| `(prefers-reduced-motion:reduce)` | 1 |
+| `(max-width:640px)` | 1 |
+| `(min-width:556px)` | 1 |
+
+### Measured Breakpoint Behavior
+
+| Breakpoint | Document height | Body | Nav | H1 | H2 | Hero / first section | CTA | Primary media |
+|---|---:|---|---|---|---|---|---|---|
+| desktop-xl (1440x1000) | 5278px | system-ui, -apple-system, "system-ui", "Segoe UI", Roboto, sans-serif; 16px; bg rgb(252, 251, 248) | <nav.max-w-7xl.mx-auto.px-6.h-16> static/flex 1280x64; links: <a.flex.items-cen..., Skill Store, Pricing, Blog, Tools, Try Happycapy; menu visible | The agent-native computer; 72px/79.2px; 400; left; 499x158 | Meet Happycapy; 60px/60px; 400; center; 1232x60 | <header.fixed.top-0.w-full.z-50> 1440x65; block; bg oklab(0.974063 0.00123319 0.00729477 / 0.8) | Try Happycapy; 131x40; radius 3.35544e+07px; padding 8px 16px | <video.w-full.h-full.absolute.top-0> 733x488 |
+| desktop/tablet edge (1024x900) | 4543px | system-ui, -apple-system, "system-ui", "Segoe UI", Roboto, sans-serif; 16px; bg rgb(252, 251, 248) | <nav.max-w-7xl.mx-auto.px-6.h-16> static/flex 1024x64; links: <a.flex.items-cen..., Skill Store, Pricing, Blog, Tools, Try Happycapy; menu visible | The agent-native computer; 72px/79.2px; 400; left; 373x238 | Meet Happycapy; 60px/60px; 400; center; 976x60 | <header.fixed.top-0.w-full.z-50> 1024x65; block; bg oklab(0.974063 0.00123319 0.00729477 / 0.8) | Try Happycapy; 131x40; radius 3.35544e+07px; padding 8px 16px | <video.w-full.h-full.absolute.top-0> 555x370 |
+| tablet (768x900) | 4832px | system-ui, -apple-system, "system-ui", "Segoe UI", Roboto, sans-serif; 16px; bg rgb(252, 251, 248) | <nav.max-w-7xl.mx-auto.px-6.h-16> static/flex 768x64; links: <a.flex.items-cen..., Skill Store, Pricing, Blog, Tools, Try Happycapy; menu visible | The agent-native computer; 72px/79.2px; 400; center; 646x79 | Meet Happycapy; 60px/60px; 400; center; 720x60 | <header.fixed.top-0.w-full.z-50> 768x65; block; bg oklab(0.974063 0.00123319 0.00729477 / 0.8) | Try Happycapy; 131x40; radius 3.35544e+07px; padding 8px 16px | <video.w-full.h-full.absolute.top-0> 720x480 |
+| mobile (430x900) | 5423px | system-ui, -apple-system, "system-ui", "Segoe UI", Roboto, sans-serif; 16px; bg rgb(252, 251, 248) | <nav.max-w-7xl.mx-auto.px-6.h-16> static/flex 430x64; links: <a.flex.items-cen..., Menu, Try; menu visible | The agent-native computer; 36px/39.6px; 400; center; 364x40 | Meet Happycapy; 36px/40px; 400; center; 382x40 | <header.fixed.top-0.w-full.z-50> 430x65; block; bg oklab(0.974063 0.00123319 0.00729477 / 0.8) | Try; 53x40; radius 3.35544e+07px; padding 8px 16px | <video.w-full.h-full.absolute.top-0> 382x255 |
+| compact-mobile (375x812) | 5290px | system-ui, -apple-system, "system-ui", "Segoe UI", Roboto, sans-serif; 16px; bg rgb(252, 251, 248) | <nav.max-w-7xl.mx-auto.px-6.h-16> static/flex 375x64; links: <a.flex.items-cen..., Menu, Try; menu visible | The agent-native computer; 36px/39.6px; 400; center; 327x40 | Meet Happycapy; 36px/40px; 400; center; 327x40 | <header.fixed.top-0.w-full.z-50> 375x65; block; bg oklab(0.974063 0.00123319 0.00729477 / 0.8) | Try; 53x40; radius 3.35544e+07px; padding 8px 16px | <video.w-full.h-full.absolute.top-0> 327x218 |
+
+### Component/Card Samples by Breakpoint
+
+#### desktop-xl (1440px)
+- `<div.grid.lg:grid-cols-[5fr_7fr].gap-12.lg:gap-6>` 1280x488, display `grid`, flex `row`, grid `523.328px 732.656px` — The agent-native computer For the rest of us. Launch in browser OpenCl
+- `<div.grid.md:grid-cols-2.gap-20.items-center>` 1232x432, display `grid`, flex `row`, grid `576px 576px` — 01 Run Claude Code, with skills built in. Directly in your browser. 02
+- `<div.grid.md:grid-cols-2.gap-8.md:gap-12>` 1232x395, display `grid`, flex `row`, grid `592px 592px` — From CLI to GUI. What once lived in a command line now becomes a live,
+- `<div.grid.md:grid-cols-2.gap-8.md:gap-12>` 1232x311, display `grid`, flex `row`, grid `592px 592px` — Skills are the new software. Forget downloading apps. Just tell your a
+- `<div.grid.md:grid-cols-2.gap-8.md:gap-12>` 1232x311, display `grid`, flex `row`, grid `592px 592px` — Agents work while you rest. Start a task. Take a nap. Go to sleep. Whe
+- `<div.grid.md:grid-cols-2.gap-12.pt-12>` 1232x184, display `grid`, flex `row`, grid `592px 592px` — Building agent-native computer. RESOURCES Blog Tools Docs Feedback COM
+- Mobile/menu controls visible: `<div.absolute.hover-screen-area.cursor-pointer>` 164x146 (Open Macintosh demo)
+
+#### desktop/tablet edge (1024px)
+- `<div.grid.lg:grid-cols-[5fr_7fr].gap-12.lg:gap-6>` 976x437, display `grid`, flex `row`, grid `396.656px 555.344px` — The agent-native computer For the rest of us. Launch in browser OpenCl
+- `<div.grid.md:grid-cols-2.gap-20.items-center>` 976x342, display `grid`, flex `row`, grid `448px 448px` — 01 Run Claude Code, with skills built in. Directly in your browser. 02
+- `<div.grid.md:grid-cols-2.gap-8.md:gap-12>` 976x261, display `grid`, flex `row`, grid `464px 464px` — From CLI to GUI. What once lived in a command line now becomes a live,
+- `<div.grid.md:grid-cols-2.gap-8.md:gap-12>` 976x244, display `grid`, flex `row`, grid `464px 464px` — Skills are the new software. Forget downloading apps. Just tell your a
+- `<div.grid.md:grid-cols-2.gap-8.md:gap-12>` 976x244, display `grid`, flex `row`, grid `464px 464px` — Agents work while you rest. Start a task. Take a nap. Go to sleep. Whe
+- `<div.grid.md:grid-cols-2.gap-12.pt-12>` 976x184, display `grid`, flex `row`, grid `464px 464px` — Building agent-native computer. RESOURCES Blog Tools Docs Feedback COM
+- Mobile/menu controls visible: `<div.absolute.hover-screen-area.cursor-pointer>` 129x97 (Open Macintosh demo)
+
+#### tablet (768px)
+- `<div.grid.lg:grid-cols-[5fr_7fr].gap-12.lg:gap-6>` 720x807, display `grid`, flex `row`, grid `720px` — The agent-native computer For the rest of us. Launch in browser OpenCl
+- `<div.grid.md:grid-cols-2.gap-20.items-center>` 720x478, display `grid`, flex `row`, grid `320px 320px` — 01 Run Claude Code, with skills built in. Directly in your browser. 02
+- `<div.grid.md:grid-cols-2.gap-8.md:gap-12>` 720x240, display `grid`, flex `row`, grid `336px 336px` — From CLI to GUI. What once lived in a command line now becomes a live,
+- `<div.grid.md:grid-cols-2.gap-8.md:gap-12>` 720x309, display `grid`, flex `row`, grid `336px 336px` — Skills are the new software. Forget downloading apps. Just tell your a
+- `<div.grid.md:grid-cols-2.gap-8.md:gap-12>` 720x240, display `grid`, flex `row`, grid `336px 336px` — Agents work while you rest. Start a task. Take a nap. Go to sleep. Whe
+- `<div.grid.md:grid-cols-2.gap-12.pt-12>` 720x184, display `grid`, flex `row`, grid `336px 336px` — Building agent-native computer. RESOURCES Blog Tools Docs Feedback COM
+- Mobile/menu controls visible: `<div.absolute.hover-screen-area.cursor-pointer>` 99x75 (Open Macintosh demo)
+
+#### mobile (430px)
+- `<div.grid.lg:grid-cols-[5fr_7fr].gap-12.lg:gap-6>` 382x529, display `grid`, flex `row`, grid `382px` — The agent-native computer For the rest of us. Launch in browser OpenCl
+- `<div.grid.md:grid-cols-2.gap-20.items-center>` 398x721, display `grid`, flex `row`, grid `398px` — 01 Run Claude Code, with skills built in. Directly in your browser. 02
+- `<div.grid.md:grid-cols-2.gap-8.md:gap-12>` 398x521, display `grid`, flex `row`, grid `398px` — From CLI to GUI. What once lived in a command line now becomes a live,
+- `<div.grid.md:grid-cols-2.gap-8.md:gap-12>` 398x521, display `grid`, flex `row`, grid `398px` — Skills are the new software. Forget downloading apps. Just tell your a
+- `<div.grid.md:grid-cols-2.gap-8.md:gap-12>` 398x521, display `grid`, flex `row`, grid `398px` — Agents work while you rest. Start a task. Take a nap. Go to sleep. Whe
+- `<div.grid.md:grid-cols-2.gap-12.pt-12>` 382x504, display `grid`, flex `row`, grid `382px` — Building agent-native computer. RESOURCES Blog Tools Docs Feedback COM
+- Mobile/menu controls visible: `<button.w-10.h-10.flex.items-center>` 40x40 (Menu); `<div.absolute.hover-screen-area.cursor-pointer>` 125x94 (Open Macintosh demo)
+
+#### compact-mobile (375px)
+- `<div.grid.lg:grid-cols-[5fr_7fr].gap-12.lg:gap-6>` 327x516, display `grid`, flex `row`, grid `327px` — The agent-native computer For the rest of us. Launch in browser OpenCl
+- `<div.grid.md:grid-cols-2.gap-20.items-center>` 343x761, display `grid`, flex `row`, grid `343px` — 01 Run Claude Code, with skills built in. Directly in your browser. 02
+- `<div.grid.md:grid-cols-2.gap-8.md:gap-12>` 343x486, display `grid`, flex `row`, grid `343px` — From CLI to GUI. What once lived in a command line now becomes a live,
+- `<div.grid.md:grid-cols-2.gap-8.md:gap-12>` 343x486, display `grid`, flex `row`, grid `343px` — Skills are the new software. Forget downloading apps. Just tell your a
+- `<div.grid.md:grid-cols-2.gap-8.md:gap-12>` 343x486, display `grid`, flex `row`, grid `343px` — Agents work while you rest. Start a task. Take a nap. Go to sleep. Whe
+- `<div.grid.md:grid-cols-2.gap-12.pt-12>` 327x504, display `grid`, flex `row`, grid `327px` — Building agent-native computer. RESOURCES Blog Tools Docs Feedback COM
+- Mobile/menu controls visible: `<button.w-10.h-10.flex.items-center>` 40x40 (Menu); `<div.absolute.hover-screen-area.cursor-pointer>` 108x81 (Open Macintosh demo)
+
+### Responsive Behavior Notes
+
+- H1 scales as desktop-xl: 72px/79.2px, 499x158, left; desktop/tablet edge: 72px/79.2px, 373x238, left; tablet: 72px/79.2px, 646x79, center; mobile: 36px/39.6px, 364x40, center; compact-mobile: 36px/39.6px, 327x40, center.
+- Navigation behavior: desktop-xl: static, flex, 1280x64, links=6, menu control visible; desktop/tablet edge: static, flex, 1024x64, links=6, menu control visible; tablet: static, flex, 768x64, links=6, menu control visible; mobile: static, flex, 430x64, links=3, menu control visible; compact-mobile: static, flex, 375x64, links=3, menu control visible.
+- Hero/first-section geometry: desktop-xl: <header.fixed.top-0.w-full.z-50> 1440x65 at y=0; desktop/tablet edge: <header.fixed.top-0.w-full.z-50> 1024x65 at y=0; tablet: <header.fixed.top-0.w-full.z-50> 768x65 at y=0; mobile: <header.fixed.top-0.w-full.z-50> 430x65 at y=0; compact-mobile: <header.fixed.top-0.w-full.z-50> 375x65 at y=0.
+- Primary CTA geometry: desktop-xl: 131x40, radius 3.35544e+07px, padding 8px 16px; desktop/tablet edge: 131x40, radius 3.35544e+07px, padding 8px 16px; tablet: 131x40, radius 3.35544e+07px, padding 8px 16px; mobile: 53x40, radius 3.35544e+07px, padding 8px 16px; compact-mobile: 53x40, radius 3.35544e+07px, padding 8px 16px.
+- Media scaling: desktop-xl: <video.w-full.h-full.absolute.top-0> 733x488, object-fit ; desktop/tablet edge: <video.w-full.h-full.absolute.top-0> 555x370, object-fit ; tablet: <video.w-full.h-full.absolute.top-0> 720x480, object-fit ; mobile: <video.w-full.h-full.absolute.top-0> 382x255, object-fit ; compact-mobile: <video.w-full.h-full.absolute.top-0> 327x218, object-fit .
+- Component density sample: desktop-xl: 8 sampled cards/components; desktop/tablet edge: 8 sampled cards/components; tablet: 8 sampled cards/components; mobile: 8 sampled cards/components; compact-mobile: 8 sampled cards/components.
+- Treat the CSS width tokens above as implementation breakpoints and the measured table as behavioral breakpoints; generated builders may use class changes, container constraints, and source-order overrides in addition to explicit media queries.
+- Rebuild priority: preserve the measured hierarchy changes first (type size, nav mode, hero/media dimensions, CTA geometry), then tune secondary card/grid wrapping from the component samples.

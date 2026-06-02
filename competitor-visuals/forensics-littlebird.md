@@ -3901,3 +3901,108 @@
 - **Color system:** Promote the most frequent background/text colors into variables, then layer accent colors from buttons, links, and hero media.
 - **Media system:** Use listed images, videos, SVGs, canvas/WebGL presence, and background images to decide which visuals are real media versus CSS decoration.
 - **Motion system:** Copy only transitions/animations visible in computed styles, then add scroll/media movement where the DOM indicates video, canvas, marquees, or sticky positioning.
+---
+
+## BLOCK 7 — responsive-breakpoints.md
+
+**Responsive extraction:** 2026-06-02T09:03:49.724Z
+**Method:** headless Chrome measured live computed styles at 1440px, 1024px, 768px, 430px, 375px viewport widths; CSS media queries were read from inline styles and linked stylesheets when reachable.
+
+### CSS Breakpoint Inventory
+
+| Metric | Value |
+|---|---:|
+| Total media query rules found | 22 |
+| Unique media query expressions | 7 |
+
+#### Width Tokens Detected
+
+| Width token | Occurrences |
+|---|---:|
+| `479px` | 5 |
+| `640px` | 2 |
+| `767px` | 4 |
+| `768px` | 3 |
+| `991px` | 4 |
+| `1024px` | 2 |
+| `1440px` | 2 |
+
+#### Most Frequent Media Queries
+
+| Query | Count |
+|---|---:|
+| `screen and (max-width:479px)` | 5 |
+| `screen and (max-width:991px)` | 4 |
+| `screen and (max-width:767px)` | 4 |
+| `(min-width:768px)` | 3 |
+| `(min-width:640px)` | 2 |
+| `(min-width:1024px)` | 2 |
+| `screen and (min-width:1440px)` | 2 |
+
+### Measured Breakpoint Behavior
+
+| Breakpoint | Document height | Body | Nav | H1 | H2 | Hero / first section | CTA | Primary media |
+|---|---:|---|---|---|---|---|---|---|
+| desktop-xl (1440x1000) | 11404px | "Sohne Buch", Arial, sans-serif; 14px; bg rgb(244, 237, 217) | <nav.nav-menu.w-nav-menu> relative/block 476x48; links: Pricing, Privacy, FAQs; menu visible | Forget nothing; 80px/78.4px; 400; center; 930x78 | Better context, better output; 50px/49px; 400; center; 600x49 | <div.hero> 1440x426; flex; bg rgba(0, 0, 0, 0) | Downloads; 69x20; radius 0px; padding 0px | <video#293a32d6-31e4-ac65-f80d-3ff00a67d7f8-video> 1411x900 |
+| desktop/tablet edge (1024x900) | 11767px | "Sohne Buch", Arial, sans-serif; 14px; bg rgb(244, 237, 217) | <nav.nav-menu.w-nav-menu> relative/block 476x48; links: Pricing, Privacy, FAQs; menu visible | Forget nothing; 80px/78.4px; 400; center; 922x78 | Better context, better output; 50px/49px; 400; center; 600x49 | <div.hero> 1024x426; flex; bg rgba(0, 0, 0, 0) | Downloads; 69x20; radius 0px; padding 0px | <video#293a32d6-31e4-ac65-f80d-3ff00a67d7f8-video> 1004x600 |
+| tablet (768x900) | 14658px | "Sohne Buch", Arial, sans-serif; 14px; bg rgb(244, 237, 217) | <div.navbar.w-nav> sticky/block 768x92; links: <a.w-nav-brand.w-...; menu visible | Forget nothing; 70px/68.6px; 400; center; 760x69 | Better context, better output; 50px/49px; 400; center; 569x49 | <div.hero> 768x442; flex; bg rgba(0, 0, 0, 0) | Downloads; 69x20; radius 0px; padding 0px | <video#293a32d6-31e4-ac65-f80d-3ff00a67d7f8-video> 753x600 |
+| mobile (430x900) | 12546px | "Sohne Buch", Arial, sans-serif; 14px; bg rgb(244, 237, 217) | <div.navbar.w-nav> sticky/block 430x86; links: <a.w-nav-brand.w-...; menu visible | Remember everything; 52px/52px; 400; center; 426x104 | Better context, better output; 40px/39.2px; 400; center; 325x78 | <div.hero> 430x466; flex; bg rgba(0, 0, 0, 0) | Downloads; 69x20; radius 0px; padding 0px | <video#293a32d6-31e4-ac65-f80d-3ff00a67d7f8-video> 421x500 |
+| compact-mobile (375x812) | 12923px | "Sohne Buch", Arial, sans-serif; 14px; bg rgb(244, 237, 217) | <div.navbar.w-nav> sticky/block 375x86; links: <a.w-nav-brand.w-...; menu visible | Remember everything; 52px/52px; 400; center; 371x104 | Better context, better output; 40px/39.2px; 400; center; 325x78 | <div.hero> 375x492; flex; bg rgba(0, 0, 0, 0) | Downloads; 69x20; radius 0px; padding 0px | <video#293a32d6-31e4-ac65-f80d-3ff00a67d7f8-video> 368x500 |
+
+### Component/Card Samples by Breakpoint
+
+#### desktop-xl (1440px)
+- `<div.features-top>` 600x137, display `block`, flex `row`, grid `1fr` — Better context, better output Littlebird learns from your work across
+- `<h2.m-b-24.features_header>` 600x49, display `block`, flex `row`, grid `none` — Better context, better output
+- `<div#w-node-_69723373-5af1-c412-a32d-d9dd9bb76c57-b479f688.feature-tile>` 592x390, display `block`, flex `row`, grid `none` — Recall everything you’ve seen Find anything you've seen in seconds, wh
+- `<div.feature-card-text-wrapper>` 340x125, display `block`, flex `row`, grid `none` — Recall everything you’ve seen Find anything you've seen in seconds, wh
+- `<img.feature-gradient>` 592x592, display `block`, flex `row`, grid `none`
+- `<div.feature-tile>` 592x390, display `block`, flex `row`, grid `none` — See the full picture Littlebird understands how a conversation in Slac
+- Mobile/menu controls visible: `<nav.nav-menu.w-nav-menu>` 476x48 (Features Pricing Use Cases Company Priv...)
+
+#### desktop/tablet edge (1024px)
+- `<div.features-top>` 600x137, display `block`, flex `row`, grid `1fr` — Better context, better output Littlebird learns from your work across
+- `<h2.m-b-24.features_header>` 600x49, display `block`, flex `row`, grid `none` — Better context, better output
+- `<div#w-node-_69723373-5af1-c412-a32d-d9dd9bb76c57-b479f688.feature-tile>` 453x390, display `block`, flex `row`, grid `none` — Recall everything you’ve seen Find anything you've seen in seconds, wh
+- `<div.feature-card-text-wrapper>` 340x125, display `block`, flex `row`, grid `none` — Recall everything you’ve seen Find anything you've seen in seconds, wh
+- `<img.feature-gradient>` 453x453, display `block`, flex `row`, grid `none`
+- `<div.feature-tile>` 453x390, display `block`, flex `row`, grid `none` — See the full picture Littlebird understands how a conversation in Slac
+- Mobile/menu controls visible: `<nav.nav-menu.w-nav-menu>` 476x48 (Features Pricing Use Cases Company Priv...)
+
+#### tablet (768px)
+- `<div.features-top>` 600x153, display `flex`, flex `column`, grid `1fr` — Better context, better output Littlebird learns from your work across
+- `<h2.m-b-24.features_header>` 569x49, display `block`, flex `row`, grid `none` — Better context, better output
+- `<div#w-node-_69723373-5af1-c412-a32d-d9dd9bb76c57-b479f688.feature-tile>` 691x390, display `block`, flex `row`, grid `none` — Recall everything you’ve seen Find anything you've seen in seconds, wh
+- `<div.feature-card-text-wrapper>` 340x125, display `block`, flex `row`, grid `none` — Recall everything you’ve seen Find anything you've seen in seconds, wh
+- `<img.feature-gradient>` 691x691, display `block`, flex `row`, grid `none`
+- `<div.feature-tile>` 691x390, display `block`, flex `row`, grid `none` — See the full picture Littlebird understands how a conversation in Slac
+- Mobile/menu controls visible: `<div.menu-button.w-nav-button>` 60x60; `<div.w-icon-nav-menu>` 24x24
+
+#### mobile (430px)
+- `<div.features-top>` 387x179, display `flex`, flex `column`, grid `1fr` — Better context, better output Littlebird learns from your work across
+- `<h2.m-b-24.features_header>` 325x78, display `block`, flex `row`, grid `none` — Better context, better output
+- `<div#w-node-_69723373-5af1-c412-a32d-d9dd9bb76c57-b479f688.feature-tile>` 387x270, display `block`, flex `row`, grid `none` — Recall everything you’ve seen Find anything you've seen in seconds, wh
+- `<div.feature-card-text-wrapper>` 320x106, display `block`, flex `row`, grid `none` — Recall everything you’ve seen Find anything you've seen in seconds, wh
+- `<img.feature-gradient>` 387x387, display `block`, flex `row`, grid `none`
+- `<div.feature-tile>` 387x270, display `block`, flex `row`, grid `none` — See the full picture Littlebird understands how a conversation in Slac
+- Mobile/menu controls visible: `<div.menu-button.w-nav-button>` 60x60; `<div.w-icon-nav-menu>` 24x24
+
+#### compact-mobile (375px)
+- `<div.features-top>` 338x179, display `flex`, flex `column`, grid `1fr` — Better context, better output Littlebird learns from your work across
+- `<h2.m-b-24.features_header>` 325x78, display `block`, flex `row`, grid `none` — Better context, better output
+- `<div#w-node-_69723373-5af1-c412-a32d-d9dd9bb76c57-b479f688.feature-tile>` 338x270, display `block`, flex `row`, grid `none` — Recall everything you’ve seen Find anything you've seen in seconds, wh
+- `<div.feature-card-text-wrapper>` 274x126, display `block`, flex `row`, grid `none` — Recall everything you’ve seen Find anything you've seen in seconds, wh
+- `<img.feature-gradient>` 338x338, display `block`, flex `row`, grid `none`
+- `<div.feature-tile>` 338x270, display `block`, flex `row`, grid `none` — See the full picture Littlebird understands how a conversation in Slac
+- Mobile/menu controls visible: `<div.menu-button.w-nav-button>` 60x60; `<div.w-icon-nav-menu>` 24x24
+
+### Responsive Behavior Notes
+
+- H1 scales as desktop-xl: 80px/78.4px, 930x78, center; desktop/tablet edge: 80px/78.4px, 922x78, center; tablet: 70px/68.6px, 760x69, center; mobile: 52px/52px, 426x104, center; compact-mobile: 52px/52px, 371x104, center.
+- Navigation behavior: desktop-xl: relative, block, 476x48, links=3, menu control visible; desktop/tablet edge: relative, block, 476x48, links=3, menu control visible; tablet: sticky, block, 768x92, links=1, menu control visible; mobile: sticky, block, 430x86, links=1, menu control visible; compact-mobile: sticky, block, 375x86, links=1, menu control visible.
+- Hero/first-section geometry: desktop-xl: <div.hero> 1440x426 at y=80; desktop/tablet edge: <div.hero> 1024x426 at y=80; tablet: <div.hero> 768x442 at y=92; mobile: <div.hero> 430x466 at y=86; compact-mobile: <div.hero> 375x492 at y=86.
+- Primary CTA geometry: desktop-xl: 69x20, radius 0px, padding 0px; desktop/tablet edge: 69x20, radius 0px, padding 0px; tablet: 69x20, radius 0px, padding 0px; mobile: 69x20, radius 0px, padding 0px; compact-mobile: 69x20, radius 0px, padding 0px.
+- Media scaling: desktop-xl: <video#293a32d6-31e4-ac65-f80d-3ff00a67d7f8-video> 1411x900, object-fit ; desktop/tablet edge: <video#293a32d6-31e4-ac65-f80d-3ff00a67d7f8-video> 1004x600, object-fit ; tablet: <video#293a32d6-31e4-ac65-f80d-3ff00a67d7f8-video> 753x600, object-fit ; mobile: <video#293a32d6-31e4-ac65-f80d-3ff00a67d7f8-video> 421x500, object-fit ; compact-mobile: <video#293a32d6-31e4-ac65-f80d-3ff00a67d7f8-video> 368x500, object-fit .
+- Component density sample: desktop-xl: 8 sampled cards/components; desktop/tablet edge: 8 sampled cards/components; tablet: 8 sampled cards/components; mobile: 8 sampled cards/components; compact-mobile: 8 sampled cards/components.
+- Treat the CSS width tokens above as implementation breakpoints and the measured table as behavioral breakpoints; generated builders may use class changes, container constraints, and source-order overrides in addition to explicit media queries.
+- Rebuild priority: preserve the measured hierarchy changes first (type size, nav mode, hero/media dimensions, CTA geometry), then tune secondary card/grid wrapping from the component samples.

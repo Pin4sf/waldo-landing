@@ -3638,3 +3638,112 @@
 - **Color system:** Promote the most frequent background/text colors into variables, then layer accent colors from buttons, links, and hero media.
 - **Media system:** Use listed images, videos, SVGs, canvas/WebGL presence, and background images to decide which visuals are real media versus CSS decoration.
 - **Motion system:** Copy only transitions/animations visible in computed styles, then add scroll/media movement where the DOM indicates video, canvas, marquees, or sticky positioning.
+---
+
+## BLOCK 7 — responsive-breakpoints.md
+
+**Responsive extraction:** 2026-06-02T09:03:07.703Z
+**Method:** headless Chrome measured live computed styles at 1440px, 1024px, 768px, 430px, 375px viewport widths; CSS media queries were read from inline styles and linked stylesheets when reachable.
+
+### CSS Breakpoint Inventory
+
+| Metric | Value |
+|---|---:|
+| Total media query rules found | 485 |
+| Unique media query expressions | 26 |
+
+#### Width Tokens Detected
+
+| Width token | Occurrences |
+|---|---:|
+| `600px` | 1 |
+| `1024px` | 2 |
+
+#### Most Frequent Media Queries
+
+| Query | Count |
+|---|---:|
+| `(width<=599.98px)` | 133 |
+| `(width>=1025px)` | 114 |
+| `(width<=1024.98px)` | 98 |
+| `(width>=600px) and (width<=1024.98px)` | 39 |
+| `(width>=600px)` | 22 |
+| `(width>=1440px)` | 13 |
+| `(width<=1349.98px)` | 12 |
+| `(width>=1350px)` | 11 |
+| `(-ms-high-contrast:active),(forced-colors:active)` | 8 |
+| `(width>=1025px) and (width<=1439.98px)` | 6 |
+| `(width>=1580px)` | 6 |
+| `(prefers-reduced-motion:no-preference)` | 3 |
+| `(min-width:1024px)` | 2 |
+| `(width>=1690px)` | 2 |
+| `(width>=1025px) and (width<=1230px)` | 2 |
+| `(width<=380px)` | 2 |
+
+### Measured Breakpoint Behavior
+
+| Breakpoint | Document height | Body | Nav | H1 | H2 | Hero / first section | CTA | Primary media |
+|---|---:|---|---|---|---|---|---|---|
+| desktop-xl (1440x1000) | 7438px | "Google Sans", Arial, Helvetica, sans-serif; 16px; bg rgb(255, 255, 255) | <nav._links_11hxa_179> static/block 892x74; links: What Gemini Can Do, Gemini Live, Image Generation, Video Generation, Music Generation, Deep Research, Personal Intellig..., Canvas, Subscriptions, What's New; menu visible | Gemini Spark Your 24/7 personal AI ...; 96px/96px; 500; center; 1134x192 | Your most complex to‑dos, done.; 72px/72px; 500; center; 872x144 | <section#hero> 1440x2023; block; bg rgba(0, 0, 0, 0) | Try Gemini; 156x48; radius 60px; padding 0px 32px | <video.ready> 1320x677 |
+| desktop/tablet edge (1024x900) | 8640px | "Google Sans", Arial, Helvetica, sans-serif; 16px; bg rgb(255, 255, 255) | <nav> static/block 984x534; links: Gemini Live, Image Generation, Video Generation, Music Generation, Deep Research, Personal Intellig..., Canvas, Storybook, Apps, Gems; menu visible | Gemini Spark Your 24/7 personal AI ...; 72px/72px; 500; center; 720x216 | Your most complex to‑dos, done.; 56px/56px; 500; center; 720x112 | <section#hero> 1024x1496; block; bg rgba(0, 0, 0, 0) | Storybook; 93x30; radius 0px; padding 0px | <video.ready> 720x369 |
+| tablet (768x900) | 8606px | "Google Sans", Arial, Helvetica, sans-serif; 16px; bg rgb(255, 255, 255) | <nav> static/block 728x534; links: Gemini Live, Image Generation, Video Generation, Music Generation, Deep Research, Personal Intellig..., Canvas, Storybook, Apps, Gems; menu visible | Gemini Spark Your 24/7 personal AI ...; 72px/72px; 500; center; 688x216 | Your most complex to‑dos, done.; 56px/56px; 500; center; 688x112 | <section#hero> 768x1462; block; bg rgba(0, 0, 0, 0) | Storybook; 93x30; radius 0px; padding 0px | <video.ready> 688x353 |
+| mobile (430x900) | 7981px | "Google Sans", Arial, Helvetica, sans-serif; 16px; bg rgb(255, 255, 255) | <nav> static/block 390x534; links: Gemini Live, Image Generation, Video Generation, Music Generation, Deep Research, Personal Intellig..., Canvas, Storybook, Apps, Gems; menu visible | Gemini Spark Your 24/7 personal AI ...; 48px/48px; 500; center; 390x144 | Your most complex to‑dos, done.; 40px/38.4px; 500; center; 390x77 | <section#hero> 430x1184; block; bg rgba(0, 0, 0, 0) | Storybook; 93x30; radius 0px; padding 0px | <video.ready> 390x200 |
+| compact-mobile (375x812) | 8087px | "Google Sans", Arial, Helvetica, sans-serif; 16px; bg rgb(255, 255, 255) | <nav> static/block 335x534; links: Gemini Live, Image Generation, Video Generation, Music Generation, Deep Research, Personal Intellig..., Canvas, Storybook, Apps, Gems; menu visible | Gemini Spark Your 24/7 personal AI ...; 48px/48px; 500; center; 335x192 | Your most complex to‑dos, done.; 40px/38.4px; 500; center; 335x77 | <section#hero> 375x1173; block; bg rgba(0, 0, 0, 0) | Storybook; 93x30; radius 0px; padding 0px | <video.ready> 335x172 |
+
+### Component/Card Samples by Breakpoint
+
+#### desktop-xl (1440px)
+- `<li._linksListItem_11hxa_217>` 260x74, display `list-item`, flex `row`, grid `none` — What Gemini Can Do Gemini Live Image Generation Video Generation Music
+- `<li>` 1080x24, display `list-item`, flex `row`, grid `none` — Gemini Live
+- `<li>` 1080x24, display `list-item`, flex `row`, grid `none` — Image Generation
+- `<li>` 1080x24, display `list-item`, flex `row`, grid `none` — Video Generation
+- `<li>` 1080x24, display `list-item`, flex `row`, grid `none` — Music Generation
+- `<li>` 1080x24, display `list-item`, flex `row`, grid `none` — Deep Research
+- Mobile/menu controls visible: `<button._link_11hxa_179._linkWithSubmenu_11hxa_290._mainlink_11hxa_263>` 260x74 (What Gemini Can Do); `<button._link_11hxa_179._linkWithSubmenu_11hxa_290._mainlink_11hxa_263>` 178x74 (What's New)
+
+#### desktop/tablet edge (1024px)
+- `<li._dot_134c2_264>` 20x20, display `list-item`, flex `row`, grid `none` — 1
+- `<li._dot_134c2_264>` 20x20, display `list-item`, flex `row`, grid `none` — 2
+- `<li._dot_134c2_264>` 20x20, display `list-item`, flex `row`, grid `none` — 3
+- `<li._dot_134c2_264>` 20x20, display `list-item`, flex `row`, grid `none` — 4
+- `<li._dot_134c2_264>` 20x20, display `list-item`, flex `row`, grid `none` — 5
+- `<gemini-scrollable._container_134c2_75._features_b32tl_74._scrollSnap:center_134c2_258.scrollable:start>` 1024x3520, display `block`, flex `row`, grid `none` — Your inbox, synthesized. Stay on top of all your industry interests an
+- Mobile/menu controls visible: `<button._burger_11hxa_157>` 40x40 (Open nav menu)
+
+#### tablet (768px)
+- `<li._dot_134c2_264>` 20x20, display `list-item`, flex `row`, grid `none` — 1
+- `<li._dot_134c2_264>` 20x20, display `list-item`, flex `row`, grid `none` — 2
+- `<li._dot_134c2_264>` 20x20, display `list-item`, flex `row`, grid `none` — 3
+- `<li._dot_134c2_264>` 20x20, display `list-item`, flex `row`, grid `none` — 4
+- `<li._dot_134c2_264>` 20x20, display `list-item`, flex `row`, grid `none` — 5
+- `<gemini-scrollable._container_134c2_75._features_b32tl_74._scrollSnap:center_134c2_258.scrollable:start>` 768x3520, display `block`, flex `row`, grid `none` — Your inbox, synthesized. Stay on top of all your industry interests an
+- Mobile/menu controls visible: `<button._burger_11hxa_157>` 40x40 (Open nav menu)
+
+#### mobile (430px)
+- `<li._dot_134c2_264>` 20x20, display `list-item`, flex `row`, grid `none` — 1
+- `<li._dot_134c2_264>` 20x20, display `list-item`, flex `row`, grid `none` — 2
+- `<li._dot_134c2_264>` 20x20, display `list-item`, flex `row`, grid `none` — 3
+- `<li._dot_134c2_264>` 20x20, display `list-item`, flex `row`, grid `none` — 4
+- `<li._dot_134c2_264>` 20x20, display `list-item`, flex `row`, grid `none` — 5
+- `<gemini-scrollable._container_134c2_75._features_b32tl_74._scrollSnap:center_134c2_258.scrollable:start>` 430x3160, display `block`, flex `row`, grid `none` — Your inbox, synthesized. Stay on top of all your industry interests an
+- Mobile/menu controls visible: `<button._burger_11hxa_157>` 40x40 (Open nav menu)
+
+#### compact-mobile (375px)
+- `<li._dot_134c2_264>` 20x20, display `list-item`, flex `row`, grid `none` — 1
+- `<li._dot_134c2_264>` 20x20, display `list-item`, flex `row`, grid `none` — 2
+- `<li._dot_134c2_264>` 20x20, display `list-item`, flex `row`, grid `none` — 3
+- `<li._dot_134c2_264>` 20x20, display `list-item`, flex `row`, grid `none` — 4
+- `<li._dot_134c2_264>` 20x20, display `list-item`, flex `row`, grid `none` — 5
+- `<gemini-scrollable._container_134c2_75._features_b32tl_74._scrollSnap:center_134c2_258.scrollable:start>` 375x3116, display `block`, flex `row`, grid `none` — Your inbox, synthesized. Stay on top of all your industry interests an
+- Mobile/menu controls visible: `<button._burger_11hxa_157>` 40x40 (Open nav menu)
+
+### Responsive Behavior Notes
+
+- H1 scales as desktop-xl: 96px/96px, 1134x192, center; desktop/tablet edge: 72px/72px, 720x216, center; tablet: 72px/72px, 688x216, center; mobile: 48px/48px, 390x144, center; compact-mobile: 48px/48px, 335x192, center.
+- Navigation behavior: desktop-xl: static, block, 892x74, links=10, menu control visible; desktop/tablet edge: static, block, 984x534, links=10, menu control visible; tablet: static, block, 728x534, links=10, menu control visible; mobile: static, block, 390x534, links=10, menu control visible; compact-mobile: static, block, 335x534, links=10, menu control visible.
+- Hero/first-section geometry: desktop-xl: <section#hero> 1440x2023 at y=74; desktop/tablet edge: <section#hero> 1024x1496 at y=74; tablet: <section#hero> 768x1462 at y=74; mobile: <section#hero> 430x1184 at y=74; compact-mobile: <section#hero> 375x1173 at y=74.
+- Primary CTA geometry: desktop-xl: 156x48, radius 60px, padding 0px 32px; desktop/tablet edge: 93x30, radius 0px, padding 0px; tablet: 93x30, radius 0px, padding 0px; mobile: 93x30, radius 0px, padding 0px; compact-mobile: 93x30, radius 0px, padding 0px.
+- Media scaling: desktop-xl: <video.ready> 1320x677, object-fit ; desktop/tablet edge: <video.ready> 720x369, object-fit ; tablet: <video.ready> 688x353, object-fit ; mobile: <video.ready> 390x200, object-fit ; compact-mobile: <video.ready> 335x172, object-fit .
+- Component density sample: desktop-xl: 8 sampled cards/components; desktop/tablet edge: 8 sampled cards/components; tablet: 8 sampled cards/components; mobile: 8 sampled cards/components; compact-mobile: 8 sampled cards/components.
+- Treat the CSS width tokens above as implementation breakpoints and the measured table as behavioral breakpoints; generated builders may use class changes, container constraints, and source-order overrides in addition to explicit media queries.
+- Rebuild priority: preserve the measured hierarchy changes first (type size, nav mode, hero/media dimensions, CTA geometry), then tune secondary card/grid wrapping from the component samples.

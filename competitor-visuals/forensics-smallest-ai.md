@@ -3140,3 +3140,105 @@
 - **Color system:** Promote the most frequent background/text colors into variables, then layer accent colors from buttons, links, and hero media.
 - **Media system:** Use listed images, videos, SVGs, canvas/WebGL presence, and background images to decide which visuals are real media versus CSS decoration.
 - **Motion system:** Copy only transitions/animations visible in computed styles, then add scroll/media movement where the DOM indicates video, canvas, marquees, or sticky positioning.
+---
+
+## BLOCK 7 — responsive-breakpoints.md
+
+**Responsive extraction:** 2026-06-02T09:04:03.651Z
+**Method:** headless Chrome measured live computed styles at 1440px, 1024px, 768px, 430px, 375px viewport widths; CSS media queries were read from inline styles and linked stylesheets when reachable.
+
+### CSS Breakpoint Inventory
+
+| Metric | Value |
+|---|---:|
+| Total media query rules found | 33 |
+| Unique media query expressions | 6 |
+
+#### Width Tokens Detected
+
+| Width token | Occurrences |
+|---|---:|
+| `809px` | 14 |
+| `809.98px` | 2 |
+| `810px` | 16 |
+| `1199px` | 13 |
+| `1199.98px` | 2 |
+| `1439px` | 1 |
+
+#### Most Frequent Media Queries
+
+| Query | Count |
+|---|---:|
+| `(max-width:809px) and (min-width:0)` | 14 |
+| `(max-width:1199px) and (min-width:810px)` | 13 |
+| `(max-width:809.98px)` | 2 |
+| `(min-width:810px) and (max-width:1199.98px)` | 2 |
+| `(prefers-color-scheme:dark)` | 1 |
+| `(max-width:1439px) and (min-width:810px)` | 1 |
+
+### Measured Breakpoint Behavior
+
+| Breakpoint | Document height | Body | Nav | H1 | H2 | Hero / first section | CTA | Primary media |
+|---|---:|---|---|---|---|---|---|---|
+| desktop-xl (1440x1000) | 7159px | sans-serif; 12px; bg rgb(255, 255, 255) | Not found | Real-time Voice AI. Built to Scale.; 48px/52px; 400; center; 420x104 | Smallest AI: Our Thesis; 36px/42px; 400; start; 383x42 | <section> 896x48; flex; bg rgba(0, 0, 0, 0) | Contact Sales; 146x48; radius 12px; padding 14px 14px 14px 18px | <img> 1440x1000 |
+| desktop/tablet edge (1024x900) | 8926px | sans-serif; 12px; bg rgb(255, 255, 255) | <nav.framer-19dzicf> relative/flex 896x72; links: <a.framer-YFSXM.f..., Contact sales, Open Menu; menu visible | Real-time Voice AI. Built to Scale.; 48px/52px; 400; center; 420x104 | Smallest AI: Our Thesis; 29px/42px; 400; start; 864x42 | <section> 592x48; flex; bg rgba(0, 0, 0, 0) | Contact sales; 108x40; radius 12px; padding 8px 16px | <img> 1024x900 |
+| tablet (768x900) | 8298px | sans-serif; 12px; bg rgb(255, 255, 255) | <nav.framer-19dzicf> relative/flex 736x72; links: <a.framer-YFSXM.f..., Contact sales, Open Menu; menu visible | Real-time Voice AI. Built to Scale.; 32px/38px; 400; center; 672x38 | Smallest AI: Our Thesis; 24px/32px; 400; start; 688x32 | <section> 720x48; flex; bg rgba(0, 0, 0, 0) | Contact sales; 108x40; radius 12px; padding 8px 16px | <img> 768x900 |
+| mobile (430x900) | 8456px | sans-serif; 12px; bg rgb(255, 255, 255) | <nav.framer-19dzicf> relative/flex 398x72; links: <a.framer-YFSXM.f..., Contact sales, Open Menu; menu visible | Real-time Voice AI. Built to Scale.; 32px/38px; 400; center; 334x76 | Smallest AI: Our Thesis; 24px/32px; 400; start; 350x32 | <section> 382x48; flex; bg rgba(0, 0, 0, 0) | Contact sales; 108x40; radius 12px; padding 8px 16px | <img> 430x900 |
+| compact-mobile (375x812) | 8430px | sans-serif; 12px; bg rgb(255, 255, 255) | <nav.framer-19dzicf> relative/flex 343x72; links: <a.framer-YFSXM.f..., Contact sales, Open Menu; menu visible | Real-time Voice AI. Built to Scale.; 32px/38px; 400; center; 279x76 | Smallest AI: Our Thesis; 24px/32px; 400; start; 295x32 | <section> 327x48; flex; bg rgba(0, 0, 0, 0) | Contact sales; 108x40; radius 12px; padding 8px 16px | <img> 375x812 |
+
+### Component/Card Samples by Breakpoint
+
+#### desktop-xl (1440px)
+- `<li>` 167x32, display `list-item`, flex `row`, grid `none`
+- `<li>` 99x32, display `list-item`, flex `row`, grid `none`
+- `<li>` 124x40, display `list-item`, flex `row`, grid `none`
+- `<li>` 110x32, display `list-item`, flex `row`, grid `none`
+- `<li>` 99x40, display `list-item`, flex `row`, grid `none`
+- `<li>` 145x50, display `list-item`, flex `row`, grid `none`
+
+#### desktop/tablet edge (1024px)
+- `<li>` 167x32, display `list-item`, flex `row`, grid `none`
+- `<li>` 99x32, display `list-item`, flex `row`, grid `none`
+- `<li>` 124x40, display `list-item`, flex `row`, grid `none`
+- `<li>` 110x32, display `list-item`, flex `row`, grid `none`
+- `<li>` 99x40, display `list-item`, flex `row`, grid `none`
+- `<li>` 145x50, display `list-item`, flex `row`, grid `none`
+- Mobile/menu controls visible: `<button.framer-ri9uZ.framer-7l7y0f.framer-v-1o1w6am>` 32x32 (Open Menu)
+
+#### tablet (768px)
+- `<li>` 167x32, display `list-item`, flex `row`, grid `none`
+- `<li>` 99x32, display `list-item`, flex `row`, grid `none`
+- `<li>` 124x40, display `list-item`, flex `row`, grid `none`
+- `<li>` 110x32, display `list-item`, flex `row`, grid `none`
+- `<li>` 99x40, display `list-item`, flex `row`, grid `none`
+- `<li>` 145x50, display `list-item`, flex `row`, grid `none`
+- Mobile/menu controls visible: `<button.framer-ri9uZ.framer-7l7y0f.framer-v-1o1w6am>` 32x32 (Open Menu)
+
+#### mobile (430px)
+- `<li>` 167x32, display `list-item`, flex `row`, grid `none`
+- `<li>` 99x32, display `list-item`, flex `row`, grid `none`
+- `<li>` 124x40, display `list-item`, flex `row`, grid `none`
+- `<li>` 110x32, display `list-item`, flex `row`, grid `none`
+- `<li>` 99x40, display `list-item`, flex `row`, grid `none`
+- `<li>` 145x50, display `list-item`, flex `row`, grid `none`
+- Mobile/menu controls visible: `<button.framer-ri9uZ.framer-7l7y0f.framer-v-1o1w6am>` 32x32 (Open Menu)
+
+#### compact-mobile (375px)
+- `<li>` 167x32, display `list-item`, flex `row`, grid `none`
+- `<li>` 99x32, display `list-item`, flex `row`, grid `none`
+- `<li>` 124x40, display `list-item`, flex `row`, grid `none`
+- `<li>` 110x32, display `list-item`, flex `row`, grid `none`
+- `<li>` 99x40, display `list-item`, flex `row`, grid `none`
+- `<li>` 145x50, display `list-item`, flex `row`, grid `none`
+- Mobile/menu controls visible: `<button.framer-ri9uZ.framer-7l7y0f.framer-v-1o1w6am>` 32x32 (Open Menu)
+
+### Responsive Behavior Notes
+
+- H1 scales as desktop-xl: 48px/52px, 420x104, center; desktop/tablet edge: 48px/52px, 420x104, center; tablet: 32px/38px, 672x38, center; mobile: 32px/38px, 334x76, center; compact-mobile: 32px/38px, 279x76, center.
+- Navigation behavior: desktop/tablet edge: relative, flex, 896x72, links=3, menu control visible; tablet: relative, flex, 736x72, links=3, menu control visible; mobile: relative, flex, 398x72, links=3, menu control visible; compact-mobile: relative, flex, 343x72, links=3, menu control visible.
+- Hero/first-section geometry: desktop-xl: <section> 896x48 at y=1064; desktop/tablet edge: <section> 592x48 at y=1088; tablet: <section> 720x48 at y=1052; mobile: <section> 382x48 at y=1052; compact-mobile: <section> 327x48 at y=964.
+- Primary CTA geometry: desktop-xl: 146x48, radius 12px, padding 14px 14px 14px 18px; desktop/tablet edge: 108x40, radius 12px, padding 8px 16px; tablet: 108x40, radius 12px, padding 8px 16px; mobile: 108x40, radius 12px, padding 8px 16px; compact-mobile: 108x40, radius 12px, padding 8px 16px.
+- Media scaling: desktop-xl: <img> 1440x1000, object-fit ; desktop/tablet edge: <img> 1024x900, object-fit ; tablet: <img> 768x900, object-fit ; mobile: <img> 430x900, object-fit ; compact-mobile: <img> 375x812, object-fit .
+- Component density sample: desktop-xl: 8 sampled cards/components; desktop/tablet edge: 8 sampled cards/components; tablet: 8 sampled cards/components; mobile: 8 sampled cards/components; compact-mobile: 8 sampled cards/components.
+- Treat the CSS width tokens above as implementation breakpoints and the measured table as behavioral breakpoints; generated builders may use class changes, container constraints, and source-order overrides in addition to explicit media queries.
+- Rebuild priority: preserve the measured hierarchy changes first (type size, nav mode, hero/media dimensions, CTA geometry), then tune secondary card/grid wrapping from the component samples.

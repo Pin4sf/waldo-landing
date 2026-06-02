@@ -4679,3 +4679,81 @@
 - **Color system:** Promote the most frequent background/text colors into variables, then layer accent colors from buttons, links, and hero media.
 - **Media system:** Use listed images, videos, SVGs, canvas/WebGL presence, and background images to decide which visuals are real media versus CSS decoration.
 - **Motion system:** Copy only transitions/animations visible in computed styles, then add scroll/media movement where the DOM indicates video, canvas, marquees, or sticky positioning.
+---
+
+## BLOCK 7 — responsive-breakpoints.md
+
+**Responsive extraction:** 2026-06-02T09:02:30.789Z
+**Method:** headless Chrome measured live computed styles at 1440px, 1024px, 768px, 430px, 375px viewport widths; CSS media queries were read from inline styles and linked stylesheets when reachable.
+
+### CSS Breakpoint Inventory
+
+| Metric | Value |
+|---|---:|
+| Total media query rules found | 14 |
+| Unique media query expressions | 8 |
+
+#### Width Tokens Detected
+
+| Width token | Occurrences |
+|---|---:|
+| `389px` | 3 |
+| `390px` | 3 |
+| `809px` | 3 |
+| `809.98px` | 1 |
+| `810px` | 4 |
+| `1199px` | 3 |
+| `1199.98px` | 1 |
+| `1512px` | 1 |
+| `1919.98px` | 1 |
+| `1920px` | 1 |
+
+#### Most Frequent Media Queries
+
+| Query | Count |
+|---|---:|
+| `(max-width:1199px) and (min-width:810px)` | 3 |
+| `(max-width:809px) and (min-width:390px)` | 3 |
+| `(max-width:389px) and (min-width:0)` | 3 |
+| `(prefers-color-scheme:dark)` | 1 |
+| `(min-width:810px) and (max-width:1199.98px)` | 1 |
+| `(max-width:809.98px)` | 1 |
+| `(min-width:1920px)` | 1 |
+| `(min-width:1512px) and (max-width:1919.98px)` | 1 |
+
+### Measured Breakpoint Behavior
+
+| Breakpoint | Document height | Body | Nav | H1 | H2 | Hero / first section | CTA | Primary media |
+|---|---:|---|---|---|---|---|---|---|
+| desktop-xl (1440x1000) | 12971px | sans-serif; 12px; bg rgb(255, 255, 255) | Not found | The Fastest Way to Build a Website ...; 40px/48px; 600; center; 540x96 | The Website Builder for Every Idea ...; 36px/43.2px; 500; left; 558x86 | <section#hero.framer-gzyyy4> 1440x850; flex; bg rgba(0, 0, 0, 0) | <button.framer-2MX0w.framer-16z...; 48x32; radius 40px; padding 6px 14px | <canvas> 1168x599 |
+| desktop/tablet edge (1024x900) | 18281px | sans-serif; 12px; bg rgb(255, 255, 255) | Not found | The Fastest Way to Build a Website ...; 34px/40.8px; 600; center; 540x82 | The Website Builder for Every Idea ...; 32px/38.4px; 500; left; 558x77 | <section#hero.framer-gzyyy4> 1024x850; flex; bg rgba(0, 0, 0, 0) | <button.framer-2MX0w.framer-16z...; 48x32; radius 40px; padding 6px 14px | <canvas> 944x599 |
+| tablet (768x900) | 19332px | sans-serif; 12px; bg rgb(255, 255, 255) | Not found | The Fastest Way to Build a Website ...; 28px/33.6px; 600; center; 540x34 | The Website Builder for Every Idea ...; 28px/33.6px; 500; left; 558x67 | <section#hero.framer-gzyyy4> 768x800; flex; bg rgba(0, 0, 0, 0) | <button.framer-2MX0w.framer-16z...; 48x32; radius 40px; padding 6px 14px | <canvas> 768x599 |
+| mobile (430x900) | 18525px | sans-serif; 12px; bg rgb(255, 255, 255) | Not found | The Fastest Way to Build a Website ...; 28px/33.6px; 600; center; 390x67 | The Website Builder for Every Idea ...; 28px/33.6px; 500; left; 390x67 | <section#hero.framer-gzyyy4> 430x800; flex; bg rgba(0, 0, 0, 0) | <button.framer-2MX0w.framer-16z...; 48x32; radius 40px; padding 6px 14px | <canvas> 430x599 |
+| compact-mobile (375x812) | 18955px | sans-serif; 12px; bg rgb(255, 255, 255) | Not found | The Fastest Way to Build a Website ...; 28px/33.6px; 600; center; 335x67 | The Website Builder for Every Idea ...; 28px/33.6px; 500; left; 335x101 | <section#hero.framer-gzyyy4> 375x800; flex; bg rgba(0, 0, 0, 0) | <button.framer-2MX0w.framer-16z...; 48x32; radius 40px; padding 6px 14px | <canvas> 375x657 |
+
+### Component/Card Samples by Breakpoint
+
+#### desktop-xl (1440px)
+- No visible card/grid/feature candidates sampled at this viewport.
+
+#### desktop/tablet edge (1024px)
+- No visible card/grid/feature candidates sampled at this viewport.
+
+#### tablet (768px)
+- No visible card/grid/feature candidates sampled at this viewport.
+
+#### mobile (430px)
+- No visible card/grid/feature candidates sampled at this viewport.
+
+#### compact-mobile (375px)
+- No visible card/grid/feature candidates sampled at this viewport.
+
+### Responsive Behavior Notes
+
+- H1 scales as desktop-xl: 40px/48px, 540x96, center; desktop/tablet edge: 34px/40.8px, 540x82, center; tablet: 28px/33.6px, 540x34, center; mobile: 28px/33.6px, 390x67, center; compact-mobile: 28px/33.6px, 335x67, center.
+- Hero/first-section geometry: desktop-xl: <section#hero.framer-gzyyy4> 1440x850 at y=0; desktop/tablet edge: <section#hero.framer-gzyyy4> 1024x850 at y=0; tablet: <section#hero.framer-gzyyy4> 768x800 at y=0; mobile: <section#hero.framer-gzyyy4> 430x800 at y=0; compact-mobile: <section#hero.framer-gzyyy4> 375x800 at y=0.
+- Primary CTA geometry: desktop-xl: 48x32, radius 40px, padding 6px 14px; desktop/tablet edge: 48x32, radius 40px, padding 6px 14px; tablet: 48x32, radius 40px, padding 6px 14px; mobile: 48x32, radius 40px, padding 6px 14px; compact-mobile: 48x32, radius 40px, padding 6px 14px.
+- Media scaling: desktop-xl: <canvas> 1168x599, object-fit ; desktop/tablet edge: <canvas> 944x599, object-fit ; tablet: <canvas> 768x599, object-fit ; mobile: <canvas> 430x599, object-fit ; compact-mobile: <canvas> 375x657, object-fit .
+- Component density sample: desktop-xl: 0 sampled cards/components; desktop/tablet edge: 0 sampled cards/components; tablet: 0 sampled cards/components; mobile: 0 sampled cards/components; compact-mobile: 0 sampled cards/components.
+- Treat the CSS width tokens above as implementation breakpoints and the measured table as behavioral breakpoints; generated builders may use class changes, container constraints, and source-order overrides in addition to explicit media queries.
+- Rebuild priority: preserve the measured hierarchy changes first (type size, nav mode, hero/media dimensions, CTA geometry), then tune secondary card/grid wrapping from the component samples.

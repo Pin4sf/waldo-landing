@@ -3996,3 +3996,120 @@
 - **Color system:** Promote the most frequent background/text colors into variables, then layer accent colors from buttons, links, and hero media.
 - **Media system:** Use listed images, videos, SVGs, canvas/WebGL presence, and background images to decide which visuals are real media versus CSS decoration.
 - **Motion system:** Copy only transitions/animations visible in computed styles, then add scroll/media movement where the DOM indicates video, canvas, marquees, or sticky positioning.
+---
+
+## BLOCK 7 — responsive-breakpoints.md
+
+**Responsive extraction:** 2026-06-02T09:04:18.592Z
+**Method:** headless Chrome measured live computed styles at 1440px, 1024px, 768px, 430px, 375px viewport widths; CSS media queries were read from inline styles and linked stylesheets when reachable.
+
+### CSS Breakpoint Inventory
+
+| Metric | Value |
+|---|---:|
+| Total media query rules found | 32 |
+| Unique media query expressions | 18 |
+
+#### Width Tokens Detected
+
+| Width token | Occurrences |
+|---|---:|
+| `479px` | 6 |
+| `767px` | 5 |
+| `768px` | 2 |
+| `991px` | 9 |
+| `992px` | 8 |
+| `1024px` | 1 |
+| `1085px` | 1 |
+| `1150px` | 1 |
+| `1199px` | 1 |
+| `1281px` | 1 |
+
+#### Most Frequent Media Queries
+
+| Query | Count |
+|---|---:|
+| `screen and (max-width:479px)` | 5 |
+| `screen and (max-width:991px)` | 4 |
+| `screen and (max-width:767px)` | 4 |
+| `(min-width:992px)` | 3 |
+| `(max-width:991px)` | 3 |
+| `(max-width: 1024px)` | 1 |
+| `(max-width: 768px)` | 1 |
+| `screen and (max-width: 991px)` | 1 |
+| `screen and (max-width: 767px)` | 1 |
+| `screen and (max-width: 479px)` | 1 |
+| `screen and (max-width: 992px)` | 1 |
+| `(min-width: 992px)` | 1 |
+| `(max-width: 991px)` | 1 |
+| `(min-width:992px) and (max-width:1199px)` | 1 |
+| `(min-width:992px) and (max-width:1281px)` | 1 |
+| `(min-width:992px) and (max-width:1150px)` | 1 |
+
+### Measured Breakpoint Behavior
+
+| Breakpoint | Document height | Body | Nav | H1 | H2 | Hero / first section | CTA | Primary media |
+|---|---:|---|---|---|---|---|---|---|
+| desktop-xl (1440x1000) | 11008px | Figtree, Arial, sans-serif; 16px; bg rgb(255, 255, 235) | <nav#w-node-_74e8b1ce-5aa8-4ef6-e6f9-f898264bfae6-63dfdea9.nav_menu.v2.w-nav-menu> relative/block 615x69; links: Business; menu visible | Don’t type, just speak; 120px/102px; 400; center; 992x102 | Write faster in all your apps, on a...; 64px/60.8px; 400; center; 573x122 | <div.hero-wrapper> 1440x793; block; bg rgba(0, 0, 0, 0) | Try Flow; 139x52; radius 12px; padding 16px 24px | <canvas> 573x700 |
+| desktop/tablet edge (1024x900) | 10741px | Figtree, Arial, sans-serif; 16px; bg rgb(255, 255, 235) | <nav#w-node-_74e8b1ce-5aa8-4ef6-e6f9-f898264bfae6-63dfdea9.nav_menu.v2.w-nav-menu> relative/block 615x69; links: Business; menu visible | Don’t type, just speak; 120px/102px; 400; center; 944x102 | Write faster in all your apps, on a...; 64px/60.8px; 400; center; 425x182 | <div.hero-wrapper> 1024x661; block; bg rgba(0, 0, 0, 0) | Try Flow; 139x52; radius 12px; padding 16px 24px | <canvas> 425x700 |
+| tablet (768x900) | 11047px | Figtree, Arial, sans-serif; 16px; bg rgb(255, 255, 235) | <div.nav_fixed> fixed/block 768x73; links: <a#w-node-_74e8b1..., Download for macOS; menu visible | Don’t type, just speak; 96px/81.6px; 400; center; 688x82 | Write faster in all your apps, on a...; 64px/60.8px; 400; center; 688x122 | <div.hero-wrapper> 768x619; block; bg rgba(0, 0, 0, 0) | Try Flow; 139x52; radius 12px; padding 16px 24px | <img.download_button-icon.homepage> 16x19 |
+| mobile (430x900) | 10185px | Figtree, Arial, sans-serif; 16px; bg rgb(255, 255, 235) | <div.nav_fixed> fixed/block 430x62; links: <a#w-node-_74e8b1..., Download for macOS; menu visible | Don’t type, just speak; 56px/47.6px; 400; center; 390x95 | Write faster in all your apps, on a...; 40px/44px; 400; center; 390x88 | <div.hero-wrapper> 430x591; block; bg rgba(0, 0, 0, 0) | Try Flow; 139x52; radius 12px; padding 16px 24px | <img.download_button-icon.homepage> 16x19 |
+| compact-mobile (375x812) | 10547px | Figtree, Arial, sans-serif; 16px; bg rgb(255, 255, 235) | <div.nav_fixed> fixed/block 375x62; links: <a#w-node-_74e8b1..., Download for macOS; menu visible | Don’t type, just speak; 56px/47.6px; 400; center; 335x95 | Write faster in all your apps, on a...; 40px/44px; 400; center; 335x88 | <div.hero-wrapper> 375x574; block; bg rgba(0, 0, 0, 0) | Try Flow; 139x52; radius 12px; padding 16px 24px | <img.download_button-icon.homepage> 16x19 |
+
+### Component/Card Samples by Breakpoint
+
+#### desktop-xl (1440px)
+- `<div.nav_menu-wrapper.grid.v2>` 615x69, display `flex`, flex `row`, grid `none` — Product Individuals Business Resources Company
+- `<div.integrations_grid>` 1240x700, display `grid`, flex `row`, grid `573.203px 573.203px` — Mac Windows iPhone Android Write faster in all your apps, on any devic
+- `<div.faster_grid>` 1240x524, display `grid`, flex `row`, grid `300px 940px` — Keyboard 45 wpm I’m getting started with the project, How would you li
+- `<div#w-node-_1ca9eff4-2ea1-8588-e3ca-3ff1aecd62b5-aecd62a0.faster_grid-left>` 300x524, display `block`, flex `row`, grid `none` — Keyboard 45 wpm I’m getting started with the project, How would you li
+- `<div.faster_grid-right>` 940x524, display `block`, flex `row`, grid `none` — Flow 220 wpm I’m getting started with the project, How would you like
+- `<section.section_features>` 1440x848, display `block`, flex `row`, grid `none` — AI Auto Edits Speak naturally and Flow transcribes and edits your voic
+- Mobile/menu controls visible: `<nav#w-node-_74e8b1ce-5aa8-4ef6-e6f9-f898264bfae6-63dfdea9.nav_menu.v2.w-nav-menu>` 615x69 (Product Individuals Business Resources ...); `<div.nav_menu-wrapper.grid.v2>` 615x69 (Product Individuals Business Resources ...); `<div.nav_menu-dropdown-toggle-v2.w-dropdown>` 108x61 (Product); `<img.nav_menu-dropdown-arrow>` 10x10; `<div.nav_menu-dropdown-toggle-v2.w-dropdown>` 128x61 (Individuals); `<img.nav_menu-dropdown-arrow>` 10x10
+
+#### desktop/tablet edge (1024px)
+- `<div.nav_menu-wrapper.grid.v2>` 615x69, display `flex`, flex `row`, grid `none` — Product Individuals Business Resources Company
+- `<div.integrations_grid>` 944x700, display `grid`, flex `row`, grid `425.203px 425.203px` — Mac Windows iPhone Android Write faster in all your apps, on any devic
+- `<div.faster_grid>` 944x524, display `grid`, flex `row`, grid `300px 644px` — Keyboard 45 wpm I’m getting started with the project, How would you li
+- `<div#w-node-_1ca9eff4-2ea1-8588-e3ca-3ff1aecd62b5-aecd62a0.faster_grid-left>` 300x524, display `block`, flex `row`, grid `none` — Keyboard 45 wpm I’m getting started with the project, How would you li
+- `<div.faster_grid-right>` 644x524, display `block`, flex `row`, grid `none` — Flow 220 wpm I’m getting started with the project, How would you like
+- `<section.section_features>` 1024x652, display `block`, flex `row`, grid `none` — AI Auto Edits Speak naturally and Flow transcribes and edits your voic
+- Mobile/menu controls visible: `<nav#w-node-_74e8b1ce-5aa8-4ef6-e6f9-f898264bfae6-63dfdea9.nav_menu.v2.w-nav-menu>` 615x69 (Product Individuals Business Resources ...); `<div.nav_menu-wrapper.grid.v2>` 615x69 (Product Individuals Business Resources ...); `<div.nav_menu-dropdown-toggle-v2.w-dropdown>` 108x61 (Product); `<img.nav_menu-dropdown-arrow>` 10x10; `<div.nav_menu-dropdown-toggle-v2.w-dropdown>` 128x61 (Individuals); `<img.nav_menu-dropdown-arrow>` 10x10
+
+#### tablet (768px)
+- `<div.integrations_grid>` 688x372, display `flex`, flex `column`, grid `1fr 0.75fr` — Mac Windows iPhone Android Write faster in all your apps, on any devic
+- `<div.faster_grid>` 688x711, display `grid`, flex `row`, grid `688px` — Keyboard 45 wpm I’m getting started with the project, How would you li
+- `<div#w-node-_1ca9eff4-2ea1-8588-e3ca-3ff1aecd62b5-aecd62a0.faster_grid-left>` 688x332, display `block`, flex `row`, grid `none` — Keyboard 45 wpm I’m getting started with the project, How would you li
+- `<div.faster_grid-right>` 688x380, display `block`, flex `row`, grid `none` — Flow 220 wpm I’m getting started with the project, How would you like
+- `<section.section_features>` 768x1190, display `block`, flex `row`, grid `none` — AI Auto Edits Speak naturally and Flow transcribes and edits your voic
+- `<div.features_grid-top>` 688x1094, display `grid`, flex `row`, grid `688px` — AI Auto Edits Speak naturally and Flow transcribes and edits your voic
+- Mobile/menu controls visible: `<div.hamburger_12_wrap>` 26x18 (.hamburger_12_wrap { --thickness: 0.125...); `<div.hamburger_12_line>` 26x2; `<div.hamburger_12_line>` 26x2; `<div.hamburger_12_line>` 26x2
+
+#### mobile (430px)
+- `<div.integrations_grid>` 390x663, display `flex`, flex `column`, grid `1fr` — Mac Windows iPhone Android Write faster in all your apps, on any devic
+- `<div.faster_grid>` 390x466, display `grid`, flex `row`, grid `390px` — Keyboard 45 wpm I’m getting started with the project, How would you li
+- `<div#w-node-_1ca9eff4-2ea1-8588-e3ca-3ff1aecd62b5-aecd62a0.faster_grid-left>` 390x222, display `block`, flex `row`, grid `none` — Keyboard 45 wpm I’m getting started with the project, How would you li
+- `<div.faster_grid-right>` 390x244, display `block`, flex `row`, grid `none` — Flow 220 wpm I’m getting started with the project, How would you like
+- `<section.section_features>` 430x772, display `block`, flex `row`, grid `none` — AI Auto Edits Speak naturally and Flow transcribes and edits your voic
+- `<div.features_grid-top>` 390x700, display `grid`, flex `row`, grid `390px` — AI Auto Edits Speak naturally and Flow transcribes and edits your voic
+- Mobile/menu controls visible: `<div.hamburger_12_wrap>` 26x18 (.hamburger_12_wrap { --thickness: 0.125...); `<div.hamburger_12_line>` 26x2; `<div.hamburger_12_line>` 26x2; `<div.hamburger_12_line>` 26x2
+
+#### compact-mobile (375px)
+- `<div.integrations_grid>` 335x663, display `flex`, flex `column`, grid `1fr` — Mac Windows iPhone Android Write faster in all your apps, on any devic
+- `<div.faster_grid>` 335x466, display `grid`, flex `row`, grid `335px` — Keyboard 45 wpm I’m getting started with the project, How would you li
+- `<div#w-node-_1ca9eff4-2ea1-8588-e3ca-3ff1aecd62b5-aecd62a0.faster_grid-left>` 335x222, display `block`, flex `row`, grid `none` — Keyboard 45 wpm I’m getting started with the project, How would you li
+- `<div.faster_grid-right>` 335x244, display `block`, flex `row`, grid `none` — Flow 220 wpm I’m getting started with the project, How would you like
+- `<section.section_features>` 375x795, display `block`, flex `row`, grid `none` — AI Auto Edits Speak naturally and Flow transcribes and edits your voic
+- `<div.features_grid-top>` 335x723, display `grid`, flex `row`, grid `335px` — AI Auto Edits Speak naturally and Flow transcribes and edits your voic
+- Mobile/menu controls visible: `<div.hamburger_12_wrap>` 26x18 (.hamburger_12_wrap { --thickness: 0.125...); `<div.hamburger_12_line>` 26x2; `<div.hamburger_12_line>` 26x2; `<div.hamburger_12_line>` 26x2
+
+### Responsive Behavior Notes
+
+- H1 scales as desktop-xl: 120px/102px, 992x102, center; desktop/tablet edge: 120px/102px, 944x102, center; tablet: 96px/81.6px, 688x82, center; mobile: 56px/47.6px, 390x95, center; compact-mobile: 56px/47.6px, 335x95, center.
+- Navigation behavior: desktop-xl: relative, block, 615x69, links=1, menu control visible; desktop/tablet edge: relative, block, 615x69, links=1, menu control visible; tablet: fixed, block, 768x73, links=2, menu control visible; mobile: fixed, block, 430x62, links=2, menu control visible; compact-mobile: fixed, block, 375x62, links=2, menu control visible.
+- Hero/first-section geometry: desktop-xl: <div.hero-wrapper> 1440x793 at y=0; desktop/tablet edge: <div.hero-wrapper> 1024x661 at y=0; tablet: <div.hero-wrapper> 768x619 at y=0; mobile: <div.hero-wrapper> 430x591 at y=0; compact-mobile: <div.hero-wrapper> 375x574 at y=0.
+- Primary CTA geometry: desktop-xl: 139x52, radius 12px, padding 16px 24px; desktop/tablet edge: 139x52, radius 12px, padding 16px 24px; tablet: 139x52, radius 12px, padding 16px 24px; mobile: 139x52, radius 12px, padding 16px 24px; compact-mobile: 139x52, radius 12px, padding 16px 24px.
+- Media scaling: desktop-xl: <canvas> 573x700, object-fit ; desktop/tablet edge: <canvas> 425x700, object-fit ; tablet: <img.download_button-icon.homepage> 16x19, object-fit ; mobile: <img.download_button-icon.homepage> 16x19, object-fit ; compact-mobile: <img.download_button-icon.homepage> 16x19, object-fit .
+- Component density sample: desktop-xl: 8 sampled cards/components; desktop/tablet edge: 8 sampled cards/components; tablet: 8 sampled cards/components; mobile: 8 sampled cards/components; compact-mobile: 8 sampled cards/components.
+- Treat the CSS width tokens above as implementation breakpoints and the measured table as behavioral breakpoints; generated builders may use class changes, container constraints, and source-order overrides in addition to explicit media queries.
+- Rebuild priority: preserve the measured hierarchy changes first (type size, nav mode, hero/media dimensions, CTA geometry), then tune secondary card/grid wrapping from the component samples.

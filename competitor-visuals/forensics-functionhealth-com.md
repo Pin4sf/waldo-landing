@@ -18096,3 +18096,120 @@ input.search-field.w-input { box-sizing: border-box; padding-left: 20px; border-
   100% { transform: scale(1); }
 }
 ```
+---
+
+## BLOCK 9 — responsive-breakpoints.md
+
+**Responsive extraction:** 2026-06-02T09:02:49.835Z
+**Method:** headless Chrome measured live computed styles at 1440px, 1024px, 768px, 430px, 375px viewport widths; CSS media queries were read from inline styles and linked stylesheets when reachable.
+
+### CSS Breakpoint Inventory
+
+| Metric | Value |
+|---|---:|
+| Total media query rules found | 45 |
+| Unique media query expressions | 23 |
+
+#### Width Tokens Detected
+
+| Width token | Occurrences |
+|---|---:|
+| `479px` | 7 |
+| `520px` | 1 |
+| `720px` | 1 |
+| `767px` | 4 |
+| `768px` | 10 |
+| `991px` | 10 |
+| `992px` | 7 |
+| `1092px` | 1 |
+| `1200px` | 1 |
+| `1226px` | 1 |
+
+#### Most Frequent Media Queries
+
+| Query | Count |
+|---|---:|
+| `screen and (max-width: 991px)` | 5 |
+| `screen and (max-width:479px)` | 5 |
+| `screen and (min-width: 992px)` | 4 |
+| `screen and (max-width:991px)` | 4 |
+| `screen and (max-width:767px)` | 4 |
+| `(max-width: 768px) and (orientation: portrait)` | 3 |
+| `(max-width: 768px)and (orientation: portrait)` | 2 |
+| `(max-width: 768px)and (orientation: landscape)` | 2 |
+| `screen and (max-width: 479px)` | 2 |
+| `screen and (max-width: 992px)` | 1 |
+| `screen and (max-width: 768px)` | 1 |
+| `(hover: hover) and (pointer: fine)` | 1 |
+| `(max-width: 720px)` | 1 |
+| `sreen and (min-width: 992px)` | 1 |
+| `screen and (min-width: 992px) and (max-width: 1200px)` | 1 |
+| `(max-width: 1226px)` | 1 |
+
+### Measured Breakpoint Behavior
+
+| Breakpoint | Document height | Body | Nav | H1 | H2 | Hero / first section | CTA | Primary media |
+|---|---:|---|---|---|---|---|---|---|
+| desktop-xl (1440x1000) | 11415px | Ftbase, Arial, sans-serif; 14px; bg rgb(254, 249, 239) | <nav#nav.nav_wrap.w-variant-6e201239-2340-8e14-4a13-4fcd4e5d4812> sticky/flex 1312x80; links: <a.logo-link.w-va..., How it works, What we test, Scans, FAQ, About, Log in, Start testing; menu visible | Check your health.; 80px/72px; 300; start; 482x72 | Testing is easy; 64px/57.6px; 400; center; 318x58 | <div.flute-hero.container> 1312x1000; flex; bg rgba(0, 0, 0, 0) | Use your HSA/FSA funds to join ...; 331x22; radius 0px; padding 0px | <video.video> 272x484 |
+| desktop/tablet edge (1024x900) | 10702px | Ftbase, Arial, sans-serif; 14px; bg rgb(254, 249, 239) | <nav#nav.nav_wrap.w-variant-6e201239-2340-8e14-4a13-4fcd4e5d4812> sticky/flex 1024x77; links: <a.logo-link.w-va..., How it works, What we test, Scans, FAQ, About, Log in, Start testing; menu visible | Check your health.; 70.9293px/63.8364px; 300; start; 421x128 | Testing is easy; 57.7444px/51.9699px; 400; center; 287x52 | <div.flute-hero.container> 930x900; flex; bg rgba(0, 0, 0, 0) | Use your HSA/FSA funds to join ...; 317x20; radius 0px; padding 0px | <video.video> 181x322 |
+| tablet (768x900) | 14776px | Ftbase, Arial, sans-serif; 14px; bg rgb(254, 249, 239) | <nav#nav.nav_wrap.w-variant-6e201239-2340-8e14-4a13-4fcd4e5d4812> sticky/flex 696x72; links: <a.logo-link.w-va..., Log in, Start testing; menu visible | Check your health.; 65.3474px/58.8126px; 300; start; 393x59 | Testing is easy; 53.8947px/48.5053px; 400; center; 268x49 | <div.flute-hero.container> 768x900; flex; bg rgba(0, 0, 0, 0) | Use your HSA/FSA funds to join ...; 308x20; radius 0px; padding 0px | <video.video> 606x1077 |
+| mobile (430x900) | 13993px | Ftbase, Arial, sans-serif; 14px; bg rgb(254, 249, 239) | <nav#nav.nav_wrap.w-variant-6e201239-2340-8e14-4a13-4fcd4e5d4812> sticky/flex 386x69; links: <a.logo-link.w-va..., Start testing; menu visible | Check your health.; 57.9774px/52.1797px; 300; start; 349x52 | Testing is easy; 48.812px/43.9308px; 400; center; 243x44 | <div.flute-hero.container> 430x900; flex; bg rgba(0, 0, 0, 0) | Use your HSA/FSA funds to join ...; 296x19; radius 0px; padding 0px | <video.video> 327x581 |
+| compact-mobile (375x812) | 13924px | Ftbase, Arial, sans-serif; 14px; bg rgb(254, 249, 239) | <nav#nav.nav_wrap.w-variant-6e201239-2340-8e14-4a13-4fcd4e5d4812> sticky/flex 335x69; links: <a.logo-link.w-va..., Start testing; menu visible | Check your health.; 56.8px/51.12px; 300; start; 342x51 | Testing is easy; 48px/43.2px; 400; center; 239x43 | <div.flute-hero.container> 375x812; flex; bg rgba(0, 0, 0, 0) | Use your HSA/FSA funds to join ...; 294x19; radius 0px; padding 0px | <video.video> 282x500 |
+
+### Component/Card Samples by Breakpoint
+
+#### desktop-xl (1440px)
+- `<div.three-cols_grid>` 1184x402, display `grid`, flex `row`, grid `373.328px 373.328px 373.344px` — 01 160+lab tests Schedule at 2k+ Quest Diagnostics locations 02 Result
+- `<div.section_heading.biomarker-grid>` 1184x246, display `flex`, flex `column`, grid `none` — 160+ lab tests chosen by top doctors “The most powerful approach I’ve
+- `<div.categories_grid>` 1184x814, display `grid`, flex `row`, grid `340.656px 1px 340.672px 1px 340.656px` — Hormones & thyroid 16 Biomarkers Thyroxine (T4) Free Thyroglobulin Ant
+- `<div.stories_grid.w-dyn-items>` 1184x484, display `grid`, flex `row`, grid `272px 272px 272px 272px` — Function like Aimee The cancer signals doctors missed Function like Al
+- `<div.stories_grid-item.w-dyn-item>` 272x484, display `block`, flex `row`, grid `none` — Function like Aimee The cancer signals doctors missed
+- `<div.stories_grid-item.w-dyn-item>` 272x484, display `block`, flex `row`, grid `none` — Function like Alan From diabetes diagnosis to action
+- Mobile/menu controls visible: `<div.menu_wrap.w-variant-6e201239-2340-8e14-4a13-4fcd4e5d4812>` 315x48 (Log in Start testing); `<a.menu_link.w-variant-6e201239-2340-8e14-4a13-4fcd4e5d4812>` 45x20 (Log in); `<div.menu_icons_wrap.w-variant-6e201239-2340-8e14-4a13-4fcd4e5d4812>` 65x21; `<div.svg.search.w-variant-6e201239-2340-8e14-4a13-4fcd4e5d4812.w-embed>` 21x21 (Open search); `<div.nav_burger>` 20x20 (Toggle navigation menu); `<button.lucid-search-modal__close>` 40x40 (×)
+
+#### desktop/tablet edge (1024px)
+- `<div.three-cols_grid>` 821x357, display `grid`, flex `row`, grid `252.391px 252.391px 252.391px` — 01 160+lab tests Schedule at 2k+ Quest Diagnostics locations 02 Result
+- `<div.section_heading.biomarker-grid>` 821x223, display `flex`, flex `column`, grid `none` — 160+ lab tests chosen by top doctors “The most powerful approach I’ve
+- `<div.categories_grid>` 821x899, display `grid`, flex `row`, grid `219.719px 1px 219.719px 1px 219.719px` — Hormones & thyroid 16 Biomarkers Thyroxine (T4) Free Thyroglobulin Ant
+- `<div.stories_grid.w-dyn-items>` 821x322, display `grid`, flex `row`, grid `181.281px 181.297px 181.297px 181.297px` — Function like Aimee The cancer signals doctors missed Function like Al
+- `<div.stories_grid-item.w-dyn-item>` 181x322, display `block`, flex `row`, grid `none` — Function like Aimee The cancer signals doctors missed
+- `<div.stories_grid-item.w-dyn-item>` 181x322, display `block`, flex `row`, grid `none` — Function like Alan From diabetes diagnosis to action
+- Mobile/menu controls visible: `<div.menu_wrap.w-variant-6e201239-2340-8e14-4a13-4fcd4e5d4812>` 315x48 (Log in Start testing); `<a.menu_link.w-variant-6e201239-2340-8e14-4a13-4fcd4e5d4812>` 45x20 (Log in); `<div.menu_icons_wrap.w-variant-6e201239-2340-8e14-4a13-4fcd4e5d4812>` 65x21; `<div.svg.search.w-variant-6e201239-2340-8e14-4a13-4fcd4e5d4812.w-embed>` 21x21 (Open search); `<div.nav_burger>` 20x20 (Toggle navigation menu); `<button.lucid-search-modal__close>` 40x40 (×)
+
+#### tablet (768px)
+- `<div.three-cols_grid>` 696x1631, display `grid`, flex `row`, grid `695.594px` — 01 160+lab tests Schedule at 2k+ Quest Diagnostics locations 02 Result
+- `<div.section_heading.biomarker-grid>` 696x257, display `flex`, flex `column`, grid `none` — 160+ lab tests chosen by top doctors “The most powerful approach I’ve
+- `<div.categories_grid>` 696x1027, display `grid`, flex `row`, grid `327.297px 1px 327.297px` — Hormones & thyroid 16 Biomarkers Thyroxine (T4) Free Thyroglobulin Ant
+- `<div.stories_grid.w-dyn-items>` 696x1077, display `flex`, flex `row`, grid `1fr 1fr 1fr 1fr` — Function like Aimee The cancer signals doctors missed Function like Al
+- `<div.stories_grid-item.w-dyn-item>` 606x1077, display `block`, flex `row`, grid `none` — Function like Aimee The cancer signals doctors missed
+- `<div.stories_grid-item.w-dyn-item>` 606x1077, display `block`, flex `row`, grid `none` — Function like Alan From diabetes diagnosis to action
+- Mobile/menu controls visible: `<div.menu_wrap.w-variant-6e201239-2340-8e14-4a13-4fcd4e5d4812>` 258x45 (Log in Start testing); `<a.menu_link.w-variant-6e201239-2340-8e14-4a13-4fcd4e5d4812>` 45x20 (Log in); `<div.menu_icons_wrap.w-variant-6e201239-2340-8e14-4a13-4fcd4e5d4812>` 20x20; `<div.nav_burger>` 20x20 (Toggle navigation menu); `<div.intercom-lightweight-app-launcher.intercom-launcher>` 48x48 (Open Intercom Messenger); `<button.lucid-search-modal__close>` 40x40 (×)
+
+#### mobile (430px)
+- `<div.three-cols_grid>` 386x1256, display `grid`, flex `row`, grid `385.562px` — 01 160+lab tests Schedule at 2k+ Quest Diagnostics locations 02 Result
+- `<div.section_heading.biomarker-grid>` 386x294, display `flex`, flex `column`, grid `none` — 160+ lab tests chosen by top doctors “The most powerful approach I’ve
+- `<div.categories_grid>` 386x1112, display `grid`, flex `row`, grid `172.281px 1px 172.281px` — Hormones & thyroid 16 Biomarkers Thyroxine (T4) Free Thyroglobulin Ant
+- `<div.stories_grid.w-dyn-items>` 386x581, display `flex`, flex `row`, grid `1fr 1fr 1fr 1fr` — Function like Aimee The cancer signals doctors missed Function like Al
+- `<div.stories_grid-item.w-dyn-item>` 327x581, display `block`, flex `row`, grid `none` — Function like Aimee The cancer signals doctors missed
+- `<div.stories_grid-item.w-dyn-item>` 327x581, display `block`, flex `row`, grid `none` — Function like Alan From diabetes diagnosis to action
+- Mobile/menu controls visible: `<div.menu_wrap.w-variant-6e201239-2340-8e14-4a13-4fcd4e5d4812>` 198x45 (Start testing); `<div.menu_icons_wrap.w-variant-6e201239-2340-8e14-4a13-4fcd4e5d4812>` 53x21; `<div.svg.search.w-variant-6e201239-2340-8e14-4a13-4fcd4e5d4812.w-embed>` 21x21 (Open search); `<div.nav_burger>` 20x20 (Toggle navigation menu); `<div.intercom-lightweight-app-launcher.intercom-launcher>` 48x48 (Open Intercom Messenger); `<button.lucid-search-modal__close>` 40x40 (×)
+
+#### compact-mobile (375px)
+- `<div.three-cols_grid>` 335x1179, display `grid`, flex `row`, grid `335px` — 01 160+lab tests Schedule at 2k+ Quest Diagnostics locations 02 Result
+- `<div.section_heading.biomarker-grid>` 335x312, display `flex`, flex `column`, grid `none` — 160+ lab tests chosen by top doctors “The most powerful approach I’ve
+- `<div.categories_grid>` 335x1160, display `grid`, flex `row`, grid `147px 1px 147px` — Hormones & thyroid 16 Biomarkers Thyroxine (T4) Free Thyroglobulin Ant
+- `<div.stories_grid.w-dyn-items>` 335x500, display `flex`, flex `row`, grid `1fr 1fr 1fr 1fr` — Function like Aimee The cancer signals doctors missed Function like Al
+- `<div.stories_grid-item.w-dyn-item>` 282x500, display `block`, flex `row`, grid `none` — Function like Aimee The cancer signals doctors missed
+- `<div.stories_grid-item.w-dyn-item>` 282x500, display `block`, flex `row`, grid `none` — Function like Alan From diabetes diagnosis to action
+- Mobile/menu controls visible: `<div.menu_wrap.w-variant-6e201239-2340-8e14-4a13-4fcd4e5d4812>` 198x45 (Start testing); `<div.menu_icons_wrap.w-variant-6e201239-2340-8e14-4a13-4fcd4e5d4812>` 53x21; `<div.svg.search.w-variant-6e201239-2340-8e14-4a13-4fcd4e5d4812.w-embed>` 21x21 (Open search); `<div.nav_burger>` 20x20 (Toggle navigation menu); `<div.intercom-lightweight-app-launcher.intercom-launcher>` 48x48 (Open Intercom Messenger); `<button.lucid-search-modal__close>` 40x40 (×)
+
+### Responsive Behavior Notes
+
+- H1 scales as desktop-xl: 80px/72px, 482x72, start; desktop/tablet edge: 70.9293px/63.8364px, 421x128, start; tablet: 65.3474px/58.8126px, 393x59, start; mobile: 57.9774px/52.1797px, 349x52, start; compact-mobile: 56.8px/51.12px, 342x51, start.
+- Navigation behavior: desktop-xl: sticky, flex, 1312x80, links=8, menu control visible; desktop/tablet edge: sticky, flex, 1024x77, links=8, menu control visible; tablet: sticky, flex, 696x72, links=3, menu control visible; mobile: sticky, flex, 386x69, links=2, menu control visible; compact-mobile: sticky, flex, 335x69, links=2, menu control visible.
+- Hero/first-section geometry: desktop-xl: <div.flute-hero.container> 1312x1000 at y=-2; desktop/tablet edge: <div.flute-hero.container> 930x900 at y=-5; tablet: <div.flute-hero.container> 768x900 at y=-10; mobile: <div.flute-hero.container> 430x900 at y=-12; compact-mobile: <div.flute-hero.container> 375x812 at y=-13.
+- Primary CTA geometry: desktop-xl: 331x22, radius 0px, padding 0px; desktop/tablet edge: 317x20, radius 0px, padding 0px; tablet: 308x20, radius 0px, padding 0px; mobile: 296x19, radius 0px, padding 0px; compact-mobile: 294x19, radius 0px, padding 0px.
+- Media scaling: desktop-xl: <video.video> 272x484, object-fit ; desktop/tablet edge: <video.video> 181x322, object-fit ; tablet: <video.video> 606x1077, object-fit ; mobile: <video.video> 327x581, object-fit ; compact-mobile: <video.video> 282x500, object-fit .
+- Component density sample: desktop-xl: 8 sampled cards/components; desktop/tablet edge: 8 sampled cards/components; tablet: 8 sampled cards/components; mobile: 8 sampled cards/components; compact-mobile: 8 sampled cards/components.
+- Treat the CSS width tokens above as implementation breakpoints and the measured table as behavioral breakpoints; generated builders may use class changes, container constraints, and source-order overrides in addition to explicit media queries.
+- Rebuild priority: preserve the measured hierarchy changes first (type size, nav mode, hero/media dimensions, CTA geometry), then tune secondary card/grid wrapping from the component samples.

@@ -4414,3 +4414,127 @@
 - **Color system:** Promote the most frequent background/text colors into variables, then layer accent colors from buttons, links, and hero media.
 - **Media system:** Use listed images, videos, SVGs, canvas/WebGL presence, and background images to decide which visuals are real media versus CSS decoration.
 - **Motion system:** Copy only transitions/animations visible in computed styles, then add scroll/media movement where the DOM indicates video, canvas, marquees, or sticky positioning.
+---
+
+## BLOCK 7 — responsive-breakpoints.md
+
+**Responsive extraction:** 2026-06-02T09:01:38.503Z
+**Method:** headless Chrome measured live computed styles at 1440px, 1024px, 768px, 430px, 375px viewport widths; CSS media queries were read from inline styles and linked stylesheets when reachable.
+
+### CSS Breakpoint Inventory
+
+| Metric | Value |
+|---|---:|
+| Total media query rules found | 969 |
+| Unique media query expressions | 54 |
+
+#### Width Tokens Detected
+
+| Width token | Occurrences |
+|---|---:|
+| `360px` | 11 |
+| `419px` | 4 |
+| `480px` | 34 |
+| `569px` | 1 |
+| `640px` | 9 |
+| `641px` | 1 |
+| `734px` | 385 |
+| `735px` | 52 |
+| `833px` | 166 |
+| `834px` | 21 |
+| `1023px` | 29 |
+| `1044px` | 2 |
+| `1068px` | 268 |
+| `1069px` | 30 |
+| `1376px` | 1 |
+| `1440px` | 10 |
+| `1441px` | 55 |
+
+#### Most Frequent Media Queries
+
+| Query | Count |
+|---|---:|
+| `(max-width:734px)` | 281 |
+| `(max-width:1068px)` | 148 |
+| `(max-width: 833px)` | 128 |
+| `(max-width:1068px)and (max-width:1068px)` | 39 |
+| `(max-width:734px)and (max-width:734px)` | 39 |
+| `(min-width:1441px)` | 36 |
+| `only screen and (max-width: 833px)` | 33 |
+| `(min-width:735px)` | 30 |
+| `(max-width: 1023px)` | 26 |
+| `(min-width:1069px)` | 20 |
+| `(max-width:480px)` | 19 |
+| `(min-width: 834px)` | 17 |
+| `(min-width:735px)and (max-width:1068px)` | 17 |
+| `(max-width: 734px)` | 12 |
+| `(min-resolution:1.5dppx),(min-resolution:144dpi)` | 12 |
+| `(max-width: 480px)` | 11 |
+
+### Measured Breakpoint Behavior
+
+| Breakpoint | Document height | Body | Nav | H1 | H2 | Hero / first section | CTA | Primary media |
+|---|---:|---|---|---|---|---|---|---|
+| desktop-xl (1440x1000) | 25811px | "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, sans-serif; 17px; bg rgb(255, 255, 255) | <nav#globalnav.globalnav.js> absolute/block 1440x44; links: Apple, Store, Store menu, Mac, Mac menu, iPad, iPad menu, iPhone, iPhone menu, Watch; menu visible | Apple Watch Series 11; 28px/32px; 600; start; 238x27 | Apple Footer; 12px/16.0005px; 400; start; 1x1 | <div.row.blur-hero-text.viewport-content> 1260x920; flex; bg rgba(0, 0, 0, 0) | Apple Books; 69x14; radius 0px; padding 0px | <video#welcome-hero.play-initiated> 1440x1000 |
+| desktop/tablet edge (1024x900) | 22605px | "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, sans-serif; 17px; bg rgb(255, 255, 255) | <nav#globalnav.globalnav.js> absolute/block 1024x44; links: Apple, Store, Store menu, Mac, Mac menu, iPad, iPad menu, iPhone, iPhone menu, Watch; menu visible | Apple Watch Series 11; 24px/28px; 600; start; 208x24 | Apple Footer; 12px/16.0005px; 400; start; 1x1 | <div.row.blur-hero-text.viewport-content> 896x570; flex; bg rgba(0, 0, 0, 0) | Apple Books; 69x14; radius 0px; padding 0px | <video#welcome-hero.play-initiated> 1024x900 |
+| tablet (768x900) | 23914px | "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, sans-serif; 17px; bg rgb(255, 255, 255) | <nav#globalnav.globalnav.js> absolute/block 768x48; links: Apple, Search apple.com, 0 +, Menu; menu visible | Apple Watch Series 11; 24px/28px; 600; start; 208x24 | Apple Footer; 12px/16.0005px; 400; start; 1x1 | <div.row.blur-hero-text.viewport-content> 672x570; flex; bg rgba(0, 0, 0, 0) | Continue; 90x36; radius 8px; padding 8px 15px | <video#welcome-hero.play-initiated> 768x900 |
+| mobile (430x900) | 24242px | "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, sans-serif; 17px; bg rgb(255, 255, 255) | <nav#globalnav.globalnav.js> absolute/block 430x48; links: Apple, Search apple.com, 0 +, Menu; menu visible | Apple Watch Series 11; 21px/25px; 600; start; 194x22 | Apple Footer; 12px/16.0005px; 400; start; 1x1 | <picture#overview-welcome-hero-1.overview-welcome-hero.fallback-frame.loaded> 430x850; block; bg rgba(0, 0, 0, 0) | Continue; 90x36; radius 8px; padding 8px 15px | <img> 430x850 |
+| compact-mobile (375x812) | 25269px | "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, sans-serif; 17px; bg rgb(255, 255, 255) | <nav#globalnav.globalnav.js> absolute/block 375x48; links: Apple, Search apple.com, 0 +, Menu; menu visible | Apple Watch Series 11; 21px/25px; 600; start; 194x22 | Apple Footer; 12px/16.0005px; 400; start; 1x1 | <picture#overview-welcome-hero-1.overview-welcome-hero.fallback-frame.loaded> 375x812; block; bg rgba(0, 0, 0, 0) | Continue; 90x36; radius 8px; padding 8px 15px | <img> 375x812 |
+
+### Component/Card Samples by Breakpoint
+
+#### desktop-xl (1440px)
+- `<html.js.no-touch.no-reduced-motion.enhanced>` 1440x25811, display `block`, flex `row`, grid `none` — Choose another country or region to see content specific to your locat
+- `<li.globalnav-item.globalnav-item-apple>` 30x44, display `block`, flex `row`, grid `none` — Apple
+- `<li.globalnav-submenu-trigger-item>` 46x44, display `list-item`, flex `row`, grid `none` — Store
+- `<li.globalnav-submenu-trigger-item>` 39x44, display `list-item`, flex `row`, grid `none` — Mac
+- `<li.globalnav-submenu-trigger-item>` 40x44, display `list-item`, flex `row`, grid `none` — iPad
+- `<li.globalnav-submenu-trigger-item>` 54x44, display `list-item`, flex `row`, grid `none` — iPhone
+- Mobile/menu controls visible: `<button#ac-ls-close.ac-ls-close.ac-ls-actions-item.ac-ls-icon>` 18x18 (Close country or region selector); `<div.globalnav-item.globalnav-item-store.globalnav-item-menu.globalnav-item-submenu>` 46x44 (Store); `<ul.globalnav-submenu-trigger-group>` 46x44 (Store); `<li.globalnav-submenu-trigger-item>` 46x44 (Store); `<a.globalnav-link.globalnav-submenu-trigger-link.globalnav-link-store>` 46x44 (Store); `<button#globalnav-menubutton-link-store.globalnav-submenu-trigger-button>` 22x44 (Store menu)
+
+#### desktop/tablet edge (1024px)
+- `<html.js.no-touch.no-reduced-motion.enhanced>` 1024x22605, display `block`, flex `row`, grid `none` — Choose another country or region to see content specific to your locat
+- `<li.globalnav-item.globalnav-item-apple>` 30x44, display `block`, flex `row`, grid `none` — Apple
+- `<li.globalnav-submenu-trigger-item>` 46x44, display `list-item`, flex `row`, grid `none` — Store
+- `<li.globalnav-submenu-trigger-item>` 39x44, display `list-item`, flex `row`, grid `none` — Mac
+- `<li.globalnav-submenu-trigger-item>` 40x44, display `list-item`, flex `row`, grid `none` — iPad
+- `<li.globalnav-submenu-trigger-item>` 54x44, display `list-item`, flex `row`, grid `none` — iPhone
+- Mobile/menu controls visible: `<button#ac-ls-close.ac-ls-close.ac-ls-actions-item.ac-ls-icon>` 18x18 (Close country or region selector); `<div.globalnav-item.globalnav-item-store.globalnav-item-menu.globalnav-item-submenu>` 46x44 (Store); `<ul.globalnav-submenu-trigger-group>` 46x44 (Store); `<li.globalnav-submenu-trigger-item>` 46x44 (Store); `<a.globalnav-link.globalnav-submenu-trigger-link.globalnav-link-store>` 46x44 (Store); `<button#globalnav-menubutton-link-store.globalnav-submenu-trigger-button>` 22x44 (Store menu)
+
+#### tablet (768px)
+- `<html.js.no-touch.no-reduced-motion.enhanced>` 768x23914, display `block`, flex `row`, grid `none` — Choose another country or region to see content specific to your locat
+- `<li.globalnav-item.globalnav-item-apple>` 624x48, display `block`, flex `row`, grid `none` — Apple
+- `<li.globalnav-item.globalnav-search.shift-0-1>` 48x48, display `list-item`, flex `row`, grid `none` — 5 total results Quick Links Find a Store Apple Vision Pro AirPods Appl
+- `<li#globalnav-bag.globalnav-item.globalnav-bag>` 48x48, display `list-item`, flex `row`, grid `none` — 0 +
+- `<div#highlights-gallery.media-card-gallery-content.media-card-set.paused>` 768x658, display `block`, flex `row`, grid `none` — Hypertension notification Sleep score Battery Display Workout Buddy 5G
+- `<div#aap-media-card-gallery.all-access-pass.inactive.aap-media-card-gallery>` 288x56, display `flex`, flex `row`, grid `none` — Hypertension notification Sleep score Battery Display Workout Buddy 5G
+- Mobile/menu controls visible: `<button#ac-ls-close.ac-ls-close.ac-ls-actions-item.ac-ls-icon>` 18x18 (Close country or region selector); `<div.globalnav-menutrigger>` 48x48; `<button#globalnav-menutrigger-button.globalnav-menutrigger-button>` 48x48 (Menu); `<nav#ac-localnav.ac-localnav-light.js.no-touch.css-sticky>` 768x48 (Apple Watch Series 11 Local Nav Menu Bu...); `<a#ac-ln-menustate-open.ac-ln-menucta-anchor.ac-ln-menucta-anchor-open>` 1x1 (Local Nav Menu); `<span.ac-ln-menucta-anchor-label>` 1x1 (Local Nav Menu)
+
+#### mobile (430px)
+- `<html.js.no-touch.no-reduced-motion.no-enhanced>` 430x24242, display `block`, flex `row`, grid `none` — Choose another country or region to see content specific to your locat
+- `<li.globalnav-item.globalnav-item-apple>` 286x48, display `block`, flex `row`, grid `none` — Apple
+- `<li.globalnav-item.globalnav-search.shift-0-1>` 48x48, display `list-item`, flex `row`, grid `none` — 5 total results Quick Links Find a Store Apple Vision Pro AirPods Appl
+- `<li#globalnav-bag.globalnav-item.globalnav-bag>` 48x48, display `list-item`, flex `row`, grid `none` — 0 +
+- `<div#highlights-gallery.media-card-gallery-content.media-card-set.paused>` 430x510, display `block`, flex `row`, grid `none` — Hypertension notification Sleep score Battery Display Workout Buddy 5G
+- `<div#aap-media-card-gallery.all-access-pass.inactive.aap-media-card-gallery>` 272x56, display `flex`, flex `row`, grid `none` — Hypertension notification Sleep score Battery Display Workout Buddy 5G
+- Mobile/menu controls visible: `<button#ac-ls-close.ac-ls-close.ac-ls-actions-item.ac-ls-icon>` 18x18 (Close country or region selector); `<div.globalnav-menutrigger>` 48x48; `<button#globalnav-menutrigger-button.globalnav-menutrigger-button>` 48x48 (Menu); `<nav#ac-localnav.ac-localnav-light.js.no-touch.css-sticky>` 430x48 (Apple Watch Series 11 Local Nav Menu Bu...); `<a#ac-ln-menustate-open.ac-ln-menucta-anchor.ac-ln-menucta-anchor-open>` 1x1 (Local Nav Menu); `<span.ac-ln-menucta-anchor-label>` 1x1 (Local Nav Menu)
+
+#### compact-mobile (375px)
+- `<html.js.no-touch.no-reduced-motion.no-enhanced>` 375x25269, display `block`, flex `row`, grid `none` — Choose another country or region to see content specific to your locat
+- `<li.globalnav-item.globalnav-item-apple>` 231x48, display `block`, flex `row`, grid `none` — Apple
+- `<li.globalnav-item.globalnav-search.shift-0-1>` 48x48, display `list-item`, flex `row`, grid `none` — 5 total results Quick Links Find a Store Apple Vision Pro AirPods Appl
+- `<li#globalnav-bag.globalnav-item.globalnav-bag>` 48x48, display `list-item`, flex `row`, grid `none` — 0 +
+- `<div#highlights-gallery.media-card-gallery-content.media-card-set.paused>` 375x510, display `block`, flex `row`, grid `none` — Hypertension notification Sleep score Battery Display Workout Buddy 5G
+- `<div#aap-media-card-gallery.all-access-pass.inactive.aap-media-card-gallery>` 272x56, display `flex`, flex `row`, grid `none` — Hypertension notification Sleep score Battery Display Workout Buddy 5G
+- Mobile/menu controls visible: `<button#ac-ls-close.ac-ls-close.ac-ls-actions-item.ac-ls-icon>` 18x18 (Close country or region selector); `<div.globalnav-menutrigger>` 48x48; `<button#globalnav-menutrigger-button.globalnav-menutrigger-button>` 48x48 (Menu); `<nav#ac-localnav.js.no-touch.css-sticky.ac-ln-allow-transitions>` 375x48 (Apple Watch Series 11 Local Nav Menu Bu...); `<a#ac-ln-menustate-open.ac-ln-menucta-anchor.ac-ln-menucta-anchor-open>` 1x1 (Local Nav Menu); `<span.ac-ln-menucta-anchor-label>` 1x1 (Local Nav Menu)
+
+### Responsive Behavior Notes
+
+- H1 scales as desktop-xl: 28px/32px, 238x27, start; desktop/tablet edge: 24px/28px, 208x24, start; tablet: 24px/28px, 208x24, start; mobile: 21px/25px, 194x22, start; compact-mobile: 21px/25px, 194x22, start.
+- Navigation behavior: desktop-xl: absolute, block, 1440x44, links=10, menu control visible; desktop/tablet edge: absolute, block, 1024x44, links=10, menu control visible; tablet: absolute, block, 768x48, links=4, menu control visible; mobile: absolute, block, 430x48, links=4, menu control visible; compact-mobile: absolute, block, 375x48, links=4, menu control visible.
+- Hero/first-section geometry: desktop-xl: <div.row.blur-hero-text.viewport-content> 1260x920 at y=3356; desktop/tablet edge: <div.row.blur-hero-text.viewport-content> 896x570 at y=3042; tablet: <div.row.blur-hero-text.viewport-content> 672x570 at y=3111; mobile: <picture#overview-welcome-hero-1.overview-welcome-hero.fallback-frame.loaded> 430x850 at y=139; compact-mobile: <picture#overview-welcome-hero-1.overview-welcome-hero.fallback-frame.loaded> 375x812 at y=139.
+- Primary CTA geometry: desktop-xl: 69x14, radius 0px, padding 0px; desktop/tablet edge: 69x14, radius 0px, padding 0px; tablet: 90x36, radius 8px, padding 8px 15px; mobile: 90x36, radius 8px, padding 8px 15px; compact-mobile: 90x36, radius 8px, padding 8px 15px.
+- Media scaling: desktop-xl: <video#welcome-hero.play-initiated> 1440x1000, object-fit ; desktop/tablet edge: <video#welcome-hero.play-initiated> 1024x900, object-fit ; tablet: <video#welcome-hero.play-initiated> 768x900, object-fit ; mobile: <img> 430x850, object-fit ; compact-mobile: <img> 375x812, object-fit .
+- Component density sample: desktop-xl: 8 sampled cards/components; desktop/tablet edge: 8 sampled cards/components; tablet: 8 sampled cards/components; mobile: 8 sampled cards/components; compact-mobile: 8 sampled cards/components.
+- Treat the CSS width tokens above as implementation breakpoints and the measured table as behavioral breakpoints; generated builders may use class changes, container constraints, and source-order overrides in addition to explicit media queries.
+- Rebuild priority: preserve the measured hierarchy changes first (type size, nav mode, hero/media dimensions, CTA geometry), then tune secondary card/grid wrapping from the component samples.

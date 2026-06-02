@@ -5173,3 +5173,102 @@
 - **Color system:** Promote the most frequent background/text colors into variables, then layer accent colors from buttons, links, and hero media.
 - **Media system:** Use listed images, videos, SVGs, canvas/WebGL presence, and background images to decide which visuals are real media versus CSS decoration.
 - **Motion system:** Copy only transitions/animations visible in computed styles, then add scroll/media movement where the DOM indicates video, canvas, marquees, or sticky positioning.
+---
+
+## BLOCK 7 — responsive-breakpoints.md
+
+**Responsive extraction:** 2026-06-02T09:01:59.798Z
+**Method:** headless Chrome measured live computed styles at 1440px, 1024px, 768px, 430px, 375px viewport widths; CSS media queries were read from inline styles and linked stylesheets when reachable.
+
+### CSS Breakpoint Inventory
+
+| Metric | Value |
+|---|---:|
+| Total media query rules found | 19 |
+| Unique media query expressions | 9 |
+
+#### Width Tokens Detected
+
+| Width token | Occurrences |
+|---|---:|
+| `479px` | 5 |
+| `767px` | 6 |
+| `768px` | 1 |
+| `991px` | 5 |
+
+#### Most Frequent Media Queries
+
+| Query | Count |
+|---|---:|
+| `screen and (max-width:767px)` | 5 |
+| `screen and (max-width:991px)` | 4 |
+| `screen and (max-width:479px)` | 4 |
+| `(prefers-color-scheme: light)` | 1 |
+| `screen and (max-width: 991px)` | 1 |
+| `screen and (max-width: 767px)` | 1 |
+| `screen and (max-width: 479px)` | 1 |
+| `(hover: hover)` | 1 |
+| `(min-width:768px)` | 1 |
+
+### Measured Breakpoint Behavior
+
+| Breakpoint | Document height | Body | Nav | H1 | H2 | Hero / first section | CTA | Primary media |
+|---|---:|---|---|---|---|---|---|---|
+| desktop-xl (1440x1000) | 13418px | -apple-system, "system-ui", Inter, "Segoe UI", sans-serif; 17px; bg rgb(243, 246, 247) | <nav.navigation> fixed/flex 1440x86; links: none | Your Connected Health Coach; 80px/80px; 600; center; 657x160 | Works with; 24px/21.6px; 600; start; 118x22 | <section.hero_section.section-3> 1440x1067; flex; bg rgba(0, 0, 0, 0) | Download app; 174x46; radius 128px; padding 12px 18px | <video.hero_tunnel> 1424x801 |
+| desktop/tablet edge (1024x900) | 11907px | -apple-system, "system-ui", Inter, "Segoe UI", sans-serif; 17px; bg rgb(243, 246, 247) | <nav.navigation> fixed/flex 1024x86; links: none | Your Connected Health Coach; 68.1197px/68.1197px; 600; center; 563x136 | Works with; 22.5197px/20.2677px; 600; start; 111x20 | <section.hero_section.section-3> 1024x900; flex; bg rgba(0, 0, 0, 0) | Download app; 174x46; radius 128px; padding 12px 18px | <video.hero_tunnel> 1008x567 |
+| tablet (768x900) | 10589px | -apple-system, "system-ui", Inter, "Segoe UI", sans-serif; 17px; bg rgb(243, 246, 247) | <nav.navigation> fixed/flex 768x86; links: none | Your Connected Health Coach; 60.8058px/60.8058px; 600; center; 646x122 | Works with; 21.6058px/19.4452px; 600; start; 107x19 | <section.hero_section.section-3> 768x900; flex; bg rgba(0, 0, 0, 0) | Download app; 174x46; radius 128px; padding 12px 18px | <video.hero_tunnel> 752x423 |
+| mobile (430x900) | 13092px | -apple-system, "system-ui", Inter, "Segoe UI", sans-serif; 17px; bg rgb(243, 246, 247) | <nav.navigation> fixed/flex 398x84; links: none | Your Connected Health Coach; 51.1491px/51.1491px; 600; center; 379x102 | Works with; 20.3991px/18.3592px; 600; start; 102x18 | <svg.hero_rating> 80x16; block; bg rgba(0, 0, 0, 0) | Download app; 174x46; radius 128px; padding 12px 18px | <video.hero_tunnel> 828x466 |
+| compact-mobile (375x812) | 12526px | -apple-system, "system-ui", Inter, "Segoe UI", sans-serif; 17px; bg rgb(243, 246, 247) | <nav.navigation> fixed/flex 343x84; links: none | Your Connected Health Coach; 49.5778px/49.5777px; 600; center; 325x149 | Works with; 20.2027px/18.1825px; 600; start; 101x18 | <svg.hero_rating> 80x16; block; bg rgba(0, 0, 0, 0) | Download app; 174x46; radius 128px; padding 12px 18px | <video.hero_tunnel> 718x404 |
+
+### Component/Card Samples by Breakpoint
+
+#### desktop-xl (1440px)
+- `<div.feature_card.cc-orange>` 437x739, display `block`, flex `row`, grid `none` — Strain Track how hard you're pushing with one number that captures you
+- `<div.feature_card-top>` 437x238, display `block`, flex `row`, grid `none` — Strain Track how hard you're pushing with one number that captures you
+- `<div.feature_card-content>` 437x501, display `flex`, flex `row`, grid `none`
+- `<div.feature_phone.u-p-relative>` 338x25, display `block`, flex `row`, grid `none`
+- `<div.feature_card-fg.cc-1>` 354x13, display `flex`, flex `column`, grid `none`
+- `<div.feature_card.cc-blue>` 437x739, display `block`, flex `row`, grid `none` — Sleep Discover what it takes to get a good night's rest by knowing you
+
+#### desktop/tablet edge (1024px)
+- `<div.feature_card.cc-orange>` 307x633, display `block`, flex `row`, grid `none` — Strain Track how hard you're pushing with one number that captures you
+- `<div.feature_card-top>` 307x281, display `block`, flex `row`, grid `none` — Strain Track how hard you're pushing with one number that captures you
+- `<div.feature_card-content>` 307x351, display `flex`, flex `row`, grid `none`
+- `<div.feature_phone.u-p-relative>` 237x483, display `block`, flex `row`, grid `none`
+- `<div.feature_card-fg.cc-1>` 248x165, display `flex`, flex `column`, grid `none`
+- `<img.feature_card-fg-blur.cc-1>` 248x76, display `block`, flex `row`, grid `none`
+
+#### tablet (768px)
+- `<div.feature_card.cc-orange>` 226x613, display `block`, flex `row`, grid `none` — Strain Track how hard you're pushing with one number that captures you
+- `<div.feature_card-top>` 226x354, display `block`, flex `row`, grid `none` — Strain Track how hard you're pushing with one number that captures you
+- `<div.feature_card-content>` 226x259, display `flex`, flex `row`, grid `none`
+- `<div.feature_phone.u-p-relative>` 175x356, display `block`, flex `row`, grid `none`
+- `<div.feature_card-fg.cc-1>` 183x125, display `flex`, flex `column`, grid `none`
+- `<img.feature_card-fg-blur.cc-1>` 183x56, display `block`, flex `row`, grid `none`
+
+#### mobile (430px)
+- `<div.feature_card.cc-orange>` 395x627, display `block`, flex `row`, grid `none` — Strain Track how hard you're pushing with one number that captures you
+- `<div.feature_card-top>` 395x202, display `block`, flex `row`, grid `none` — Strain Track how hard you're pushing with one number that captures you
+- `<div.feature_card-content>` 395x425, display `flex`, flex `row`, grid `none`
+- `<div.feature_phone.u-p-relative>` 305x622, display `block`, flex `row`, grid `none`
+- `<div.feature_card-fg.cc-1>` 320x209, display `flex`, flex `column`, grid `none`
+- `<img.feature_card-fg-blur.cc-1>` 320x98, display `block`, flex `row`, grid `none`
+
+#### compact-mobile (375px)
+- `<div.feature_card.cc-orange>` 341x593, display `block`, flex `row`, grid `none` — Strain Track how hard you're pushing with one number that captures you
+- `<div.feature_card-top>` 341x226, display `block`, flex `row`, grid `none` — Strain Track how hard you're pushing with one number that captures you
+- `<div.feature_card-content>` 341x367, display `flex`, flex `row`, grid `none`
+- `<div.feature_phone.u-p-relative>` 264x538, display `block`, flex `row`, grid `none`
+- `<div.feature_card-fg.cc-1>` 277x183, display `flex`, flex `column`, grid `none`
+- `<img.feature_card-fg-blur.cc-1>` 277x85, display `block`, flex `row`, grid `none`
+
+### Responsive Behavior Notes
+
+- H1 scales as desktop-xl: 80px/80px, 657x160, center; desktop/tablet edge: 68.1197px/68.1197px, 563x136, center; tablet: 60.8058px/60.8058px, 646x122, center; mobile: 51.1491px/51.1491px, 379x102, center; compact-mobile: 49.5778px/49.5777px, 325x149, center.
+- Navigation behavior: desktop-xl: fixed, flex, 1440x86, links=0; desktop/tablet edge: fixed, flex, 1024x86, links=0; tablet: fixed, flex, 768x86, links=0; mobile: fixed, flex, 398x84, links=0; compact-mobile: fixed, flex, 343x84, links=0.
+- Hero/first-section geometry: desktop-xl: <section.hero_section.section-3> 1440x1067 at y=0; desktop/tablet edge: <section.hero_section.section-3> 1024x900 at y=0; tablet: <section.hero_section.section-3> 768x900 at y=0; mobile: <svg.hero_rating> 80x16 at y=1165; compact-mobile: <svg.hero_rating> 80x16 at y=1077.
+- Primary CTA geometry: desktop-xl: 174x46, radius 128px, padding 12px 18px; desktop/tablet edge: 174x46, radius 128px, padding 12px 18px; tablet: 174x46, radius 128px, padding 12px 18px; mobile: 174x46, radius 128px, padding 12px 18px; compact-mobile: 174x46, radius 128px, padding 12px 18px.
+- Media scaling: desktop-xl: <video.hero_tunnel> 1424x801, object-fit ; desktop/tablet edge: <video.hero_tunnel> 1008x567, object-fit ; tablet: <video.hero_tunnel> 752x423, object-fit ; mobile: <video.hero_tunnel> 828x466, object-fit ; compact-mobile: <video.hero_tunnel> 718x404, object-fit .
+- Component density sample: desktop-xl: 8 sampled cards/components; desktop/tablet edge: 8 sampled cards/components; tablet: 8 sampled cards/components; mobile: 8 sampled cards/components; compact-mobile: 8 sampled cards/components.
+- Treat the CSS width tokens above as implementation breakpoints and the measured table as behavioral breakpoints; generated builders may use class changes, container constraints, and source-order overrides in addition to explicit media queries.
+- Rebuild priority: preserve the measured hierarchy changes first (type size, nav mode, hero/media dimensions, CTA geometry), then tune secondary card/grid wrapping from the component samples.
