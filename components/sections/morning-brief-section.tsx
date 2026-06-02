@@ -209,32 +209,17 @@ function InsightCard({ insight, index }: { insight: Insight; index: number }) {
 }
 
 function WaldoPhoneLoop() {
+  // The three SVGs are loosely-cropped hand-drawn keyframes with different
+  // aspect ratios. Sizing them by a shared HEIGHT (not width) and centering both
+  // axes keeps the head at a constant scale + position so it no longer jumps;
+  // the eased crossfade (see globals.css) dissolves frame→frame.
+  const frameClass =
+    "waldo-phone-frame absolute left-1/2 top-1/2 h-[64px] w-auto max-w-none -translate-x-1/2 -translate-y-1/2";
   return (
-    <div aria-hidden className="absolute left-1/2 top-[50%] z-40 h-[66px] w-[94px] -translate-x-1/2 -translate-y-1/2">
-      <Image
-        src={frameOne}
-        alt=""
-        width={186}
-        height={127}
-        unoptimized
-        className="waldo-phone-frame waldo-phone-frame-one absolute left-1/2 top-1/2 h-auto w-[90px] -translate-x-1/2 -translate-y-1/2"
-      />
-      <Image
-        src={frameTwo}
-        alt=""
-        width={180}
-        height={145}
-        unoptimized
-        className="waldo-phone-frame waldo-phone-frame-two absolute left-1/2 top-1/2 h-auto w-[86px] -translate-x-1/2 -translate-y-1/2"
-      />
-      <Image
-        src={frameThree}
-        alt=""
-        width={194}
-        height={111}
-        unoptimized
-        className="waldo-phone-frame waldo-phone-frame-three absolute left-1/2 top-1/2 h-auto w-[94px] -translate-x-1/2 -translate-y-1/2"
-      />
+    <div aria-hidden className="absolute left-1/2 top-[50%] z-40 h-[72px] w-[140px] -translate-x-1/2 -translate-y-1/2">
+      <Image src={frameOne} alt="" width={186} height={127} unoptimized className={`${frameClass} waldo-phone-frame-one`} />
+      <Image src={frameTwo} alt="" width={180} height={145} unoptimized className={`${frameClass} waldo-phone-frame-two`} />
+      <Image src={frameThree} alt="" width={194} height={111} unoptimized className={`${frameClass} waldo-phone-frame-three`} />
     </div>
   );
 }
