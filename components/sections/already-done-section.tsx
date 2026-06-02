@@ -1,177 +1,65 @@
-// "Already done." — Waldo chat UI mockup + copy about autonomous action.
+import { NotificationStack } from "@/components/notification-stack";
+import { Aside, Readout, SectionIntro, WaldoCTA } from "@/components/landing-primitives";
 
-"use client";
-
-import type { ReactNode } from "react";
-import Image from "next/image";
-import { CinematicVideo } from "@/components/cinematic-video";
-
-function PlusIcon() {
-  return (
-    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-      <path d="M5 1v8M1 5h8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
-    </svg>
-  );
-}
-
-function SearchIcon() {
-  return (
-    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-      <circle cx="4" cy="4" r="2.8" stroke="currentColor" strokeWidth="1.2" fill="none"/>
-      <path d="M6.5 6.5L9 9" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
-    </svg>
-  );
-}
-
-function SidebarItem({
-  icon,
-  label,
-}: {
-  icon: ReactNode;
-  label: string;
-}) {
-  return (
-    <div className="flex gap-[7.279px] items-center">
-      <div
-        className="flex items-center overflow-clip p-[3.882px] rounded-[14.559px] shrink-0"
-        style={{ background: "rgba(26,26,26,0.06)" }}
-      >
-        <div className="size-[9.706px] flex items-center justify-center text-[#1a1a1a]">
-          {icon}
-        </div>
-      </div>
-      <span
-        className="font-normal text-[#1a1a1a] text-[8.735px] whitespace-nowrap"
-        style={{ fontFamily: "var(--font-body)", fontVariationSettings: "'opsz' 14", lineHeight: 1.3 }}
-      >
-        {label}
-      </span>
-    </div>
-  );
-}
+const handledReads = [
+  { label: "Sleep", value: "5h 42m", read: "short night; morning load cut." },
+  { label: "HRV", value: "38ms", read: "below baseline; pace slowed." },
+  { label: "Calendar", value: "4 meetings", read: "too dense; first block moved." },
+];
 
 export function AlreadyDoneSection() {
   return (
-    <section className="flex flex-col gap-[50px] items-center pb-[30px] w-full">
-      {/* Waldo chat UI mockup — desktop only */}
-      <div
-        data-animate="fade-up"
-        className="hidden lg:flex bg-[#fafaf8] border-2 border-[rgba(26,26,26,0.08)] border-solid flex-col items-center overflow-clip pt-[70px] w-full"
-        style={{ height: "750px", borderRadius: "30px" }}
+    <section id="already-handled" className="section-shell flex flex-col gap-8 py-4 lg:gap-10">
+      <SectionIntro
+        title={
+          <>
+            Not a chart.
+            <br />
+            Not a nudge.
+            <br />
+            Already handled.
+          </>
+        }
       >
-        {/* Scaled mockup of Waldo interface */}
-        <div
-          className="bg-[#f4f3f0] flex items-start shrink-0"
-          style={{ padding: "4.853px", borderRadius: "19.412px" }}
-        >
-          {/* Sidebar */}
-          <div
-            className="bg-[#f4f3f0] flex flex-col gap-[19.412px] items-start self-stretch shrink-0"
-            style={{
-              padding: "19.412px",
-              borderRadius: "14.559px 0 0 14.559px",
-              width: "153.838px",
-            }}
-          >
-            {/* Logo */}
-            <Image src="/logo.svg" alt="Waldo" width={44} height={11} unoptimized style={{ height: "10.676px", width: "44.162px" }} />
+        <p>
+          Waldo reads what your wearable collects, understands what your body is actually saying, and handles the rest.
+        </p>
+      </SectionIntro>
 
-            {/* Top nav items */}
-            <div className="flex flex-col gap-[7.279px] items-start w-full">
-              <SidebarItem icon={<PlusIcon />} label="New Chat" />
-              <SidebarItem icon={<SearchIcon />} label="Connectors" />
+      <div className="grid gap-5 lg:grid-cols-2">
+        <div className="surface-card flex min-h-[440px] flex-col justify-center p-6 sm:p-8">
+          <p className="type-label mb-6 text-center text-[var(--text-secondary)]">The old way</p>
+          <NotificationStack />
+          <Aside className="mt-5 text-center">everything noticed, nothing handled.</Aside>
+        </div>
+
+        <div className="dark-panel flex min-h-[440px] flex-col justify-between rounded-[30px] p-5 sm:p-6">
+          <div className="dark-card p-5 sm:p-6">
+            <div className="flex items-center justify-between gap-4">
+              <p className="type-label text-[var(--surface-t2)]">Waldo</p>
+              <span className="type-caption rounded-full border border-[var(--border-dark)] bg-[var(--dark-t1)] px-3 py-1 text-[var(--text-secondary)]">
+                handled
+              </span>
             </div>
 
-            {/* Divider */}
-            <div className="w-full h-px bg-[rgba(26,26,26,0.12)]" />
-
-            {/* Secondary nav */}
-            <div className="flex flex-col gap-[7.279px] items-start">
-              <SidebarItem icon={<SearchIcon />} label="Fetches" />
-              <SidebarItem icon={<SearchIcon />} label="Constellations" />
+            <div className="mt-6 rounded-[18px] border border-[var(--border-dark)] bg-[var(--dark-t1)] p-5">
+              <p className="type-body text-[var(--surface-t2)]">
+                Rough morning. Your 9am moved to 10:30, the low-priority follow-up shifted to noon, and focus stays protected until lunch.
+              </p>
+              <p className="type-aside mt-4 text-[var(--text-tertiary)]">warm enough to start slowly.</p>
             </div>
 
-            {/* Divider */}
-            <div className="w-full h-px bg-[rgba(26,26,26,0.12)]" />
-
-            {/* Your chats */}
-            <div className="flex flex-col gap-[7.279px] items-start">
-              <SidebarItem icon={<PlusIcon />} label="Your Chats" />
-            </div>
-
-            {/* Divider */}
-            <div className="w-full h-px bg-[rgba(26,26,26,0.12)]" />
-
-            {/* Recents */}
-            <div
-              className="flex flex-col gap-[7.279px] items-start font-normal"
-              style={{ fontFamily: "var(--font-body)", fontVariationSettings: "'opsz' 14", fontSize: "5.824px", lineHeight: 1.3 }}
-            >
-              <span className="text-[#1a1a1a]">Recents</span>
-              <span className="text-[#6b6b68]">Client Onboarding Workflow</span>
-              <span className="text-[#6b6b68]">Content Review for Social ...</span>
-              <span className="text-[#6b6b68]">SPN Branding</span>
-            </div>
-
-            {/* Divider */}
-            <div className="w-full h-px bg-[rgba(26,26,26,0.12)]" />
-
-            {/* User */}
-            <div className="flex gap-[7.279px] items-center">
-              <div
-                className="flex items-center overflow-clip p-[3.882px] rounded-[14.559px] shrink-0 bg-[#b00c0c]"
-                style={{ width: "21.353px", height: "21.353px" }}
-              />
-              <div
-                className="flex flex-col gap-[2.426px] items-start font-normal whitespace-nowrap"
-                style={{ fontFamily: "var(--font-body)", fontVariationSettings: "'opsz' 14", lineHeight: 1.3 }}
-              >
-                <span className="text-[#1a1a1a] text-[8.735px]">Suyash Pingale</span>
-                <span className="text-[#6b6b68] text-[5.824px]">SPN Branding</span>
-              </div>
+            <div className="mt-4 grid gap-3 sm:grid-cols-3">
+              {handledReads.map((read) => (
+                <Readout key={read.label} {...read} dark />
+              ))}
             </div>
           </div>
-
-          {/* Main content area — cinematic scroll-triggered demo video */}
-          <CinematicVideo
-            src="/waldo_demo.mp4"
-            containerClassName="border-[0.485px] border-[rgba(26,26,26,0.16)] border-solid bg-[#1a1a1a] overflow-hidden"
-            containerStyle={{ height: "592.542px", width: "707.557px", borderRadius: "13.588px" }}
-          />
         </div>
       </div>
 
-      {/* Copy */}
-      <div className="flex flex-col gap-[24px] lg:gap-[30px] items-center text-center w-full px-4 lg:px-0">
-        <h2
-          data-animate="headline"
-          className="text-[#1a1a1a] text-[32px] lg:text-[48px]"
-          style={{ fontFamily: "var(--font-headline)", lineHeight: 1.1 }}
-        >
-          Already done.
-        </h2>
-        <p
-          data-animate="fade-up"
-          className="text-[#1a1a1a] text-[18px] lg:text-[25px]"
-          style={{ fontFamily: "var(--font-headline)", lineHeight: 1.2 }}
-        >
-          Not just a suggestion or a notification.
-        </p>
-        <p
-          data-animate="fade-up"
-          className="font-normal text-[#717171] text-[14px]"
-          style={{
-            fontFamily: "var(--font-body)",
-            fontVariationSettings: "'opsz' 14",
-            lineHeight: 1.3,
-            maxWidth: "455px",
-            width: "100%",
-          }}
-        >
-          Every other health app shows you the data and leaves the rest to you. Waldo reads your
-          signals, makes the call, and sends you a note after the fact. You&apos;re always in charge.
-          You just rarely need to be.
-        </p>
+      <div className="flex justify-center">
+        <WaldoCTA />
       </div>
     </section>
   );

@@ -1,126 +1,56 @@
-// Morning Brief — 3-card shuffleable stack.
-// Click card area to advance. Auto 8s. Hover pauses.
-
-"use client";
-
 import Image from "next/image";
-import Link from "next/link";
-import goodSleepDarkMode from "@/components/assets/good-sleep-dark-mode.svg";
-import vectorSpot        from "@/components/assets/Vector-1.svg";
-import vectorBrief       from "@/components/assets/Vector.svg";
-import { useCardStack }  from "@/hooks/use-card-stack";
-import { MobileDots }   from "@/components/mobile-dots";
-import { EASE, DUR_SETTLE, AUTO_CARD_MS } from "@/lib/motion";
+import { Aside, Readout, SectionIntro } from "@/components/landing-primitives";
 
-const CARDS = [
-  { icon: vectorSpot,        iconW: 90,  iconH: 69, title: "The Spot",          body: "Not a trend. Not a report. One thing, clearly said. That's a Spot. Waldo found it in six weeks of Tuesdays and Thursdays that looked ordinary.\n\nYou wouldn't have found it. Spots show up when there's something worth saying. Not before.",  footnote: "something Waldo noticed." },
-  { icon: goodSleepDarkMode, iconW: 89,  iconH: 66, title: "The Constellation", body: "One Spot is a data point. Twelve Spots across four months is a Constellation. The fact that your worst sleep always follows your heaviest meeting days. Waldo connected these dots for the long term goals.",                                       footnote: "on it while you sleep." },
-  { icon: vectorBrief,       iconW: 112, iconH: 87, title: "Morning Wag",        body: "Morning. Bit of a rough night — your sleep was short by about 90 minutes. \n\nNudged your 9am to 10:30 & 10am to noon.\n\nNothing drastic, the rest of your day looks good. ",                                                                    footnote: "*cues World Hold On by Bob Sinclair*" },
-] as const;
-
-const BACK: { rotate: string; left: string; top: string }[] = [
-  { rotate: "-14.26deg", left: "43.97px", top: "7.96px" },
-  { rotate:  "12.80deg", left: "446px",   top: "15px"   },
+const reads = [
+  { label: "Sleep", value: "5h 42m", read: "short night; morning moved later." },
+  { label: "HRV", value: "38ms", read: "below baseline; pressure reduced." },
+  { label: "Resting HR", value: "62 bpm", read: "steady enough for a normal afternoon." },
 ];
 
-const T = `all ${DUR_SETTLE}ms ${EASE}`;
-
 export function MorningBriefSection() {
-  const { slotOf, frontIndex, onClick, onMouseEnter, onMouseLeave, onTouchStart, onTouchEnd } = useCardStack(CARDS.length, AUTO_CARD_MS);
-  const FRONT = CARDS.length - 1;
-  const frontCardIdx = frontIndex;
-  const frontCard = CARDS[frontCardIdx];
-
   return (
-    <section className="flex flex-col gap-[70px] items-center py-[90px] w-full" style={{ borderRadius: "30px" }}>
-      {/* Mobile: stacked card depth — 2 behind strips peek from top, front in flow */}
-      <div className="lg:hidden w-full px-4" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd} onClick={onClick}>
-        <div className="relative w-full max-w-[400px] mx-auto" style={{ paddingTop: "18px" }}>
-          {/* Behind card strips — absolute, fill container, peek above front card */}
-          <div className="absolute border-solid border-[rgba(26,26,26,0.14)] bg-[#fafaf8]"
-               style={{ top: 0, left: "14px", right: "14px", bottom: 0, borderRadius: "20px", borderWidth: "1.5px", opacity: 0.5, zIndex: 1 }} />
-          <div className="absolute border-solid border-[rgba(26,26,26,0.14)] bg-[#fafaf8]"
-               style={{ top: "9px", left: "7px", right: "7px", bottom: 0, borderRadius: "20px", borderWidth: "1.5px", opacity: 0.72, zIndex: 2 }} />
-          {/* Front card — relative, defines height */}
-          <div
-            className="relative bg-[#fafaf8] border-solid border-[rgba(26,26,26,0.16)] flex flex-col items-start overflow-clip"
-            style={{ padding: "28px", borderRadius: "20px", borderWidth: "1.5px", zIndex: 3, boxShadow: "0 4px 24px rgba(0,0,0,0.08)" }}
-          >
-            <Image src={frontCard.icon} alt="" width={frontCard.iconW} height={frontCard.iconH} unoptimized />
-            <div key={frontCardIdx}>
-              <p className="text-[#1a1a1a]"
-                 style={{ fontFamily: "var(--font-headline)", fontSize: "22px", lineHeight: 1.1, whiteSpace: "pre-wrap", marginTop: "24px", animation: "content-enter 0.3s 0.18s both" }}>
-                {frontCard.body}
-              </p>
-              <p className="font-medium italic text-[#6b6b68]"
-                 style={{ fontFamily: "var(--font-body)", fontVariationSettings: "'opsz' 14", fontStyle: "italic", fontSize: "14px", lineHeight: 1.3, marginTop: "16px", animation: "content-enter 0.3s 0.28s both" }}>
-                {frontCard.footnote}
-              </p>
+    <section id="brief" className="section-shell surface-card grid gap-8 overflow-hidden p-6 sm:p-8 lg:grid-cols-[.9fr_1.1fr] lg:gap-10 lg:p-12">
+      <SectionIntro
+        className="items-start text-left lg:pt-6"
+        title={
+          <>
+            The Brief arrives
+            <br />
+            before the day does.
+          </>
+        }
+        aside="mornings, sorted."
+      >
+        <p>
+          Every morning. One message. What happened, what changed, and what you do not need to worry about.
+        </p>
+      </SectionIntro>
+
+      <div className="dark-panel rounded-[30px] p-4 sm:p-5">
+        <div className="dark-card p-5 sm:p-6">
+          <div className="flex items-center gap-3">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--dark-t1)]">
+              <Image src="/illustrations/default.svg" alt="" width={38} height={30} className="h-auto w-[38px]" />
+            </div>
+            <div>
+              <p className="type-label text-[var(--surface-t2)]">Morning</p>
+              <p className="type-caption text-[var(--text-secondary)]">sent after wake</p>
             </div>
           </div>
+
+          <div className="mt-6 rounded-[18px] border border-[var(--border-dark)] bg-[var(--dark-t1)] p-5">
+            <p className="type-body text-[var(--surface-t2)]">
+              Rough night. About 5h 40m of sleep, and HRV is sitting below baseline. Your 9am moved to 10:30 and the 10am shifted to noon. The afternoon looks fine.
+            </p>
+            <p className="type-aside mt-4 text-[var(--text-tertiary)]">already on it.</p>
+          </div>
+
+          <div className="mt-4 grid gap-3 sm:grid-cols-3">
+            {reads.map((read) => (
+              <Readout key={read.label} {...read} dark />
+            ))}
+          </div>
         </div>
-        <MobileDots count={CARDS.length} current={frontCardIdx} />
-      </div>
-
-      {/* Desktop: fan stack */}
-      <div
-        className="hidden lg:block relative shrink-0 cursor-pointer"
-        style={{ height: "562px", width: "1004px" }}
-        onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}
-        role="button" aria-label="Card stack — click to advance" tabIndex={0}
-        onKeyDown={e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onClick(e as unknown as React.MouseEvent); } }}
-      >
-        {CARDS.map((card, i) => {
-          const si    = slotOf(i);
-          const front = si === FRONT;
-          const b     = BACK[si];
-          return (
-            <div key={i} className="absolute flex items-center justify-center"
-              style={{ ...(front ? { left: "50%", top: "50%", transform: "translate(-50%,-50%)" } : { left: b.left, top: b.top, width: "507.436px", height: "538.752px" }), zIndex: si + 1, transition: T }}
-            >
-              <div style={{ transform: front ? "none" : `rotate(${b.rotate})`, opacity: front ? 1 : 0.6, filter: front ? "none" : "blur(5px)", transition: T }}>
-                {front ? (
-                  <div className="bg-[#fafaf8] border-[1.701px] border-[rgba(26,26,26,0.16)] border-solid flex flex-col gap-[45.387px] items-start overflow-clip" style={{ padding: "55.793px", borderRadius: "22.687px" }}>
-                    <Image src={card.icon} alt="" width={card.iconW} height={card.iconH} unoptimized />
-                    <p className="text-[#1a1a1a]" style={{ fontFamily: "var(--font-headline)", fontSize: "26.435px", lineHeight: 1.1, width: "336.414px", whiteSpace: "pre-wrap" }}>{card.body}</p>
-                    <p className="font-medium italic text-[#6b6b68] whitespace-nowrap" style={{ fontFamily: "var(--font-body)", fontVariationSettings: "'opsz' 14", fontStyle: "italic", fontSize: "16.738px", lineHeight: 1.3 }}>{card.footnote}</p>
-                  </div>
-                ) : (
-                  <div className="bg-[#fafaf8] border-[1.215px] border-[rgba(26,26,26,0.16)] border-solid flex flex-col items-start justify-between overflow-clip" style={{ height: "460.08px", width: "406px", padding: "40.5px", borderRadius: "16.2px" }}>
-                    <div className="flex flex-col gap-[32.4px] items-start">
-                      <Image src={card.icon} alt="" width={card.iconW} height={card.iconH} unoptimized />
-                      <p className="text-[#1a1a1a] whitespace-nowrap" style={{ fontFamily: "var(--font-headline)", fontSize: "29.16px", lineHeight: 1.2 }}>{card.title}</p>
-                      <p className="text-[#1a1a1a]" style={{ fontFamily: "var(--font-headline)", fontSize: "18.876px", lineHeight: 1.1, width: "325.62px", whiteSpace: "pre-wrap" }}>{card.body}</p>
-                    </div>
-                    <p className="font-normal italic text-[#717171] whitespace-nowrap" style={{ fontFamily: "var(--font-body)", fontVariationSettings: "'opsz' 14", fontSize: "11.34px", lineHeight: 1.3 }}>{card.footnote}</p>
-                  </div>
-                )}
-              </div>
-            </div>
-          );
-        })}
-      </div>  {/* end desktop fan */}
-
-      {/* Desktop nav dots */}
-      <div className="hidden lg:flex gap-[8px] items-center justify-center">
-        {CARDS.map((_, i) => (
-          <button
-            key={i}
-            aria-label={`Card ${i + 1}`}
-            onClick={e => { e.stopPropagation(); const steps = ((i - frontCardIdx) % CARDS.length + CARDS.length) % CARDS.length; for (let s = 0; s < steps; s++) onClick(e as unknown as React.MouseEvent); }}
-            style={{ width: i === frontCardIdx ? "20px" : "6px", height: "6px", borderRadius: "3px", background: i === frontCardIdx ? "#1a1a1a" : "rgba(26,26,26,0.2)", transition: "all 0.4s ease", border: "none", padding: 0, cursor: "pointer" }}
-          />
-        ))}
-      </div>
-
-      <div className="flex flex-col gap-[40px] items-center w-full">
-        <h2 data-animate="headline" className="text-[#1a1a1a] text-[32px] lg:text-[48px] text-center px-4 lg:px-0" style={{ fontFamily: "var(--font-headline)", lineHeight: 1.1 }}>With Waldo, this is what{" "}<br />you wake up to instead.</h2>
-        <p data-animate="fade-up" className="font-normal text-[#6b6b68] text-[14px] text-center px-6 lg:px-0" style={{ fontFamily: "var(--font-body)", fontVariationSettings: "'opsz' 14", lineHeight: 1.3, maxWidth: "455px" }}>
-          It reschedules meetings, reprioritises tasks, and intervenes based on HRV, sleep, and circadian patterns - without being asked. You never open a dashboard to manage health. Waldo handles it.
-        </p>
-        <Link href="/waitlist" className="flex min-h-14 items-center justify-center rounded-full bg-[#1A1A1A] px-9 text-center text-[16px] font-medium text-[#FAFAF8] shadow-[0_1px_2px_rgba(0,0,0,.04),0_8px_24px_rgba(0,0,0,.05)] transition-[transform,box-shadow,background-color] duration-300 ease-[cubic-bezier(0.19,1,0.22,1)] hover:-translate-y-px hover:bg-[#272725] active:scale-[0.98]" style={{ fontFamily: "var(--font-body)", lineHeight: 1.2, letterSpacing: "-0.01em" }}>
-          Let Waldo in →
-        </Link>
       </div>
     </section>
   );

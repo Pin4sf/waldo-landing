@@ -1,169 +1,91 @@
-// Five Things — 5-card shuffleable fan.
-// Click card area to advance. Auto 8s. Hover pauses.
-
-"use client";
-
 import Image from "next/image";
-import Link from "next/link";
-import goodSleepDarkMode from "@/components/assets/good-sleep-dark-mode.svg";
-import vectorSpot        from "@/components/assets/Vector-1.svg";
-import goodWeekDarkMode  from "@/components/assets/good-week-dark-mode.svg";
-import goodDarkMode      from "@/components/assets/good-dark-mode.svg";
-import watchingDarkMode  from "@/components/assets/watching-dark-mode.svg";
-import { useCardStack }  from "@/hooks/use-card-stack";
-import { MobileDots }   from "@/components/mobile-dots";
-import { EASE, DUR_SETTLE, AUTO_CARD_MS } from "@/lib/motion";
+import goodDarkMode from "@/components/assets/good-dark-mode.svg";
+import goodWeekDarkMode from "@/components/assets/good-week-dark-mode.svg";
+import roughDarkMode from "@/components/assets/rough-dark-mode.svg";
+import vectorSpot from "@/components/assets/Vector-1.svg";
+import watchingDarkMode from "@/components/assets/watching-dark-mode.svg";
+import { Aside, SectionIntro } from "@/components/landing-primitives";
 
-const CARDS = [
-  { icon: goodSleepDarkMode, iconW: 89,  iconH: 66, title: "The Constellation", body: "One Spot is a data point. Twelve Spots across four months is a Constellation. The fact that your worst sleep always follows your heaviest meeting days. The fact that your focus peaks in November and dips in March - every year, without fail. Waldo connected these dots for the long term goals.", footnote: "on it while you sleep." },
-  { icon: vectorSpot,        iconW: 90,  iconH: 69, title: "The Spot",          body: "Not a trend. Not a report. One thing, clearly said. That's a Spot. Waldo found it in six weeks of Tuesdays and Thursdays that looked ordinary. \n\nYou wouldn't have found it. Spots show up when there's something worth saying. Not before.",                                                    footnote: "something Waldo noticed." },
-  { icon: goodWeekDarkMode,  iconW: 100, iconH: 77, title: "The Adjustment",    body: "Not a notification asking if you want to reschedule. Moved. Done. You get a note after the fact.\n\nWaldo doesn't ask. It acts. You stay in charge - you can always undo it - but you usually won't.",                                                                                              footnote: "already moved." },
-  { icon: goodDarkMode,      iconW: 77,  iconH: 79, title: "The Patrol",        body: "The Patrol doesn't take breaks.\nWhile you were watching those four episodes on Sunday (the ones you told no one about), The Patrol was noting the time, reading the signal, and adjusting tomorrow's plan.You only see the result.",                                                                 footnote: "on it while you sleep." },
-  { icon: watchingDarkMode,  iconW: 99,  iconH: 75, title: "The Daily Brief",   body: "Every morning, one message. Not a dashboard. Not a chart. Not four apps open before your coffee. Waldo tells you what last night meant for today, and what it already did about it.",                                                                                                              footnote: "mornings, sorted." },
+const actions = [
+  {
+    title: "The Fetch",
+    icon: roughDarkMode,
+    body: "Stress climbs, the important call stays, the soft meeting moves.",
+    metric: "3pm",
+    read: "kept because it matters.",
+  },
+  {
+    title: "The Adjustment",
+    icon: goodWeekDarkMode,
+    body: "A heavy week gets lighter before it turns into a wrecked Friday.",
+    metric: "14/21",
+    read: "Load is high; recovery time protected.",
+  },
+  {
+    title: "The Patrol",
+    icon: watchingDarkMode,
+    body: "Background monitoring keeps running even when there is nothing worth saying.",
+    metric: "24/7",
+    read: "watching quietly, not pinging loudly.",
+  },
+  {
+    title: "The Window",
+    icon: goodDarkMode,
+    body: "Your best focus hours are found, held, and kept away from low-value work.",
+    metric: "2-4pm",
+    read: "best window matched to deep work.",
+  },
+  {
+    title: "The Spot",
+    icon: vectorSpot,
+    body: "A single pattern becomes clear enough to say out loud.",
+    metric: "4 weeks",
+    read: "long enough to stop guessing.",
+  },
 ] as const;
-
-// 5 slots (back→front). Slot 4 = front/center.
-const SLOTS = [
-  { rotate: "-23.35deg", opacity: 0.6, blur: "blur(5px)", size: "small",  left: "0px",       top: "19.46px", w: "555.688px", h: "583.576px" },
-  { rotate:  "21.92deg", opacity: 0.6, blur: "blur(5px)", size: "small",  left: "455.34px",  top: "21.94px", w: "548.969px", h: "578.609px" },
-  { rotate:  "-9.24deg", opacity: 0.8, blur: "blur(3px)", size: "medium", left: "134.54px",  top: "2.7px",   w: "527.986px", h: "577.083px" },
-  { rotate:  "11.09deg", opacity: 0.8, blur: "blur(3px)", size: "medium", left: "369.5px",   top: "0px",     w: "510.77px",  h: "582.491px" },
-  { rotate:  "0deg",     opacity: 1,   blur: "none",       size: "front",  left: "297.84px",  top: "7.25px",  w: "auto",      h: "auto"      },
-] as const;
-
-const T = `all ${DUR_SETTLE}ms ${EASE}`;
 
 export function FiveThingsSection() {
-  const { slotOf, frontIndex, onClick, onMouseEnter, onMouseLeave, onTouchStart, onTouchEnd } = useCardStack(CARDS.length, AUTO_CARD_MS);
-  const FRONT = SLOTS.length - 1;
-  const frontCardIdx = frontIndex;
-  const frontCard = CARDS[frontCardIdx];
-
   return (
-    <section className="flex flex-col gap-[20px] items-center py-[40px] w-full" style={{ borderRadius: "30px" }}>
-
-      {/* Mobile: stacked card depth — 2 behind strips peek from top, front in flow */}
-      <div className="lg:hidden w-full px-4" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd} onClick={onClick}>
-        <div className="relative w-full max-w-[400px] mx-auto" style={{ paddingTop: "18px" }}>
-          {/* Behind card strips */}
-          <div className="absolute border-solid border-[rgba(26,26,26,0.14)] bg-[#fafaf8]"
-               style={{ top: 0, left: "14px", right: "14px", bottom: 0, borderRadius: "20px", borderWidth: "1.5px", opacity: 0.5, zIndex: 1 }} />
-          <div className="absolute border-solid border-[rgba(26,26,26,0.14)] bg-[#fafaf8]"
-               style={{ top: "9px", left: "7px", right: "7px", bottom: 0, borderRadius: "20px", borderWidth: "1.5px", opacity: 0.72, zIndex: 2 }} />
-          {/* Front card — relative, defines height */}
-          <div
-            className="relative bg-[#fafaf8] border-solid border-[rgba(26,26,26,0.16)] flex flex-col items-start overflow-clip"
-            style={{ padding: "28px", borderRadius: "20px", borderWidth: "1.5px", zIndex: 3, boxShadow: "0 4px 24px rgba(0,0,0,0.08)" }}
-          >
-            <Image src={frontCard.icon} alt="" width={frontCard.iconW} height={frontCard.iconH} unoptimized />
-            <div key={frontCardIdx}>
-              <p className="text-[#1a1a1a] whitespace-nowrap mt-5"
-                 style={{ fontFamily: "var(--font-headline)", fontSize: "28px", lineHeight: 1.2, animation: "content-enter 0.3s 0.18s both" }}>
-                {frontCard.title}
-              </p>
-              <p className="text-[#1a1a1a] mt-4"
-                 style={{ fontFamily: "var(--font-headline)", fontSize: "17px", lineHeight: 1.15, whiteSpace: "pre-wrap", animation: "content-enter 0.3s 0.24s both" }}>
-                {frontCard.body}
-              </p>
-              <p className="font-normal italic text-[#717171] mt-5"
-                 style={{ fontFamily: "var(--font-body)", fontVariationSettings: "'opsz' 14", fontSize: "13px", lineHeight: 1.3, animation: "content-enter 0.3s 0.30s both" }}>
-                {frontCard.footnote}
-              </p>
-            </div>
-          </div>
-        </div>
-        <MobileDots count={CARDS.length} current={frontCardIdx} />
-      </div>
-
-      {/* Desktop: fan */}
-      <div
-        className="hidden lg:block relative shrink-0 cursor-pointer"
-        style={{ height: "603.034px", width: "1004.31px" }}
-        onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}
-        role="button" aria-label="Card fan — click to advance" tabIndex={0}
-        onKeyDown={e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onClick(e as unknown as React.MouseEvent); } }}
+    <section id="actions" className="section-shell flex flex-col gap-8 py-10 lg:gap-10 lg:py-12">
+      <SectionIntro
+        title={
+          <>
+            Five things Waldo
+            <br />
+            does in the background.
+          </>
+        }
+        aside="quiet, until it matters."
       >
-        {CARDS.map((card, i) => {
-          const si    = slotOf(i);
-          const slot  = SLOTS[si];
-          const front = si === FRONT;
+        <p>
+          These are the visible traces. Most of the work happens before you think to ask for it.
+        </p>
+      </SectionIntro>
 
-          return (
-            <div key={i} className="absolute flex items-center justify-center"
-              style={{ left: slot.left, top: slot.top, width: slot.w, height: slot.h, zIndex: si + 1, transition: T }}
-            >
-              <div style={{ transform: `rotate(${slot.rotate})`, opacity: slot.opacity, filter: slot.blur, transition: T }}>
-                {front ? (
-                  // Front card: full-size, full content, no blur
-                  <div
-                    className="bg-[#fafaf8] border-[1.5px] border-[rgba(26,26,26,0.16)] border-solid flex flex-col items-start justify-between overflow-clip"
-                    style={{ height: "568px", padding: "50px", borderRadius: "20px", width: "409px" }}
-                  >
-                    <div className="flex flex-col gap-[40px] items-start">
-                      <Image src={card.icon} alt="" width={card.iconW} height={card.iconH} unoptimized />
-                      <p className="text-[#1a1a1a] whitespace-nowrap" style={{ fontFamily: "var(--font-headline)", fontSize: "36px", lineHeight: 1.2 }}>{card.title}</p>
-                      <p className="text-[#1a1a1a]" style={{ fontFamily: "var(--font-headline)", fontSize: "23.304px", lineHeight: 1.1, width: "100%" }}>{card.body}</p>
-                    </div>
-                    <p className="font-medium italic text-[#6b6b68] whitespace-nowrap" style={{ fontFamily: "var(--font-body)", fontVariationSettings: "'opsz' 14", fontStyle: "italic", fontSize: "14.756px", lineHeight: 1.3 }}>{card.footnote}</p>
-                  </div>
-                ) : slot.size === "medium" ? (
-                  <div
-                    className="bg-[#fafaf8] border-[1.35px] border-[rgba(26,26,26,0.16)] border-solid flex flex-col items-start justify-between overflow-clip"
-                    style={{ height: "511.2px", width: "450px", padding: "45px", borderRadius: "18px" }}
-                  >
-                    <div className="flex flex-col gap-[36px] items-start">
-                      <Image src={card.icon} alt="" width={card.iconW} height={card.iconH} unoptimized />
-                      <p className="text-[#1a1a1a] whitespace-nowrap" style={{ fontFamily: "var(--font-headline)", fontSize: "32.4px", lineHeight: 1.2 }}>{card.title}</p>
-                      <p className="text-[#1a1a1a]" style={{ fontFamily: "var(--font-headline)", fontSize: "20.974px", lineHeight: 1.1, width: "361.8px", whiteSpace: "pre-wrap" }}>{card.body}</p>
-                    </div>
-                    <p className="font-normal italic text-[#717171] whitespace-nowrap" style={{ fontFamily: "var(--font-body)", fontVariationSettings: "'opsz' 14", fontSize: "12.6px", lineHeight: 1.3 }}>{card.footnote}</p>
-                  </div>
-                ) : (
-                  <div
-                    className="bg-[#fafaf8] border-[1.215px] border-[rgba(26,26,26,0.16)] border-solid flex flex-col items-start justify-between overflow-clip"
-                    style={{ height: "460.08px", width: "406px", padding: "40.5px", borderRadius: "16.2px" }}
-                  >
-                    <div className="flex flex-col gap-[32.4px] items-start">
-                      <Image src={card.icon} alt="" width={card.iconW} height={card.iconH} unoptimized />
-                      <p className="text-[#1a1a1a] whitespace-nowrap" style={{ fontFamily: "var(--font-headline)", fontSize: "29.16px", lineHeight: 1.2 }}>{card.title}</p>
-                      <p className="text-[#1a1a1a]" style={{ fontFamily: "var(--font-headline)", fontSize: "18.876px", lineHeight: 1.1, width: "325.62px", whiteSpace: "pre-wrap" }}>{card.body}</p>
-                    </div>
-                    <p className="font-normal italic text-[#717171] whitespace-nowrap" style={{ fontFamily: "var(--font-body)", fontVariationSettings: "'opsz' 14", fontSize: "11.34px", lineHeight: 1.3 }}>{card.footnote}</p>
-                  </div>
-                )}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        {actions.map((action, index) => (
+          <article
+            key={action.title}
+            className={`surface-card flex min-h-[280px] flex-col justify-between p-5 ${
+              index === 0 || index === 1 ? "lg:col-span-2" : ""
+            } ${index === 4 ? "sm:col-span-2 lg:col-span-1" : ""}`}
+          >
+            <div>
+              <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-[var(--surface-t1)] shadow-[inset_0_0_0_1px_var(--border-default)]">
+                <Image src={action.icon} alt="" width={44} height={38} unoptimized className="h-auto max-h-10 w-auto" />
               </div>
+              <h3 className="type-h3 text-[var(--ink)]">{action.title}</h3>
+              <p className="type-body mt-3 text-[var(--text-secondary)]">{action.body}</p>
             </div>
-          );
-        })}
-      </div>
-
-      {/* Desktop nav dots */}
-      <div className="hidden lg:flex gap-[8px] items-center justify-center">
-        {CARDS.map((_, i) => (
-          <button
-            key={i}
-            aria-label={`Card ${i + 1}`}
-            onClick={e => { e.stopPropagation(); const steps = ((i - frontCardIdx) % CARDS.length + CARDS.length) % CARDS.length; for (let s = 0; s < steps; s++) onClick(e as unknown as React.MouseEvent); }}
-            style={{
-              width:        i === frontCardIdx ? "20px" : "6px",
-              height:       "6px",
-              borderRadius: "3px",
-              background:   i === frontCardIdx ? "#1a1a1a" : "rgba(26,26,26,0.2)",
-              transition:   "all 0.4s ease",
-              border:       "none",
-              padding:      0,
-              cursor:       "pointer",
-            }}
-          />
+            <div className="mt-6 rounded-2xl border border-[var(--border-default)] bg-[var(--surface-t1)] p-4">
+              <div className="flex items-baseline justify-between gap-3">
+                <span className="type-caption text-[var(--text-secondary)]">signal</span>
+                <span className="type-data text-[var(--ink)]">{action.metric}</span>
+              </div>
+              <Aside className="mt-2">{action.read}</Aside>
+            </div>
+          </article>
         ))}
-      </div>
-
-      <div className="flex flex-col gap-[40px] items-center w-full">
-        <h2 data-animate="headline" className="text-[#1a1a1a] text-[32px] lg:text-[48px] text-center px-4 lg:px-0" style={{ fontFamily: "var(--font-headline)", lineHeight: 1.1 }}>Five things Waldo does<br />while you get on with your day.</h2>
-        <p data-animate="fade-up" className="text-[#1a1a1a] text-[18px] lg:text-[25px] text-center px-4 lg:px-0" style={{ fontFamily: "var(--font-headline)", lineHeight: 1.2 }}>Not just a suggestion or a notification.</p>
-        <Link href="/waitlist" className="flex min-h-14 items-center justify-center rounded-full bg-[#1A1A1A] px-9 text-center text-[16px] font-medium text-[#FAFAF8] shadow-[0_1px_2px_rgba(0,0,0,.04),0_8px_24px_rgba(0,0,0,.05)] transition-[transform,box-shadow,background-color] duration-300 ease-[cubic-bezier(0.19,1,0.22,1)] hover:-translate-y-px hover:bg-[#272725] active:scale-[0.98]" style={{ fontFamily: "var(--font-body)", lineHeight: 1.2, letterSpacing: "-0.01em" }}>
-          Let Waldo in →
-        </Link>
       </div>
     </section>
   );

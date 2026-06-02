@@ -205,7 +205,7 @@ export function HeroSection() {
       </div>
 
       <div className="absolute left-1/2 top-[255px] z-20 flex w-[min(90vw,780px)] -translate-x-1/2 flex-col items-center text-center sm:top-[310px] lg:top-[292px] xl:top-[310px]">
-        <h1 className="type-display text-[var(--ink)]" data-animate="headline">
+        <h1 className="type-display text-[var(--ink)]" data-animate="fade-up">
           <span className="hero-title-mobile">
             The first app that
             <br />

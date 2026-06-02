@@ -1,111 +1,86 @@
-// "Months of health data sitting unused."
-// White card section with Apple Health screenshots at the bottom.
+import { Aside, SectionIntro, typeStyles } from "@/components/landing-primitives";
 
-import { BalancedParagraph } from "@/components/balanced-paragraph";
+const logLines = [
+  ["6:12am", "REM cycle ended. Light sleep began.", "rough transition; morning should start slow."],
+  ["6:14am", "Resting HR: 62 bpm.", "steady, but not a full recovery signal."],
+  ["6:15am", "HRV: 38ms.", "below baseline; keep the first hour quiet."],
+  ["6:41am", "First movement detected.", "wake timing drifted later than usual."],
+  ["7:02am", "Blood oxygen: 96%.", "normal enough; no action needed there."],
+  ["7:34am", "Steps: 340. Circadian: misaligned.", "body is awake, clock is not."],
+  ["7:58am", "Stress elevated.", "cause unknown; calendar pressure likely."],
+  ["8:00am", "Calendar: 4 meetings.", "body is not ready for that stack."],
+  ["8:01am", "No app acted on any of this.", "that is the waste."],
+] as const;
+
+const appCards = [
+  ["Apple Health", "Shows you a chart."],
+  ["WHOOP", "Gives you a score."],
+  ["Oura", "Sends a notification."],
+  ["Fitbit", "Suggests a walk."],
+  ["Sleep Cycle", "Rates your night."],
+] as const;
 
 export function HealthDataSection() {
   return (
-    <section
-      className="bg-[#fafaf8] border-2 border-[rgba(26,26,26,0.08)] border-solid flex flex-col gap-[48px] items-center overflow-clip pt-[40px] lg:pt-[70px] w-full"
-      style={{ borderRadius: "30px" }}
-    >
-      {/* Header copy */}
-      <div className="flex flex-col gap-[24px] lg:gap-[40px] items-center text-center px-4 lg:px-0">
-        <p
-          className="font-normal italic text-[#6b6b68] text-[14px] min-w-full w-min"
-          style={{
-            fontFamily: "var(--font-body)",
-            fontVariationSettings: "'opsz' 14",
-            lineHeight: 1.3,
-          }}
-        >
-          You already have everything Waldo needs.
-        </p>
-        <h2
-          data-animate="headline"
-          className="text-[#1a1a1a] text-[32px] lg:text-[48px]"
-          style={{ fontFamily: "var(--font-headline)", lineHeight: 1.1, maxWidth: "458px" }}
-        >
-          Months of health data sitting unused.
-        </h2>
-        <div data-animate="fade-up" style={{ paddingBottom: "24px" }}>
-        <BalancedParagraph
-          pretextify
-          className="font-normal text-[#6b6b68] text-[14px]"
-          style={{
-            fontFamily: "var(--font-body)",
-            fontVariationSettings: "'opsz' 14",
-            lineHeight: 1.3,
-            maxWidth: "538px",
-            width: "100%",
-          }}
-        >
-          {`Your watch has been collecting sleep, HRV, recovery, and stress data every single day. While you slept. While you worked. While you ignored it. That data has been sitting in an app you open twice a year. Waldo reads every day of it.`}
-        </BalancedParagraph>
-        </div>
-      </div>
+    <section id="problem" className="section-shell surface-card flex flex-col gap-8 overflow-hidden p-6 sm:p-8 lg:p-12">
+      <SectionIntro
+        eyebrow={<span className="type-aside">You already have everything Waldo needs.</span>}
+        title={
+          <>
+            Months of health data.
+            <br />
+            Zero health decisions.
+          </>
+        }
+        aside="Every app you own is a rearview mirror."
+      />
 
-      {/* Device mockups — desktop only */}
-      <div
-        className="relative shrink-0 overflow-clip hidden lg:block"
-        style={{ height: "180px", width: "742px" }}
-      >
-        {/* AFib iPad — furthest back (DOM first = lowest z-order) */}
-        <div
-          data-parallax-y="-35"
-          className="absolute overflow-hidden pointer-events-none"
-          style={{ height: "204.705px", left: "498.66px", top: "111.69px", width: "242.954px" }}
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            alt=""
-            className="absolute max-w-none"
-            src="/figma-assets/health-iphone-right.png"
-            style={{ height: "100.07%", left: "-21.57%", top: "-0.03%", width: "143.15%" }}
-          />
+      <div className="grid gap-5 lg:grid-cols-[1.25fr_.75fr]">
+        <div className="dark-panel rounded-[24px] p-5 sm:p-6">
+          <div className="mb-5 flex items-center gap-2">
+            <span className="h-2 w-2 rounded-full bg-[var(--surface-t2)]" />
+            <p className="type-caption uppercase text-[var(--surface-t2)]">Live - your watch is logging</p>
+          </div>
+          <div className="space-y-3">
+            {logLines.map(([time, event, read], index) => (
+              <div
+                key={`${time}-${event}`}
+                className="grid gap-2 rounded-2xl border border-[var(--border-dark)] bg-[var(--dark-t2)] p-3 sm:grid-cols-[72px_1fr]"
+                style={{ animation: `content-enter 500ms var(--ease-premium) ${index * 45}ms both` }}
+              >
+                <span className="type-data text-[var(--text-secondary)]" style={{ fontSize: "0.75rem" }}>
+                  {time}
+                </span>
+                <div>
+                  <p className="type-label text-[var(--surface-t2)]">{event}</p>
+                  <p className="type-aside mt-1 text-[var(--text-tertiary)]">{read}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <p className="type-aside mt-5 text-[var(--text-tertiary)]">
+            Your watch logged <span style={typeStyles.data}>847</span> data points last week. Nothing turned them into a changed day.
+          </p>
         </div>
 
-        {/* iPad — center, in front of AFib */}
-        <div
-          data-parallax-y="-20"
-          className="absolute pointer-events-none"
-          style={{ height: "316.675px", left: "127.46px", top: 0, width: "521.415px" }}
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            alt=""
-            className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
-            src="/figma-assets/health-ipad.png"
-          />
-        </div>
-
-        {/* iPhone left — Last Night's Sleep */}
-        <div
-          data-parallax-y="-28"
-          className="absolute pointer-events-none"
-          style={{ height: "225.132px", left: "42.64px", top: "74.74px", width: "136.012px" }}
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            alt=""
-            className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
-            src="/figma-assets/health-iphone-left.png"
-          />
-        </div>
-
-        {/* Apple Watch — bottom left */}
-        <div
-          data-parallax-y="-16"
-          className="absolute overflow-hidden pointer-events-none"
-          style={{ height: "63.826px", left: "-0.19px", top: "148px", width: "59.627px" }}
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            alt=""
-            className="absolute max-w-none"
-            src="/figma-assets/health-watch.png"
-            style={{ height: "203.6%", left: "-42.25%", top: "-51.45%", width: "178.87%" }}
-          />
+        <div className="surface-card-top flex flex-col justify-between gap-5 p-5 sm:p-6">
+          <div>
+            <p className="type-label text-[var(--ink)]">You have tried the apps.</p>
+            <Aside className="mt-2">useful, just not decisive.</Aside>
+          </div>
+          <div className="grid gap-3">
+            {appCards.map(([app, verdict]) => (
+              <div key={app} className="group relative min-h-[72px] overflow-hidden rounded-2xl border border-[var(--border-default)] bg-[var(--surface-t2)] p-4">
+                <div className="transition-[opacity,transform] duration-300 ease-[var(--ease-premium)] group-hover:-translate-y-2 group-hover:opacity-0">
+                  <p className="type-label text-[var(--ink)]">{app}</p>
+                  <p className="type-caption mt-2 text-[var(--text-secondary)]">data in, decision out to you.</p>
+                </div>
+                <div className="absolute inset-0 flex translate-y-3 items-center px-4 opacity-0 transition-[opacity,transform] duration-300 ease-[var(--ease-premium)] group-hover:translate-y-0 group-hover:opacity-100">
+                  <p className="type-aside text-[var(--text-tertiary)]">{verdict}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
