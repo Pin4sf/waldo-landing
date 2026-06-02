@@ -1,4 +1,5 @@
 import Image, { type StaticImageData } from "next/image";
+import type { CSSProperties } from "react";
 
 import { WaldoFace } from "./waldo-face";
 
@@ -177,11 +178,10 @@ function ConnectorIcon({ connector, index }: { connector: Insight["connectors"][
   );
 }
 
-function InsightCard({ insight, index }: { insight: Insight; index: number }) {
+function InsightCard({ insight }: { insight: Insight }) {
   return (
     <article
       className="waldo-flow-output absolute right-[2%] top-[43%] z-20 w-[min(330px,32vw)] rounded-[22px] border border-[var(--border-default)] bg-[var(--surface-t1)] p-6 text-left shadow-[var(--shadow-floating)]"
-      style={{ animationDelay: `${index * 6}s` }}
     >
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
         <span className="waldo-insight-dot" data-tone={insight.tone} />
@@ -229,22 +229,20 @@ export function MorningBriefSection() {
               aria-hidden={scenarioIndex !== 0}
               className="waldo-flow-scenario"
               data-reduced-default={scenarioIndex === 0 ? "true" : undefined}
+              style={{ "--scenario-delay": `${scenarioIndex * 6}s` } as CSSProperties}
             >
-              <div
-                className="waldo-flow-inputs absolute inset-0 z-[6]"
-                style={{ animationDelay: `${scenarioIndex * 6}s` }}
-              >
+              <div className="waldo-flow-inputs absolute inset-0 z-[6]">
                 {scenario.sources.map((source, sourceIndex) => (
                   <div
                     key={`${scenario.name}-${sourceIndex}`}
-                    className={`absolute ${source.className}`}
-                    style={{ transitionDelay: `${sourceIndex * 70}ms` }}
+                    className={`waldo-source-card absolute ${source.className}`}
+                    style={{ "--card-delay": `${sourceIndex * 0.12}s` } as CSSProperties}
                   >
                     <Image src={source.asset} alt="" className="h-auto w-full select-none" sizes="360px" />
                   </div>
                 ))}
               </div>
-              <InsightCard insight={scenario.insight} index={scenarioIndex} />
+              <InsightCard insight={scenario.insight} />
             </div>
           ))}
 

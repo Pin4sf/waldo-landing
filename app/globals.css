@@ -321,26 +321,120 @@ body {
 
 /* ── Section 3 data-to-action flow ──────────────────────────── */
 
+.waldo-flow-scenario {
+  --scenario-delay: 0s;
+}
+
 .waldo-flow-inputs {
-  animation: waldo-flow-inputs 30s linear infinite;
+  animation: waldo-flow-input-window 30s linear infinite;
+  animation-delay: var(--scenario-delay);
+  clip-path: inset(0 41% 0 0);
   opacity: 0;
-  transform: translate3d(-24%, 0, 0) scale(0.98);
+  pointer-events: none;
+  will-change: opacity;
+}
+
+.waldo-source-card {
+  --card-delay: 0s;
+  --card-start-x: -22vw;
+  --card-mid-x: 7vw;
+  --card-end-x: 23vw;
+  --card-exit-x: 27vw;
+  --card-start-y: 10px;
+  --card-mid-y: -8px;
+  --card-end-y: -2px;
+  --card-rotate-start: -2deg;
+  --card-rotate-mid: 1deg;
+  --card-rotate-end: -0.4deg;
+  --card-scale-start: 0.96;
+  --card-scale-mid: 1;
+  --card-scale-end: 0.985;
+  --card-opacity: 0.94;
+  animation: waldo-source-card-flow 30s linear infinite;
+  animation-delay: calc(var(--scenario-delay) + var(--card-delay));
+  filter: drop-shadow(0 18px 30px rgba(26, 26, 26, 0.12));
+  opacity: 0;
+  transform: translate3d(var(--card-start-x), var(--card-start-y), 0) rotate(var(--card-rotate-start)) scale(var(--card-scale-start));
+  transform-origin: center;
   will-change: opacity, transform;
 }
 
-.waldo-flow-inputs > div {
-  filter: drop-shadow(0 18px 30px rgba(26, 26, 26, 0.12));
+.waldo-source-card:nth-child(2) {
+  --card-start-x: -28vw;
+  --card-mid-x: 10vw;
+  --card-end-x: 25vw;
+  --card-exit-x: 29vw;
+  --card-start-y: -12px;
+  --card-mid-y: 6px;
+  --card-end-y: -6px;
+  --card-rotate-start: 1.6deg;
+  --card-rotate-mid: -1deg;
+  --card-rotate-end: 0.8deg;
+  --card-scale-start: 0.94;
+  --card-scale-mid: 1.02;
+  --card-scale-end: 0.99;
+}
+
+.waldo-source-card:nth-child(3) {
+  --card-start-x: -18vw;
+  --card-mid-x: 13vw;
+  --card-end-x: 27vw;
+  --card-exit-x: 31vw;
+  --card-start-y: 14px;
+  --card-mid-y: -14px;
+  --card-end-y: 2px;
+  --card-rotate-start: -1deg;
+  --card-rotate-mid: 1.4deg;
+  --card-rotate-end: -0.8deg;
+  --card-scale-start: 0.95;
+  --card-scale-mid: 1;
+  --card-scale-end: 0.98;
+}
+
+.waldo-source-card:nth-child(4) {
+  --card-start-x: -32vw;
+  --card-mid-x: 6vw;
+  --card-end-x: 21vw;
+  --card-exit-x: 25vw;
+  --card-start-y: -4px;
+  --card-mid-y: -16px;
+  --card-end-y: -10px;
+  --card-rotate-start: 2deg;
+  --card-rotate-mid: -0.6deg;
+  --card-rotate-end: 1deg;
+  --card-scale-start: 0.92;
+  --card-scale-mid: 0.99;
+  --card-scale-end: 0.96;
+  --card-opacity: 0.9;
+}
+
+.waldo-source-card:nth-child(5) {
+  --card-start-x: -24vw;
+  --card-mid-x: 15vw;
+  --card-end-x: 29vw;
+  --card-exit-x: 33vw;
+  --card-start-y: 18px;
+  --card-mid-y: -2px;
+  --card-end-y: 8px;
+  --card-rotate-start: -2.4deg;
+  --card-rotate-mid: 0.8deg;
+  --card-rotate-end: -1.2deg;
+  --card-scale-start: 0.93;
+  --card-scale-mid: 1.01;
+  --card-scale-end: 0.98;
 }
 
 .waldo-flow-output {
   --flow-output-base: 0px;
-  --flow-output-start: -300px;
-  --flow-output-mid: -170px;
-  --flow-output-end: 90px;
+  --flow-output-start: -320px;
+  --flow-output-mid: -120px;
+  --flow-output-end: 96px;
   animation: waldo-flow-output 30s linear infinite;
+  animation-delay: var(--scenario-delay);
   opacity: 0;
-  transform: translate3d(calc(var(--flow-output-base) + var(--flow-output-start)), 0, 0) scale(0.98);
-  will-change: opacity, transform;
+  transform: translate3d(calc(var(--flow-output-base) + var(--flow-output-start)), 10px, 0) rotate(-1deg) scale(0.98);
+  transform-origin: left center;
+  will-change: opacity, transform, filter;
 }
 
 .waldo-insight-dot {
@@ -406,44 +500,66 @@ body {
   will-change: transform;
 }
 
-@keyframes waldo-flow-inputs {
-  0% {
-    opacity: 0.9;
-    transform: translate3d(-24%, 0, 0) scale(0.98);
+@keyframes waldo-flow-input-window {
+  0%, 22% {
+    opacity: 1;
   }
-  4% {
-    opacity: 0.95;
-  }
-  13% {
-    opacity: 0.95;
-    transform: translate3d(10%, 0, 0) scale(1);
-  }
-  19% {
+  23%, 100% {
     opacity: 0;
-    transform: translate3d(18%, 0, 0) scale(0.96);
+  }
+}
+
+@keyframes waldo-source-card-flow {
+  0% {
+    opacity: 0;
+    transform: translate3d(var(--card-start-x), var(--card-start-y), 0) rotate(var(--card-rotate-start)) scale(var(--card-scale-start));
+  }
+  2.5% {
+    opacity: var(--card-opacity);
+  }
+  10.5% {
+    opacity: var(--card-opacity);
+    transform: translate3d(var(--card-mid-x), var(--card-mid-y), 0) rotate(var(--card-rotate-mid)) scale(var(--card-scale-mid));
+  }
+  17% {
+    opacity: 0.9;
+    transform: translate3d(var(--card-end-x), var(--card-end-y), 0) rotate(var(--card-rotate-end)) scale(var(--card-scale-end));
+  }
+  20% {
+    opacity: 0;
+    transform: translate3d(var(--card-exit-x), var(--card-end-y), 0) rotate(var(--card-rotate-end)) scale(0.965);
   }
   100% {
     opacity: 0;
-    transform: translate3d(18%, 0, 0) scale(0.96);
+    transform: translate3d(var(--card-exit-x), var(--card-end-y), 0) rotate(var(--card-rotate-end)) scale(0.965);
   }
 }
 
 @keyframes waldo-flow-output {
-  0%, 18.9% {
+  0%, 18.5% {
     opacity: 0;
-    transform: translate3d(calc(var(--flow-output-base) + var(--flow-output-start)), 0, 0) scale(0.98);
+    filter: blur(1px);
+    transform: translate3d(calc(var(--flow-output-base) + var(--flow-output-start)), 10px, 0) rotate(-1deg) scale(0.98);
   }
   19% {
     opacity: 1;
-    transform: translate3d(calc(var(--flow-output-base) + var(--flow-output-start)), 0, 0) scale(1);
+    filter: blur(0);
+    transform: translate3d(calc(var(--flow-output-base) + var(--flow-output-start)), 4px, 0) rotate(-0.8deg) scale(0.99);
   }
-  38% {
+  31% {
     opacity: 1;
-    transform: translate3d(calc(var(--flow-output-base) + var(--flow-output-end)), 0, 0) scale(1);
+    filter: blur(0);
+    transform: translate3d(calc(var(--flow-output-base) + var(--flow-output-mid)), -4px, 0) rotate(0.35deg) scale(1);
   }
-  42%, 100% {
+  41% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translate3d(calc(var(--flow-output-base) + var(--flow-output-end)), 0, 0) rotate(0deg) scale(1);
+  }
+  46%, 100% {
     opacity: 0;
-    transform: translate3d(calc(var(--flow-output-base) + var(--flow-output-end) + 40px), 0, 0) scale(0.98);
+    filter: blur(0.5px);
+    transform: translate3d(calc(var(--flow-output-base) + var(--flow-output-end) + 36px), 4px, 0) rotate(0.4deg) scale(0.985);
   }
 }
 
@@ -478,8 +594,18 @@ body {
     height: 720px;
   }
 
-  .waldo-flow-inputs > div {
-    transform: scale(0.72);
+  .waldo-flow-inputs {
+    clip-path: inset(0 28% 0 0);
+  }
+
+  .waldo-source-card {
+    --card-start-x: -40vw;
+    --card-mid-x: 18vw;
+    --card-end-x: 42vw;
+    --card-exit-x: 48vw;
+    --card-scale-start: 0.68;
+    --card-scale-mid: 0.72;
+    --card-scale-end: 0.7;
     transform-origin: left top;
   }
 
@@ -510,9 +636,20 @@ body {
     transform: none;
   }
 
+  .waldo-source-card {
+    animation: none;
+    opacity: 0;
+    transform: none;
+  }
+
   .waldo-flow-scenario[data-reduced-default="true"] .waldo-flow-inputs {
+    clip-path: none;
     opacity: 1;
-    transform: translate3d(22%, 0, 0) scale(0.98);
+  }
+
+  .waldo-flow-scenario[data-reduced-default="true"] .waldo-source-card {
+    opacity: 1;
+    transform: translate3d(16vw, 0, 0) rotate(0deg) scale(0.98);
   }
 
   .waldo-flow-scenario[data-reduced-default="true"] .waldo-flow-output {
