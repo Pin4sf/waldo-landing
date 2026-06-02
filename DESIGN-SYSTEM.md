@@ -9,7 +9,7 @@ Tools (Codex, Antigravity) must read this file before touching any section. Item
 
 > **Conflicts resolved in this version** (flagged for a one-word correction if I guessed wrong):
 > - **Accent = `#FB943F`** (from the named palette swatch), not the `#F97316` referenced in an earlier multiple-choice option.
-> - **Border focus = `16%`** (the palette names "Border focus … 16%"). You typed `20%` in chat just before sending the palette; I deferred to the deliberate palette artifact. Say the word to make it `20%`.
+> - **Border focus = `16%`** — confirmed (palette token); the `20%` typed in chat was set aside.
 > - **Dark canvas (Page BG) = `#1C1B1A`** per the palette; your typed tier list said `#191817` (visually identical). Using the palette value.
 
 ---
@@ -73,7 +73,7 @@ sheets predate them.)*
 ### Rules (both modes)
 - **Adjacency:** combine adjacent tiers, or skip exactly one (T1+T2 ✓, T1+T3 ✓). **Never jump two** (T1+T4 ✗).
 - **Stroke:** adjacent-tier pairs get a **1px inset stroke on the lighter surface** = the Border-default token (8%). Skipping a tier needs no stroke.
-- **Focus:** Border token rises **8% → 16%** (see conflict note re: 20%).
+- **Focus:** Border token rises **8% → 16%**.
 - **Default mapping:** canvas = T3 · cards = T2 (+stroke) or T1 (no stroke) · nested = step one lighter · sunken controls = T4.
 
 ---
@@ -101,9 +101,10 @@ Smallest's DNA we adopt: **negative tracking** (`-0.01em` everywhere; headlines 
 | `data` | SF Pro Rounded | — | 500 | — | tabular-nums | all metrics/numerals |
 
 - ★ `aside` is the single level **beyond** Smallest's set — italic, Text-tertiary, closes a copy block.
+- **Italic aside:** SF Pro Rounded has no italic (Apple ships italics only for SF Pro Text/Display, not Rounded), so the aside renders as a **browser-synthesized oblique** — accepted fallback.
 - **Headlines:** manual `<br>` for the triangular/oval taper. **Never** `text-wrap:balance` or browser-decided breaks.
 - Eyebrow ≠ aside — eyebrow is the regular top label; aside is the italic closing voice line.
-- Mapping note: Smallest uses sans from H2 down; we keep `h2` in Corben for brand consistency. Flag if you'd rather `h2` be SF Pro Rounded.
+- Mapping note: **our typefaces are fixed** — Corben for the headline tier (`display`/`h1`/`h2`), SF Pro Rounded from `h3` down. We borrow only Smallest AI's **sizing / hierarchy / layout logic**, never its font choices.
 
 ---
 
