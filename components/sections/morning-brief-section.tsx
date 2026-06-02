@@ -246,11 +246,15 @@ export function MorningBriefSection() {
             </div>
           ))}
 
+          {/* Phone rises from the bottom; its lower portion is clipped by the
+              stage's overflow (which sits flush at the card's bottom edge), matching
+              the Figma crop. Anchored bottom with a negative offset so the cut bleeds
+              off the card rather than ending mid-stage. */}
           <div
             aria-hidden
-            className="absolute left-1/2 top-[56px] z-10 h-[min(573px,118vw)] w-[min(360px,34vw)] min-w-[260px] -translate-x-1/2 rounded-[42px] bg-[var(--surface-t1)] sm:left-[47%]"
+            className="absolute bottom-0 left-1/2 z-10 h-[min(440px,96vw)] w-[min(360px,34vw)] min-w-[260px] -translate-x-1/2 rounded-t-[42px] bg-[var(--surface-t1)] sm:left-[47%]"
           />
-          <div className="absolute left-1/2 top-[56px] z-30 w-[min(280px,26vw)] min-w-[210px] -translate-x-1/2 sm:left-[47%]">
+          <div className="absolute bottom-[-118px] left-1/2 z-30 w-[min(300px,27vw)] min-w-[224px] -translate-x-1/2 sm:left-[47%]">
             <WaldoFace />
             <Image src={phoneMockup} alt="" className="relative z-30 h-auto w-full select-none" sizes="340px" />
           </div>
