@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { corben, dmSans } from "@/lib/fonts";
+import { corben, sfProRounded } from "@/lib/fonts";
 import { SunflowerCursor } from "@/components/sunflower-cursor";
 import "./globals.css";
 
@@ -113,7 +113,7 @@ const jsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${corben.variable} ${dmSans.variable}`}>
+    <html lang="en" className={`${corben.variable} ${sfProRounded.variable}`}>
       <head>
         <script
           type="application/ld+json"
