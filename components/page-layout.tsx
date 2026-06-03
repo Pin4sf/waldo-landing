@@ -7,9 +7,14 @@ import { HeroSection } from "./sections/hero-section";
 import { HealthDataSection } from "./sections/health-data-section";
 import { MorningBriefSection } from "./sections/morning-brief-section";
 import { AlreadyDoneSection } from "./sections/already-done-section";
-import { FiveThingsSection } from "./sections/five-things-section";
+import { AgentFeaturesSection } from "./sections/agent-features-section";
+import { UseCasesSection } from "./sections/use-cases-section";
+import { ValidationSection } from "./sections/validation-section";
+import { SecuritySection } from "./sections/security-section";
 import { WhereIsWaldoSection } from "./sections/where-is-waldo-section";
 import { SmarterSection } from "./sections/smarter-section";
+import { DownstreamBuildSections } from "./sections/downstream-build-sections";
+import { FaqSection } from "./sections/faq-section";
 import { FooterSection } from "./sections/footer-section";
 
 export function PageLayout() {
@@ -26,14 +31,12 @@ export function PageLayout() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f4f3f0]">
+    <div className="min-h-screen bg-[var(--surface-t3)] text-[var(--ink)]">
       <ScrollAnimations />
-      {/* Nav sits outside the dimmed wrapper so it stays sharp */}
       <div
-        className="sticky top-0 z-20 flex justify-center"
+        className="fixed inset-x-0 top-0 z-50 flex justify-center"
         style={{ paddingTop: "20px", paddingBottom: "16px" }}
       >
-        {/* Blur layer — absolute so mask-image never clips tooltip children */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
@@ -43,12 +46,11 @@ export function PageLayout() {
             WebkitMaskImage:    "linear-gradient(to bottom, black 55%, transparent 100%)",
           }}
         />
-        <div className="w-full max-w-[1440px] px-4">
+        <div className="w-full max-w-[1200px] px-4 sm:px-6 lg:px-10">
           <Navbar onNavEnter={handleNavEnter} onNavLeave={handleNavLeave} />
         </div>
       </div>
 
-      {/* Page content */}
       <div
         style={{
           opacity:       dimmed ? 0.4 : 1,
@@ -56,21 +58,23 @@ export function PageLayout() {
           pointerEvents: dimmed ? "none" : undefined,
         }}
       >
-        {/* Marketing sections — centered column with 30px gaps, 200px side padding on desktop */}
         <div
-          className="flex flex-col gap-[30px] items-center px-4 lg:px-[200px] py-[20px] mx-auto"
-          style={{ maxWidth: "1440px" }}
+          className="mx-auto flex max-w-[1200px] flex-col items-center gap-12 px-4 pb-20 sm:px-6 lg:gap-16 lg:px-10"
         >
           <HeroSection />
           <HealthDataSection />
           <MorningBriefSection />
           <AlreadyDoneSection />
-          <FiveThingsSection />
+          <AgentFeaturesSection />
+          <UseCasesSection />
           <WhereIsWaldoSection />
           <SmarterSection />
+          <DownstreamBuildSections />
+          <ValidationSection />
+          <SecuritySection />
+          <FaqSection />
         </div>
 
-        {/* Footer — full-bleed, outside the padded column */}
         <FooterSection />
       </div>
     </div>

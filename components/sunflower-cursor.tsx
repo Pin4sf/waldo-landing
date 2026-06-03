@@ -75,8 +75,8 @@ function WaldoLogoBurst({ size }: { size: number }) {
         {PETALS.map((p, i) => {
           const tx = LOGO_VIEWBOX.cx - p.cx; // translate to logo center for burst start
           const ty = LOGO_VIEWBOX.cy - p.cy;
-          const startRot = (Math.random() - 0.5) * 80; // jitter -40°…+40°
-          const endRot   = (Math.random() - 0.5) * 30;
+          const startRot = ((i * 37) % 80) - 40; // deterministic jitter -40°…+40°
+          const endRot   = ((i * 19) % 30) - 15;
           return (
             <path
               key={i}
