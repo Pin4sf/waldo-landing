@@ -68,8 +68,6 @@ const autonomyLevels = [
   },
 ] as const;
 
-const compliancePlaceholders = ["ISO 27001", "SOC 2 Type 2", "GDPR", "HIPAA"] as const;
-
 function SecurityIcon({ name }: { name: SecurityIconName }) {
   const common = {
     fill: "none",
@@ -121,7 +119,7 @@ function SecurityIcon({ name }: { name: SecurityIconName }) {
 
 function SecurityCard({ card }: { card: (typeof securityCards)[number] }) {
   return (
-    <article className="surface-card-top min-h-[210px] p-5">
+    <article className="surface-card-top flex min-h-[210px] w-[280px] shrink-0 snap-start flex-col p-5 sm:w-[300px]">
       <div className="flex h-12 w-12 items-center justify-center rounded-[14px] bg-[var(--surface-t3)]">
         <SecurityIcon name={card.icon} />
       </div>
@@ -223,27 +221,6 @@ function AutonomySlider() {
   );
 }
 
-function CompliancePlaceholders() {
-  return (
-    <div className="surface-card-top p-5">
-      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <div>
-          <p className="type-caption text-[var(--text-tertiary)]">Compliance badges</p>
-          <p className="type-label mt-1 text-[var(--ink)]">Shown here only when earned.</p>
-        </div>
-        <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
-          {compliancePlaceholders.map((label) => (
-            <div key={label} className="rounded-[12px] bg-[var(--surface-t2)] px-4 py-3">
-              <p className="type-label text-[var(--ink)]">{label}</p>
-              <p className="type-caption mt-1 text-[var(--text-tertiary)]">Pending</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export function SecuritySection() {
   return (
     <section id="security" className="section-shell w-full scroll-mt-28 py-10 lg:py-12">
@@ -263,14 +240,10 @@ export function SecuritySection() {
         </p>
       </SectionIntro>
 
-      <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      <div className="mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {securityCards.map((card) => (
           <SecurityCard key={card.headline} card={card} />
         ))}
-      </div>
-
-      <div className="mt-4">
-        <CompliancePlaceholders />
       </div>
 
       <div className="mt-4">

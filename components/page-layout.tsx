@@ -13,7 +13,7 @@ import { ValidationSection } from "./sections/validation-section";
 import { SecuritySection } from "./sections/security-section";
 import { WhereIsWaldoSection } from "./sections/where-is-waldo-section";
 import { SmarterSection } from "./sections/smarter-section";
-import { DownstreamBuildSections } from "./sections/downstream-build-sections";
+import { ActionFanSection, SceneCloseSection } from "./sections/downstream-build-sections";
 import { FaqSection } from "./sections/faq-section";
 import { FooterSection } from "./sections/footer-section";
 
@@ -66,13 +66,14 @@ export function PageLayout() {
           <MorningBriefSection />
           <AlreadyDoneSection />
           <AgentFeaturesSection />
+          <ActionFanSection />
           <UseCasesSection />
-          <WhereIsWaldoSection />
-          <SmarterSection />
-          <DownstreamBuildSections />
           <ValidationSection />
           <SecuritySection />
+          <SmarterSection />
+          <WhereIsWaldoSection />
           <FaqSection />
+          <SceneCloseSection />
         </div>
 
         <FooterSection />
