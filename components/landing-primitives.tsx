@@ -10,52 +10,52 @@ export const typeStyles = {
     lineHeight: 1.06,
   },
   h1: {
-    fontFamily: "var(--font-headline)",
+    fontFamily: "var(--font-body)",
     fontSize: "clamp(2rem,1.4rem + 2.4vw,3rem)",
     fontWeight: 400,
-    letterSpacing: "-0.02em",
+    letterSpacing: "0.01em",
     lineHeight: 1.1,
   },
   h2: {
-    fontFamily: "var(--font-headline)",
+    fontFamily: "var(--font-body)",
     fontSize: "clamp(1.5rem,1.2rem + 1.4vw,2rem)",
     fontWeight: 400,
-    letterSpacing: "-0.01em",
+    letterSpacing: "0.01em",
     lineHeight: 1.18,
   },
   h3: {
     fontFamily: "var(--font-body)",
     fontSize: "1.25rem",
     fontWeight: 500,
-    letterSpacing: "-0.01em",
+    letterSpacing: "0.01em",
     lineHeight: 1.3,
   },
   body: {
     fontFamily: "var(--font-body)",
     fontSize: "1rem",
     fontWeight: 400,
-    letterSpacing: "-0.01em",
-    lineHeight: 1.5,
+    letterSpacing: "0.01em",
+    lineHeight: 1.3,
   },
   label: {
     fontFamily: "var(--font-body)",
     fontSize: "0.875rem",
     fontWeight: 500,
-    letterSpacing: "-0.01em",
+    letterSpacing: "0.01em",
     lineHeight: 1.2,
   },
   eyebrow: {
     fontFamily: "var(--font-body)",
     fontSize: "0.8125rem",
     fontWeight: 400,
-    letterSpacing: "-0.01em",
+    letterSpacing: "0.01em",
     lineHeight: 1.3,
   },
   caption: {
     fontFamily: "var(--font-body)",
     fontSize: "0.75rem",
     fontWeight: 400,
-    letterSpacing: "-0.01em",
+    letterSpacing: "0.01em",
     lineHeight: 1.3,
   },
   aside: {
@@ -63,14 +63,14 @@ export const typeStyles = {
     fontSize: "0.8125rem",
     fontStyle: "oblique 10deg",
     fontWeight: 400,
-    letterSpacing: "-0.01em",
+    letterSpacing: "0.01em",
     lineHeight: 1.3,
   },
   data: {
     fontFamily: "var(--font-body)",
     fontVariantNumeric: "tabular-nums",
     fontWeight: 500,
-    letterSpacing: "-0.01em",
+    letterSpacing: "0.01em",
   },
 } satisfies Record<string, CSSProperties>;
 
@@ -123,6 +123,24 @@ export function SectionIntro({
 
 export function Aside({ children, className = "" }: { children: ReactNode; className?: string }) {
   return <p className={`type-aside text-[var(--text-tertiary)] ${className}`}>{children}</p>;
+}
+
+// Highlight — one weight up (regular → medium) and, via the parent `tone-*`
+// class, one colour state up. Use inside a block carrying a tone class.
+export function Highlight({ children }: { children: ReactNode }) {
+  return <span className="hl">{children}</span>;
+}
+
+// Render a string with `*…*` marking the highlighted runs, e.g.
+// "Late bedtime pulled your *Recovery to 63*." → wraps that run in <Highlight>.
+export function withHighlights(text: string): ReactNode[] {
+  return text.split(/(\*[^*]+\*)/g).filter(Boolean).map((part, index) =>
+    part.startsWith("*") && part.endsWith("*") ? (
+      <Highlight key={index}>{part.slice(1, -1)}</Highlight>
+    ) : (
+      <span key={index}>{part}</span>
+    ),
+  );
 }
 
 export function Readout({

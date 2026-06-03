@@ -3,6 +3,8 @@ import type { CSSProperties } from "react";
 
 import { WaldoFace } from "./waldo-face";
 
+import { withHighlights } from "@/components/landing-primitives";
+
 import notificationGmail from "@/components/assets/Frame 1000007147.png";
 import notificationGmailWork from "@/components/assets/Frame 1000007149.png";
 import notificationMessage from "@/components/assets/Frame 1000007145.png";
@@ -57,7 +59,7 @@ const scenarios: FlowScenario[] = [
       tone: "recovery",
       tags: ["Sleep", "Recovery", "Calendar"],
       message:
-        "6 hours 12. Late bedtime pulled your Recovery to 63. Pushed the 9am product strategy review to 10:30. You need the extra hour more than they need punctuality.",
+        "6 hours 12. Late bedtime pulled your *Recovery to 63*. Pushed the 9am product strategy review to 10:30. You need the extra hour more than they need punctuality.",
       aside: "already moved.",
       connectors: [
         { label: "Google Calendar", src: "/assets/composio-connectors/googlecalendar.svg" },
@@ -79,7 +81,7 @@ const scenarios: FlowScenario[] = [
       tone: "pressure",
       tags: ["Slack", "Gmail", "Signal Pressure"],
       message:
-        "104 newsletter emails archived. Two Slack threads came in after midnight. Surfaced the Q1 deck thread, batched the rest. You have 2 things that actually need you this morning, not 108.",
+        "104 newsletter emails archived. Two Slack threads came in after midnight. Surfaced the Q1 deck thread, batched the rest. You have *2 things that actually need you* this morning, not 108.",
       aside: "inbox: handled.",
       connectors: [
         { label: "Slack", src: "/assets/composio-connectors/slack.svg" },
@@ -101,7 +103,7 @@ const scenarios: FlowScenario[] = [
       tone: "stress",
       tags: ["Stress", "Calendar", "Motion"],
       message:
-        "Stress is sitting at medium and your morning has 3 meetings stacked. Blocked 1-2pm for recovery. If the 11:30 runs long, I'll pull it at the 45-minute mark.",
+        "Stress is sitting at medium and your morning has 3 meetings stacked. *Blocked 1-2pm for recovery*. If the 11:30 runs long, I'll pull it at the 45-minute mark.",
       aside: "afternoon: protected.",
       connectors: [
         { label: "Google Calendar", src: "/assets/composio-connectors/googlecalendar.svg" },
@@ -123,7 +125,7 @@ const scenarios: FlowScenario[] = [
       tone: "form",
       tags: ["Form", "Circadian", "Calendar"],
       message:
-        "Form is at 68: steady, not great. Your best window today is 10:30am to 12pm. I've held it clear. The deck review is in there. You'll want sharp hours for that one.",
+        "Form is at 68: steady, not great. Your best window today is *10:30am to 12pm*. I've held it clear. The deck review is in there. You'll want sharp hours for that one.",
       aside: "focus: locked.",
       connectors: [
         { label: "Google Calendar", src: "/assets/composio-connectors/googlecalendar.svg" },
@@ -145,7 +147,7 @@ const scenarios: FlowScenario[] = [
       tone: "pattern",
       tags: ["Sleep Debt", "Weekly Pattern", "Recovery"],
       message:
-        "Third Sunday in a row you went to bed past 1am. Your Monday Recovery has dropped 15% each time. This is becoming a pattern.",
+        "Third Sunday in a row you went to bed past 1am. Your Monday Recovery has *dropped 15%* each time. This is becoming a pattern.",
       aside: "the spot: sunday nights.",
       connectors: [
         { label: "Google Calendar", src: "/assets/composio-connectors/googlecalendar.svg" },
@@ -194,8 +196,8 @@ function InsightCard({ insight }: { insight: Insight }) {
           </span>
         ))}
       </div>
-      <p className="type-body mt-4 text-[var(--ink)]">
-        {insight.message}
+      <p className="type-body tone-secondary mt-4">
+        {withHighlights(insight.message)}
       </p>
       <p className="type-aside mt-5 text-[var(--text-tertiary)]">{insight.aside}</p>
       <div className="mt-5 flex items-center" aria-label="Connectors involved">

@@ -49,6 +49,25 @@ Fixes applied: Turn section dark stack collapsed `30/24/18` (20px pads) → sing
 
 ---
 
+## 6. Typographic Logic Update (IMPLEMENTED on `staging`)
+
+*   **Headline font:** `h1` and `h2` move from Corben to **SF Pro Rounded** (`--font-body`). Only the hero **`display`** token stays Corben — it is the one remaining Corben usage on the page.
+*   **Letter-spacing:** standardised to **+0.01em (+1%)** on every token except `display` (which keeps its tight Corben `-0.02em`).
+*   **Body line-height:** `body` → **1.3 (130%)** (was 1.5).
+
+### Highlight logic (text emphasis)
+Two axes, each moving **exactly one step** — never two:
+
+1.  **Weight:** base text is regular **400**; a highlight is one step heavier → medium **500**.
+2.  **Colour state:** text has three prominence states — `tertiary < secondary < primary`. A block sits at one state; a highlight jumps **one state up**. `tertiary → secondary`, `secondary → primary`, `primary → primary` (already top; weight-only bump).
+
+Implemented as CSS: put a tone class on the block and `.hl` on the run.
+*   Light surfaces: `tone-primary | tone-secondary | tone-tertiary`
+*   Dark surfaces: `tone-d-primary | tone-d-secondary | tone-d-tertiary` (states are light: dim-grey → light-grey → near-white)
+*   Helpers in `landing-primitives.tsx`: `<Highlight>` and `withHighlights("…*run*…")` (the `*…*` marks the highlighted run). Demonstrated on the Morning-Brief insight cards (base `tone-secondary`, metric highlighted to primary + medium).
+
+---
+
 ## 4. Color Wash Restrictions (Accent Guard)
 To preserve the "once-per-viewport" accent rule while matching Bevel's premium cleanliness:
 *   **Current practice:** Floating cards mix multiple brand colors (green, orange, pink, cyan).
