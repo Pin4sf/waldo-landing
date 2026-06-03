@@ -4,8 +4,31 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 
 import { Aside, withHighlights } from "@/components/landing-primitives";
 
-const AUTO_DWELL_MS = 6000;
-const AUTO_SCROLL_MS = 1800;
+const AUTO_DWELL_MS = 6150;
+const AUTO_SCROLL_MS = 1000;
+
+function appleGalleryEase(progress: number) {
+  const x1 = 0.2;
+  const y1 = 0;
+  const x2 = 0;
+  const y2 = 1;
+  const cx = 3 * x1;
+  const bx = 3 * (x2 - x1) - cx;
+  const ax = 1 - cx - bx;
+  const cy = 3 * y1;
+  const by = 3 * (y2 - y1) - cy;
+  const ay = 1 - cy - by;
+  let t = progress;
+
+  for (let i = 0; i < 5; i += 1) {
+    const x = ((ax * t + bx) * t + cx) * t - progress;
+    const dx = (3 * ax * t + 2 * bx) * t + cx;
+    if (Math.abs(dx) < 0.0001) break;
+    t = Math.max(0, Math.min(1, t - x / dx));
+  }
+
+  return ((ay * t + by) * t + cy) * t;
+}
 
 type VisualKind = "morning" | "stress" | "patterns" | "long-game";
 type HealthTone = "sleep" | "heart" | "stress" | "recovery" | "motion";
@@ -495,7 +518,7 @@ export function AlreadyDoneSection() {
     const startTime = performance.now();
 
     programmaticScrollRef.current = true;
-    scrollSnapTypeRef.current = track.style.scrollSnapType;
+    scrollSnapTypeRef.current = track.style.scrollSnapType || window.getComputedStyle(track).scrollSnapType;
     track.style.scrollSnapType = "none";
     setIsScrollAnimating(true);
 
@@ -503,7 +526,7 @@ export function AlreadyDoneSection() {
       const elapsed = now - startTime;
       const progress = Math.min(1, elapsed / duration);
 
-      track.scrollLeft = startLeft + distance * progress;
+      track.scrollLeft = startLeft + distance * appleGalleryEase(progress);
 
       if (progress < 1) {
         scrollAnimationRef.current = window.requestAnimationFrame(step);
@@ -522,6 +545,8 @@ export function AlreadyDoneSection() {
   };
 
   const goTo = (index: number) => {
+    setPlaying(false);
+    setEnded(false);
     scrollToSlide(index, false);
   };
 
@@ -555,9 +580,9 @@ export function AlreadyDoneSection() {
   return (
     <section
       id="already-handled"
-      className="w-screen max-w-none scroll-mt-28 overflow-hidden py-10 [--section-gutter:1rem] sm:[--section-gutter:1.5rem] lg:py-14 lg:[--section-gutter:max(2.5rem,calc((100vw-1200px)/2+2.5rem))]"
+      className="waldo-highlights w-screen max-w-none scroll-mt-28 overflow-hidden py-10 lg:py-14"
     >
-      <div className="mb-8 flex w-full flex-col gap-6 px-[var(--section-gutter)] lg:mb-10">
+      <div className="mb-8 flex w-full flex-col gap-6 px-[var(--slide-padding)] lg:mb-10">
         <div>
           <p className="type-eyebrow mb-4 text-[var(--text-tertiary)]">Health features</p>
           <h2 className="type-h1 text-[var(--ink)]" data-animate="headline">
@@ -570,12 +595,14 @@ export function AlreadyDoneSection() {
 
       <div
         ref={trackRef}
-        className="flex w-full snap-x snap-mandatory scroll-pl-[var(--section-gutter)] gap-4 overflow-x-auto px-[var(--section-gutter)] pb-2 [scrollbar-width:none] sm:gap-5 lg:gap-6 [&::-webkit-scrollbar]:hidden"
+        className="grid w-full auto-cols-[var(--slide-width)] grid-flow-col snap-x snap-mandatory scroll-pl-0 gap-[var(--slide-gap)] overflow-x-auto px-[var(--slide-padding)] pb-2 [scrollbar-width:none] max-[734px]:scroll-pl-[var(--slide-padding)] [&::-webkit-scrollbar]:hidden"
         aria-live="polite"
         aria-label={`Showing ${activeLabel}`}
         onScroll={handleScroll}
         onPointerDown={() => {
           cancelScrollAnimation();
+          setPlaying(false);
+          setEnded(false);
           setInteractionPaused(true);
         }}
         onPointerUp={() => {
@@ -583,6 +610,8 @@ export function AlreadyDoneSection() {
         }}
         onTouchStart={() => {
           cancelScrollAnimation();
+          setPlaying(false);
+          setEnded(false);
           setInteractionPaused(true);
         }}
         onTouchEnd={() => {
@@ -598,7 +627,7 @@ export function AlreadyDoneSection() {
               id={`health-feature-card-${index}`}
               aria-label={slide.tab}
               aria-current={isActive}
-              className="min-h-[690px] w-[calc(100vw_-_var(--section-gutter)_-_var(--section-gutter))] max-w-[1200px] shrink-0 snap-start rounded-[32px] border border-[var(--border-default)] bg-[var(--surface-t2)] p-4 sm:min-h-[650px] sm:p-6 lg:min-h-[620px] lg:p-8"
+              className="h-[var(--slide-height)] w-[var(--slide-width)] snap-center overflow-hidden rounded-[28px] border border-[var(--border-default)] bg-[var(--surface-t2)] p-4 max-[734px]:snap-start sm:p-6 lg:p-8"
             >
               {slide.kind === "feature" ? <FeatureContent slide={slide} /> : <HealthContent slide={slide} />}
             </article>
@@ -608,7 +637,8 @@ export function AlreadyDoneSection() {
 
       <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
         <div
-          className="flex h-14 items-center gap-2 rounded-full bg-[var(--surface-t2)] px-5"
+          className="waldo-carousel-controls flex h-14 w-[200px] items-center justify-center gap-3 rounded-full bg-[var(--surface-t2)] px-4 sm:w-[216px] sm:gap-4"
+          style={{ animation: "waldo-carousel-control-in 740ms var(--ease-premium) both" }}
           onFocusCapture={() => setInteractionPaused(true)}
           onBlurCapture={(event) => {
             if (!event.currentTarget.contains(event.relatedTarget)) setInteractionPaused(false);
@@ -630,13 +660,13 @@ export function AlreadyDoneSection() {
                 key={slide.tab}
                 type="button"
                 aria-label={`Show ${slide.tab}`}
-                className="focusable-ring flex h-11 min-w-11 items-center justify-center rounded-full px-1"
+                className="focusable-ring flex h-11 w-6 items-center justify-center rounded-full"
                 onClick={() => goTo(index)}
               >
                 <span
-                  className="relative block h-[var(--bar-h)] overflow-hidden rounded-[var(--bar-radius)] bg-[var(--bar-track)] transition-[width] duration-150 ease-[var(--ease-premium)]"
+                  className="relative block h-2 shrink-0 overflow-hidden rounded-[var(--bar-radius)] bg-[var(--bar-track)] transition-[width,background-color] duration-[250ms] ease-[var(--ease-premium)]"
                   style={{
-                    width: isCurrent ? "76px" : "8px",
+                    width: isCurrent ? "var(--active-dot-width)" : "8px",
                     boxShadow: "var(--bar-track-inset)",
                   }}
                 >
@@ -655,7 +685,8 @@ export function AlreadyDoneSection() {
 
         <button
           type="button"
-          className="focusable-ring flex h-14 w-14 items-center justify-center rounded-full bg-[var(--surface-t2)] text-[var(--ink)] transition-[background-color] duration-150 ease-[var(--ease-premium)] hover:bg-[var(--surface-t1)]"
+          className="waldo-carousel-controls focusable-ring flex h-14 w-14 items-center justify-center rounded-full bg-[var(--surface-t2)] text-[var(--ink)] transition-[background-color] duration-150 ease-[var(--ease-premium)] hover:bg-[var(--surface-t1)]"
+          style={{ animation: "waldo-carousel-control-in 940ms var(--ease-premium) both" }}
           aria-label={ended ? "Replay carousel" : playing ? "Pause carousel" : "Play carousel"}
           onClick={() => {
             if (ended) {

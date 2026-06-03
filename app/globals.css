@@ -93,6 +93,46 @@ body {
   background: var(--surface-t3);
 }
 
+.waldo-highlights {
+  --slide-gap: 20px;
+  --slide-width: min(87.5vw, 1260px);
+  --slide-height: 680px;
+  --slide-padding: max(6.25vw, calc((100vw - 1260px) / 2), 24px);
+  --active-dot-width: 48px;
+  --bar-dwell: 6.15s;
+}
+
+@media (max-width: 1068px) {
+  .waldo-highlights {
+    --slide-height: 628px;
+  }
+}
+
+@media (max-width: 734px) {
+  .waldo-highlights {
+    --slide-width: max(calc(87.5vw - 20px), 280px);
+    --slide-height: 480px;
+    --active-dot-width: 32px;
+  }
+}
+
+@keyframes waldo-carousel-control-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .waldo-carousel-controls {
+    animation: none !important;
+  }
+}
+
 .type-display {
   font-family: var(--font-headline);
   font-size: clamp(1.65rem,1.05rem + 2.64vw,3.4rem);
