@@ -1,12 +1,35 @@
 # Codex Context: Waldo Landing Rebuild
 
-Last updated: 2026-06-01
+Last updated: 2026-06-03
 
 ## Goal
 
 Rebuild the Waldo landing site as a polished, brand-accurate marketing page. The immediate focus is to restart the hero section properly, then continue section by section through the canonical eight-block landing plan.
 
 The user wants Codex to work directly in the local repository and GitHub repo, using yesterday's Claude/Antigravity work as reference but not blindly preserving it if it is far from the vision.
+
+## Branch Structure (as of 2026-06-03)
+
+Two branches only. Do not create or work on any other branch without explicit user approval.
+
+### `main`
+- Production-ready, user-approved code only.
+- **Never push directly.** All work lands here only after the user reviews and confirms it.
+
+### `staging`
+- The shared working branch for Codex and Claude (web).
+- **Always branch from `staging`, or work directly on `staging`.**
+- Before starting any task: `git fetch origin && git pull origin staging`
+- After completing a task: push to `origin/staging` and tell the user it is ready to review.
+- Claude (web) is doing the same — coordinate by pulling before pushing to avoid conflicts.
+
+Current `staging` HEAD carries: FAQ section (Block 7) + Problem ticker/graveyard (Block 2 interactive).
+
+### Retired branches (do not use)
+- `codex/github-clean`, `codex/visual-updates`, `codex/design-system-cheatsheet` — superseded.
+- `claude/sleepy-davinci-WwJTE`, `claude/jolly-maxwell-B2jwf`, `claude/nifty-clarke-jRFSV` — superseded.
+
+---
 
 ## Repositories And Paths
 
