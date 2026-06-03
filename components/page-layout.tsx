@@ -10,6 +10,7 @@ import { AlreadyDoneSection } from "./sections/already-done-section";
 import { AgentFeaturesSection } from "./sections/agent-features-section";
 import { UseCasesSection } from "./sections/use-cases-section";
 import { ValidationSection } from "./sections/validation-section";
+import { SecuritySection } from "./sections/security-section";
 import { FiveThingsSection } from "./sections/five-things-section";
 import { WhereIsWaldoSection } from "./sections/where-is-waldo-section";
 import { SmarterSection } from "./sections/smarter-section";
@@ -68,11 +69,12 @@ export function PageLayout() {
           <AgentFeaturesSection />
           <UseCasesSection />
           <ValidationSection />
+          <SecuritySection />
+          <FaqSection />
           <FiveThingsSection />
           <WhereIsWaldoSection />
           <SmarterSection />
           <DownstreamBuildSections />
-          <FaqSection />
         </div>
 
         <FooterSection />

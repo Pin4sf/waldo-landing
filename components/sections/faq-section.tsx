@@ -2,24 +2,28 @@
 
 import { useState } from "react";
 
-import { SectionIntro, withHighlights } from "@/components/landing-primitives";
-
-// Block 7 — FAQ
-// Real objections in Waldo's voice, Headspace-style bordered accordion.
-// No CTA here — the user is reading, not converting.
+import { Aside, SectionIntro, withHighlights } from "@/components/landing-primitives";
 
 const faqs = [
   {
+    q: "What actually is Waldo?",
+    a: "A personal AI agent that reads your health wearable 24/7, understands what the data means for your day, and acts: rescheduling meetings, blocking focus time, drafting emails, creating tasks, and more. *Not a health tracker. Not a chatbot.* An agent that happens to know how your body is doing.",
+  },
+  {
     q: "Does Waldo actually move my meetings?",
-    a: "If you set it to. During onboarding *you choose your autonomy level* — Waldo can just tell you what it would do, suggest changes for your approval, or move things on its own. You can change this anytime.",
+    a: "If you want it to. During setup you pick your autonomy level: Waldo can just tell you what it would do, suggest changes for your approval, or act on its own. *You can change this anytime.*",
+  },
+  {
+    q: "Can Waldo draft emails?",
+    a: "It drafts them. It never sends them. Every email goes to your drafts folder. You review, you send. *Even at the highest autonomy level, outbound communication always requires your tap.*",
+  },
+  {
+    q: "Can I talk to Waldo?",
+    a: "Text or voice. Ask about your health, your schedule, your tasks. Give commands. Or ask why it did what it did. But you do not have to. *Waldo works without being asked.*",
   },
   {
     q: "What if I don't wear my watch one day?",
-    a: "Waldo works with whatever data it has. No watch today means it *leans more on your calendar, tasks, and historical patterns*. It's less precise, not broken.",
-  },
-  {
-    q: "Can Waldo see my messages?",
-    a: "Only the tools you connect. Waldo never reads message content — it reads *metadata: volume, timing, urgency signals*. Your private messages stay private.",
+    a: "Waldo works with whatever data it has. No watch today means it leans more on your calendar, tasks, and historical patterns. *Less precise, not broken.*",
   },
   {
     q: "How is this different from WHOOP or Oura?",
@@ -27,23 +31,27 @@ const faqs = [
   },
   {
     q: "What if Waldo gets it wrong?",
-    a: "*You undo it. One tap.* Waldo learns from corrections — it gets more accurate the longer you use it. The first week is calibration. By week three, it knows your patterns better than you do.",
+    a: "You undo it. One tap. Waldo learns from corrections and gets more accurate the longer you use it. The first week is calibration. *By week three, it knows your patterns better than you do.*",
   },
   {
     q: "Is my health data safe?",
-    a: "Your biometric data *stays on-device and in your private Waldo instance*. Waldo doesn't sell data, doesn't train on your data, doesn't share it with third parties. Full encryption at rest and in transit.",
+    a: "Biometric data stays on-device where possible. We do not sell it, do not train on it, do not share it. Emails are metadata-only. *We never read message body content.* Full encryption at rest and in transit.",
   },
   {
     q: "Do I need an Apple Watch?",
-    a: "Apple Watch is the best-supported device right now. Oura, WHOOP, Garmin, and Fitbit are supported through their APIs. An iPhone alone gives Waldo basic data (steps, screen time) but the *full experience requires a wearable*.",
+    a: "Apple Watch is best-supported. Oura, WHOOP, Garmin, and Fitbit work through their APIs. An iPhone alone gives basic data, but *the full experience requires a wearable.*",
+  },
+  {
+    q: "How much does Waldo do on its own?",
+    a: "You choose. Three levels: Inform, Propose, or Autonomous. Certain actions like sending emails always ask first, regardless of your level. *Some things always need a human.*",
   },
 ] as const;
 
 export function FaqSection() {
-  const [open, setOpen] = useState<number | null>(0);
+  const [open, setOpen] = useState<number | null>(null);
 
   return (
-    <section id="faq" className="section-shell scroll-mt-28 flex flex-col gap-10 py-4">
+    <section id="faq" className="section-shell w-full scroll-mt-28 flex flex-col gap-10 py-10 lg:py-12">
       <SectionIntro
         title={
           <>
@@ -52,9 +60,10 @@ export function FaqSection() {
             ask these.
           </>
         }
+        aside="the fair objections."
       />
 
-      <div className="surface-card mx-auto w-full max-w-[760px] overflow-hidden p-2 sm:p-3">
+      <div className="mx-auto w-full max-w-[880px]">
         {faqs.map((item, index) => {
           const isOpen = open === index;
           const panelId = `faq-panel-${index}`;
@@ -62,7 +71,7 @@ export function FaqSection() {
           return (
             <div
               key={item.q}
-              className={index > 0 ? "border-t border-[var(--border-default)]" : ""}
+              className="border-b border-[var(--border-default)]"
             >
               <h3>
                 <button
@@ -71,16 +80,16 @@ export function FaqSection() {
                   aria-expanded={isOpen}
                   aria-controls={panelId}
                   onClick={() => setOpen(isOpen ? null : index)}
-                  className="focusable-ring flex w-full items-center justify-between gap-4 rounded-2xl px-4 py-5 text-left sm:px-6"
+                  className="focusable-ring flex w-full items-center justify-between gap-6 rounded-[12px] px-1 py-6 text-left sm:py-7"
                 >
                   <span className="type-h3 text-[var(--ink)]">{item.q}</span>
                   <span
                     aria-hidden
-                    className="shrink-0 text-[var(--text-tertiary)]"
+                    className="shrink-0 text-[var(--ink)]"
                     style={{
-                      transition: "transform 320ms cubic-bezier(0.32, 0.72, 0.24, 1.05)",
+                      transition: "transform 260ms var(--ease-premium)",
                       transform: isOpen ? "rotate(45deg)" : "rotate(0deg)",
-                      fontSize: "1.5rem",
+                      fontSize: "1.4rem",
                       lineHeight: 1,
                     }}
                   >
@@ -92,15 +101,19 @@ export function FaqSection() {
                 id={panelId}
                 role="region"
                 aria-labelledby={buttonId}
-                hidden={!isOpen}
-                className="px-4 pb-5 sm:px-6"
+                className={`grid transition-[grid-template-rows,opacity] duration-300 ease-[var(--ease-premium)] ${
+                  isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                }`}
               >
-                <p className="type-body tone-secondary max-w-[60ch]">{withHighlights(item.a)}</p>
+                <div className="overflow-hidden">
+                  <p className="type-body tone-secondary max-w-[72ch] px-1 pb-6">{withHighlights(item.a)}</p>
+                </div>
               </div>
             </div>
           );
         })}
       </div>
+      <Aside className="text-center">simple answer. no fog.</Aside>
     </section>
   );
 }
