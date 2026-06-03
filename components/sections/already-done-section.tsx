@@ -185,7 +185,7 @@ function HealthIcon({ tone }: { tone: HealthTone }) {
 
 function MockupShell({ children }: { children: ReactNode }) {
   return (
-    <div className="relative min-h-[300px] overflow-hidden rounded-[26px] border border-[var(--border-default)] bg-[var(--surface-t1)] p-4 shadow-[var(--shadow-card)] sm:min-h-[360px] sm:p-5 lg:min-h-[430px]">
+    <div className="relative min-h-[300px] overflow-hidden rounded-[26px] border border-[var(--border-default)] bg-[var(--surface-t1)] p-4 sm:min-h-[360px] sm:p-5 lg:min-h-[430px]">
       <div className="absolute inset-x-8 bottom-[-56px] h-28 rounded-[999px] bg-[var(--surface-t3)] blur-2xl" aria-hidden />
       <div className="relative h-full">{children}</div>
     </div>
@@ -257,7 +257,7 @@ function VisualPlaceholder({ kind }: { kind: VisualKind }) {
             <path d="M112 116 C180 90 250 190 315 146 C360 116 416 170 452 252" stroke="currentColor" strokeWidth="2" strokeDasharray="7 8" />
             <path d="M198 260 C230 202 300 220 356 120" stroke="currentColor" strokeWidth="2" strokeDasharray="7 8" />
           </svg>
-          <div className="absolute bottom-5 left-5 right-5 rounded-[20px] border border-[var(--border-default)] bg-[var(--surface-t1)] p-5 shadow-[var(--shadow-card)]">
+          <div className="absolute bottom-5 left-5 right-5 rounded-[20px] border border-[var(--border-default)] bg-[var(--surface-t1)] p-5">
             <p className="type-label text-[var(--ink)]">Pattern found</p>
             <p className="type-body mt-2 text-[var(--text-secondary)]">Your worst sleep follows the heaviest meeting days.</p>
           </div>
@@ -279,7 +279,7 @@ function VisualPlaceholder({ kind }: { kind: VisualKind }) {
               />
             ))}
           </div>
-          <div className="rounded-[22px] border border-[var(--border-default)] bg-[var(--surface-t1)] p-5 shadow-[var(--shadow-card)]">
+          <div className="rounded-[22px] border border-[var(--border-default)] bg-[var(--surface-t1)] p-5">
             <p className="type-label text-[var(--ink)]">The Tuesday Crash</p>
             <p className="type-body mt-2 text-[var(--text-secondary)]">A weekly dip, caught before it becomes the week.</p>
           </div>
@@ -305,7 +305,7 @@ function VisualPlaceholder({ kind }: { kind: VisualKind }) {
         </PhonePlaceholder>
         <div className="flex flex-col justify-center gap-3">
           {["Calendar softened", "Focus held", "Sleep debt noticed"].map((item) => (
-            <div key={item} className="rounded-[18px] border border-[var(--border-default)] bg-[var(--surface-t2)] p-4 shadow-[var(--shadow-card)]">
+            <div key={item} className="rounded-[18px] border border-[var(--border-default)] bg-[var(--surface-t2)] p-4">
               <p className="type-label text-[var(--ink)]">{item}</p>
               <p className="type-aside mt-1">one less thing to decide.</p>
             </div>
@@ -318,7 +318,7 @@ function VisualPlaceholder({ kind }: { kind: VisualKind }) {
 
 function HealthCard({ tone, headline, body }: HealthSlide["cards"][number]) {
   return (
-    <article className="flex min-h-[190px] flex-col justify-between rounded-[22px] border border-[var(--border-default)] bg-[var(--surface-t1)] p-5 shadow-[var(--shadow-card)]">
+    <article className="flex min-h-[190px] flex-col justify-between rounded-[22px] border border-[var(--border-default)] bg-[var(--surface-t1)] p-5">
       <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-[var(--border-default)] bg-[var(--surface-t2)] text-[var(--ink)]">
         <HealthIcon tone={tone} />
       </div>
@@ -536,7 +536,7 @@ export function AlreadyDoneSection() {
               key={slide.tab}
               id={`health-feature-card-${index}`}
               aria-label={slide.tab}
-              className="min-h-[690px] w-[calc(100vw-32px)] max-w-[1920px] shrink-0 snap-center rounded-[34px] border border-[var(--border-default)] bg-[var(--surface-t2)] p-5 shadow-[var(--shadow-card)] transition-[opacity,transform] duration-300 ease-[var(--ease-premium)] sm:min-h-[650px] sm:w-[calc(100vw-96px)] sm:p-7 lg:min-h-[620px] lg:w-[calc(100vw-160px)] lg:p-8"
+              className="min-h-[690px] w-[calc(100vw-32px)] max-w-[1920px] shrink-0 snap-center rounded-[34px] border border-[var(--border-default)] bg-[var(--surface-t2)] p-5 transition-[opacity,transform] duration-300 ease-[var(--ease-premium)] sm:min-h-[650px] sm:w-[calc(100vw-96px)] sm:p-7 lg:min-h-[620px] lg:w-[calc(100vw-160px)] lg:p-8"
               style={{ opacity: isActive ? 1 : 0.52, transform: isActive ? "scale(1)" : "scale(0.965)" }}
             >
               {slide.kind === "feature" ? <FeatureContent slide={slide} /> : <HealthContent slide={slide} />}

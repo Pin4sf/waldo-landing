@@ -40,12 +40,28 @@ At narrow viewports (e.g. mobile 375px), the display heading size clamps to `2.2
 ## 5. Nested-Box Enforcement (concentric corners · stroke · shadow)
 **Status: IMPLEMENTED on `staging`.** Audit found the nesting rules (DESIGN-SYSTEM.md §4) were not being enforced. Enforced rules going forward:
 
-*   **One shadow per stack, on the outermost card only.** A shadow (`--shadow-card`) means "floating on the page canvas." Nested/inner boxes get **no shadow** — depth comes from tier + stroke. What looked like "a shadow on every box" was the outer card's shadow halo plus tier strokes, not real per-box shadows.
+*   **Shadows belong only on deliberately "floating" illustration elements.** Section shells, page cards, navbars, buttons, and any structural UI surface carry **no shadow**. Shadows are reserved exclusively for:
+    *   **Phone / device mockups** (the physical frame that floats in an illustration)
+    *   **Floating insight / data cards** positioned as "flying above" a visual stage (e.g. the InsightCard in the Brief stage, hero floating cards)
+    *   **Fan-deck / stacked-card illustrations** used as product-feature visuals
+    If you are unsure whether a card qualifies: if it exists to build a page layout (section wrapper, content card, nav pill, CTA button), it has **no shadow**. If it exists to *illustrate* a floating UI artifact in a visual, it may have a shadow.
+
 *   **Concentric corners are mandatory:** `r_inner = r_outer − padding` (floor `8px`). If a large gap forces a tiny inner radius, **reduce the padding or collapse a tier** — do not keep large inner radii (that is what made corners "all look the same" / bulge outside the outer arc).
 *   **Max 3 surfaces.** Do not stack `dark-panel → dark-card → inner` with 20px gaps. Collapse to a single outer container + one inner tier; add depth with spacing, not more tiers.
-*   **Stroke placement:** 8% border on the *lighter (inner)* surface of an *adjacent-tier* pair; a tier-*skip* (e.g. dark island on light canvas) needs none. A `T2` card floating on the `T3` canvas carries **both** an 8% stroke and the soft shadow.
+*   **Stroke placement — strict tier adjacency rule:** a 1px `border-[var(--border-default)]` stroke belongs **only** when two adjacent tiers meet (one tier apart). It is removed when tiers skip:
 
-Fixes applied: Turn section dark stack collapsed `30/24/18` (20px pads) → single `24px` container, `12px` pad, `12px` inner (concentric, matches the left column). `Readout` dark tile `16px → 12px`. Problem section outer `T2` shell given its missing 8% stroke.
+    | Pair | Gap | Stroke? |
+    |---|---|---|
+    | T1 + T2 | 1 step | **Yes** |
+    | T2 + T3 | 1 step | **Yes** |
+    | T3 + T4 | 1 step | **Yes** |
+    | T1 + T3 | 2 steps (skip) | **No** |
+    | T2 + T4 | 2 steps (skip) | **No** |
+    | T1 + T4 | 3 steps (skip) | **No** |
+
+    The stroke always goes on the **lighter surface** of the pair as a 1px inset border.
+
+Fixes applied (June 3): Removed shadows from navbar pill, CTA button, all section shells, all structural page cards, connector icon circles, waitlist form. Kept shadows on PhonePlaceholder mockup, pattern-bubble floating pills, InsightCard floating stage element, FanStackCard illustration deck.
 
 ---
 

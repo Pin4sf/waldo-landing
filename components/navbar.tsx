@@ -69,7 +69,7 @@ export function Navbar({
     <div className="relative z-20 flex flex-col items-center px-0 pt-5">
       <div
         className="flex w-full max-w-[720px] items-center rounded-full border border-[var(--border-default)] bg-[var(--surface-t2)] p-1.5"
-        style={{ boxShadow: "var(--shadow-card)" }}
+        style={{  }}
       >
         <Link
           href="/"
@@ -117,7 +117,7 @@ export function Navbar({
 
         <Link
           href="/waitlist"
-          className="focusable-ring type-label flex h-12 items-center justify-center rounded-full bg-[var(--ink)] px-5 text-[var(--surface-t2)] shadow-[var(--shadow-card)] transition-[transform,box-shadow,background-color] duration-300 ease-[var(--ease-premium)] hover:-translate-y-px hover:bg-[var(--dark-t1)] active:scale-[0.98] sm:px-6"
+          className="focusable-ring type-label flex h-12 items-center justify-center rounded-full bg-[var(--ink)] px-5 text-[var(--surface-t2)] transition-[transform,background-color] duration-300 ease-[var(--ease-premium)] hover:-translate-y-px hover:bg-[var(--dark-t1)] active:scale-[0.98] sm:px-6"
         >
           Let Waldo in →
         </Link>

@@ -179,7 +179,6 @@ body {
   align-items: center;
   background: var(--ink);
   border-radius: 999px;
-  box-shadow: var(--shadow-card);
   color: var(--surface-t2);
   display: inline-flex;
   font-family: var(--font-body);
@@ -199,7 +198,6 @@ body {
 
 .waldo-cta:hover {
   background: var(--dark-t1);
-  box-shadow: var(--shadow-elevated);
   transform: translateY(-1px);
 }
 
@@ -211,7 +209,6 @@ body {
   background: var(--surface-t2);
   border: 1px solid var(--border-default);
   border-radius: 24px;
-  box-shadow: var(--shadow-card);
 }
 
 .surface-card-top {

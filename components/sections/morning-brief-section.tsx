@@ -162,7 +162,7 @@ function ConnectorIcon({ connector, index }: { connector: Insight["connectors"][
   if (!connector.src) {
     return (
       <span
-        className="waldo-connector-frame flex h-9 w-9 items-center justify-center rounded-full border border-[var(--border-default)] bg-[var(--surface-t1)] text-[var(--text-secondary)] shadow-[var(--shadow-card)]"
+        className="waldo-connector-frame flex h-9 w-9 items-center justify-center rounded-full border border-[var(--border-default)] bg-[var(--surface-t1)] text-[var(--text-secondary)]"
         style={{ zIndex: 20 - index }}
       >
         +
@@ -172,7 +172,7 @@ function ConnectorIcon({ connector, index }: { connector: Insight["connectors"][
 
   return (
     <span
-      className="waldo-connector-frame flex h-9 w-9 items-center justify-center rounded-full border border-[var(--border-default)] bg-[var(--surface-t1)] p-1.5 shadow-[var(--shadow-card)]"
+      className="waldo-connector-frame flex h-9 w-9 items-center justify-center rounded-full border border-[var(--border-default)] bg-[var(--surface-t1)] p-1.5"
       style={{ zIndex: 20 - index }}
     >
       <Image src={connector.src} alt={connector.label} width={24} height={24} />
@@ -211,7 +211,7 @@ function InsightCard({ insight }: { insight: Insight }) {
 
 export function MorningBriefSection() {
   return (
-    <section id="brief" className="section-shell scroll-mt-28 overflow-hidden rounded-[44px] bg-[var(--surface-t2)] p-3 shadow-[var(--shadow-card)]">
+    <section id="brief" className="section-shell scroll-mt-28 overflow-hidden rounded-[44px] bg-[var(--surface-t2)] p-3">
       <div className="overflow-hidden rounded-[32px] border border-[var(--border-default)] bg-[var(--surface-t1)] pt-16 text-center sm:pt-20 lg:pt-24">
         <div className="mx-auto flex max-w-[680px] flex-col items-center px-6">
           <h2 className="type-h3 text-[var(--ink)] sm:text-[1.8rem]">You are smart, but Waldo’s smarter</h2>

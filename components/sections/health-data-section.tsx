@@ -4,7 +4,7 @@ export function HealthDataSection() {
   return (
     <section
       id="problem"
-      className="section-shell scroll-mt-28 overflow-hidden rounded-[44px] border border-[var(--border-default)] bg-[var(--surface-t2)] p-3 shadow-[var(--shadow-card)]"
+      className="section-shell scroll-mt-28 overflow-hidden rounded-[44px] border border-[var(--border-default)] bg-[var(--surface-t2)] p-3"
     >
       <div className="flex min-h-[760px] flex-col items-center overflow-hidden rounded-[32px] border border-[var(--border-default)] bg-[var(--surface-t1)] px-6 pt-20 pb-16 text-center sm:px-10 sm:pt-24 lg:px-16 lg:pt-28">
         <div className="mx-auto flex max-w-[760px] flex-col items-center">

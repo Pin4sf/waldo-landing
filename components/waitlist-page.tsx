@@ -411,7 +411,7 @@ export function WaitlistPage() {
 
       <main className="flex min-h-[calc(100vh-72px)] items-center justify-center px-4 py-8">
         <div
-          className="w-full max-w-[440px] rounded-3xl bg-white px-8 py-10 flex flex-col items-center gap-5 text-center shadow-[0_2px_20px_rgba(0,0,0,0.07)]"
+          className="w-full max-w-[440px] rounded-3xl bg-white px-8 py-10 flex flex-col items-center gap-5 text-center border border-[var(--border-default)]"
           style={cardStyle}
         >
           <Illustration state={displayState} className="w-24 h-24" />

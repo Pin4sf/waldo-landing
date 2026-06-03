@@ -401,7 +401,7 @@ function LiveLogAddOn() {
           One line at a time.
         </h2>
 
-        <div className="mt-8 w-full max-w-[620px] rounded-[24px] border border-[var(--border-default)] bg-[var(--surface-t1)] p-6 text-left shadow-[var(--shadow-card)] sm:p-8">
+        <div className="mt-8 w-full max-w-[620px] rounded-[24px] border border-[var(--border-default)] bg-[var(--surface-t1)] p-6 text-left sm:p-8">
           <p className="type-aside mb-6">live agent log</p>
           <div className="flex flex-col gap-4">
             {liveLines.map((line, index) => {
