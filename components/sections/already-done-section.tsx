@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 
 import { Aside } from "@/components/landing-primitives";
 
@@ -370,6 +370,7 @@ export function AlreadyDoneSection() {
   const [active, setActive] = useState(0);
   const [playing, setPlaying] = useState(true);
   const [manualPauseUntil, setManualPauseUntil] = useState(0);
+  const [hovered, setHovered] = useState<number | null>(null);
 
   const shouldAutoPlay = playing && !reducedMotion;
 
@@ -452,17 +453,34 @@ export function AlreadyDoneSection() {
         onPointerDown={() => setManualPauseUntil(Date.now() + PAUSE_AFTER_INTERACTION_MS)}
         onTouchStart={() => setManualPauseUntil(Date.now() + PAUSE_AFTER_INTERACTION_MS)}
       >
-        {slides.map((slide, index) => (
-          <article
-            key={slide.tab}
-            id={`health-feature-card-${index}`}
-            aria-label={slide.tab}
-            className="min-h-[690px] w-[calc(100%-56px)] max-w-[980px] shrink-0 snap-center rounded-[34px] border border-[var(--border-default)] bg-[var(--surface-t2)] p-5 shadow-[var(--shadow-card)] transition-[opacity,transform] duration-300 ease-[var(--ease-premium)] sm:min-h-[650px] sm:p-7 lg:min-h-[620px] lg:p-8"
-            style={{ opacity: active === index ? 1 : 0.52, transform: active === index ? "scale(1)" : "scale(0.965)" }}
-          >
-            {slide.kind === "feature" ? <FeatureContent slide={slide} /> : <HealthContent slide={slide} />}
-          </article>
-        ))}
+        {slides.map((slide, index) => {
+          const isActive = active === index;
+          const isHovered = hovered === index;
+          const cardScale = isActive ? (isHovered ? 0.988 : 1) : isHovered ? 0.955 : 0.965;
+          const cardStyle: CSSProperties = {
+            opacity: isActive ? 1 : 0.52,
+            transform: `translateY(${isHovered ? "6px" : "0px"}) scale(${cardScale})`,
+            background: isHovered ? "var(--surface-t4)" : "var(--surface-t2)",
+            borderColor: isHovered ? "var(--border-focus)" : "var(--border-default)",
+            boxShadow: isHovered
+              ? "inset 0 1px 2px color-mix(in srgb, var(--ink) 12%, transparent), inset 0 14px 28px color-mix(in srgb, var(--ink) 6%, transparent)"
+              : "var(--shadow-card)",
+          };
+
+          return (
+            <article
+              key={slide.tab}
+              id={`health-feature-card-${index}`}
+              aria-label={slide.tab}
+              className="min-h-[690px] w-[calc(100%-56px)] max-w-[980px] shrink-0 snap-center rounded-[34px] border p-5 transition-[opacity,transform,background-color,border-color,box-shadow] duration-300 ease-[var(--ease-premium)] sm:min-h-[650px] sm:p-7 lg:min-h-[620px] lg:p-8"
+              style={cardStyle}
+              onMouseEnter={() => setHovered(index)}
+              onMouseLeave={() => setHovered(null)}
+            >
+              {slide.kind === "feature" ? <FeatureContent slide={slide} /> : <HealthContent slide={slide} />}
+            </article>
+          );
+        })}
       </div>
 
       <div className="mt-7 flex flex-col items-center justify-center gap-4 sm:flex-row">
