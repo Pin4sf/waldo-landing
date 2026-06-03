@@ -315,6 +315,11 @@ body {
   100% { transform: translateY(-87.5%); }
 }
 
+@keyframes section-four-progress {
+  from { width: 0%; }
+  to   { width: 100%; }
+}
+
 .where-ticker-track {
   animation: where-ticker 18s var(--ease-premium) infinite;
 }
