@@ -37,6 +37,18 @@ At narrow viewports (e.g. mobile 375px), the display heading size clamps to `2.2
 
 ---
 
+## 5. Nested-Box Enforcement (concentric corners · stroke · shadow)
+**Status: IMPLEMENTED on `staging`.** Audit found the nesting rules (DESIGN-SYSTEM.md §4) were not being enforced. Enforced rules going forward:
+
+*   **One shadow per stack, on the outermost card only.** A shadow (`--shadow-card`) means "floating on the page canvas." Nested/inner boxes get **no shadow** — depth comes from tier + stroke. What looked like "a shadow on every box" was the outer card's shadow halo plus tier strokes, not real per-box shadows.
+*   **Concentric corners are mandatory:** `r_inner = r_outer − padding` (floor `8px`). If a large gap forces a tiny inner radius, **reduce the padding or collapse a tier** — do not keep large inner radii (that is what made corners "all look the same" / bulge outside the outer arc).
+*   **Max 3 surfaces.** Do not stack `dark-panel → dark-card → inner` with 20px gaps. Collapse to a single outer container + one inner tier; add depth with spacing, not more tiers.
+*   **Stroke placement:** 8% border on the *lighter (inner)* surface of an *adjacent-tier* pair; a tier-*skip* (e.g. dark island on light canvas) needs none. A `T2` card floating on the `T3` canvas carries **both** an 8% stroke and the soft shadow.
+
+Fixes applied: Turn section dark stack collapsed `30/24/18` (20px pads) → single `24px` container, `12px` pad, `12px` inner (concentric, matches the left column). `Readout` dark tile `16px → 12px`. Problem section outer `T2` shell given its missing 8% stroke.
+
+---
+
 ## 4. Color Wash Restrictions (Accent Guard)
 To preserve the "once-per-viewport" accent rule while matching Bevel's premium cleanliness:
 *   **Current practice:** Floating cards mix multiple brand colors (green, orange, pink, cyan).

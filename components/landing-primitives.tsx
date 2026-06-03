@@ -137,7 +137,7 @@ export function Readout({
   dark?: boolean;
 }) {
   return (
-    <div className={dark ? "rounded-2xl border border-[var(--border-dark)] bg-[var(--dark-t1)] p-4" : "surface-card-top p-4"}>
+    <div className={dark ? "rounded-[12px] border border-[var(--border-dark)] bg-[var(--dark-t1)] p-4" : "surface-card-top p-4"}>
       <div className="flex items-baseline justify-between gap-3">
         <span className={dark ? "type-label text-[var(--surface-t2)]" : "type-label text-[var(--ink)]"}>{label}</span>
         <span className={dark ? "type-data text-[var(--surface-t2)]" : "type-data text-[var(--ink)]"}>{value}</span>
