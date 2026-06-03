@@ -20,7 +20,7 @@ export function HeroSection() {
           fill
           priority
           sizes="100vw"
-          className="select-none object-cover object-top"
+          className="hero-dome-image select-none object-cover object-top"
         />
       </div>
 
@@ -35,7 +35,7 @@ export function HeroSection() {
           width={169}
           height={131}
           priority
-          className="h-auto w-full drop-shadow-[0_7px_0_rgba(250,250,248,0.68)]"
+          className="hero-mascot-shadow h-auto w-full"
         />
       </div>
 
@@ -66,7 +66,7 @@ export function HeroSection() {
           </span>
         </h1>
 
-        <p className="type-body mt-6 max-w-[58ch] text-[var(--text-secondary)] sm:mt-8">
+        <p className="type-body tone-secondary mt-6 max-w-[58ch] sm:mt-8">
           Waldo scans complex data from your health wearable, and
           <br className="hidden sm:inline" /> figures your day before you smell your morning coffee.
         </p>

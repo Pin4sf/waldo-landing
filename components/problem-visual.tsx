@@ -75,15 +75,15 @@ function DataTicker() {
   return (
     <div
       ref={ref}
-      className="dark-card w-full overflow-hidden p-5 text-left sm:p-6"
+      className="dark-card w-full overflow-hidden rounded-[10px] p-5 text-left sm:rounded-[8px] sm:p-6"
     >
-      <div className="flex items-center gap-2 border-b border-[var(--border-dark)] pb-3">
+      <div className="flex items-center gap-2 border-b border-[var(--panel-border)] pb-3">
         <span
           className="inline-block h-2 w-2 rounded-full bg-[var(--zone-peak)]"
           style={{ animation: "live-dot 1.8s ease-in-out infinite" }}
           aria-hidden
         />
-        <span className="font-mono text-[0.6875rem] uppercase tracking-[0.12em] text-[var(--text-tertiary)]">
+        <span className="type-caption tone-d-tertiary uppercase">
           Live — your watch is logging
         </span>
       </div>
@@ -95,15 +95,15 @@ function DataTicker() {
           return (
             <li
               key={line.time + line.text}
-              className="flex gap-3 font-mono text-[0.8125rem] leading-relaxed sm:text-sm"
+              className="type-caption flex gap-3"
               style={{
                 opacity: shown ? 1 : 0,
                 transform: shown ? "translateY(0)" : "translateY(6px)",
                 transition: "opacity 420ms ease-out, transform 420ms ease-out",
               }}
             >
-              <span className="shrink-0 tabular-nums text-[var(--text-tertiary)]">{line.time}</span>
-              <span className={isLast ? "text-[var(--surface-t2)]" : "text-[var(--text-secondary)]"}>
+              <span className="type-data shrink-0 text-[var(--text-tertiary)]">{line.time}</span>
+              <span className={isLast ? "tone-d-primary" : "tone-d-secondary"}>
                 {line.text}
               </span>
             </li>
@@ -111,7 +111,7 @@ function DataTicker() {
         })}
       </ul>
 
-      <p className="type-aside mt-5 border-t border-[var(--border-dark)] pt-4 text-[var(--text-tertiary)]">
+      <p className="type-aside tone-d-tertiary mt-5 border-t border-[var(--panel-border)] pt-4">
         Your watch logged 847 data points last week. Nothing acted on a single one.
       </p>
     </div>
@@ -130,7 +130,7 @@ function GraveyardCard({ app, verdict }: { app: string; verdict: string }) {
       onBlur={() => setFlipped(false)}
       onClick={() => setFlipped((value) => !value)}
       aria-label={`${app}: ${verdict}`}
-      className="focusable-ring relative h-[88px] w-full rounded-2xl"
+      className="focusable-ring relative h-[88px] w-full rounded-[10px]"
       style={{ perspective: "800px" }}
     >
       <span
@@ -142,20 +142,20 @@ function GraveyardCard({ app, verdict }: { app: string; verdict: string }) {
         }}
       >
         <span
-          className="absolute inset-0 flex items-center justify-center rounded-2xl border border-[var(--border-dark)] bg-[var(--dark-t1)] px-3 text-center"
+          className="absolute inset-0 flex items-center justify-center rounded-[10px] border border-[var(--panel-border)] bg-[var(--panel-card)] px-3 text-center"
           style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}
         >
-          <span className="type-label text-[var(--surface-t2)]">{app}</span>
+          <span className="type-label text-[var(--panel-ink)]">{app}</span>
         </span>
         <span
-          className="absolute inset-0 flex items-center justify-center rounded-2xl border border-[var(--border-dark)] bg-[var(--dark-t2)] px-3 text-center"
+          className="absolute inset-0 flex items-center justify-center rounded-[10px] border border-[var(--panel-border)] bg-[var(--panel-surface)] px-3 text-center"
           style={{
             backfaceVisibility: "hidden",
             WebkitBackfaceVisibility: "hidden",
             transform: "rotateY(180deg)",
           }}
         >
-          <span className="type-aside text-[var(--text-tertiary)]">{verdict}</span>
+          <span className="type-aside tone-d-tertiary">{verdict}</span>
         </span>
       </span>
     </button>
@@ -165,7 +165,7 @@ function GraveyardCard({ app, verdict }: { app: string; verdict: string }) {
 function AppGraveyard() {
   return (
     <div className="w-full">
-      <p className="type-label mb-4 text-center text-[var(--text-secondary)]">You&apos;ve tried the apps.</p>
+      <p className="type-label tone-d-secondary mb-4 text-center">You&apos;ve tried the apps.</p>
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
         {graveyard.map((item) => (
           <GraveyardCard key={item.app} {...item} />

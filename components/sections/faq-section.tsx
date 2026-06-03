@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import { SectionIntro } from "@/components/landing-primitives";
+import { SectionIntro, withHighlights } from "@/components/landing-primitives";
 
 // Block 7 — FAQ
 // Real objections in Waldo's voice, Headspace-style bordered accordion.
@@ -11,31 +11,31 @@ import { SectionIntro } from "@/components/landing-primitives";
 const faqs = [
   {
     q: "Does Waldo actually move my meetings?",
-    a: "If you set it to. During onboarding you choose your autonomy level — Waldo can just tell you what it would do, suggest changes for your approval, or move things on its own. You can change this anytime.",
+    a: "If you set it to. During onboarding *you choose your autonomy level* — Waldo can just tell you what it would do, suggest changes for your approval, or move things on its own. You can change this anytime.",
   },
   {
     q: "What if I don't wear my watch one day?",
-    a: "Waldo works with whatever data it has. No watch today means it leans more on your calendar, tasks, and historical patterns. It's less precise, not broken.",
+    a: "Waldo works with whatever data it has. No watch today means it *leans more on your calendar, tasks, and historical patterns*. It's less precise, not broken.",
   },
   {
     q: "Can Waldo see my messages?",
-    a: "Only the tools you connect. Waldo never reads message content — it reads metadata: volume, timing, urgency signals. Your private messages stay private.",
+    a: "Only the tools you connect. Waldo never reads message content — it reads *metadata: volume, timing, urgency signals*. Your private messages stay private.",
   },
   {
     q: "How is this different from WHOOP or Oura?",
-    a: "They show you data. Waldo acts on it. WHOOP tells you your recovery is 42%. Waldo tells you your recovery is 42% and already pushed your morning meetings.",
+    a: "They show you data. *Waldo acts on it.* WHOOP tells you your recovery is 42%. Waldo tells you your recovery is 42% and already pushed your morning meetings.",
   },
   {
     q: "What if Waldo gets it wrong?",
-    a: "You undo it. One tap. Waldo learns from corrections — it gets more accurate the longer you use it. The first week is calibration. By week three, it knows your patterns better than you do.",
+    a: "*You undo it. One tap.* Waldo learns from corrections — it gets more accurate the longer you use it. The first week is calibration. By week three, it knows your patterns better than you do.",
   },
   {
     q: "Is my health data safe?",
-    a: "Your biometric data stays on-device and in your private Waldo instance. Waldo doesn't sell data, doesn't train on your data, doesn't share it with third parties. Full encryption at rest and in transit.",
+    a: "Your biometric data *stays on-device and in your private Waldo instance*. Waldo doesn't sell data, doesn't train on your data, doesn't share it with third parties. Full encryption at rest and in transit.",
   },
   {
     q: "Do I need an Apple Watch?",
-    a: "Apple Watch is the best-supported device right now. Oura, WHOOP, Garmin, and Fitbit are supported through their APIs. An iPhone alone gives Waldo basic data (steps, screen time) but the full experience requires a wearable.",
+    a: "Apple Watch is the best-supported device right now. Oura, WHOOP, Garmin, and Fitbit are supported through their APIs. An iPhone alone gives Waldo basic data (steps, screen time) but the *full experience requires a wearable*.",
   },
 ] as const;
 
@@ -95,7 +95,7 @@ export function FaqSection() {
                 hidden={!isOpen}
                 className="px-4 pb-5 sm:px-6"
               >
-                <p className="type-body max-w-[60ch] text-[var(--text-secondary)]">{item.a}</p>
+                <p className="type-body tone-secondary max-w-[60ch]">{withHighlights(item.a)}</p>
               </div>
             </div>
           );

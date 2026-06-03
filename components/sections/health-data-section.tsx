@@ -8,7 +8,7 @@ export function HealthDataSection() {
     >
       <div className="flex min-h-[760px] flex-col items-center overflow-hidden rounded-[32px] border border-[var(--border-default)] bg-[var(--surface-t1)] px-6 pt-20 pb-16 text-center sm:px-10 sm:pt-24 lg:px-16 lg:pt-28">
         <div className="mx-auto flex max-w-[760px] flex-col items-center">
-          <p className="type-aside text-[var(--text-tertiary)]">You already have everything Waldo needs.</p>
+          <p className="type-aside tone-tertiary">You already have everything Waldo needs.</p>
 
           <h2 className="type-h1 mt-10 text-[var(--ink)]" data-animate="headline">
             Months of health data.
@@ -16,7 +16,7 @@ export function HealthDataSection() {
             Zero health decisions.
           </h2>
 
-          <p className="type-body mt-8 max-w-[68ch] text-[var(--text-secondary)]">
+          <p className="type-body tone-secondary mt-8 max-w-[68ch]">
             Your watch has been collecting sleep, HRV, recovery, and stress data every single
             <br className="hidden md:block" />
             day. While you slept. While you worked. While you ignored it. That data has been

@@ -26,8 +26,8 @@ export function WhereIsWaldoSection() {
             <div className="where-ticker-track">
               {loop.map(([action, read], index) => (
                 <div key={`${action}-${index}`} className="flex h-[88px] flex-col justify-center gap-2 sm:h-[76px] sm:flex-row sm:items-baseline sm:justify-center sm:gap-4">
-                  <p className="type-h3 text-[var(--ink)]">→ {action}</p>
-                  <p className="type-aside text-[var(--text-tertiary)]">{read}</p>
+                  <p className="type-h3 tone-primary">→ {action}</p>
+                  <p className="type-aside tone-tertiary">{read}</p>
                 </div>
               ))}
             </div>

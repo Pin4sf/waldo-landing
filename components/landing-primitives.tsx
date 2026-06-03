@@ -104,16 +104,16 @@ export function SectionIntro({
           {eyebrow}
         </p>
       ) : null}
-      <h2 className={dark ? "type-h1 text-[var(--surface-t2)]" : "type-h1 text-[var(--ink)]"} data-animate="headline">
+      <h2 className={dark ? "type-h1 text-[var(--panel-ink)]" : "type-h1 text-[var(--ink)]"} data-animate="headline">
         {title}
       </h2>
       {children ? (
-        <div className={dark ? "type-body max-w-[58ch] text-[var(--text-tertiary)]" : "type-body max-w-[58ch] text-[var(--text-secondary)]"} data-animate="fade-up">
+        <div className={dark ? "type-body tone-d-secondary max-w-[58ch]" : "type-body tone-secondary max-w-[58ch]"} data-animate="fade-up">
           {children}
         </div>
       ) : null}
       {aside ? (
-        <p className={dark ? "type-aside text-[var(--text-tertiary)]" : "type-aside text-[var(--text-tertiary)]"} data-animate="fade-up">
+        <p className="type-aside tone-tertiary" data-animate="fade-up">
           {aside}
         </p>
       ) : null}
@@ -122,7 +122,7 @@ export function SectionIntro({
 }
 
 export function Aside({ children, className = "" }: { children: ReactNode; className?: string }) {
-  return <p className={`type-aside text-[var(--text-tertiary)] ${className}`}>{children}</p>;
+  return <p className={`type-aside tone-tertiary ${className}`}>{children}</p>;
 }
 
 // Highlight — one weight up (regular → medium) and, via the parent `tone-*`
@@ -155,12 +155,12 @@ export function Readout({
   dark?: boolean;
 }) {
   return (
-    <div className={dark ? "rounded-[12px] border border-[var(--border-dark)] bg-[var(--dark-t1)] p-4" : "surface-card-top p-4"}>
+    <div className={dark ? "rounded-[12px] border border-[var(--panel-border)] bg-[var(--panel-card)] p-4" : "surface-card-top p-4"}>
       <div className="flex items-baseline justify-between gap-3">
-        <span className={dark ? "type-label text-[var(--surface-t2)]" : "type-label text-[var(--ink)]"}>{label}</span>
-        <span className={dark ? "type-data text-[var(--surface-t2)]" : "type-data text-[var(--ink)]"}>{value}</span>
+        <span className={dark ? "type-label text-[var(--panel-ink)]" : "type-label text-[var(--ink)]"}>{label}</span>
+        <span className={dark ? "type-data text-[var(--panel-ink)]" : "type-data text-[var(--ink)]"}>{value}</span>
       </div>
-      <p className={dark ? "type-aside mt-2 text-[var(--text-tertiary)]" : "type-aside mt-2 text-[var(--text-tertiary)]"}>
+      <p className={dark ? "type-aside tone-d-tertiary mt-2" : "type-aside tone-tertiary mt-2"}>
         {read}
       </p>
     </div>

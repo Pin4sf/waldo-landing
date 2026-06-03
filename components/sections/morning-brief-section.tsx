@@ -183,7 +183,7 @@ function ConnectorIcon({ connector, index }: { connector: Insight["connectors"][
 function InsightCard({ insight }: { insight: Insight }) {
   return (
     <article
-      className="waldo-flow-output absolute right-[2%] top-[43%] z-20 w-[min(330px,32vw)] rounded-[22px] border border-[var(--border-default)] bg-[var(--surface-t1)] p-6 text-left shadow-[var(--shadow-floating)]"
+      className="waldo-flow-output absolute right-[2%] top-[43%] z-20 w-[min(330px,32vw)] rounded-[22px] border border-[var(--border-default)] bg-[var(--surface-t1)] p-6 text-left"
     >
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
         <span className="waldo-insight-dot" data-tone={insight.tone} />
@@ -199,7 +199,7 @@ function InsightCard({ insight }: { insight: Insight }) {
       <p className="type-body tone-secondary mt-4">
         {withHighlights(insight.message)}
       </p>
-      <p className="type-aside mt-5 text-[var(--text-tertiary)]">{insight.aside}</p>
+      <p className="type-aside tone-tertiary mt-5">{insight.aside}</p>
       <div className="mt-5 flex items-center" aria-label="Connectors involved">
         {insight.connectors.map((connector, connectorIndex) => (
           <ConnectorIcon key={connector.label} connector={connector} index={connectorIndex} />
@@ -214,13 +214,9 @@ export function MorningBriefSection() {
     <section id="brief" className="section-shell scroll-mt-28 overflow-hidden rounded-[44px] bg-[var(--surface-t2)] p-3">
       <div className="overflow-hidden rounded-[32px] border border-[var(--border-default)] bg-[var(--surface-t1)] pt-16 text-center sm:pt-20 lg:pt-24">
         <div className="mx-auto flex max-w-[680px] flex-col items-center px-6">
-          <h2 className="type-h3 text-[var(--ink)] sm:text-[1.8rem]">You are smart, but Waldo’s smarter</h2>
-          <p className="type-body mt-5 max-w-[52ch] text-[var(--text-secondary)]">
-            Waldo reads all of your health insights. Then it does what{" "}
-            <br className="hidden sm:block" />
-            no app has done before. It acts. Every other product{" "}
-            <br className="hidden sm:block" />
-            shows you data, Waldo does something about it.
+          <h2 className="type-h2 text-[var(--ink)]">You have the signals. Waldo has the context.</h2>
+          <p className="type-body tone-secondary mt-5 max-w-[52ch]">
+            {withHighlights("Waldo reads all of your health insights. Then it does what no app has done before. *It acts.* Every other product shows you data, Waldo does something about it.")}
           </p>
         </div>
 

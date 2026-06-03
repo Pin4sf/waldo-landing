@@ -9,7 +9,7 @@ import goodWeekDarkMode from "@/components/assets/good-week-dark-mode.svg";
 import roughDarkMode from "@/components/assets/rough-dark-mode.svg";
 import watchingDarkMode from "@/components/assets/watching-dark-mode.svg";
 import { CinematicVideo } from "@/components/cinematic-video";
-import { Aside, SectionIntro, WaldoCTA } from "@/components/landing-primitives";
+import { Aside, SectionIntro, WaldoCTA, withHighlights } from "@/components/landing-primitives";
 import { MobileDots } from "@/components/mobile-dots";
 import { useCardStack } from "@/hooks/use-card-stack";
 import { AUTO_CARD_MS, DUR_SETTLE, EASE } from "@/lib/motion";
@@ -30,7 +30,7 @@ const fanCards: FanCard[] = [
     icon: roughDarkMode,
     iconW: 100,
     iconH: 77,
-    body: "Stress climbs, the important call stays, the soft meeting moves. The afternoon changes before the crash arrives.",
+    body: "Stress climbs, *the important call stays*, the soft meeting moves. The afternoon changes before the crash arrives.",
     metric: "3pm",
     read: "kept because it matters.",
   },
@@ -39,7 +39,7 @@ const fanCards: FanCard[] = [
     icon: goodWeekDarkMode,
     iconW: 100,
     iconH: 77,
-    body: "The heavy parts of the week get moved before Friday turns into a tax on the body.",
+    body: "The heavy parts of the week *get moved* before Friday turns into a tax on the body.",
     metric: "14/21",
     read: "Load is high; recovery time protected.",
   },
@@ -48,7 +48,7 @@ const fanCards: FanCard[] = [
     icon: watchingDarkMode,
     iconW: 99,
     iconH: 75,
-    body: "Most of the work stays in the background. Nothing gets said unless something is worth saying.",
+    body: "Most of the work *stays in the background*. Nothing gets said unless something is worth saying.",
     metric: "24/7",
     read: "watching quietly, not pinging loudly.",
   },
@@ -57,7 +57,7 @@ const fanCards: FanCard[] = [
     icon: goodDarkMode,
     iconW: 77,
     iconH: 79,
-    body: "The best hours get held before the calendar fills them with work that could wait.",
+    body: "The best hours *get held* before the calendar fills them with work that could wait.",
     metric: "2-4pm",
     read: "useful hours held.",
   },
@@ -66,7 +66,7 @@ const fanCards: FanCard[] = [
     icon: goodSleepDarkMode,
     iconW: 89,
     iconH: 66,
-    body: "The pattern is called early, while there is still enough room to change the day.",
+    body: "The pattern is *called early*, while there is still enough room to change the day.",
     metric: "45 min",
     read: "early enough to matter.",
   },
@@ -156,12 +156,12 @@ function FanStackCard({ card, size }: { card: FanCard; size: "small" | "medium" 
       <div>
         <Image src={card.icon} alt="" width={card.iconW} height={card.iconH} unoptimized className="h-auto max-h-20 w-auto" />
         <h3 className={front ? "type-h2 mt-8 text-[var(--ink)]" : "type-h3 mt-7 text-[var(--ink)]"}>{card.title}</h3>
-        <p className={front ? "type-body mt-4 text-[var(--text-secondary)]" : "type-caption mt-4 text-[var(--text-secondary)]"}>
-          {card.body}
+        <p className={front ? "type-body tone-secondary mt-4" : "type-caption tone-secondary mt-4"}>
+          {withHighlights(card.body)}
         </p>
       </div>
 
-      <div className="mt-6 rounded-2xl border border-[var(--border-default)] bg-[var(--surface-t1)] p-4">
+      <div className="mt-6 rounded-[8px] border border-[var(--border-default)] bg-[var(--surface-t1)] p-4">
         <div className="flex items-baseline justify-between gap-3">
           <span className="type-caption text-[var(--text-secondary)]">signal</span>
           <span className="type-data text-[var(--ink)]">{card.metric}</span>
@@ -186,7 +186,7 @@ function ConsoleAddOn() {
         aside="proof, without another screen to manage."
       >
         <p>
-          A quiet console for what changed, what moved, and what Waldo is still watching.
+          {withHighlights("A quiet console for *what changed*, what moved, and what Waldo is still watching.")}
         </p>
       </SectionIntro>
 
@@ -213,7 +213,7 @@ function ConsoleAddOn() {
 
         <CinematicVideo
           src="/waldo_demo.mp4"
-          containerClassName="flex-1 overflow-hidden border border-[var(--border-default)] bg-[var(--dark-t3)]"
+          containerClassName="flex-1 overflow-hidden border border-[var(--border-default)] bg-[var(--surface-t3)]"
           containerStyle={{ height: "560px", borderRadius: "18px" }}
         />
       </div>
@@ -238,7 +238,7 @@ function ActionFanAddOn() {
         aside="quiet, until it matters."
       >
         <p>
-          The same agent work, shown as a moving stack instead of a grid.
+          {withHighlights("The same agent work, shown as a *moving stack* instead of a grid.")}
         </p>
       </SectionIntro>
 
@@ -419,7 +419,7 @@ function LiveLogAddOn() {
                       {isDone ? "✓" : "·"}
                     </span>
                   )}
-                  <p className={isDone ? "type-body text-[var(--text-tertiary)]" : "type-body text-[var(--ink)]"}>
+                  <p className={isDone ? "type-body tone-tertiary" : "type-body tone-primary"}>
                     {isQueued || isDone ? line : visibleWords(index)}
                     {isActive && showCursor && (
                       <span className="ml-1 inline-block h-[1em] w-0.5 align-text-top" style={{ background: "var(--accent)", animation: "hint-pulse 0.7s ease-in-out infinite" }} aria-hidden />
@@ -454,17 +454,17 @@ function DevicePatternAddOn() {
         aside="proof with shape, not noise."
       >
         <p>
-          The same long-range read, backed by the health screens that made the signal visible.
+          {withHighlights("The same long-range read, backed by *the health screens that made the signal visible*.")}
         </p>
       </SectionIntro>
 
-      <div className="dark-card relative mt-8 min-h-[420px] overflow-hidden p-5 sm:p-6">
+      <div className="dark-card relative mt-8 min-h-[420px] overflow-hidden rounded-[8px] p-5 sm:p-6">
         <div className="flex items-center justify-between gap-4">
           <div>
-            <p className="type-label text-[var(--surface-t2)]">The Constellation</p>
+            <p className="type-label text-[var(--panel-ink)]">The Constellation</p>
             <p className="type-aside mt-1 text-[var(--text-tertiary)]">The Tuesday Crash.</p>
           </div>
-          <span className="type-caption rounded-full border border-[var(--border-dark)] bg-[var(--dark-t1)] px-3 py-1 text-[var(--text-secondary)]">
+          <span className="type-caption rounded-full border border-[var(--panel-border)] bg-[var(--panel-card)] px-3 py-1 text-[var(--panel-muted)]">
             device read
           </span>
         </div>
@@ -482,7 +482,7 @@ function DevicePatternAddOn() {
           <div className="absolute left-0 top-[142px] w-[62px]">
             <Image src="/figma-assets/health-watch.png" alt="" width={120} height={128} className="h-auto w-full" />
           </div>
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[var(--dark-t3)] to-transparent" />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[var(--panel-surface)] to-transparent" />
         </div>
       </div>
     </section>

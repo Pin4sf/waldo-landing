@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
-import { Aside } from "@/components/landing-primitives";
+import { Aside, withHighlights } from "@/components/landing-primitives";
 
 const AUTO_DWELL_MS = 5600;
 const AUTO_SCROLL_MS = 2200;
@@ -44,7 +44,7 @@ const slides: ShowcaseSlide[] = [
     tab: "Mornings",
     headline: "Wake up to what changed.",
     description:
-      "Every morning, one message. Not another screen. Not a chart. Not four apps open before your coffee. Waldo tells you what last night meant for today, and what it already did about it.",
+      "Every morning, one message. Not another screen. Not a chart. Not four apps open before your coffee. Waldo tells you what last night meant for today, and *what it already did about it*.",
     aside: "mornings, sorted.",
     visual: "morning",
   },
@@ -53,7 +53,7 @@ const slides: ShowcaseSlide[] = [
     tab: "Stress",
     headline: "Your stress, handled.",
     description:
-      "When your stress climbs past a threshold and stays there, Waldo intervenes. Pulls low-priority meetings. Blocks recovery time. Adds a cooldown so it does not nag.",
+      "When your stress climbs past a threshold and stays there, Waldo intervenes. *Pulls low-priority meetings.* Blocks recovery time. Adds a cooldown so it does not nag.",
     aside: "you didn't ask. you didn't need to.",
     visual: "stress",
   },
@@ -62,7 +62,7 @@ const slides: ShowcaseSlide[] = [
     tab: "Patterns",
     headline: "See what you're too close to see.",
     description:
-      "Waldo scans your signals throughout the day. Most of the time, nothing happens. But when it notices a pattern across days, weeks, or months, it tells you. Small observations that compound into a pattern you can act on.",
+      "Waldo scans your signals throughout the day. Most of the time, nothing happens. But when it notices a *pattern across days, weeks, or months*, it tells you. Small observations that compound into a pattern you can act on.",
     aside: "about seventy scans a day. you never notice.",
     visual: "patterns",
   },
@@ -70,32 +70,32 @@ const slides: ShowcaseSlide[] = [
     kind: "health",
     tab: "Your health",
     intro:
-      "Your watch tracks 15+ health signals. Other apps show you all of them. Waldo reads all of them and acts on the ones that matter today.",
+      "Your watch tracks 15+ health signals. Other apps show you all of them. Waldo reads all of them and *acts on the ones that matter today*.",
     cards: [
       {
         tone: "sleep",
         headline: "Sleep like you mean it.",
-        body: "Track stages, duration, debt, and bedtime consistency. When sleep runs short, Waldo adjusts tomorrow before you wake up.",
+        body: "Track stages, duration, debt, and bedtime consistency. When sleep runs short, Waldo *adjusts tomorrow before you wake up*.",
       },
       {
         tone: "heart",
         headline: "Stay close to your heart.",
-        body: "HRV trends, resting heart rate, baseline tracking. Waldo flags when your numbers drop below your baseline, then changes the day around it.",
+        body: "HRV trends, resting heart rate, baseline tracking. Waldo flags when your numbers drop below your baseline, then *changes the day around it*.",
       },
       {
         tone: "stress",
         headline: "Your stress, in real time.",
-        body: "Not a chart you check later. Real-time stress confidence triggers The Fetch when it climbs too high. Waldo catches it before you feel it.",
+        body: "Not a chart you check later. Real-time stress confidence *triggers The Fetch* when it climbs too high. Waldo catches it before you feel it.",
       },
       {
         tone: "recovery",
         headline: "Recovery is not a number.",
-        body: "Sleep, HRV, and resting state combine into one score. The score is not the point; what Waldo does with it is.",
+        body: "Sleep, HRV, and resting state combine into one score. The score is not the point; what Waldo *does with it* is.",
       },
       {
         tone: "motion",
         headline: "Motion with meaning.",
-        body: "Steps, exercise, VO2 Max, active energy. Waldo identifies post-exercise recovery windows and protects them in your calendar.",
+        body: "Steps, exercise, VO2 Max, active energy. Waldo *identifies post-exercise recovery windows and protects them in your calendar*.",
       },
     ],
   },
@@ -105,7 +105,7 @@ const slides: ShowcaseSlide[] = [
     badge: "Coming soon",
     headline: "The longer it runs, the more Waldo learns.",
     description:
-      "Six weeks of Tuesdays and Thursdays looked ordinary, until they did not. The fact that your worst sleep always follows your heaviest meeting days. You were too close to see it. Waldo wasn't.",
+      "Six weeks of Tuesdays and Thursdays looked ordinary, until they did not. The fact that *your worst sleep always follows your heaviest meeting days*. You were too close to see it. Waldo wasn't.",
     aside: "patterns you can't see from the inside.",
     visual: "long-game",
   },
@@ -195,10 +195,10 @@ function MockupShell({ children }: { children: ReactNode }) {
 function PhonePlaceholder({ children, className = "" }: { children: ReactNode; className?: string }) {
   return (
     <div
-      className={`relative mx-auto h-[330px] w-[174px] rounded-[34px] border-[7px] border-[var(--ink)] bg-[var(--dark-t3)] p-3 shadow-[var(--shadow-floating)] sm:h-[390px] sm:w-[206px] ${className}`}
+      className={`relative mx-auto h-[330px] w-[174px] rounded-[34px] border-[7px] border-[var(--ink)] bg-[var(--surface-t3)] p-3 shadow-[var(--shadow-floating)] sm:h-[390px] sm:w-[206px] ${className}`}
     >
-      <div className="absolute left-1/2 top-3 h-5 w-20 -translate-x-1/2 rounded-full bg-[var(--dark-t4)]" />
-      <div className="mt-8 flex h-[calc(100%-2rem)] flex-col gap-3 overflow-hidden rounded-[20px] bg-[var(--dark-t2)] p-3 text-[var(--surface-t2)]">
+      <div className="absolute left-1/2 top-3 h-5 w-20 -translate-x-1/2 rounded-full bg-[var(--surface-t4)]" />
+      <div className="mt-8 flex h-[calc(100%-2rem)] flex-col gap-3 overflow-hidden rounded-[20px] bg-[var(--surface-t2)] p-3 text-[var(--ink)]">
         {children}
       </div>
     </div>
@@ -212,7 +212,7 @@ function VisualPlaceholder({ kind }: { kind: VisualKind }) {
         <div className="grid h-full gap-4 lg:grid-cols-[0.85fr_1.15fr]">
           <div className="flex flex-col justify-center gap-3">
             {["Investor call stays", "Low-priority sync moved", "Recovery block protected"].map((item, index) => (
-              <div key={item} className="rounded-[16px] border border-[var(--border-default)] bg-[var(--surface-t2)] p-4">
+              <div key={item} className="rounded-[10px] border border-[var(--border-default)] bg-[var(--surface-t2)] p-4">
                 <p className="type-label text-[var(--ink)]">{item}</p>
                 <p className="type-aside mt-1">handled quietly.</p>
                 <div className="mt-3 h-2 rounded-full bg-[var(--surface-t4)]">
@@ -223,13 +223,13 @@ function VisualPlaceholder({ kind }: { kind: VisualKind }) {
           </div>
           <PhonePlaceholder className="lg:translate-y-5">
             <p className="type-caption text-[var(--text-tertiary)]">stress read</p>
-            <div className="mt-2 rounded-[18px] border border-[var(--border-dark)] bg-[var(--dark-t1)] p-4">
-              <p className="type-h3 text-[var(--surface-t2)]">Fetch</p>
+            <div className="mt-2 rounded-[8px] border border-[var(--border-default)] bg-[var(--surface-t1)] p-4">
+              <p className="type-h3 text-[var(--ink)]">Fetch</p>
               <Aside className="mt-2">afternoon protected.</Aside>
             </div>
             <div className="mt-auto grid gap-2">
-              <div className="h-12 rounded-[14px] bg-[var(--dark-t1)]" />
-              <div className="h-12 rounded-[14px] bg-[var(--dark-t1)]" />
+              <div className="h-12 rounded-[8px] bg-[var(--surface-t1)]" />
+              <div className="h-12 rounded-[8px] bg-[var(--surface-t1)]" />
             </div>
           </PhonePlaceholder>
         </div>
@@ -257,9 +257,9 @@ function VisualPlaceholder({ kind }: { kind: VisualKind }) {
             <path d="M112 116 C180 90 250 190 315 146 C360 116 416 170 452 252" stroke="currentColor" strokeWidth="2" strokeDasharray="7 8" />
             <path d="M198 260 C230 202 300 220 356 120" stroke="currentColor" strokeWidth="2" strokeDasharray="7 8" />
           </svg>
-          <div className="absolute bottom-5 left-5 right-5 rounded-[20px] border border-[var(--border-default)] bg-[var(--surface-t1)] p-5">
+          <div className="absolute bottom-5 left-5 right-5 rounded-[20px] border border-[var(--border-default)] bg-[var(--surface-t1)] p-5 shadow-[var(--shadow-card)]">
             <p className="type-label text-[var(--ink)]">Pattern found</p>
-            <p className="type-body mt-2 text-[var(--text-secondary)]">Your worst sleep follows the heaviest meeting days.</p>
+            <p className="type-body tone-secondary mt-2">Your worst sleep follows the heaviest meeting days.</p>
           </div>
         </div>
       </MockupShell>
@@ -281,7 +281,7 @@ function VisualPlaceholder({ kind }: { kind: VisualKind }) {
           </div>
           <div className="rounded-[22px] border border-[var(--border-default)] bg-[var(--surface-t1)] p-5">
             <p className="type-label text-[var(--ink)]">The Tuesday Crash</p>
-            <p className="type-body mt-2 text-[var(--text-secondary)]">A weekly dip, caught before it becomes the week.</p>
+            <p className="type-body tone-secondary mt-2">A weekly dip, caught before it becomes the week.</p>
           </div>
         </div>
       </MockupShell>
@@ -293,14 +293,14 @@ function VisualPlaceholder({ kind }: { kind: VisualKind }) {
       <div className="grid h-full gap-4 lg:grid-cols-[1.05fr_0.95fr]">
         <PhonePlaceholder className="lg:-rotate-2 lg:translate-y-5">
           <p className="type-caption text-[var(--text-tertiary)]">morning brief</p>
-          <div className="rounded-[18px] border border-[var(--border-dark)] bg-[var(--dark-t1)] p-4">
-            <p className="type-body text-[var(--surface-t2)]">Rough night. Your morning moved. Lunch stays clear.</p>
+          <div className="rounded-[8px] border border-[var(--border-default)] bg-[var(--surface-t1)] p-4">
+            <p className="type-body tone-primary">Rough night. Your morning moved. Lunch stays clear.</p>
             <Aside className="mt-3">already moved.</Aside>
           </div>
           <div className="mt-auto space-y-2">
-            <div className="h-10 rounded-[14px] bg-[var(--dark-t1)]" />
-            <div className="h-10 rounded-[14px] bg-[var(--dark-t1)]" />
-            <div className="h-10 rounded-[14px] bg-[var(--dark-t1)]" />
+            <div className="h-10 rounded-[8px] bg-[var(--surface-t1)]" />
+            <div className="h-10 rounded-[8px] bg-[var(--surface-t1)]" />
+            <div className="h-10 rounded-[8px] bg-[var(--surface-t1)]" />
           </div>
         </PhonePlaceholder>
         <div className="flex flex-col justify-center gap-3">
@@ -324,7 +324,7 @@ function HealthCard({ tone, headline, body }: HealthSlide["cards"][number]) {
       </div>
       <div className="mt-5">
         <h4 className="type-h3 text-[var(--ink)]">{headline}</h4>
-        <p className="type-caption mt-3 text-[var(--text-secondary)]">{body}</p>
+        <p className="type-caption tone-secondary mt-3">{withHighlights(body)}</p>
       </div>
     </article>
   );
@@ -343,7 +343,7 @@ function FeatureContent({ slide }: { slide: FeatureSlide }) {
           ) : null}
         </div>
         <h3 className="type-h2 text-[var(--ink)]">{slide.headline}</h3>
-        <p className="type-body mt-5 max-w-[48ch] text-[var(--text-secondary)]">{slide.description}</p>
+        <p className="type-body tone-secondary mt-5 max-w-[48ch]">{withHighlights(slide.description)}</p>
         <Aside className="mt-5">{slide.aside}</Aside>
       </div>
       <VisualPlaceholder kind={slide.visual} />
@@ -357,7 +357,7 @@ function HealthContent({ slide }: { slide: HealthSlide }) {
       <div className="p-2 sm:p-4 lg:p-6">
         <p className="type-eyebrow mb-5 text-[var(--text-tertiary)]">{slide.tab}</p>
         <h3 className="type-h2 text-[var(--ink)]">Your health, read in context.</h3>
-        <p className="type-body mt-5 max-w-[46ch] text-[var(--text-secondary)]">{slide.intro}</p>
+        <p className="type-body tone-secondary mt-5 max-w-[46ch]">{withHighlights(slide.intro)}</p>
         <Aside className="mt-5">the signal is only useful when it moves something.</Aside>
       </div>
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
