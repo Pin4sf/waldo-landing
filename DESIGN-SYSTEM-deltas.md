@@ -72,3 +72,79 @@ Implemented as CSS: put a tone class on the block and `.hl` on the run.
 To preserve the "once-per-viewport" accent rule while matching Bevel's premium cleanliness:
 *   **Current practice:** Floating cards mix multiple brand colors (green, orange, pink, cyan).
 *   **Proposed rule:** Hero state transitions must update *all* active accent details in unison. When in "Form State", only orange highlights are visible; when in "Recovery State", only green highlights are visible. No static rainbow layouts should coexist in a single viewport.
+
+---
+
+## 7. Load-in / Progress Bar (carousel timing) — NEW COMPONENT
+**Status: SPEC (to implement on `staging`).** Drives auto-advance timing and the transition state between carousel slides. This is a **sunken control** — it inverts the elevation ladder (the track recesses *below* its host) and therefore follows the sunken/T4 rules, not the floating-card rules.
+
+### 7.1 Anatomy (3 parts)
+1.  **Track** — the recessed groove. The full-width pill the fill runs inside.
+2.  **Fill** — the committed progress, growing left→right, capped by a semicircle.
+3.  **Head** — the soft lighter tip at the advancing edge (the pale orange cap in the reference). Represents the *live, in-motion* portion; not part of committed progress.
+
+### 7.2 Surface logic (track = sunken, not floating)
+*   The track is **one sunken step below its host**, mapped through the tier table: host `T2` → track `T4`; host `T1` → track `T3`. This is a **skip-one** relationship (the middle tier is skipped), which by §2 carries **no stroke**.
+*   Depth comes from the tier drop, **not** a drop shadow. A sunken control **never** takes `--shadow-card` (that means "floating above the page" — the opposite of what a groove is).
+*   **Light mode** needs help reading as recessed: add a top-edge **inset** shadow on the track only — `box-shadow: inset 0 1px 2px rgba(26,26,26,0.06)`. **Dark mode** does not: `T4 #171616` is already darker than every host tier, so the recess reads on tier alone — no inset shadow.
+*   **No outer container card is required.** The reference's outer pill is just the host surface. If a bar *is* wrapped in its own card (e.g. a standalone status chip), that wrapper follows normal floating rules (T2-on-T3 → 8% stroke + soft shadow); the **track inside it still follows the sunken rules above.**
+
+### 7.3 Radius & size
+*   Track and fill are both **pill `999px`** — the fill's leading edge is a clean semicircle.
+*   If ever nested in a padded wrapper, concentric rule still holds (`r_inner = r_outer − padding`), but at pill radii both resolve to fully-round.
+*   **Heights:** Compact `4px` · **Default `6px`** · Prominent `8px`. Head length = **8% of track width**, floor `12px`.
+
+### 7.4 Fill variants (this is the "different colors" logic)
+The fill colour is a **variant token**, chosen by how much attention the bar should pull. The **track is always the sunken T4/T3 groove** regardless of variant — only the *fill* changes.
+
+| Variant | Fill (light) | Fill (dark) | Head (fill @ opacity) | Use |
+|---|---|---|---|---|
+| **Accent** | `#FB943F` | `#FB943F` | fill @ **35%** | Only when the carousel **is** the one accent moment of its viewport. Spends the once-per-viewport accent budget (§1). |
+| **Ink** ⟡ DEFAULT | `#1A1A1A` (Text-primary) | `#FAFAF8` (Text-primary) | fill @ **30%** | Everyday default. The neutral timer — does **not** spend the accent budget. Use this unless there's a reason not to. |
+| **Neutral** | `#9A9A96` (Text-tertiary) | `#6B6B68` (Text-tertiary) | fill @ **40%** | Quietest. Background / secondary carousels where the timer should barely register against the groove. |
+
+*   **Empty/unfilled track** is always the sunken surface (`T4` / `T3`), in **every** variant — the variant never recolours the groove.
+*   **One accent per viewport still rules:** if an orange element already exists in the same fold (a Primary icon button, a flagging ring), the bar **must** be Ink or Neutral, never Accent.
+*   Contrast guard: the Neutral fill (`#9A9A96`) on a light `T4 #E8E6E0` groove is intentionally low-contrast — that is correct for the "barely register" role. If the bar must stay legible at a glance, use Ink, not Neutral.
+
+### 7.5 Head (advancing tip) logic
+*   The fill is **solid** up to committed progress; the final `8%` (head) is a left→right gradient from solid → the variant's head opacity, marking the live edge.
+*   Implement as a gradient on the fill, e.g. `linear-gradient(90deg, var(--bar-fill) 0%, var(--bar-fill) calc(100% - 8%), color-mix(in srgb, var(--bar-fill) 35%, transparent) 100%)`, masked to the fill width.
+*   **`prefers-reduced-motion`: drop the head entirely** — render a solid fill that jumps between committed positions. No gradient tail, no continuous growth.
+
+### 7.6 Continuous vs segmented
+*   **Continuous (single bar):** one track; fill grows over the dwell duration, resets to 0 on slide change.
+*   **Segmented (one short bar per slide, Apple-story style):** N tracks in a row.
+    *   **Completed** slides = fill at **100%, dimmed to Neutral** (Text-tertiary) regardless of the active variant — done is quiet.
+    *   **Active** slide = fills live in the chosen variant (Ink/Accent).
+    *   **Upcoming** slides = empty sunken track.
+    *   Tap a segment → jump to that slide (the segment is the control's hit target; min `44px` tap height even if the visual bar is `6px`).
+
+### 7.7 States
+*   **Filling** — fill width animates 0→100% over the dwell duration (linear), head visible.
+*   **Complete** — fill at 100%, head collapses into the solid cap, then slide advances.
+*   **Paused** (hover / focus-within / tab hidden) — fill width freezes, head dims to the committed opacity. Resumes from the frozen position, never restarts.
+*   **Focus** — the interactive segment/bar takes the §2 focus treatment (Border `8% → 16%`), not an accent glow.
+
+### 7.8 Motion
+*   Fill growth = **linear** (it's a clock — easing would misrepresent elapsed time). Default dwell `6s` ⟡ DEFAULT.
+*   Pause/resume + segment jump transitions use the system micro easing `cubic-bezier(0.19,1,0.22,1)` at `150ms`.
+*   Honour `prefers-reduced-motion` per §7.5.
+
+### 7.9 Proposed tokens
+```css
+/* sunken groove — resolved from host tier per §7.2 */
+--bar-track-light: var(--surface-t4);   /* #E8E6E0 */
+--bar-track-dark:  var(--surface-t4);   /* #171616 */
+--bar-track-inset-light: inset 0 1px 2px rgba(26,26,26,0.06);
+--bar-track-inset-dark:  none;
+/* fill variants */
+--bar-fill-accent:  #FB943F;
+--bar-fill-ink:     var(--ink);            /* #1A1A1A / #FAFAF8 */
+--bar-fill-neutral: var(--text-tertiary);  /* #9A9A96 / #6B6B68 */
+--bar-head-opacity: 0.35;                  /* per-variant: accent .35 · ink .30 · neutral .40 */
+/* geometry */
+--bar-h: 6px;            /* compact 4 · default 6 · prominent 8 */
+--bar-radius: 999px;
+--bar-dwell: 6s;
+```
