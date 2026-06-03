@@ -1,11 +1,16 @@
 "use client";
 
-import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
 import { Aside } from "@/components/landing-primitives";
 
-const AUTO_MS = 7000;
+const AUTO_DWELL_MS = 5600;
+const AUTO_SCROLL_MS = 2200;
 const PAUSE_AFTER_INTERACTION_MS = 9000;
+
+function easeInOutCubic(progress: number) {
+  return progress < 0.5 ? 4 * progress * progress * progress : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+}
 
 type VisualKind = "morning" | "stress" | "patterns" | "long-game";
 type HealthTone = "sleep" | "heart" | "stress" | "recovery" | "motion";
@@ -367,10 +372,13 @@ function HealthContent({ slide }: { slide: HealthSlide }) {
 export function AlreadyDoneSection() {
   const reducedMotion = usePrefersReducedMotion();
   const trackRef = useRef<HTMLDivElement>(null);
+  const scrollAnimationRef = useRef<number | null>(null);
+  const scrollSnapTypeRef = useRef<string | null>(null);
+  const programmaticScrollRef = useRef(false);
   const [active, setActive] = useState(0);
   const [playing, setPlaying] = useState(true);
   const [manualPauseUntil, setManualPauseUntil] = useState(0);
-  const [hovered, setHovered] = useState<number | null>(null);
+  const [isScrollAnimating, setIsScrollAnimating] = useState(false);
 
   const shouldAutoPlay = playing && !reducedMotion;
 
@@ -380,38 +388,99 @@ export function AlreadyDoneSection() {
 
   useEffect(() => {
     if (!shouldAutoPlay) return;
+    if (active >= slides.length - 1) {
+      if (!isScrollAnimating) setPlaying(false);
+      return;
+    }
 
-    const timer = window.setInterval(() => {
+    const remainingPause = manualPauseUntil - Date.now();
+    const timer = window.setTimeout(() => {
       if (Date.now() < manualPauseUntil) return;
-      scrollToSlide((active + 1) % slides.length);
-    }, AUTO_MS);
+      scrollToSlide(active + 1, true);
+    }, Math.max(AUTO_DWELL_MS, remainingPause));
 
-    return () => window.clearInterval(timer);
-  }, [active, manualPauseUntil, shouldAutoPlay]);
+    return () => window.clearTimeout(timer);
+  }, [active, isScrollAnimating, manualPauseUntil, shouldAutoPlay]);
+
+  useEffect(() => {
+    return () => {
+      if (scrollAnimationRef.current !== null) window.cancelAnimationFrame(scrollAnimationRef.current);
+    };
+  }, []);
 
   const activeSlide = slides[active];
   const activeLabel = activeSlide.tab;
 
-  const scrollToSlide = (index: number, behavior: ScrollBehavior = "smooth") => {
+  const cancelScrollAnimation = () => {
+    if (scrollAnimationRef.current !== null) {
+      window.cancelAnimationFrame(scrollAnimationRef.current);
+      scrollAnimationRef.current = null;
+    }
+    if (trackRef.current && scrollSnapTypeRef.current !== null) {
+      trackRef.current.style.scrollSnapType = scrollSnapTypeRef.current;
+      scrollSnapTypeRef.current = null;
+    }
+    programmaticScrollRef.current = false;
+    setIsScrollAnimating(false);
+  };
+
+  const scrollToSlide = (index: number, auto = false) => {
     const track = trackRef.current;
-    const nextIndex = (index + slides.length) % slides.length;
+    const nextIndex = Math.max(0, Math.min(index, slides.length - 1));
     const card = track?.children[nextIndex] as HTMLElement | undefined;
 
+    cancelScrollAnimation();
     setActive(nextIndex);
     if (!track || !card) return;
 
     const left = card.offsetLeft - Math.max(0, (track.clientWidth - card.clientWidth) / 2);
-    track.scrollTo({ left, behavior: reducedMotion ? "auto" : behavior });
+    const startLeft = track.scrollLeft;
+    const distance = left - startLeft;
+
+    if (reducedMotion || Math.abs(distance) < 1) {
+      track.scrollLeft = left;
+      return;
+    }
+
+    const duration = auto ? AUTO_SCROLL_MS : AUTO_SCROLL_MS;
+    const startTime = performance.now();
+
+    programmaticScrollRef.current = true;
+    scrollSnapTypeRef.current = track.style.scrollSnapType;
+    track.style.scrollSnapType = "none";
+    setIsScrollAnimating(true);
+
+    const step = (now: number) => {
+      const elapsed = now - startTime;
+      const progress = Math.min(1, elapsed / duration);
+
+      track.scrollLeft = startLeft + distance * easeInOutCubic(progress);
+
+      if (progress < 1) {
+        scrollAnimationRef.current = window.requestAnimationFrame(step);
+        return;
+      }
+
+      track.scrollLeft = left;
+      track.style.scrollSnapType = scrollSnapTypeRef.current ?? "";
+      scrollSnapTypeRef.current = null;
+      scrollAnimationRef.current = null;
+      programmaticScrollRef.current = false;
+      setIsScrollAnimating(false);
+    };
+
+    scrollAnimationRef.current = window.requestAnimationFrame(step);
   };
 
   const goTo = (index: number) => {
     setManualPauseUntil(Date.now() + PAUSE_AFTER_INTERACTION_MS);
-    scrollToSlide(index);
+    scrollToSlide(index, false);
   };
 
   const handleScroll = () => {
     const track = trackRef.current;
     if (!track) return;
+    if (programmaticScrollRef.current) return;
 
     const trackCenter = track.scrollLeft + track.clientWidth / 2;
     let nearest = 0;
@@ -450,32 +519,25 @@ export function AlreadyDoneSection() {
         aria-live="polite"
         aria-label={`Showing ${activeLabel}`}
         onScroll={handleScroll}
-        onPointerDown={() => setManualPauseUntil(Date.now() + PAUSE_AFTER_INTERACTION_MS)}
-        onTouchStart={() => setManualPauseUntil(Date.now() + PAUSE_AFTER_INTERACTION_MS)}
+        onPointerDown={() => {
+          cancelScrollAnimation();
+          setManualPauseUntil(Date.now() + PAUSE_AFTER_INTERACTION_MS);
+        }}
+        onTouchStart={() => {
+          cancelScrollAnimation();
+          setManualPauseUntil(Date.now() + PAUSE_AFTER_INTERACTION_MS);
+        }}
       >
         {slides.map((slide, index) => {
           const isActive = active === index;
-          const isHovered = hovered === index;
-          const cardScale = isActive ? (isHovered ? 0.988 : 1) : isHovered ? 0.955 : 0.965;
-          const cardStyle: CSSProperties = {
-            opacity: isActive ? 1 : 0.52,
-            transform: `translateY(${isHovered ? "6px" : "0px"}) scale(${cardScale})`,
-            background: isHovered ? "var(--surface-t4)" : "var(--surface-t2)",
-            borderColor: isHovered ? "var(--border-focus)" : "var(--border-default)",
-            boxShadow: isHovered
-              ? "inset 0 1px 2px color-mix(in srgb, var(--ink) 12%, transparent), inset 0 14px 28px color-mix(in srgb, var(--ink) 6%, transparent)"
-              : "var(--shadow-card)",
-          };
 
           return (
             <article
               key={slide.tab}
               id={`health-feature-card-${index}`}
               aria-label={slide.tab}
-              className="min-h-[690px] w-[calc(100vw-32px)] max-w-[1920px] shrink-0 snap-center rounded-[34px] border p-5 transition-[opacity,transform,background-color,border-color,box-shadow] duration-300 ease-[var(--ease-premium)] sm:min-h-[650px] sm:w-[calc(100vw-96px)] sm:p-7 lg:min-h-[620px] lg:w-[calc(100vw-160px)] lg:p-8"
-              style={cardStyle}
-              onMouseEnter={() => setHovered(index)}
-              onMouseLeave={() => setHovered(null)}
+              className="min-h-[690px] w-[calc(100vw-32px)] max-w-[1920px] shrink-0 snap-center rounded-[34px] border border-[var(--border-default)] bg-[var(--surface-t2)] p-5 shadow-[var(--shadow-card)] transition-[opacity,transform] duration-300 ease-[var(--ease-premium)] sm:min-h-[650px] sm:w-[calc(100vw-96px)] sm:p-7 lg:min-h-[620px] lg:w-[calc(100vw-160px)] lg:p-8"
+              style={{ opacity: isActive ? 1 : 0.52, transform: isActive ? "scale(1)" : "scale(0.965)" }}
             >
               {slide.kind === "feature" ? <FeatureContent slide={slide} /> : <HealthContent slide={slide} />}
             </article>
@@ -484,36 +546,44 @@ export function AlreadyDoneSection() {
       </div>
 
       <div className="mt-7 flex flex-col items-center justify-center gap-4 sm:flex-row">
-        <div className="flex items-center gap-2 rounded-full bg-[var(--surface-t4)] p-2">
-          {slides.map((slide, index) => (
-            <button
-              key={slide.tab}
-              type="button"
-              aria-label={`Show ${slide.tab}`}
-              className={`focusable-ring relative h-2 overflow-hidden rounded-full transition-[width,background-color] duration-300 ease-[var(--ease-premium)] ${
-                active === index ? "w-16 bg-[var(--border-focus)]" : "w-2 bg-[var(--border-focus)]"
-              }`}
-              onClick={() => goTo(index)}
-            >
-              {active === index ? (
-                <span
-                  key={`${active}-${playing ? "playing" : "paused"}`}
-                  className="absolute inset-y-0 left-0 rounded-full bg-[var(--ink)]"
-                  style={{
-                    animation: shouldAutoPlay ? `section-four-progress ${AUTO_MS}ms linear both` : "none",
-                    width: shouldAutoPlay ? undefined : "100%",
-                  }}
-                />
-              ) : null}
-            </button>
-          ))}
+        <div className="flex h-16 items-center gap-4 rounded-full bg-[var(--surface-t4)] px-7">
+          {slides.map((slide, index) => {
+            const isCurrent = active === index;
+            const pillDuration = isScrollAnimating ? AUTO_SCROLL_MS : 300;
+
+            return (
+              <button
+                key={slide.tab}
+                type="button"
+                aria-label={`Show ${slide.tab}`}
+                className="focusable-ring relative h-3 overflow-hidden rounded-full bg-[var(--border-focus)] transition-[width,background-color] ease-[var(--ease-premium)] hover:bg-[var(--text-tertiary)]"
+                style={{
+                  transitionDuration: `${pillDuration}ms`,
+                  width: isCurrent ? "4.75rem" : "0.75rem",
+                }}
+                onClick={() => goTo(index)}
+              >
+                {isCurrent ? (
+                  <span
+                    key={`${active}-${isScrollAnimating ? "scrolling" : "settled"}`}
+                    className="absolute inset-y-0 left-0 rounded-full bg-[var(--ink)]"
+                    style={{
+                      animation: isScrollAnimating ? `section-four-progress ${AUTO_SCROLL_MS}ms var(--ease-premium) both` : "none",
+                      width: isScrollAnimating ? undefined : "100%",
+                    }}
+                  />
+                ) : null}
+              </button>
+            );
+          })}
         </div>
 
         <button
           type="button"
-          className="focusable-ring flex h-14 w-14 items-center justify-center rounded-full bg-[var(--surface-t4)] text-[var(--ink)] transition-[background-color,transform] duration-200 hover:bg-[var(--surface-t2)] active:scale-[0.97]"
+          className="focusable-ring flex h-16 w-16 items-center justify-center rounded-full bg-[var(--surface-t4)] text-[var(--ink)] transition-[background-color] duration-200 hover:bg-[var(--surface-t2)]"
           aria-label={playing ? "Pause carousel" : "Play carousel"}
           onClick={() => {
+            if (!playing && active >= slides.length - 1) return;
             setPlaying((current) => !current);
             setManualPauseUntil(0);
           }}
