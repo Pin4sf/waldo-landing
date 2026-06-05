@@ -1,258 +1,133 @@
-import Image, { type StaticImageData } from "next/image";
-import type { CSSProperties } from "react";
+// Morning Brief — 3-card shuffleable stack.
+// Click card area to advance. Auto 8s. Hover pauses.
 
-import { WaldoFace } from "./waldo-face";
+"use client";
 
-import { withHighlights } from "@/components/landing-primitives";
+import Image from "next/image";
+import goodSleepDarkMode from "@/components/assets/good-sleep-dark-mode.svg";
+import vectorSpot        from "@/components/assets/Vector-1.svg";
+import vectorBrief       from "@/components/assets/Vector.svg";
+import { useCardStack }  from "@/hooks/use-card-stack";
+import { MobileDots }   from "@/components/mobile-dots";
+import { EASE, DUR_SETTLE, AUTO_CARD_MS } from "@/lib/motion";
 
-import notificationGmail from "@/components/assets/Frame 1000007147.png";
-import notificationGmailWork from "@/components/assets/Frame 1000007149.png";
-import notificationMessage from "@/components/assets/Frame 1000007145.png";
-import notificationSlack from "@/components/assets/Frame 1000007144.png";
-import notificationSlackWork from "@/components/assets/Frame 1000007138.png";
-import phoneMockup from "@/components/assets/iphone-mockup.png";
-import recoveryCard from "@/components/assets/Frame 1000007158-1.png";
-import sleepChart from "@/components/assets/Frame 1000007156.png";
-import sleepDuration from "@/components/assets/Frame 1000007150.png";
-import sleepScore from "@/components/assets/Frame 1000007151.png";
-import sleepStage from "@/components/assets/Frame 1000007152.png";
-import stressGauge from "@/components/assets/Frame 1000007157.png";
-import stressLine from "@/components/assets/Frame 1000007158.png";
-import vitalsCard from "@/components/assets/Frame 1000007153.png";
-import zoneOne from "@/components/assets/Frame 1000007163.png";
-import zoneThree from "@/components/assets/Frame 1000007161.png";
-import zoneTwo from "@/components/assets/Frame 1000007162.png";
+function ArrowRightIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+}
 
-type SourceCard = {
-  asset: StaticImageData;
-  className: string;
-};
+const CARDS = [
+  { icon: vectorSpot,        iconW: 90,  iconH: 69, title: "The Spot",          body: "Not a trend. Not a report. One thing, clearly said. That's a Spot. Waldo found it in six weeks of Tuesdays and Thursdays that looked ordinary.\n\nYou wouldn't have found it. Spots show up when there's something worth saying. Not before.",  footnote: "something Waldo noticed." },
+  { icon: goodSleepDarkMode, iconW: 89,  iconH: 66, title: "The Constellation", body: "One Spot is a data point. Twelve Spots across four months is a Constellation. The fact that your worst sleep always follows your heaviest meeting days. Waldo connected these dots for the long term goals.",                                       footnote: "on it while you sleep." },
+  { icon: vectorBrief,       iconW: 112, iconH: 87, title: "Morning Wag",        body: "Morning. Bit of a rough night — your sleep was short by about 90 minutes. \n\nNudged your 9am to 10:30 & 10am to noon.\n\nNothing drastic, the rest of your day looks good. ",                                                                    footnote: "*cues World Hold On by Bob Sinclair*" },
+] as const;
 
-type Insight = {
-  tone: "recovery" | "pressure" | "stress" | "form" | "pattern";
-  tags: string[];
-  message: string;
-  aside: string;
-  connectors: Array<{
-    label: string;
-    src?: string;
-  }>;
-};
-
-type FlowScenario = {
-  name: string;
-  sources: SourceCard[];
-  insight: Insight;
-};
-
-const scenarios: FlowScenario[] = [
-  {
-    name: "Sleep",
-    sources: [
-      { asset: sleepScore, className: "left-[2%] top-[25%] w-[300px]" },
-      { asset: sleepDuration, className: "left-[8%] top-[9%] w-[300px]" },
-      { asset: sleepChart, className: "left-[16%] top-[54%] w-[330px]" },
-      { asset: sleepStage, className: "left-[2%] top-[49%] w-[170px]" },
-      { asset: vitalsCard, className: "left-[25%] top-[23%] w-[170px]" },
-    ],
-    insight: {
-      tone: "recovery",
-      tags: ["Sleep", "Recovery", "Calendar"],
-      message:
-        "6 hours 12. Late bedtime pulled your *Recovery to 63*. Pushed the 9am product strategy review to 10:30. You need the extra hour more than they need punctuality.",
-      aside: "already moved.",
-      connectors: [
-        { label: "Google Calendar", src: "/assets/composio-connectors/googlecalendar.svg" },
-        { label: "Gmail", src: "/assets/composio-connectors/gmail.svg" },
-        { label: "More" },
-      ],
-    },
-  },
-  {
-    name: "Signal pressure",
-    sources: [
-      { asset: notificationSlack, className: "left-[2%] top-[12%] w-[320px]" },
-      { asset: notificationGmail, className: "left-[19%] top-[28%] w-[320px]" },
-      { asset: notificationSlackWork, className: "left-[8%] top-[52%] w-[320px]" },
-      { asset: notificationGmailWork, className: "left-[28%] top-[5%] w-[320px]" },
-      { asset: notificationMessage, className: "left-[1%] top-[36%] w-[320px]" },
-    ],
-    insight: {
-      tone: "pressure",
-      tags: ["Slack", "Gmail", "Signal Pressure"],
-      message:
-        "104 newsletter emails archived. Two Slack threads came in after midnight. Surfaced the Q1 deck thread, batched the rest. You have *2 things that actually need you* this morning, not 108.",
-      aside: "inbox: handled.",
-      connectors: [
-        { label: "Slack", src: "/assets/composio-connectors/slack.svg" },
-        { label: "Gmail", src: "/assets/composio-connectors/gmail.svg" },
-        { label: "Google Calendar", src: "/assets/composio-connectors/googlecalendar.svg" },
-      ],
-    },
-  },
-  {
-    name: "Stress",
-    sources: [
-      { asset: stressLine, className: "left-[4%] top-[30%] w-[340px]" },
-      { asset: stressGauge, className: "left-[24%] top-[11%] w-[180px]" },
-      { asset: zoneThree, className: "left-[2%] top-[12%] w-[170px]" },
-      { asset: zoneTwo, className: "left-[31%] top-[56%] w-[170px]" },
-      { asset: vitalsCard, className: "left-[7%] top-[58%] w-[170px]" },
-    ],
-    insight: {
-      tone: "stress",
-      tags: ["Stress", "Calendar", "Motion"],
-      message:
-        "Stress is sitting at medium and your morning has 3 meetings stacked. *Blocked 1-2pm for recovery*. If the 11:30 runs long, I'll pull it at the 45-minute mark.",
-      aside: "afternoon: protected.",
-      connectors: [
-        { label: "Google Calendar", src: "/assets/composio-connectors/googlecalendar.svg" },
-        { label: "Slack", src: "/assets/composio-connectors/slack.svg" },
-        { label: "Gmail", src: "/assets/composio-connectors/gmail.svg" },
-      ],
-    },
-  },
-  {
-    name: "Form",
-    sources: [
-      { asset: recoveryCard, className: "left-[10%] top-[15%] w-[250px]" },
-      { asset: vitalsCard, className: "left-[29%] top-[33%] w-[170px]" },
-      { asset: stressGauge, className: "left-[1%] top-[38%] w-[180px]" },
-      { asset: zoneOne, className: "left-[18%] top-[58%] w-[170px]" },
-      { asset: sleepStage, className: "left-[2%] top-[8%] w-[170px]" },
-    ],
-    insight: {
-      tone: "form",
-      tags: ["Form", "Circadian", "Calendar"],
-      message:
-        "Form is at 68: steady, not great. Your best window today is *10:30am to 12pm*. I've held it clear. The deck review is in there. You'll want sharp hours for that one.",
-      aside: "focus: locked.",
-      connectors: [
-        { label: "Google Calendar", src: "/assets/composio-connectors/googlecalendar.svg" },
-        { label: "Linear", src: "/assets/composio-connectors/linear.svg" },
-        { label: "Gmail", src: "/assets/composio-connectors/gmail.svg" },
-      ],
-    },
-  },
-  {
-    name: "Pattern",
-    sources: [
-      { asset: sleepChart, className: "left-[3%] top-[48%] w-[340px]" },
-      { asset: recoveryCard, className: "left-[21%] top-[16%] w-[250px]" },
-      { asset: sleepDuration, className: "left-[4%] top-[8%] w-[300px]" },
-      { asset: sleepScore, className: "left-[13%] top-[31%] w-[300px]" },
-      { asset: vitalsCard, className: "left-[1%] top-[59%] w-[170px]" },
-    ],
-    insight: {
-      tone: "pattern",
-      tags: ["Sleep Debt", "Weekly Pattern", "Recovery"],
-      message:
-        "Third Sunday in a row you went to bed past 1am. Your Monday Recovery has *dropped 15%* each time. This is becoming a pattern.",
-      aside: "the spot: sunday nights.",
-      connectors: [
-        { label: "Google Calendar", src: "/assets/composio-connectors/googlecalendar.svg" },
-        { label: "Notion", src: "/assets/composio-connectors/notion.svg" },
-        { label: "More" },
-      ],
-    },
-  },
+const BACK: { rotate: string; left: string; top: string }[] = [
+  { rotate: "-14.26deg", left: "43.97px", top: "7.96px" },
+  { rotate:  "12.80deg", left: "446px",   top: "15px"   },
 ];
 
-function ConnectorIcon({ connector, index }: { connector: Insight["connectors"][number]; index: number }) {
-  if (!connector.src) {
-    return (
-      <span
-        className="waldo-connector-frame flex h-9 w-9 items-center justify-center rounded-full border border-[var(--border-default)] bg-[var(--surface-t1)] text-[var(--text-secondary)]"
-        style={{ zIndex: 20 - index }}
-      >
-        +
-      </span>
-    );
-  }
-
-  return (
-    <span
-      className="waldo-connector-frame flex h-9 w-9 items-center justify-center rounded-full border border-[var(--border-default)] bg-[var(--surface-t1)] p-1.5"
-      style={{ zIndex: 20 - index }}
-    >
-      <Image src={connector.src} alt={connector.label} width={24} height={24} />
-    </span>
-  );
-}
-
-function InsightCard({ insight }: { insight: Insight }) {
-  return (
-    <article
-      className="waldo-flow-output absolute right-[2%] top-[43%] z-20 w-[min(330px,32vw)] rounded-[22px] border border-[var(--border-default)] bg-[var(--surface-t1)] p-6 text-left"
-    >
-      <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-        <span className="waldo-insight-dot" data-tone={insight.tone} />
-        {insight.tags.map((tag, tagIndex) => (
-          <span
-            key={tag}
-            className={tagIndex === 0 ? "type-label text-[var(--ink)]" : "type-label text-[var(--text-tertiary)]"}
-          >
-            {tag}
-          </span>
-        ))}
-      </div>
-      <p className="type-body tone-secondary mt-4">
-        {withHighlights(insight.message)}
-      </p>
-      <p className="type-aside tone-tertiary mt-5">{insight.aside}</p>
-      <div className="mt-5 flex items-center" aria-label="Connectors involved">
-        {insight.connectors.map((connector, connectorIndex) => (
-          <ConnectorIcon key={connector.label} connector={connector} index={connectorIndex} />
-        ))}
-      </div>
-    </article>
-  );
-}
+const T = `all ${DUR_SETTLE}ms ${EASE}`;
 
 export function MorningBriefSection() {
+  const { slotOf, offset, frontIndex, onClick, onMouseEnter, onMouseLeave, onTouchStart, onTouchEnd } = useCardStack(CARDS.length, AUTO_CARD_MS);
+  const FRONT = CARDS.length - 1;
+  const frontCardIdx = frontIndex;
+  const frontCard = CARDS[frontCardIdx];
+
   return (
-    <section id="brief" className="section-shell scroll-mt-28 overflow-hidden rounded-[44px] bg-[var(--surface-t2)] p-3">
-      <div className="overflow-hidden rounded-[32px] border border-[var(--border-default)] bg-[var(--surface-t1)] pt-16 text-center sm:pt-20 lg:pt-24">
-        <div className="mx-auto flex max-w-[680px] flex-col items-center px-6">
-          <h2 className="type-h2 text-[var(--ink)]">You have the signals. Waldo has the context.</h2>
-          <p className="type-body tone-secondary mt-5 max-w-[52ch]">
-            {withHighlights("Waldo reads all of your health insights. Then it does what no app has done before. *It acts.* Every other product shows you data, Waldo does something about it.")}
-          </p>
-        </div>
-
-        <div className="waldo-flow-stage relative mt-10 h-[440px] overflow-hidden sm:mt-12 lg:h-[520px]">
-          {scenarios.map((scenario, scenarioIndex) => (
-            <div
-              key={scenario.name}
-              aria-hidden={scenarioIndex !== 0}
-              className="waldo-flow-scenario"
-              data-reduced-default={scenarioIndex === 0 ? "true" : undefined}
-              style={{ "--scenario-delay": `${scenarioIndex * 12}s` } as CSSProperties}
-            >
-              <div className="waldo-flow-inputs absolute inset-0 z-[6]">
-                {scenario.sources.slice(0, 3).map((source, sourceIndex) => (
-                  <div
-                    key={`${scenario.name}-${sourceIndex}`}
-                    className={`waldo-source-card absolute ${source.className}`}
-                    style={{ "--card-delay": `${sourceIndex * 2}s` } as CSSProperties}
-                  >
-                    <Image src={source.asset} alt="" className="h-auto w-full select-none" sizes="360px" />
-                  </div>
-                ))}
-              </div>
-              <InsightCard insight={scenario.insight} />
+    <section className="flex flex-col gap-[70px] items-center py-[90px] w-full" style={{ borderRadius: "30px" }}>
+      {/* Mobile: stacked card depth — 2 behind strips peek from top, front in flow */}
+      <div className="lg:hidden w-full px-4" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd} onClick={onClick}>
+        <div className="relative w-full max-w-[400px] mx-auto" style={{ paddingTop: "18px" }}>
+          {/* Behind card strips — absolute, fill container, peek above front card */}
+          <div className="absolute border-solid border-[rgba(26,26,26,0.14)] bg-[#fafaf8]"
+               style={{ top: 0, left: "14px", right: "14px", bottom: 0, borderRadius: "20px", borderWidth: "1.5px", opacity: 0.5, zIndex: 1 }} />
+          <div className="absolute border-solid border-[rgba(26,26,26,0.14)] bg-[#fafaf8]"
+               style={{ top: "9px", left: "7px", right: "7px", bottom: 0, borderRadius: "20px", borderWidth: "1.5px", opacity: 0.72, zIndex: 2 }} />
+          {/* Front card — relative, defines height */}
+          <div
+            className="relative bg-[#fafaf8] border-solid border-[rgba(26,26,26,0.16)] flex flex-col items-start overflow-clip"
+            style={{ padding: "28px", borderRadius: "20px", borderWidth: "1.5px", zIndex: 3, boxShadow: "0 4px 24px rgba(0,0,0,0.08)" }}
+          >
+            <Image src={frontCard.icon} alt="" width={frontCard.iconW} height={frontCard.iconH} unoptimized />
+            <div key={frontCardIdx}>
+              <p className="text-[#1a1a1a]"
+                 style={{ fontFamily: "var(--font-headline)", fontSize: "22px", lineHeight: 1.1, whiteSpace: "pre-wrap", marginTop: "24px", animation: "content-enter 0.3s 0.18s both" }}>
+                {frontCard.body}
+              </p>
+              <p className="font-medium italic text-[#6b6b68]"
+                 style={{ fontFamily: "var(--font-body)", fontVariationSettings: "'opsz' 14", fontStyle: "italic", fontSize: "14px", lineHeight: 1.3, marginTop: "16px", animation: "content-enter 0.3s 0.28s both" }}>
+                {frontCard.footnote}
+              </p>
             </div>
-          ))}
-
-          {/* Phone rises from the bottom; its lower portion is clipped by the
-              stage's overflow (which sits flush at the card's bottom edge), matching
-              the Figma crop. The section background is already white, so no backdrop
-              panel is needed behind it. */}
-          <div className="absolute bottom-[-140px] left-1/2 z-30 w-[min(284px,26vw)] min-w-[216px] -translate-x-1/2 sm:left-[47%]">
-            <WaldoFace />
-            <Image src={phoneMockup} alt="" className="relative z-30 h-auto w-full select-none" sizes="340px" />
           </div>
         </div>
+        <MobileDots count={CARDS.length} current={frontCardIdx} />
+      </div>
+
+      {/* Desktop: fan stack */}
+      <div
+        className="hidden lg:block relative shrink-0 cursor-pointer"
+        style={{ height: "562px", width: "1004px" }}
+        onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}
+        role="button" aria-label="Card stack — click to advance" tabIndex={0}
+        onKeyDown={e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onClick(e as unknown as React.MouseEvent); } }}
+      >
+        {CARDS.map((card, i) => {
+          const si    = slotOf(i);
+          const front = si === FRONT;
+          const b     = BACK[si];
+          return (
+            <div key={i} className="absolute flex items-center justify-center"
+              style={{ ...(front ? { left: "50%", top: "50%", transform: "translate(-50%,-50%)" } : { left: b.left, top: b.top, width: "507.436px", height: "538.752px" }), zIndex: si + 1, transition: T }}
+            >
+              <div style={{ transform: front ? "none" : `rotate(${b.rotate})`, opacity: front ? 1 : 0.6, filter: front ? "none" : "blur(5px)", transition: T }}>
+                {front ? (
+                  <div className="bg-[#fafaf8] border-[1.701px] border-[rgba(26,26,26,0.16)] border-solid flex flex-col gap-[45.387px] items-start overflow-clip" style={{ padding: "55.793px", borderRadius: "22.687px" }}>
+                    <Image src={card.icon} alt="" width={card.iconW} height={card.iconH} unoptimized />
+                    <p className="text-[#1a1a1a]" style={{ fontFamily: "var(--font-headline)", fontSize: "26.435px", lineHeight: 1.1, width: "336.414px", whiteSpace: "pre-wrap" }}>{card.body}</p>
+                    <p className="font-medium italic text-[#6b6b68] whitespace-nowrap" style={{ fontFamily: "var(--font-body)", fontVariationSettings: "'opsz' 14", fontStyle: "italic", fontSize: "16.738px", lineHeight: 1.3 }}>{card.footnote}</p>
+                  </div>
+                ) : (
+                  <div className="bg-[#fafaf8] border-[1.215px] border-[rgba(26,26,26,0.16)] border-solid flex flex-col items-start justify-between overflow-clip" style={{ height: "460.08px", width: "406px", padding: "40.5px", borderRadius: "16.2px" }}>
+                    <div className="flex flex-col gap-[32.4px] items-start">
+                      <Image src={card.icon} alt="" width={card.iconW} height={card.iconH} unoptimized />
+                      <p className="text-[#1a1a1a] whitespace-nowrap" style={{ fontFamily: "var(--font-headline)", fontSize: "29.16px", lineHeight: 1.2 }}>{card.title}</p>
+                      <p className="text-[#1a1a1a]" style={{ fontFamily: "var(--font-headline)", fontSize: "18.876px", lineHeight: 1.1, width: "325.62px", whiteSpace: "pre-wrap" }}>{card.body}</p>
+                    </div>
+                    <p className="font-normal italic text-[#717171] whitespace-nowrap" style={{ fontFamily: "var(--font-body)", fontVariationSettings: "'opsz' 14", fontSize: "11.34px", lineHeight: 1.3 }}>{card.footnote}</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>  {/* end desktop fan */}
+
+      {/* Desktop nav dots */}
+      <div className="hidden lg:flex gap-[8px] items-center justify-center">
+        {CARDS.map((_, i) => (
+          <button
+            key={i}
+            aria-label={`Card ${i + 1}`}
+            onClick={e => { e.stopPropagation(); const steps = ((i - frontCardIdx) % CARDS.length + CARDS.length) % CARDS.length; for (let s = 0; s < steps; s++) onClick(e as unknown as React.MouseEvent); }}
+            style={{ width: i === frontCardIdx ? "20px" : "6px", height: "6px", borderRadius: "3px", background: i === frontCardIdx ? "#1a1a1a" : "rgba(26,26,26,0.2)", transition: "all 0.4s ease", border: "none", padding: 0, cursor: "pointer" }}
+          />
+        ))}
+      </div>
+
+      <div className="flex flex-col gap-[40px] items-center w-full">
+        <h2 data-animate="headline" className="text-[#1a1a1a] text-[32px] lg:text-[48px] text-center px-4 lg:px-0" style={{ fontFamily: "var(--font-headline)", lineHeight: 1.1 }}>With Waldo, this is what{" "}<br />you wake up to instead.</h2>
+        <p data-animate="fade-up" className="font-normal text-[#6b6b68] text-[14px] text-center px-6 lg:px-0" style={{ fontFamily: "var(--font-body)", fontVariationSettings: "'opsz' 14", lineHeight: 1.3, maxWidth: "455px" }}>
+          It reschedules meetings, reprioritises tasks, and intervenes based on HRV, sleep, and circadian patterns - without being asked. You never open a dashboard to manage health. Waldo handles it.
+        </p>
+        <a href="/waitlist" className="flex items-center gap-[4px] justify-center bg-[#1a1a1a] border border-[rgba(26,26,26,0.08)] border-solid text-[#fafaf8] text-[18px] text-center px-[36px] py-[22px] hover:bg-[#333] hover:scale-[1.02] transition-all" style={{ fontFamily: "var(--font-headline)", lineHeight: 1.3, borderRadius: "40px" }}>
+          Get Started <ArrowRightIcon />
+        </a>
       </div>
     </section>
   );

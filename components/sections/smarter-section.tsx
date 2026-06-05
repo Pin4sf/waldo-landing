@@ -1,88 +1,65 @@
-import { Aside, SectionIntro, withHighlights } from "@/components/landing-primitives";
+// "The longer it runs, the smarter Waldo gets."
+// White card section with health screenshots — mirrors HealthDataSection layout.
 
-const dimensions = [
-  ["Recovery", "down", "last night *gave less*."],
-  ["Form", "uneven", "capacity *keeps moving*."],
-  ["Weight", "up", "day is *asking more*."],
-  ["The Stack", "dense", "meetings *keep clustering*."],
-  ["Signal Pressure", "high", "volume is *shaping the day*."],
-  ["Task Pileup", "rising", "unfinished work is *carrying over*."],
-] as const;
+import { BalancedParagraph } from "@/components/balanced-paragraph";
 
 export function SmarterSection() {
   return (
-    <section id="constellation" className="section-shell dark-panel overflow-hidden rounded-[30px] p-6 sm:p-8 lg:p-12">
-      <SectionIntro
-        dark
-        title={
-          <>
-            The longer it runs,
-            <br />
-            the more Waldo sees.
-          </>
-        }
-        aside="patterns you cannot see from the inside."
-      >
-        <p>
-          {withHighlights("Tuesdays and Thursdays looked ordinary until the pattern had enough shape. *Your worst sleep follows the heaviest meeting days.* You were too close to see it. Waldo was not.")}
-        </p>
-      </SectionIntro>
-
-      <div className="mt-8 grid gap-5 lg:grid-cols-[1.15fr_.85fr]">
-        <div className="dark-card relative min-h-[420px] overflow-hidden rounded-[8px] p-5 sm:p-6">
-          <div className="flex items-center justify-between gap-4">
-            <div>
-              <p className="type-label text-[var(--panel-ink)]">The Constellation</p>
-              <p className="type-aside mt-1 text-[var(--text-tertiary)]">The Tuesday Crash.</p>
-            </div>
-            <span className="type-caption rounded-full border border-[var(--panel-border)] bg-[var(--panel-card)] px-3 py-1 text-[var(--panel-muted)]">
-              4-week map
-            </span>
-          </div>
-
-          <svg viewBox="0 0 640 360" className="mt-6 h-auto w-full" role="img" aria-label="Pattern map showing heavy meetings connected to short sleep and lower recovery.">
-            <g stroke="var(--panel-border-focus)" strokeWidth="1.5">
-              <line x1="130" y1="90" x2="315" y2="160" />
-              <line x1="315" y1="160" x2="500" y2="90" />
-              <line x1="315" y1="160" x2="450" y2="270" />
-              <line x1="315" y1="160" x2="170" y2="268" />
-              <line x1="170" y1="268" x2="450" y2="270" />
-            </g>
-            {[
-              [130, 90, "Meeting stack"],
-              [315, 160, "Short sleep"],
-              [500, 90, "Late messages"],
-              [170, 268, "Lower recovery"],
-              [450, 270, "Next-day drift"],
-            ].map(([x, y, label]) => (
-              <g key={label as string}>
-                <circle cx={x as number} cy={y as number} r="28" fill="var(--panel-card)" stroke="var(--panel-border-focus)" />
-                <circle cx={x as number} cy={y as number} r="10" fill="var(--panel-ink)" opacity="0.9" />
-                <text x={x as number} y={(y as number) + 52} textAnchor="middle" fill="var(--panel-muted)" style={{ fontFamily: "var(--font-body)", fontSize: 13 }}>
-                  {label}
-                </text>
-              </g>
-            ))}
-          </svg>
+    <section
+      className="bg-[#fafaf8] border-2 border-[rgba(26,26,26,0.08)] border-solid flex flex-col gap-[30px] lg:gap-[48px] items-center overflow-clip pt-[50px] lg:pt-[70px] pb-[30px] lg:pb-0 w-full"
+      style={{ borderRadius: "30px" }}
+    >
+      <div className="flex flex-col gap-[24px] lg:gap-[40px] items-center text-center px-4 lg:px-0">
+        <h2
+          data-animate="headline"
+          className="text-[#1a1a1a] text-[32px] lg:text-[48px]"
+          style={{ fontFamily: "var(--font-headline)", lineHeight: 1.1 }}
+        >
+          The longer it runs,{" "}
+          <br />
+          the smarter Waldo gets.
+        </h2>
+        <div data-animate="fade-up">
+        <BalancedParagraph
+          pretextify
+          className="font-normal text-[#6b6b68] text-[14px]"
+          style={{
+            fontFamily: "var(--font-body)",
+            fontVariationSettings: "'opsz' 14",
+            lineHeight: 1.3,
+            maxWidth: "502px",
+            width: "100%",
+          }}
+        >
+          {`Six weeks of Tuesdays and Thursdays that looked ordinary - until they didn't. The fact that your worst sleep always follows your heaviest meeting days. The fact that your focus peaks in November and dips in March - every year, without fail. You were too close to see it. Waldo wasn't.`}
+        </BalancedParagraph>
         </div>
+      </div>
 
-        <div className="grid gap-3">
-          {dimensions.map(([label, value, read]) => (
-            <div key={label} className="rounded-[8px] border border-[var(--panel-border)] bg-[var(--panel-surface)] p-4">
-              <div className="flex items-baseline justify-between gap-4">
-                <p className="type-label text-[var(--panel-ink)]">{label}</p>
-                <p className="type-data text-[var(--panel-ink)]">{value}</p>
-              </div>
-              <p className="type-caption tone-d-secondary mt-2">{withHighlights(read)}</p>
-            </div>
-          ))}
-          <div className="rounded-[8px] border border-[var(--panel-border)] bg-[var(--panel-card)] p-4">
-            <div className="flex items-baseline justify-between gap-4">
-              <p className="type-label text-[var(--panel-ink)]">6 dimensions</p>
-              <p className="type-data text-[var(--panel-ink)]">watched</p>
-            </div>
-            <Aside className="mt-2 text-[var(--text-tertiary)]">enough angles to stop guessing.</Aside>
-          </div>
+      {/* Device mockups — desktop only */}
+      <div
+        className="relative shrink-0 overflow-clip hidden lg:block"
+        style={{ height: "180px", width: "742px" }}
+      >
+        {/* AFib iPad — DOM first = furthest back */}
+        <div data-parallax-y="-35" className="absolute overflow-hidden pointer-events-none" style={{ height: "204.705px", left: "498.66px", top: "111.69px", width: "242.954px" }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img alt="" className="absolute max-w-none" src="/figma-assets/health-iphone-right.png" style={{ height: "100.07%", left: "-21.57%", top: "-0.03%", width: "143.15%" }} />
+        </div>
+        {/* iPad — center, in front of AFib */}
+        <div data-parallax-y="-20" className="absolute pointer-events-none" style={{ height: "316.675px", left: "127.46px", top: 0, width: "521.415px" }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figma-assets/health-ipad.png" />
+        </div>
+        {/* iPhone left */}
+        <div data-parallax-y="-28" className="absolute pointer-events-none" style={{ height: "225.132px", left: "42.64px", top: "74.74px", width: "136.012px" }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src="/figma-assets/health-iphone-left.png" />
+        </div>
+        {/* Apple Watch */}
+        <div data-parallax-y="-16" className="absolute overflow-hidden pointer-events-none" style={{ height: "63.826px", left: "-0.19px", top: "148px", width: "59.627px" }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img alt="" className="absolute max-w-none" src="/figma-assets/health-watch.png" style={{ height: "203.6%", left: "-42.25%", top: "-51.45%", width: "178.87%" }} />
         </div>
       </div>
     </section>

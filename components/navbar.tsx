@@ -3,31 +3,50 @@
 import Link from "next/link";
 import { useState, useRef, useCallback } from "react";
 import { WaldoLogoFull } from "./waldo-logo-full";
+import { NavLink } from "./nav-link";
 
 const links = [
-  { label: "Brief", href: "#brief" },
-  { label: "Actions", href: "#actions" },
-  { label: "Now", href: "#where" },
-  { label: "Pattern", href: "#constellation" },
+  { label: "Features", tooltip: "not yet. but waldo already knows you clicked this." },
+  { label: "Pricing",  tooltip: "free to find out. when we\u2019re ready." },
+  { label: "Blog",     tooltip: "waldo\u2019s been busy. so have we." },
+  { label: "Sign in",  tooltip: "you\u2019re early. that\u2019s actually a good sign." },
 ];
 
+// Mobile accordion item — tap to toggle message, only one open at a time
 function MobileNavItem({
   label,
-  href,
-  onClick,
+  tooltip,
+  open,
+  onTap,
 }: {
   label: string;
-  href: string;
-  onClick: () => void;
+  tooltip: string;
+  open: boolean;
+  onTap: () => void;
 }) {
   return (
-    <Link
-      href={href}
-      onClick={onClick}
-      className="type-label flex h-12 w-full items-center rounded-xl px-4 text-[var(--ink)] transition-[background-color] duration-150 hover:bg-[var(--surface-t1)]"
+    <button
+      onClick={onTap}
+      className="w-full text-left px-5 py-3 flex flex-col gap-1 transition-colors hover:bg-black/[0.02]"
     >
-      {label}
-    </Link>
+      <span
+        className="text-[13px] text-[#9CA3AF]"
+        style={{ fontFamily: "var(--font-body)" }}
+      >
+        {label}
+      </span>
+      {open && (
+        <span
+          className="text-[12px] italic text-[#1A1A1A]/50 leading-relaxed"
+          style={{
+            fontFamily: "var(--font-body)",
+            animation: "float-up 0.18s ease-out both",
+          }}
+        >
+          {tooltip}
+        </span>
+      )}
+    </button>
   );
 }
 
@@ -39,6 +58,7 @@ export function Navbar({
   onNavLeave?: () => void;
 }) {
   const [menuOpen,   setMenuOpen]   = useState(false);
+  const [activeItem, setActiveItem] = useState<string | null>(null);
   const [logoWag,    setLogoWag]    = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -57,23 +77,32 @@ export function Navbar({
 
   const openMenu = () => {
     setMenuOpen(true);
+    setActiveItem(null);
     onNavEnter?.();
   };
 
   const closeMenu = () => {
     setMenuOpen(false);
+    setActiveItem(null);
     onNavLeave?.();
   };
 
+  const toggleItem = (label: string) => {
+    setActiveItem((prev) => (prev === label ? null : label));
+  };
+
   return (
-    <div className="relative z-20 flex flex-col items-center px-0 pt-5">
+    <div className="relative flex flex-col items-center pt-5 px-4 z-20">
+
+      {/* ── Pill ──────────────────────────────────────────────── */}
       <div
-        className="flex w-full max-w-[720px] items-center rounded-full border border-[var(--border-default)] bg-[var(--surface-t2)] p-1.5"
-        style={{  }}
+        className="flex items-center p-[5px] rounded-[50px] bg-[#fafaf8] border border-[rgba(26,26,26,0.08)]"
+        style={{ boxShadow: "0 1px 10px rgba(0,0,0,0.05)" }}
       >
+        {/* Logo area — links to home */}
         <Link
           href="/"
-          className="focusable-ring relative flex h-11 w-[136px] shrink-0 cursor-pointer items-center justify-center rounded-full"
+          className="relative flex items-center justify-center w-[142px] h-[44px] shrink-0 cursor-pointer"
           onMouseEnter={handleLogoHover}
           onAnimationEnd={() => setLogoWag(false)}
           aria-label="Waldo home"
@@ -81,25 +110,26 @@ export function Navbar({
           <WaldoLogoFull wagging={logoWag} width={118} />
         </Link>
 
+        {/* Desktop — nav links */}
         <div
-          className="hidden flex-1 items-center justify-center gap-1 px-6 md:flex"
+          className="hidden lg:flex items-center gap-[6px] px-[40px]"
           onMouseEnter={handleDesktopEnter}
           onMouseLeave={handleDesktopLeave}
         >
           {links.map((l) => (
-            <Link
+            <NavLink
               key={l.label}
-              href={l.href}
-              className="focusable-ring type-label rounded-full px-4 py-2 text-[var(--ink)] transition-[background-color] duration-150 hover:bg-[var(--surface-t1)]"
-            >
-              {l.label}
-            </Link>
+              label={l.label}
+              tooltip={l.tooltip}
+              align={l.label === "Sign in" ? "right" : "center"}
+            />
           ))}
         </div>
 
+        {/* Mobile — dots button */}
         <button
           onClick={menuOpen ? closeMenu : openMenu}
-          className="focusable-ring mx-2 flex h-10 w-10 items-center justify-center rounded-xl text-[var(--text-secondary)] transition-[background-color,color] duration-150 hover:bg-[var(--surface-t1)] hover:text-[var(--ink)] md:hidden"
+          className="lg:hidden flex items-center justify-center w-7 h-7 text-[#9CA3AF] hover:text-[#1A1A1A] transition-colors mx-3"
           aria-label={menuOpen ? "Close menu" : "Open menu"}
         >
           {menuOpen ? (
@@ -115,14 +145,17 @@ export function Navbar({
           )}
         </button>
 
+        {/* CTA */}
         <Link
           href="/waitlist"
-          className="focusable-ring type-label flex h-12 items-center justify-center rounded-full bg-[var(--ink)] px-5 text-[var(--surface-t2)] transition-[transform,background-color] duration-300 ease-[var(--ease-premium)] hover:-translate-y-px hover:bg-[var(--dark-t1)] active:scale-[0.98] sm:px-6"
+          className="hidden lg:flex items-center justify-center bg-[#1a1a1a] text-[#fafaf8] px-[24px] py-[18px] rounded-[30px] whitespace-nowrap shrink-0 hover:bg-[#333] transition-colors"
+          style={{ fontFamily: "var(--font-headline)", fontSize: "14px", lineHeight: 1.3 }}
         >
-          Let Waldo in →
+          Get early access
         </Link>
       </div>
 
+      {/* ── Mobile dropdown ───────────────────────────────────── */}
       {menuOpen && (
         <>
           <div
@@ -131,18 +164,32 @@ export function Navbar({
             aria-hidden="true"
           />
           <div
-            className="surface-card absolute top-full mt-2 w-[calc(100vw-32px)] max-w-[360px] overflow-hidden p-2 md:hidden"
-            style={{ animation: "content-enter 180ms var(--ease-premium) both" }}
+            className="absolute top-full mt-2 w-[calc(100vw-32px)] max-w-[360px] rounded-2xl bg-[#fafaf8] shadow-[0_4px_20px_rgba(0,0,0,0.10)] border border-black/[0.06] overflow-hidden"
+            style={{ animation: "content-enter 200ms ease-out both" }}
           >
-            {links.map((l) => (
+            {links.map((l, i) => (
               <div key={l.label}>
                 <MobileNavItem
                   label={l.label}
-                  href={l.href}
-                  onClick={closeMenu}
+                  tooltip={l.tooltip}
+                  open={activeItem === l.label}
+                  onTap={() => toggleItem(l.label)}
                 />
+                {i < links.length - 1 && (
+                  <div className="mx-5 h-px bg-black/[0.05]" />
+                )}
               </div>
             ))}
+            <div className="p-4">
+              <Link
+                href="/waitlist"
+                onClick={closeMenu}
+                className="flex items-center justify-center bg-[#1a1a1a] text-[#fafaf8] px-6 py-4 rounded-[24px] w-full"
+                style={{ fontFamily: "var(--font-headline)", fontSize: "14px" }}
+              >
+                Get early access
+              </Link>
+            </div>
           </div>
         </>
       )}

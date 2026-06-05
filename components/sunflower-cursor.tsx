@@ -22,6 +22,7 @@ type Bloom = {
   y: number;
   size: number;
   rotation: number; // overall rotation jitter for organic variety
+  petalRotations: { start: number; end: number }[];
 };
 
 const BLOOM_LIFETIME_MS = 700;
@@ -47,7 +48,13 @@ const PETALS: { d: string; cx: number; cy: number }[] = [
   { d: "M78.8035 147.117C72.9944 149.199 67.222 150.007 61.26 147.984C55.433 146.07 51.678 140.481 54.103 134.435C56.1195 129.408 60.8072 126.183 65.589 124.105C88.9014 114.17 103.742 136.894 78.8035 147.117Z", cx: 77, cy: 132 },
 ];
 
-function WaldoLogoBurst({ size }: { size: number }) {
+function WaldoLogoBurst({
+  size,
+  petalRotations,
+}: {
+  size: number;
+  petalRotations: { start: number; end: number }[];
+}) {
   const scale = size / LOGO_VIEWBOX.w;
 
   return (
@@ -75,8 +82,7 @@ function WaldoLogoBurst({ size }: { size: number }) {
         {PETALS.map((p, i) => {
           const tx = LOGO_VIEWBOX.cx - p.cx; // translate to logo center for burst start
           const ty = LOGO_VIEWBOX.cy - p.cy;
-          const startRot = ((i * 37) % 80) - 40; // deterministic jitter -40°…+40°
-          const endRot   = ((i * 19) % 30) - 15;
+          const { start: startRot, end: endRot } = petalRotations[i] ?? { start: 0, end: 0 };
           return (
             <path
               key={i}
@@ -114,8 +120,12 @@ export function SunflowerCursor({ children }: { children: React.ReactNode }) {
       const id  = ++idCounter.current;
       const sz  = SIZE_MIN + Math.random() * (SIZE_MAX - SIZE_MIN);
       const rot = (Math.random() - 0.5) * 30;
+      const petalRotations = PETALS.map(() => ({
+        start: (Math.random() - 0.5) * 80,
+        end:   (Math.random() - 0.5) * 30,
+      }));
 
-      setBlooms((prev) => [...prev, { id, x: e.clientX, y: e.clientY, size: sz, rotation: rot }]);
+      setBlooms((prev) => [...prev, { id, x: e.clientX, y: e.clientY, size: sz, rotation: rot, petalRotations }]);
 
       window.setTimeout(() => {
         setBlooms((prev) => prev.filter((b) => b.id !== id));
@@ -145,7 +155,7 @@ export function SunflowerCursor({ children }: { children: React.ReactNode }) {
               willChange: "transform, opacity",
             }}
           >
-            <WaldoLogoBurst size={b.size} />
+            <WaldoLogoBurst size={b.size} petalRotations={b.petalRotations} />
           </span>
         ))}
       </div>
