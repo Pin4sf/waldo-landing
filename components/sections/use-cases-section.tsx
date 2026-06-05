@@ -90,7 +90,7 @@ const useCases: UseCase[] = [
 function UseCaseIcon({ icon }: { icon: ConnectorIcon }) {
   return (
     <span
-      className="flex h-9 w-9 items-center justify-center rounded-[10px] border border-[var(--border-default)] bg-[var(--surface-t1)]"
+      className="flex h-9 w-9 items-center justify-center rounded-[8px] border border-[var(--border-default)] bg-[var(--surface-t1)]"
       title={icon.label}
       aria-label={icon.label}
     >

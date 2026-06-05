@@ -34,7 +34,7 @@ const compatibilityItems = [
 
 function BarChartCard() {
   return (
-    <div className="surface-card p-4 sm:p-5 lg:p-6">
+    <div className="surface-card p-4">
       <div className="grid gap-6 lg:grid-cols-[0.9fr_1.35fr] lg:items-center">
         <div>
           <p className="type-caption text-[var(--text-tertiary)]">Anthropic research</p>
@@ -45,7 +45,7 @@ function BarChartCard() {
           <Aside className="mt-5">structure beats a loose chat window.</Aside>
         </div>
 
-        <div className="rounded-[12px] bg-[var(--surface-t1)] p-4 sm:p-5">
+        <div className="rounded-[8px] bg-[var(--surface-t1)] p-4">
           <div className="grid gap-3">
             {guidanceBars.map(([label, value], index) => (
               <div key={label} className="grid grid-cols-[minmax(92px,150px)_1fr] items-center gap-3">
@@ -71,7 +71,7 @@ function BarChartCard() {
 
 function ConnectorMark({ connector }: { connector: (typeof visionConnectors)[number] }) {
   return (
-    <span className="flex h-11 w-11 items-center justify-center rounded-[13px] border border-[var(--border-default)] bg-[var(--surface-t1)]" title={connector.label}>
+    <span className="flex h-11 w-11 items-center justify-center rounded-[8px] border border-[var(--border-default)] bg-[var(--surface-t1)]" title={connector.label}>
       {"src" in connector ? (
         <Image src={connector.src} alt="" width={25} height={25} className="h-auto w-auto max-w-[70%]" />
       ) : (
@@ -83,7 +83,7 @@ function ConnectorMark({ connector }: { connector: (typeof visionConnectors)[num
 
 function VisionBlock() {
   return (
-    <div className="surface-card grid gap-8 rounded-[32px] bg-[var(--surface-t2)] p-5 sm:p-6 lg:grid-cols-[1fr_0.8fr] lg:p-8">
+    <div className="surface-card grid gap-8 bg-[var(--surface-t2)] p-4 lg:grid-cols-[1fr_0.8fr]">
       <div>
         <p className="type-caption text-[var(--text-tertiary)]">The connected version</p>
         <h3 className="type-h2 mt-3 max-w-[560px] text-[var(--ink)]">Imagine what happens when everything is connected.</h3>
@@ -94,10 +94,10 @@ function VisionBlock() {
         <Aside className="mt-5">the day finally has context.</Aside>
       </div>
 
-      <div className="rounded-[12px] bg-[var(--surface-t1)] p-4">
+      <div className="rounded-[8px] bg-[var(--surface-t1)] p-4">
         <div className="grid grid-cols-3 gap-3">
           {visionConnectors.map((connector) => (
-            <div key={connector.label} className="flex flex-col items-center gap-2 rounded-[8px] bg-[var(--surface-t2)] px-3 py-4 text-center">
+            <div key={connector.label} className="flex flex-col items-center gap-2 rounded-[6px] bg-[var(--surface-t2)] px-3 py-4 text-center">
               <ConnectorMark connector={connector} />
               <p className="type-caption text-[var(--text-secondary)]">{connector.label}</p>
             </div>
@@ -119,7 +119,7 @@ function CompatibilityStrip() {
               {"src" in item ? (
                 <Image src={item.src} alt="" width={64} height={48} className={`h-auto w-auto ${item.imageClassName}`} />
               ) : (
-                <span className="flex h-8 w-8 items-center justify-center rounded-[10px] bg-[var(--surface-t1)]">
+                <span className="flex h-8 w-8 items-center justify-center rounded-[6px] bg-[var(--surface-t1)]">
                   <span className="type-caption text-[var(--ink)]">{item.label.slice(0, 2).toUpperCase()}</span>
                 </span>
               )}

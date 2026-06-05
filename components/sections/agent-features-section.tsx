@@ -280,8 +280,8 @@ function DraftsVisual() {
 
 function ConnectorsVisual() {
   return (
-    <div className="relative h-full overflow-hidden rounded-[12px] bg-[var(--surface-t1)]">
-      <div className="absolute right-4 top-4 h-[78%] w-[45%] overflow-hidden rounded-[12px] border border-[var(--border-default)] bg-[var(--surface-t2)] max-sm:right-3 max-sm:top-5 max-sm:h-[68%] max-sm:w-[58%]">
+    <div className="relative h-full overflow-hidden rounded-[8px] bg-[var(--surface-t1)]">
+      <div className="absolute right-4 top-4 h-[78%] w-[45%] overflow-hidden rounded-[8px] border border-[var(--border-default)] bg-[var(--surface-t2)] max-sm:right-3 max-sm:top-5 max-sm:h-[68%] max-sm:w-[58%]">
         <div className="flex h-10 items-center gap-2 border-b border-[var(--border-default)] bg-[var(--surface-t3)] px-4">
           <span className="h-2.5 w-2.5 rounded-full bg-[var(--text-tertiary)]" aria-hidden />
           <span className="h-2.5 w-2.5 rounded-full bg-[var(--text-disabled)]" aria-hidden />
@@ -336,7 +336,7 @@ function ConnectorsVisual() {
 
 function McpWorkflowVisual() {
   return (
-    <div className="relative h-full overflow-hidden rounded-[12px] bg-[var(--surface-t1)] p-4 sm:p-5">
+    <div className="relative h-full overflow-hidden rounded-[8px] bg-[var(--surface-t1)] p-4 sm:p-5">
       <div className="hidden h-full sm:block">
         <div className="absolute left-5 top-5 z-20 max-w-[220px]">
           <p className="type-caption text-[var(--text-tertiary)]">Live handoff</p>
@@ -431,7 +431,7 @@ function McpWorkflowVisual() {
 
 function OvernightVisual() {
   return (
-    <div className="flex h-full flex-col justify-center rounded-[12px] border border-[var(--border-default)] bg-[var(--surface-t1)] p-4">
+    <div className="flex h-full flex-col justify-center rounded-[8px] border border-[var(--border-default)] bg-[var(--surface-t1)] p-4">
       <div className="mb-4 flex items-center gap-2">
         <span className="h-2 w-2 rounded-full bg-[var(--zone-peak)]" aria-hidden />
         <p className="type-caption uppercase text-[var(--text-tertiary)]">Overnight patrol</p>
@@ -621,7 +621,7 @@ export function AgentFeaturesSection() {
               aria-current={active === index}
             >
               <article className="h-full">
-                <div className="h-[var(--agent-card-height)] overflow-hidden rounded-[28px] border border-[var(--border-default)] bg-[var(--surface-t2)] p-4 sm:p-5">
+                <div className="h-[var(--agent-card-height)] overflow-hidden rounded-[24px] border border-[var(--border-default)] bg-[var(--surface-t2)] p-4">
                   {slide.visual}
                 </div>
                 <div className="mt-[var(--agent-card-block-top)] px-[var(--agent-card-block-inline)]">

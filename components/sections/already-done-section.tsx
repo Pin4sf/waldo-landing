@@ -345,7 +345,7 @@ function VisualPlaceholder({ kind }: { kind: VisualKind }) {
 function HealthCard({ tone, headline, body }: HealthSlide["cards"][number]) {
   return (
     <article className="flex min-h-[190px] flex-col justify-between rounded-[20px] border border-[var(--border-default)] bg-[var(--surface-t1)] p-5">
-      <div className="flex h-11 w-11 items-center justify-center rounded-[12px] border border-[var(--border-default)] bg-[var(--surface-t2)] text-[var(--ink)]">
+      <div className="flex h-11 w-11 items-center justify-center rounded-[8px] border border-[var(--border-default)] bg-[var(--surface-t2)] text-[var(--ink)]">
         <HealthIcon tone={tone} />
       </div>
       <div className="mt-5">
@@ -627,7 +627,7 @@ export function AlreadyDoneSection() {
               id={`health-feature-card-${index}`}
               aria-label={slide.tab}
               aria-current={isActive}
-              className="h-[var(--slide-height)] w-[var(--slide-width)] snap-center overflow-hidden rounded-[28px] border border-[var(--border-default)] bg-[var(--surface-t2)] p-4 max-[734px]:snap-start sm:p-6 lg:p-8"
+              className="h-[var(--slide-height)] w-[var(--slide-width)] snap-center overflow-hidden rounded-[24px] border border-[var(--border-default)] bg-[var(--surface-t2)] p-4 max-[734px]:snap-start sm:p-6 lg:p-8"
             >
               {slide.kind === "feature" ? <FeatureContent slide={slide} /> : <HealthContent slide={slide} />}
             </article>
