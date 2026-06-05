@@ -1,87 +1,88 @@
+// Footer — "Your health isn't going to fix itself."
+// 100svh with Suyash's responsive scene SVGs + subtle scene parallax on desktop.
+// Overlay dog removed — was causing double-dalmatian. Baked-in dog is the real one.
+
 "use client";
 
-import Image from "next/image";
-import { useEffect, useState } from "react";
-import { Aside, WaldoCTA } from "@/components/landing-primitives";
+import { useEffect, useRef, useState } from "react";
 
-type Period = "morning" | "afternoon" | "evening" | "night";
-
-function getPeriod(): Period {
-  const hour = new Date().getHours();
-  if (hour >= 5 && hour < 11) return "morning";
-  if (hour >= 11 && hour < 17) return "afternoon";
-  if (hour >= 17 && hour < 21) return "evening";
-  return "night";
+function ArrowRightIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
 }
 
-const backgrounds: Record<Period, string> = {
-  morning:
-    "radial-gradient(ellipse 90% 70% at 50% 100%, color-mix(in srgb, var(--accent) 26%, transparent) 0%, transparent 68%), linear-gradient(180deg, var(--surface-t2) 0%, var(--surface-t3) 100%)",
-  afternoon:
-    "radial-gradient(ellipse 90% 70% at 50% 100%, color-mix(in srgb, var(--action) 14%, transparent) 0%, transparent 68%), linear-gradient(180deg, var(--surface-t2) 0%, var(--surface-t3) 100%)",
-  evening:
-    "radial-gradient(ellipse 100% 80% at 50% 100%, color-mix(in srgb, var(--accent) 32%, transparent) 0%, transparent 70%), linear-gradient(180deg, var(--surface-t3) 0%, var(--surface-t2) 100%)",
-  night:
-    "radial-gradient(ellipse 90% 70% at 50% 100%, color-mix(in srgb, var(--surface-t2) 16%, transparent) 0%, transparent 68%), linear-gradient(180deg, var(--surface-t3) 0%, var(--surface-t2) 100%)",
-};
-
-const footerLinks = [
-  ["Brief", "#brief"],
-  ["Actions", "#actions"],
-  ["Now", "#where"],
-  ["Pattern", "#constellation"],
-] as const;
-
 export function FooterSection() {
-  const [period, setPeriod] = useState<Period>("afternoon");
+  const ref = useRef<HTMLElement>(null);
+  const [progress, setProgress] = useState(1);
 
   useEffect(() => {
-    setPeriod(getPeriod());
+    if (typeof window === "undefined" || window.innerWidth < 1024) return;
+    const el = ref.current;
+    if (!el) return;
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const r  = el.getBoundingClientRect();
+      const vh = window.innerHeight;
+      // 0 = footer just entering from bottom; 1 = footer fully scrolled into view
+      const p  = Math.max(0, Math.min(1, (vh - r.top) / vh));
+      setProgress(p);
+    };
+    const onScroll = () => { if (!raf) raf = requestAnimationFrame(update); };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", update);
+    return () => { window.removeEventListener("scroll", onScroll); window.removeEventListener("resize", update); if (raf) cancelAnimationFrame(raf); };
   }, []);
 
+  // Stronger parallax: scene drifts down 50px as footer enters, settles to 0
+  const sceneShift = (1 - progress) * 50;
+
   return (
-    <footer
-      className="relative min-h-[760px] overflow-hidden text-[var(--ink)]"
-      style={{ background: backgrounds[period] }}
-    >
-      <div className="mx-auto flex min-h-[760px] max-w-[1200px] flex-col items-center justify-between px-4 pb-8 pt-24 text-center sm:px-6 lg:px-10">
-        <div className="flex flex-col items-center gap-6">
-          <h2 className="type-h1 text-[var(--ink)]" data-animate="headline">
-            You&apos;re not the first.
-            <br />
-            You&apos;re also not
-            <br />
-            too late. Yet.
-          </h2>
-          <WaldoCTA />
-          <Aside>Your watch has been waiting for this.</Aside>
-        </div>
+    <footer ref={ref} className="relative w-full overflow-hidden bg-[#f4f3f0]" style={{ height: "100svh" }}>
+      {/* Gradient sky */}
+      <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 0, background: "radial-gradient(ellipse 120% 80% at 50% 100%, rgba(255,140,0,0.7) 0%, rgba(255,185,5,0.6) 18%, rgba(255,242,0,0) 70%)" }} />
 
-        <div className="relative flex w-full flex-col items-center">
-          <Image
-            src="/illustrations/default.svg"
-            alt="Waldo resting"
-            width={220}
-            height={171}
-            className="waldo-breathe mb-8 h-auto w-[180px] sm:w-[220px]"
-          />
+      {/* Scene illustration — single layer, no dog overlay */}
+      <div
+        className="absolute bottom-0 left-0 w-full pointer-events-none select-none"
+        style={{ zIndex: 1, transform: `translate3d(0, ${sceneShift}px, 0)`, willChange: "transform" }}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <picture>
+          <source media="(max-width: 639px) and (orientation: portrait)"              srcSet="/assets/footer-bg-mobile.svg" />
+          <source media="(orientation: landscape) and (max-height: 600px)"            srcSet="/assets/footer-bg-mobile-landscape.svg" />
+          <source media="(min-width: 640px) and (max-width: 1024px) and (orientation: portrait)" srcSet="/assets/footer-bg-tablet.svg" />
+          <img src="/assets/footer-bg.svg" alt="" aria-hidden="true" className="w-full block waldo-breathe" style={{ "--breath-delay": "200ms" } as React.CSSProperties} />
+        </picture>
+      </div>
 
-          <div
-            className="grid w-full gap-6 rounded-[24px] border border-[var(--border-default)] p-5 text-left backdrop-blur-md sm:grid-cols-[1fr_auto] sm:items-end"
-            style={{ background: "color-mix(in srgb, var(--surface-t2) 82%, transparent)" }}
-          >
-            <div>
-              <p className="type-label text-[var(--ink)]">Product</p>
-              <div className="mt-3 flex flex-wrap gap-3">
-                {footerLinks.map(([label, href]) => (
-                  <a key={label} href={href} className="type-caption tone-secondary rounded-full border border-[var(--border-default)] bg-[var(--surface-t1)] px-3 py-2 transition-[color,border-color] duration-150 hover:border-[var(--border-focus)] hover:text-[var(--ink)]">
-                    {label}
-                  </a>
-                ))}
-              </div>
-            </div>
-            <p className="type-caption tone-tertiary">© 2026 Waldo</p>
+      {/* Text + CTA */}
+      <div className="relative flex flex-col items-center gap-6 lg:gap-10 px-4 pt-[92px] lg:pt-[48px]" style={{ zIndex: 2 }}>
+        <p className="font-medium italic text-[#6b6b68] text-[12px] lg:text-[14px] whitespace-nowrap" style={{ fontFamily: "var(--font-body)", fontVariationSettings: "'opsz' 14", lineHeight: 1.3 }}>
+          you&apos;re not the first. you&apos;re also not too late. yet.
+        </p>
+        <div className="flex flex-col gap-5 lg:gap-8 items-center text-[#1a1a1a] text-center" style={{ fontFamily: "var(--font-headline)" }}>
+          <p className="text-[32px] sm:text-[40px] lg:text-[48px] max-w-[422px]" style={{ lineHeight: 1.1 }}>Your health isn&apos;t going to fix itself.</p>
+          <div className="text-[18px] lg:text-[25px]" style={{ lineHeight: 1.2 }}>
+            <p style={{ marginBottom: 0 }}>Waldo already knows what&apos;s wrong.</p>
+            <p>You just have to let it in.</p>
           </div>
+        </div>
+        <a
+          href="/waitlist"
+          className="flex items-center gap-[4px] justify-center bg-[#1a1a1a] border border-[rgba(26,26,26,0.08)] border-solid text-[#fafaf8] text-[16px] lg:text-[18px] px-[32px] py-[18px] lg:px-[36px] lg:py-[22px] hover:bg-[#333] hover:scale-[1.02] transition-all whitespace-nowrap"
+          style={{ fontFamily: "var(--font-headline)", lineHeight: 1.3, borderRadius: "40px" }}
+        >
+          Get Started <ArrowRightIcon />
+        </a>
+        <div className="flex gap-5 lg:gap-[30px] font-normal text-[#6b6b68] text-[10px] whitespace-nowrap" style={{ fontFamily: "var(--font-body)", fontVariationSettings: "'opsz' 14", lineHeight: 1.3 }}>
+          <span>[Privacy Policy]</span>
+          <span>[Contact]</span>
+          <span>© 2026 Waldo</span>
         </div>
       </div>
     </footer>

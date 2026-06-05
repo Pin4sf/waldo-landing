@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 import { readFile } from "fs/promises";
 import path from "path";
 
-export const alt = "Waldo — Already on it";
+export const alt = "Waldo — AI Health Agent";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -21,7 +21,7 @@ export default async function Image() {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          backgroundColor: "#F4F3F0",
+          backgroundColor: "#f4f3f0",
           padding: "0 110px",
         }}
       >
@@ -39,7 +39,7 @@ export default async function Image() {
             style={{
               display: "flex",
               alignItems: "center",
-              background: "#FAFAF8",
+              background: "#fafaf8",
               border: "1.5px solid rgba(26,26,26,0.12)",
               borderRadius: 40,
               padding: "8px 20px",
@@ -50,7 +50,7 @@ export default async function Image() {
                 display: "flex",
                 fontSize: 22,
                 fontWeight: 700,
-                color: "#1A1A1A",
+                color: "#1a1a1a",
                 letterSpacing: -0.5,
               }}
             >
@@ -65,7 +65,7 @@ export default async function Image() {
               flexDirection: "column",
               fontSize: 82,
               fontWeight: 800,
-              color: "#1A1A1A",
+              color: "#1a1a1a",
               lineHeight: 1.0,
               letterSpacing: -2,
             }}
@@ -80,16 +80,16 @@ export default async function Image() {
               display: "flex",
               flexDirection: "column",
               fontSize: 24,
-              color: "#6B6B68",
+              color: "#6b6b68",
               lineHeight: 1.4,
               fontWeight: 400,
             }}
           >
             <span style={{ display: "flex" }}>
-              Reads your wearable.
+              AI health agent for WHOOP &amp; Apple Watch.
             </span>
             <span style={{ display: "flex" }}>
-              Handles the day before it gets heavy.
+              Reads your body. Acts before you burn out.
             </span>
           </div>
 
@@ -104,7 +104,7 @@ export default async function Image() {
               padding: "10px 24px",
               fontSize: 18,
               fontWeight: 600,
-              color: "#FAFAF8",
+              color: "#fff",
             }}
           >
             heywaldo.in

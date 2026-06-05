@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { corben, sfProRounded } from "@/lib/fonts";
+import { corben, dmSans } from "@/lib/fonts";
 import { SunflowerCursor } from "@/components/sunflower-cursor";
 import "./globals.css";
 
@@ -15,12 +15,13 @@ export const metadata: Metadata = {
 
   // Google snippet + fallback description (~155 chars)
   description:
-    "Waldo reads your wearable, understands what last night means for today, then moves the parts of your day that should move.",
+    "Waldo is your personal AI health agent. Connects to WHOOP & Apple Watch, reads your HRV, sleep, and recovery every day, then acts — before you even notice something's off.",
 
   keywords: [
-    "wearable data", "Apple Watch", "WHOOP integration",
-    "HRV monitoring", "sleep signals", "calendar protection",
-    "personal agent", "recovery signals", "stress detection",
+    "AI health agent", "burnout prevention", "WHOOP integration",
+    "Apple Watch health", "HRV monitoring", "wearable data AI",
+    "personal health assistant", "recovery monitoring", "health AI",
+    "stress detection", "sleep tracking AI",
   ],
 
   alternates: { canonical: SITE_URL },
@@ -36,7 +37,7 @@ export const metadata: Metadata = {
     title: "Waldo — Already on it.",
     // Hook for social shares — seen under the headline on link previews
     description:
-      "Your wearable has been collecting HRV, sleep, and stress data every night. Waldo reads all of it and moves the day before you have to.",
+      "Your wearable has been collecting HRV, sleep, and stress data every night. Waldo reads all of it and acts — rescheduling meetings, protecting focus time, catching burnout before it hits. Not a tracker. Already on it.",
     url: SITE_URL,
     siteName: "Waldo",
     type: "website",
@@ -46,7 +47,7 @@ export const metadata: Metadata = {
         url: OG_IMAGE_URL,
         width: 1200,
         height: 630,
-        alt: "Waldo reads wearable data and handles the day before it gets heavy",
+        alt: "Waldo — AI health agent that reads your wearable data and acts before you burn out",
         type: "image/png",
       },
     ],
@@ -62,7 +63,7 @@ export const metadata: Metadata = {
     images: [
       {
         url: OG_IMAGE_URL,
-        alt: "Waldo — Already on it",
+        alt: "Waldo — AI health agent",
       },
     ],
     creator: "@heywaldo",
@@ -76,7 +77,7 @@ export const metadata: Metadata = {
   },
 
   authors: [{ name: "Waldo", url: SITE_URL }],
-  category: "Software",
+  category: "Health & Wellness",
 };
 
 const jsonLd = {
@@ -89,7 +90,7 @@ const jsonLd = {
       url: SITE_URL,
       logo: { "@type": "ImageObject", url: `${SITE_URL}/logo.svg` },
       description:
-        "Waldo reads wearable data and handles the day before it gets heavy.",
+        "Waldo is your personal AI health agent that reads wearable data and proactively acts before you burn out.",
       sameAs: ["https://twitter.com/heywaldo"],
     },
     {
@@ -97,13 +98,13 @@ const jsonLd = {
       "@id": `${SITE_URL}/#website`,
       url: SITE_URL,
       name: "Waldo",
-      description: "A personal agent built around wearable data.",
+      description: "Personal AI health agent powered by wearable data.",
     },
     {
       "@type": "WebPage",
       "@id": `${SITE_URL}/#webpage`,
       url: SITE_URL,
-      name: "Waldo — Already on it",
+      name: "Waldo — AI Health Agent",
       isPartOf: { "@id": `${SITE_URL}/#website` },
       inLanguage: "en-US",
     },
@@ -112,7 +113,7 @@ const jsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${corben.variable} ${sfProRounded.variable}`}>
+    <html lang="en" className={`${corben.variable} ${dmSans.variable}`}>
       <head>
         <script
           type="application/ld+json"
@@ -120,7 +121,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body
-        className="bg-[var(--surface-t3)] text-[var(--ink)] antialiased"
+        className="bg-[#EDEAE3] text-[#1A1A1A] antialiased"
         style={{ fontFamily: "var(--font-body)" }}
       >
         <SunflowerCursor>{children}</SunflowerCursor>

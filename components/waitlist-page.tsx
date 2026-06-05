@@ -2,7 +2,6 @@
 
 import { useState, useCallback, useEffect } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { Illustration } from "./illustration";
 import { EmailForm } from "./email-form";
 
@@ -136,6 +135,7 @@ const TIME_CONFIG = {
         height:       "58px",
         borderRadius: "50%",
         background:   "radial-gradient(circle at 36% 34%, #fffbeb, #fde68a)",
+        boxShadow:    "0 0 40px rgba(253,230,138,0.25), 0 0 90px rgba(253,230,138,0.10)",
         animation:    "moon-rise 0.6s 0.45s ease-out both, moon-glow 4.5s 1.1s ease-in-out infinite",
       },
     },
@@ -410,7 +410,7 @@ export function WaitlistPage() {
 
       <main className="flex min-h-[calc(100vh-72px)] items-center justify-center px-4 py-8">
         <div
-          className="w-full max-w-[440px] rounded-3xl bg-white px-8 py-10 flex flex-col items-center gap-5 text-center border border-[var(--border-default)]"
+          className="w-full max-w-[440px] rounded-3xl bg-white px-8 py-10 flex flex-col items-center gap-5 text-center shadow-[0_2px_20px_rgba(0,0,0,0.07)]"
           style={cardStyle}
         >
           <Illustration state={displayState} className="w-24 h-24" />
@@ -458,13 +458,13 @@ export function WaitlistPage() {
           )}
 
           {displayState === "success" && (
-            <Link
+            <a
               href="/"
               className="flex items-center gap-1 text-[11px] text-[#1A1A1A]/40 hover:text-[#1A1A1A]/70 transition-colors mt-2"
               style={{ fontFamily: "var(--font-body)" }}
             >
               ← Back to home
-            </Link>
+            </a>
           )}
         </div>
       </main>
