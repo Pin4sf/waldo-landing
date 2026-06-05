@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-import { Aside, withHighlights } from "@/components/landing-primitives";
+import { Aside } from "@/components/landing-primitives";
 
 const AUTO_DWELL_MS = 6150;
 const AUTO_SCROLL_MS = 1000;
@@ -44,7 +44,6 @@ type FeaturePanel = {
 type ShowcaseSlide = {
   tab: string;
   headline: string;
-  subheadline: string;
   aside: string;
   visual: VisualKind;
   badge?: string;
@@ -53,9 +52,8 @@ type ShowcaseSlide = {
 
 const slides: ShowcaseSlide[] = [
   {
-    tab: "Recovery is not a number.",
-    headline: "Recovery is not a number.",
-    subheadline: "It answers one question: what did last night give you?",
+    tab: "Mornings, sorted.",
+    headline: "Mornings, sorted.",
     aside: "already on it.",
     visual: "recovery",
     panels: [
@@ -102,9 +100,8 @@ const slides: ShowcaseSlide[] = [
     ],
   },
   {
-    tab: "Your stress, handled in real time.",
-    headline: "Your stress, handled in real time.",
-    subheadline: "Not a chart you check later. Waldo catches it before you feel it.",
+    tab: "The edge, taken off.",
+    headline: "The edge, taken off.",
     aside: "you didn't ask. you didn't need to.",
     visual: "stress",
     panels: [
@@ -151,9 +148,8 @@ const slides: ShowcaseSlide[] = [
     ],
   },
   {
-    tab: "See what you're too close to see.",
-    headline: "See what you're too close to see.",
-    subheadline: "Waldo scans quietly. When something matters, you hear about it.",
+    tab: "Connecting the Dots",
+    headline: "Connecting the Dots",
     aside: "~70 scans a day. you never notice.",
     visual: "patterns",
     panels: [
@@ -200,9 +196,8 @@ const slides: ShowcaseSlide[] = [
     ],
   },
   {
-    tab: "Your body, actually understood.",
-    headline: "Your body, actually understood.",
-    subheadline: "Your watch tracks 15+ signals. Waldo acts on the ones that matter today.",
+    tab: "Gut Feeling, verified",
+    headline: "Gut Feeling, verified",
     aside: "your watch tracks it. Waldo does something with it.",
     visual: "body",
     panels: [
@@ -249,9 +244,8 @@ const slides: ShowcaseSlide[] = [
     ],
   },
   {
-    tab: "Learns every week you wear it.",
-    headline: "Learns every week you wear it.",
-    subheadline: "Week one is calibration. By week three, Waldo knows your patterns.",
+    tab: "old habits new endings",
+    headline: "old habits new endings",
     aside: "patterns you can't see from the inside.",
     visual: "longGame",
     badge: "Coming soon",
@@ -339,48 +333,6 @@ function PlayPauseIcon({ playing, ended }: { playing: boolean; ended: boolean })
   );
 }
 
-function HealthIcon({ tone }: { tone: HealthTone }) {
-  const common = { stroke: "currentColor", strokeWidth: 1.7, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
-
-  if (tone === "sleep") {
-    return (
-      <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden>
-        <path d="M16.5 14.5A7 7 0 0 1 7.5 5.5 7.5 7.5 0 1 0 16.5 14.5Z" {...common} />
-      </svg>
-    );
-  }
-
-  if (tone === "heart") {
-    return (
-      <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden>
-        <path d="M11 18s-6.5-3.8-6.5-8.4A3.6 3.6 0 0 1 11 7.4a3.6 3.6 0 0 1 6.5 2.2C17.5 14.2 11 18 11 18Z" {...common} />
-      </svg>
-    );
-  }
-
-  if (tone === "stress") {
-    return (
-      <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden>
-        <path d="M11 3.5v6l4 2.5M5.5 17.5a8 8 0 1 0 11-11" {...common} />
-      </svg>
-    );
-  }
-
-  if (tone === "recovery") {
-    return (
-      <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden>
-        <path d="M17 7.5A6.5 6.5 0 1 0 18 12M18 4.5v4h-4" {...common} />
-      </svg>
-    );
-  }
-
-  return (
-    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden>
-      <path d="M12.5 3.5 5.5 12h5L9.5 18.5l7-8.5h-5l1-6.5Z" {...common} />
-    </svg>
-  );
-}
-
 function PanelPill({
   panel,
   index,
@@ -393,152 +345,62 @@ function PanelPill({
   onOpen: () => void;
 }) {
   const panelId = `${panel.label.replace(/[^a-z0-9]/gi, "-").toLowerCase()}-${index}`;
+  const cleanBody = panel.body.replaceAll("*", "");
+
+  if (isOpen) {
+    return (
+      <article
+        id={panelId}
+        className="max-w-[440px] rounded-[24px] border border-[var(--border-default)] bg-[var(--surface-t1)] px-5 py-4"
+      >
+        <p className="type-body text-[var(--text-secondary)]">
+          <span className="font-medium text-[var(--ink)]">{panel.title}</span> {cleanBody}
+        </p>
+      </article>
+    );
+  }
 
   return (
-    <div>
+    <div id={panelId}>
       <button
         type="button"
-        className={`focusable-ring flex w-full items-center gap-3 rounded-full px-4 py-3 text-left transition-[background-color,color] duration-200 ease-[var(--ease-premium)] ${
-          isOpen ? "bg-[var(--surface-t1)] text-[var(--ink)]" : "bg-[var(--surface-t3)] text-[var(--text-secondary)]"
-        }`}
-        aria-expanded={isOpen}
+        className="focusable-ring flex w-fit max-w-full items-center gap-3 rounded-full border border-[var(--border-default)] bg-[var(--surface-t1)] px-4 py-3 text-left text-[var(--ink)] transition-[background-color] duration-150 ease-[var(--ease-premium)] hover:bg-[var(--surface-t2)]"
+        aria-expanded={false}
         aria-controls={panelId}
         onClick={onOpen}
       >
-        <span
-          className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-[background-color,color,transform] duration-200 ease-[var(--ease-premium)] ${
-            isOpen ? "bg-[var(--ink)] text-[var(--surface-t2)]" : "bg-[var(--surface-t2)] text-[var(--ink)]"
-          }`}
-          aria-hidden
-        >
-          {isOpen ? (
-            <span className="h-[2px] w-3 rounded-full bg-current" />
-          ) : (
-            <span className="relative h-3 w-3">
-              <span className="absolute left-0 top-1/2 h-[2px] w-3 -translate-y-1/2 rounded-full bg-current" />
-              <span className="absolute left-1/2 top-0 h-3 w-[2px] -translate-x-1/2 rounded-full bg-current" />
-            </span>
-          )}
+        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-[var(--border-default)] bg-[var(--surface-t1)] text-[var(--ink)]" aria-hidden>
+          <span className="relative h-3 w-3">
+            <span className="absolute left-0 top-1/2 h-[1.5px] w-3 -translate-y-1/2 rounded-full bg-current" />
+            <span className="absolute left-1/2 top-0 h-3 w-[1.5px] -translate-x-1/2 rounded-full bg-current" />
+          </span>
         </span>
-        <span className="type-label">{panel.label}</span>
+        <span className="type-label">{panel.title}</span>
       </button>
-      <div
-        id={panelId}
-        className={`grid transition-[grid-template-rows,opacity] duration-[420ms] ease-[var(--ease-premium)] ${
-          isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
-        }`}
-      >
-        <div className="overflow-hidden">
-          <div className="mt-3 rounded-[16px] bg-[var(--surface-t1)] p-5">
-            <p className="type-body tone-secondary">{withHighlights(panel.body)}</p>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }
 
 function WatchSignalStage({ slide, panel }: { slide: ShowcaseSlide; panel: FeaturePanel }) {
-  const isRecovery = slide.visual === "recovery";
-  const isStress = slide.visual === "stress";
-  const isPatterns = slide.visual === "patterns";
-  const isBody = slide.visual === "body";
-
   return (
-    <div className="relative flex h-full min-h-[260px] items-center justify-center overflow-hidden rounded-[18px] bg-[var(--surface-t1)] max-lg:min-h-[220px]">
-      <div className="absolute inset-x-8 top-8 hidden h-px bg-[var(--border-default)] lg:block" />
-      <div className="absolute inset-x-10 bottom-10 hidden h-px bg-[var(--border-default)] lg:block" />
-
-      <div className="relative flex h-[310px] w-[248px] items-center justify-center rounded-[54px] border-[8px] border-[var(--ink)] bg-[var(--dark-t4)] p-5 text-[var(--surface-t2)] sm:h-[360px] sm:w-[290px] lg:h-[450px] lg:w-[360px]">
-        <div className="absolute left-1/2 top-5 h-6 w-24 -translate-x-1/2 rounded-full bg-[var(--ink)]" />
-        <div className="flex h-full w-full flex-col justify-between rounded-[34px] bg-[var(--dark-t3)] p-6 pt-14">
-          <div>
-            <p className="type-caption text-[var(--on-dark-subtle)]">{slide.tab}</p>
-            <h4 className="type-h3 mt-3 max-w-[14ch] text-[var(--surface-t2)]">{panel.metric}</h4>
-          </div>
-
-          {isRecovery ? (
-            <div className="mx-auto flex h-36 w-36 items-center justify-center rounded-full bg-[conic-gradient(var(--zone-peak)_0_62%,var(--dark-t1)_62%_100%)] p-4">
-              <div className="flex h-full w-full items-center justify-center rounded-full bg-[var(--dark-t3)]">
-                <span className="type-h2 text-[var(--surface-t2)]">63</span>
-              </div>
-            </div>
-          ) : null}
-
-          {isStress ? (
-            <div className="space-y-3">
-              {[68, 82, 58].map((value, index) => (
-                <div key={value} className="h-3 overflow-hidden rounded-full bg-[var(--dark-t1)]">
-                  <div
-                    className="h-full rounded-full bg-[var(--surface-t2)]"
-                    style={{ width: `${value - index * 8}%`, opacity: 0.86 - index * 0.16 }}
-                  />
-                </div>
-              ))}
-            </div>
-          ) : null}
-
-          {isPatterns ? (
-            <div className="relative mx-auto h-36 w-36">
-              {[0, 1, 2, 3, 4].map((node) => (
-                <span
-                  key={node}
-                  className="absolute h-5 w-5 rounded-full bg-[var(--surface-t2)]"
-                  style={{
-                    left: `${18 + (node % 3) * 34}%`,
-                    top: `${18 + Math.floor(node / 3) * 44 + (node % 2) * 14}%`,
-                    opacity: node === 2 ? 1 : 0.56,
-                  }}
-                />
-              ))}
-              <svg className="absolute inset-0 h-full w-full text-[var(--surface-t2)] opacity-40" viewBox="0 0 144 144" fill="none" aria-hidden>
-                <path d="M32 44 C56 24 76 82 104 54 C112 46 118 64 122 92" stroke="currentColor" strokeWidth="2" strokeDasharray="5 6" />
-                <path d="M50 110 C62 70 84 102 96 40" stroke="currentColor" strokeWidth="2" strokeDasharray="5 6" />
-              </svg>
-            </div>
-          ) : null}
-
-          {isBody ? (
-            <div className="grid grid-cols-2 gap-3">
-              {["sleep", "hrv", "stress", "motion"].map((item) => (
-                <div key={item} className="rounded-[12px] bg-[var(--dark-t1)] p-3">
-                  <p className="type-caption text-[var(--on-dark-subtle)]">{item}</p>
-                  <div className="mt-3 h-2 rounded-full bg-[var(--dark-t4)]">
-                    <div className="h-full w-2/3 rounded-full bg-[var(--surface-t2)]" />
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : null}
-
-          {!isRecovery && !isStress && !isPatterns && !isBody ? (
-            <div className="grid grid-cols-5 gap-2">
-              {Array.from({ length: 25 }).map((_, index) => (
-                <span
-                  key={index}
-                  className="aspect-square rounded-[8px] bg-[var(--surface-t2)]"
-                  style={{ opacity: index % 6 === 0 || index % 11 === 0 ? 0.9 : 0.24 }}
-                />
-              ))}
-            </div>
-          ) : null}
-
-          <div className="rounded-[18px] bg-[var(--dark-t1)] p-4">
-            <p className="type-label text-[var(--surface-t2)]">{panel.title}</p>
-            <p className="type-caption mt-2 text-[var(--on-dark-muted)]">action layer ready</p>
-          </div>
+    <div className="relative flex h-full min-h-[300px] items-end justify-center overflow-hidden max-lg:min-h-[260px]">
+      <div className="relative mb-[-120px] h-[560px] w-[292px] rounded-[58px] border-[7px] border-[var(--ink)] bg-[var(--surface-t1)] sm:h-[620px] sm:w-[324px] lg:mb-[-150px] lg:h-[700px] lg:w-[366px]">
+        <div className="absolute left-8 top-8 type-label text-[var(--ink)]">9:41</div>
+        <div className="absolute left-1/2 top-7 h-7 w-28 -translate-x-1/2 rounded-full bg-[var(--ink)]" />
+        <div className="absolute right-8 top-9 flex items-center gap-1.5 text-[var(--ink)]" aria-hidden>
+          <span className="h-2.5 w-1 rounded-full bg-current" />
+          <span className="h-3.5 w-1 rounded-full bg-current" />
+          <span className="h-5 w-1 rounded-full bg-current" />
+          <span className="ml-1 h-3 w-6 rounded-[4px] border border-current" />
         </div>
-      </div>
-
-      <div className="absolute bottom-5 left-5 right-5 rounded-[16px] bg-[var(--surface-t2)] p-4 lg:left-auto lg:right-8 lg:w-[260px]">
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-[8px] bg-[var(--surface-t1)] text-[var(--ink)]">
-            <HealthIcon tone={panel.tone} />
-          </div>
-          <div>
-            <p className="type-label text-[var(--ink)]">{panel.metric}</p>
-            <p className="type-caption text-[var(--text-tertiary)]">Waldo read</p>
-          </div>
+        <img
+          src="/illustrations/default.svg"
+          alt=""
+          aria-hidden
+          className="absolute left-1/2 top-[56%] h-24 w-24 -translate-x-1/2 -translate-y-1/2 object-contain lg:h-28 lg:w-28"
+        />
+        <div className="sr-only">
+          {slide.headline}: {panel.metric}
         </div>
       </div>
     </div>
@@ -547,34 +409,39 @@ function WatchSignalStage({ slide, panel }: { slide: ShowcaseSlide; panel: Featu
 
 function SlideContent({
   slide,
-  slideIndex,
   openPanel,
   onOpenPanel,
+  onClosePanel,
 }: {
   slide: ShowcaseSlide;
-  slideIndex: number;
-  openPanel: number;
+  openPanel: number | null;
   onOpenPanel: (panelIndex: number) => void;
+  onClosePanel: () => void;
 }) {
-  const panel = slide.panels[openPanel] ?? slide.panels[0];
+  const panel = slide.panels[openPanel ?? 0] ?? slide.panels[0];
 
   return (
-    <div className="grid h-full min-h-0 gap-4 p-4 sm:p-5 lg:grid-cols-[minmax(330px,0.92fr)_minmax(420px,1.35fr)] lg:p-6">
-      <div className="flex min-h-0 flex-col rounded-[20px] bg-[var(--surface-t2)] p-3 sm:p-4">
-        <div className="rounded-[16px] bg-[var(--surface-t1)] p-5">
-          <div className="mb-4 flex flex-wrap items-center gap-2">
-            <p className="type-eyebrow text-[var(--text-tertiary)]">Tab {slideIndex + 1}</p>
-            {slide.badge ? (
-              <span className="type-caption rounded-full bg-[var(--surface-t3)] px-3 py-1 text-[var(--text-secondary)]">
-                {slide.badge}
-              </span>
-            ) : null}
-          </div>
-          <h3 className="type-h2 max-w-[14ch] text-[var(--ink)]">{slide.headline}</h3>
-          <p className="type-body tone-secondary mt-4 max-w-[48ch]">{slide.subheadline}</p>
+    <div className="relative grid h-full min-h-0 gap-4 p-6 sm:p-8 lg:grid-cols-[minmax(330px,0.82fr)_minmax(460px,1.4fr)] lg:p-10 xl:p-12">
+      {openPanel !== null ? (
+        <button
+          type="button"
+          aria-label="Collapse expanded field"
+          className="focusable-ring absolute right-5 top-5 z-10 flex h-8 w-8 items-center justify-center rounded-full border border-[var(--border-default)] bg-[var(--surface-t1)] text-[var(--ink)] transition-[background-color] duration-150 ease-[var(--ease-premium)] hover:bg-[var(--surface-t2)]"
+          onClick={onClosePanel}
+        >
+          <span aria-hidden className="relative h-3 w-3 rotate-45">
+            <span className="absolute left-0 top-1/2 h-[1.5px] w-3 -translate-y-1/2 rounded-full bg-current" />
+            <span className="absolute left-1/2 top-0 h-3 w-[1.5px] -translate-x-1/2 rounded-full bg-current" />
+          </span>
+        </button>
+      ) : null}
+
+      <div className="flex min-h-0 flex-col justify-center pl-0 sm:pl-4 lg:pl-8">
+        <div className="mb-8">
+          <h3 className="type-h2 max-w-[16ch] text-[var(--ink)]">{slide.headline}</h3>
         </div>
 
-        <div className="mt-3 space-y-3 pr-1 lg:min-h-0 lg:flex-1 lg:overflow-y-auto">
+        <div className="space-y-3 pr-1 lg:min-h-0 lg:max-h-[470px] lg:overflow-y-auto">
           {slide.panels.map((item, index) => (
             <PanelPill
               key={item.label}
@@ -585,7 +452,7 @@ function SlideContent({
             />
           ))}
         </div>
-        <Aside className="mt-4 px-2">{slide.aside}</Aside>
+        <Aside className="mt-5">{slide.aside}</Aside>
       </div>
 
       <WatchSignalStage slide={slide} panel={panel} />
@@ -609,7 +476,7 @@ export function AlreadyDoneSection() {
   const [interactionPaused, setInteractionPaused] = useState(false);
   const [documentHidden, setDocumentHidden] = useState(false);
   const [isScrollAnimating, setIsScrollAnimating] = useState(false);
-  const [openPanels, setOpenPanels] = useState<Record<number, number>>({});
+  const [openPanels, setOpenPanels] = useState<Record<number, number | null>>({});
 
   const shouldTickProgress = playing && !ended && !reducedMotion && !interactionPaused && !documentHidden && !isScrollAnimating;
   const activeSlide = slides[active];
@@ -819,7 +686,7 @@ export function AlreadyDoneSection() {
       >
         {slides.map((slide, index) => {
           const isActive = active === index;
-          const openPanel = openPanels[index] ?? 0;
+          const openPanel = Object.prototype.hasOwnProperty.call(openPanels, index) ? openPanels[index] ?? null : isActive ? 0 : null;
 
           return (
             <article
@@ -831,12 +698,16 @@ export function AlreadyDoneSection() {
             >
               <SlideContent
                 slide={slide}
-                slideIndex={index}
                 openPanel={openPanel}
                 onOpenPanel={(panelIndex) => {
                   setPlaying(false);
                   setEnded(false);
                   setOpenPanels((current) => ({ ...current, [index]: panelIndex }));
+                }}
+                onClosePanel={() => {
+                  setPlaying(false);
+                  setEnded(false);
+                  setOpenPanels((current) => ({ ...current, [index]: null }));
                 }}
               />
             </article>
