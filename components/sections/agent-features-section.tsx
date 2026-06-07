@@ -12,8 +12,6 @@ type AgentSlide = {
   label: string;
   headline: string;
   description: string;
-  detailHeadline?: string;
-  detailDescription?: string;
   wide?: boolean;
   aside?: string;
   visual: ReactNode;
@@ -67,45 +65,6 @@ const overnightLog = [
   ["6:14am", "Brief ready. Waiting for your alarm."],
 ] as const;
 
-const connectorStageItems = [
-  {
-    connector: connectors[1],
-    action: "Move morning review",
-    meta: "Calendar write",
-    style: { left: "7%", top: "16%", width: "232px", "--chip-shift-x": "12px", "--chip-shift-y": "-7px", "--chip-delay": "0ms" },
-  },
-  {
-    connector: connectors[2],
-    action: "Draft late-start note",
-    meta: "Email draft",
-    style: { left: "5%", top: "62%", width: "230px", "--chip-shift-x": "15px", "--chip-shift-y": "5px", "--chip-delay": "620ms" },
-  },
-  {
-    connector: connectors[8],
-    action: "Set focus status",
-    meta: "Team signal",
-    style: { left: "35%", top: "25%", width: "210px", "--chip-shift-x": "9px", "--chip-shift-y": "9px", "--chip-delay": "1100ms" },
-  },
-  {
-    connector: connectors[4],
-    action: "Create deck task",
-    meta: "Work queue",
-    style: { left: "43%", top: "57%", width: "220px", "--chip-shift-x": "12px", "--chip-shift-y": "-8px", "--chip-delay": "1550ms" },
-  },
-  {
-    connector: connectors[11],
-    action: "Check PR load",
-    meta: "Code context",
-    style: { left: "14%", top: "40%", width: "210px", "--chip-shift-x": "14px", "--chip-shift-y": "0px", "--chip-delay": "2100ms" },
-  },
-  {
-    connector: connectors[12],
-    action: "Find Q1 deck",
-    meta: "File search",
-    style: { left: "53%", top: "8%", width: "198px", "--chip-shift-x": "8px", "--chip-shift-y": "12px", "--chip-delay": "2700ms" },
-  },
-] as const;
-
 const mcpPullSources = [
   {
     connector: connectors[0],
@@ -143,6 +102,36 @@ const mcpFlowSteps = [
   ["Read", "Body, calendar, inbox"],
   ["Choose", "Morning review moves"],
   ["Write", "Task and draft wait"],
+] as const;
+
+const multiAccountGroups = [
+  {
+    connector: connectors[2],
+    shortName: "Gmail",
+    summary: "2 accounts",
+    accounts: [
+      ["suyash@waldo.work", "WORK", "S"],
+      ["suyash@gmail.com", "PERSONAL", "S"],
+    ],
+  },
+  {
+    connector: connectors[1],
+    shortName: "Calendar",
+    summary: "3 calendars",
+    accounts: [["3 calendars synced", "WORK + HOME + TEAM", "3"]],
+  },
+  {
+    connector: connectors[3],
+    shortName: "Todoist",
+    summary: "1 account",
+    accounts: [["Personal tasks", "YOU", "S"]],
+  },
+  {
+    connector: connectors[4],
+    shortName: "Linear",
+    summary: "1 account",
+    accounts: [["Team sprint", "TEAM", "T"]],
+  },
 ] as const;
 
 function usePrefersReducedMotion() {
@@ -280,58 +269,97 @@ function DraftsVisual() {
   );
 }
 
-function ConnectorsVisual() {
+function MultiAccountVisual() {
   return (
-    <div className="relative h-full overflow-hidden rounded-[8px] bg-[var(--surface-t1)]">
-      <div className="absolute right-4 top-4 h-[78%] w-[45%] overflow-hidden rounded-[8px] border border-[var(--border-default)] bg-[var(--surface-t2)] max-sm:right-3 max-sm:top-5 max-sm:h-[68%] max-sm:w-[58%]">
-        <div className="flex h-10 items-center gap-2 border-b border-[var(--border-default)] bg-[var(--surface-t3)] px-4">
-          <span className="h-2.5 w-2.5 rounded-full bg-[var(--text-tertiary)]" aria-hidden />
-          <span className="h-2.5 w-2.5 rounded-full bg-[var(--text-disabled)]" aria-hidden />
-          <span className="h-2.5 w-2.5 rounded-full bg-[var(--zone-peak)]" aria-hidden />
-          <p className="type-caption ml-2 truncate text-[var(--text-secondary)]">user - Waldo</p>
+    <div className="relative h-full overflow-hidden rounded-[8px] bg-[var(--surface-t1)] p-4 sm:p-5">
+      <div className="hidden h-full sm:block">
+        <div className="absolute left-5 top-5 z-20 max-w-[230px]">
+          <p className="type-caption text-[var(--text-tertiary)]">Account context</p>
+          <p className="type-label mt-1 text-[var(--ink)]">One read across the versions of your day.</p>
         </div>
-        <div className="p-4 max-sm:p-3">
-          <p className="type-label text-[var(--ink)]">Waldo</p>
-          <div className="mt-4 grid gap-2">
-            {["reads body context", "selects the right tool", "writes back with guardrails"].map((line) => (
-              <div key={line} className="rounded-[10px] bg-[var(--surface-t1)] px-3 py-2">
-                <p className="font-mono text-[10px] leading-[1.25] text-[var(--text-secondary)]">{line}</p>
+
+        <svg className="absolute inset-0 h-full w-full" viewBox="0 0 764 450" fill="none" aria-hidden>
+          <path className="waldo-tool-path" d="M176 230 C252 178 300 126 384 110" />
+          <path className="waldo-tool-path" d="M176 230 C258 202 310 198 384 198" style={{ animationDelay: "420ms" }} />
+          <path className="waldo-tool-path" d="M176 230 C260 255 315 284 384 294" style={{ animationDelay: "840ms" }} />
+          <path className="waldo-tool-path" d="M176 230 C258 300 306 336 384 374" style={{ animationDelay: "1260ms" }} />
+          <path className="waldo-tool-path" d="M426 110 C474 88 516 84 594 92" style={{ animationDelay: "260ms" }} />
+          <path className="waldo-tool-path" d="M426 110 C480 124 524 138 594 158" style={{ animationDelay: "520ms" }} />
+          <path className="waldo-tool-path" d="M426 198 C482 194 526 204 594 226" style={{ animationDelay: "780ms" }} />
+          <path className="waldo-tool-path" d="M426 294 C476 300 520 316 594 304" style={{ animationDelay: "1040ms" }} />
+          <path className="waldo-tool-path" d="M426 374 C474 368 522 376 594 374" style={{ animationDelay: "1300ms" }} />
+        </svg>
+
+        <div className="absolute left-[8%] top-1/2 z-30 flex w-[176px] -translate-y-1/2 items-center gap-3 rounded-[18px] border border-[var(--border-default)] bg-[var(--surface-t2)] p-4">
+          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] bg-[var(--ink)] text-[var(--surface-t2)]">
+            <span className="type-label">W</span>
+          </span>
+          <div>
+            <p className="type-label text-[var(--ink)]">Waldo</p>
+            <p className="type-caption mt-1 text-[var(--text-tertiary)]">one context</p>
+          </div>
+        </div>
+
+        <div className="absolute left-[49%] top-1/2 z-20 grid w-[106px] -translate-x-1/2 -translate-y-1/2 gap-6">
+          {multiAccountGroups.map((group) => (
+            <div key={group.connector.name} className="mx-auto flex h-12 w-12 items-center justify-center rounded-[14px] border border-[var(--border-default)] bg-[var(--surface-t2)]">
+              <ConnectorIcon connector={group.connector} size="small" />
+            </div>
+          ))}
+        </div>
+
+        <div className="absolute right-5 top-10 z-20 grid w-[260px] gap-3">
+          {multiAccountGroups.flatMap((group) =>
+            group.accounts.map(([account, badge, initial]) => (
+              <div
+                key={`${group.connector.name}-${account}`}
+                className="waldo-tool-chip flex items-center gap-3 rounded-[14px] border border-[var(--border-default)] bg-[var(--surface-t2)] px-3 py-2.5"
+                style={{ "--chip-shift-x": "8px", "--chip-shift-y": "-4px" } as CSSProperties}
+              >
+                <span className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--surface-t4)]">
+                  <span className="type-caption text-[var(--ink)]">{initial}</span>
+                  <span className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full border border-[var(--border-default)] bg-[var(--surface-t1)]">
+                    {group.connector.icon ? (
+                      <Image src={group.connector.icon} alt="" width={13} height={13} className="h-auto w-auto max-w-[70%]" />
+                    ) : (
+                      <span className="text-[8px] font-medium leading-none text-[var(--ink)]">{group.connector.initials}</span>
+                    )}
+                  </span>
+                </span>
+                <div className="min-w-0 flex-1">
+                  <p className="type-caption truncate text-[var(--ink)]">{account}</p>
+                  <p className="type-caption mt-0.5 truncate text-[var(--text-tertiary)]">{group.connector.name}</p>
+                </div>
+                <span className="type-caption rounded-full bg-[var(--surface-t1)] px-2.5 py-1 text-[var(--text-secondary)]">
+                  {badge}
+                </span>
               </div>
-            ))}
-          </div>
-          <div className="mt-5 rounded-[12px] border border-[var(--border-default)] bg-[var(--surface-t1)] px-3 py-3 max-sm:hidden">
-            <p className="font-mono text-[10px] leading-[1.35] text-[var(--text-tertiary)]">
-              MCP_HANDOFF: calendar, email, tasks, code, files
-            </p>
-          </div>
+            )),
+          )}
         </div>
       </div>
 
-      <svg className="absolute inset-0 h-full w-full" viewBox="0 0 764 450" fill="none" aria-hidden>
-        <path className="waldo-tool-path" d="M178 102 C290 90 378 105 514 178" />
-        <path className="waldo-tool-path" d="M190 303 C305 296 412 274 522 222" style={{ animationDelay: "500ms" }} />
-        <path className="waldo-tool-path" d="M288 207 C370 196 443 202 522 202" style={{ animationDelay: "950ms" }} />
-        <path className="waldo-tool-path" d="M414 285 C456 274 494 254 548 229" style={{ animationDelay: "1450ms" }} />
-      </svg>
-
-      <div className="absolute left-4 top-4">
-        <p className="type-caption text-[var(--text-tertiary)]">MCP connectors</p>
-        <p className="type-label mt-1 text-[var(--ink)]">Tools talk to Waldo</p>
-      </div>
-
-      {connectorStageItems.map((item) => (
-        <div
-          key={item.action}
-          className="waldo-tool-chip absolute flex items-center gap-3 rounded-[14px] border border-[var(--border-default)] bg-[var(--surface-t1)] p-3 max-sm:w-[185px]"
-          style={item.style as CSSProperties}
-        >
-          <ConnectorIcon connector={item.connector} />
-          <div className="min-w-0">
-            <p className="type-caption truncate text-[var(--ink)]">{item.action}</p>
-            <p className="type-caption mt-1 truncate text-[var(--text-tertiary)]">{item.meta}</p>
-          </div>
+      <div className="grid h-full grid-rows-[auto_1fr_auto] gap-3 sm:hidden">
+        <div>
+          <p className="type-caption text-[var(--text-tertiary)]">Account context</p>
+          <p className="type-label mt-1 text-[var(--ink)]">Waldo reads work, personal, and team accounts together.</p>
         </div>
-      ))}
+        <div className="grid content-center grid-cols-2 gap-2">
+          {multiAccountGroups.map((group) => (
+            <div key={group.connector.name} className="rounded-[12px] bg-[var(--surface-t2)] p-2.5">
+              <div className="flex items-center gap-2">
+                <ConnectorIcon connector={group.connector} size="small" />
+                <p className="type-caption truncate text-[var(--ink)]">{group.shortName}</p>
+              </div>
+              <p className="type-caption mt-1.5 text-[var(--text-tertiary)]">{group.summary}</p>
+            </div>
+          ))}
+        </div>
+        <div className="rounded-[14px] border border-[var(--border-default)] bg-[var(--surface-t2)] p-2.5">
+          <p className="type-caption text-[var(--text-tertiary)]">Output</p>
+          <p className="type-label mt-1 text-[var(--ink)]">One day, not four separate versions.</p>
+        </div>
+      </div>
     </div>
   );
 }
@@ -469,24 +497,21 @@ const slides: AgentSlide[] = [
     visual: <DraftsVisual />,
   },
   {
-    label: "Connectors",
+    label: "Accounts",
     headline: "Every tool. Every account. One Waldo.",
     description:
       "Two Gmail accounts - work and personal. Three calendars. A Todoist for you and a Linear for the team. Waldo reads across all of them without you switching contexts. It sees your full day, not the version one app knows about.",
-    detailHeadline: "Your body becomes the context.",
-    detailDescription:
-      "Every AI agent runs on prompts. Waldo runs on your body. Your HRV, sleep, stress, and circadian position are the context window that shapes every decision Waldo makes - which meetings to move, which tasks to defer, when to protect your afternoon. You don't type 'I'm tired.' Waldo already read it off your wrist.",
     wide: true,
-    aside: "the only context window that has a pulse.",
-    visual: <ConnectorsVisual />,
+    aside: "one day, not four versions of it.",
+    visual: <MultiAccountVisual />,
   },
   {
     label: "MCP workflow",
-    headline: "The body becomes a tool run.",
+    headline: "Your body becomes the context.",
     description:
-      "Waldo reads your signals, checks the tools around your day, plans the handoff, then writes back through MCP. Calendar moves. Tasks appear. Email drafts wait for your tap. *Everything stays logged.*",
+      "Every AI agent runs on prompts. Waldo runs on your body. Your HRV, sleep, stress, and circadian position shape the handoff - which meetings move, which tasks wait, when to protect your afternoon. Waldo checks the tools around your day, writes back through MCP, and keeps every move logged.",
     wide: true,
-    aside: "the loop, out in the open.",
+    aside: "the only loop with a pulse.",
     visual: <McpWorkflowVisual />,
   },
   {
@@ -632,12 +657,6 @@ export function AgentFeaturesSection() {
                 <div className="mt-[var(--agent-card-block-top)] px-[var(--agent-card-block-inline)]">
                   <h3 className="type-h2 text-[var(--ink)]">{slide.headline}</h3>
                   <p className="type-body tone-secondary mt-4">{withHighlights(slide.description)}</p>
-                  {slide.detailHeadline && slide.detailDescription ? (
-                    <div className="mt-6">
-                      <h4 className="type-h3 text-[var(--ink)]">{slide.detailHeadline}</h4>
-                      <p className="type-body tone-secondary mt-3">{withHighlights(slide.detailDescription)}</p>
-                    </div>
-                  ) : null}
                   {slide.aside ? <Aside className="mt-4">{slide.aside}</Aside> : null}
                 </div>
               </article>
