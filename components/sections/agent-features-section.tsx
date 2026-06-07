@@ -12,6 +12,8 @@ type AgentSlide = {
   label: string;
   headline: string;
   description: string;
+  detailHeadline?: string;
+  detailDescription?: string;
   wide?: boolean;
   aside?: string;
   visual: ReactNode;
@@ -451,9 +453,9 @@ function OvernightVisual() {
 const slides: AgentSlide[] = [
   {
     label: "Chat",
-    headline: "Ask anything. Or don't.",
+    headline: "Every thread remembers.",
     description:
-      "Text or voice. Ask about your health, your schedule, your tasks, or why Waldo moved your 9am. But you never have to. *Waldo works without being asked.* Chat is there when you want to dig in.",
+      "Most AI chats forget what you said ten messages ago. Waldo keeps threads - one for sleep questions, one for the Q3 retro, one for your training plan. Context carries across conversations, across days, across weeks. Ask 'how did I sleep?' on Monday and 'is that a pattern?' on Friday - Waldo connects both without you re-explaining.",
     wide: true,
     aside: "there when you want the why.",
     visual: <ChatVisual />,
@@ -468,11 +470,14 @@ const slides: AgentSlide[] = [
   },
   {
     label: "Connectors",
-    headline: "One agent. Every tool you use.",
+    headline: "Every tool. Every account. One Waldo.",
     description:
-      "Calendar. Email. Tasks. Code. Music. Exercise. Weather. And your body. *One agent reading all of them*, writing back to the ones that matter.",
+      "Two Gmail accounts - work and personal. Three calendars. A Todoist for you and a Linear for the team. Waldo reads across all of them without you switching contexts. It sees your full day, not the version one app knows about.",
+    detailHeadline: "Your body becomes the context.",
+    detailDescription:
+      "Every AI agent runs on prompts. Waldo runs on your body. Your HRV, sleep, stress, and circadian position are the context window that shapes every decision Waldo makes - which meetings to move, which tasks to defer, when to protect your afternoon. You don't type 'I'm tired.' Waldo already read it off your wrist.",
     wide: true,
-    aside: "everything you use, connected to everything you feel.",
+    aside: "the only context window that has a pulse.",
     visual: <ConnectorsVisual />,
   },
   {
@@ -488,7 +493,7 @@ const slides: AgentSlide[] = [
     label: "Overnight",
     headline: "Waldo works while you sleep.",
     description:
-      "At 2am, Waldo dreams. It consolidates what it learned, finds patterns, and pre-builds your morning. *By the time your alarm goes off, it is already done.*",
+      "At 2am, Waldo dreams. It consolidates what it learned, finds patterns, and pre-builds your morning. *By the time your alarm goes off, it is already done.* Other agents wait for your prompt. Waldo's prompt is your pulse - updated every 15 minutes, running even at 2am.",
     aside: "start a task. take a nap. come back to it handled.",
     visual: <OvernightVisual />,
   },
@@ -625,9 +630,14 @@ export function AgentFeaturesSection() {
                   {slide.visual}
                 </div>
                 <div className="mt-[var(--agent-card-block-top)] px-[var(--agent-card-block-inline)]">
-                  <p className="type-eyebrow text-[var(--text-tertiary)]">{slide.label}</p>
-                  <h3 className="type-h2 mt-3 text-[var(--ink)]">{slide.headline}</h3>
+                  <h3 className="type-h2 text-[var(--ink)]">{slide.headline}</h3>
                   <p className="type-body tone-secondary mt-4">{withHighlights(slide.description)}</p>
+                  {slide.detailHeadline && slide.detailDescription ? (
+                    <div className="mt-6">
+                      <h4 className="type-h3 text-[var(--ink)]">{slide.detailHeadline}</h4>
+                      <p className="type-body tone-secondary mt-3">{withHighlights(slide.detailDescription)}</p>
+                    </div>
+                  ) : null}
                   {slide.aside ? <Aside className="mt-4">{slide.aside}</Aside> : null}
                 </div>
               </article>
