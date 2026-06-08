@@ -5,6 +5,7 @@ import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 
 
 import { Aside, withHighlights } from "@/components/landing-primitives";
 import { IconButton } from "@/components/rail-controls";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 
 const SCROLL_DURATION_MS = 1000;
 
@@ -526,13 +527,17 @@ const slides: AgentSlide[] = [
 
 export function AgentFeaturesSection() {
   const reducedMotion = usePrefersReducedMotion();
+  const sectionRef = useRef<HTMLElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<Array<HTMLLIElement | null>>([]);
   const offsetsRef = useRef<number[]>([]);
   const animationRef = useRef<number | null>(null);
   const scrollSnapTypeRef = useRef<string | null>(null);
   const scrollDebounceRef = useRef<number | null>(null);
+  const activeRef = useRef(0);
   const [active, setActive] = useState(0);
+  const [railProgress, setRailProgress] = useState(0);
+  const [scrollDriven, setScrollDriven] = useState(false);
 
   const measureOffsets = () => {
     const firstOffset = itemRefs.current[0]?.offsetLeft ?? 0;
@@ -552,6 +557,60 @@ export function AgentFeaturesSection() {
     };
   }, []);
 
+  useEffect(() => {
+    activeRef.current = active;
+  }, [active]);
+
+  const setActiveValue = (index: number) => {
+    activeRef.current = index;
+    setActive(index);
+  };
+
+  useEffect(() => {
+    if (reducedMotion) return;
+
+    const section = sectionRef.current;
+    const viewport = viewportRef.current;
+    if (!section || !viewport) return;
+
+    const mm = gsap.matchMedia();
+
+    mm.add("(min-width: 1024px)", () => {
+      measureOffsets();
+      const maxScroll = Math.max(0, viewport.scrollWidth - viewport.clientWidth);
+      if (maxScroll < 8) return undefined;
+
+      setScrollDriven(true);
+
+      const trigger = ScrollTrigger.create({
+        trigger: section,
+        start: "top top",
+        end: () => `+=${maxScroll + window.innerHeight * 0.45}`,
+        pin: true,
+        scrub: 0.9,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+        onUpdate: (self) => {
+          const rawIndex = self.progress * (slides.length - 1);
+          const nextIndex = Math.max(0, Math.min(slides.length - 1, Math.round(rawIndex)));
+
+          viewport.scrollLeft = maxScroll * self.progress;
+          setRailProgress(self.progress);
+          if (nextIndex !== activeRef.current) setActiveValue(nextIndex);
+        },
+      });
+
+      ScrollTrigger.refresh();
+
+      return () => {
+        trigger.kill();
+        setScrollDriven(false);
+      };
+    });
+
+    return () => mm.revert();
+  }, [reducedMotion]);
+
   const finishAnimation = () => {
     const viewport = viewportRef.current;
     if (viewport && scrollSnapTypeRef.current !== null) {
@@ -565,7 +624,7 @@ export function AgentFeaturesSection() {
     const viewport = viewportRef.current;
     const nextIndex = Math.max(0, Math.min(index, slides.length - 1));
     const to = offsetsRef.current[nextIndex] ?? 0;
-    setActive(nextIndex);
+    setActiveValue(nextIndex);
 
     if (!viewport) return;
     if (animationRef.current !== null) window.cancelAnimationFrame(animationRef.current);
@@ -611,7 +670,7 @@ export function AgentFeaturesSection() {
       { index: active, distance: Number.POSITIVE_INFINITY },
     ).index;
 
-    if (nearest !== active) setActive(nearest);
+    if (nearest !== active) setActiveValue(nearest);
   };
 
   const handleScroll = () => {
@@ -620,8 +679,8 @@ export function AgentFeaturesSection() {
   };
 
   return (
-    <section id="agent-features" className="waldo-agent-gallery w-screen max-w-none scroll-mt-28 overflow-hidden py-8 lg:py-12">
-      <div className="px-[var(--agent-side-padding)]">
+    <section ref={sectionRef} id="agent-features" className="waldo-agent-gallery w-screen max-w-none scroll-mt-28 overflow-hidden py-8 lg:py-12">
+      <div className="px-[var(--agent-side-padding)]" data-animate="blur-fade">
         <p className="type-eyebrow mb-4 text-[var(--text-tertiary)]">Agent features</p>
         <h2 className="type-h1 max-w-[760px] text-[var(--ink)]" data-animate="headline">
           One agent. Twenty-four tools.
@@ -633,6 +692,8 @@ export function AgentFeaturesSection() {
       <div
         ref={viewportRef}
         data-lenis-prevent
+        data-animate="stagger"
+        data-stagger="0.08"
         className="mt-12 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         style={{ scrollSnapType: "x mandatory", scrollPaddingInline: "var(--agent-side-padding)" }}
         aria-label="Agent features gallery"
@@ -645,6 +706,7 @@ export function AgentFeaturesSection() {
           {slides.map((slide, index) => (
             <li
               key={slide.label}
+              data-stagger-item
               ref={(node) => {
                 itemRefs.current[index] = node;
               }}
@@ -668,6 +730,41 @@ export function AgentFeaturesSection() {
 
       <div className="mt-10 flex justify-end px-[var(--agent-side-padding)] max-[480px]:justify-center">
         <div className="flex items-center gap-3">
+          <div
+            className="waldo-carousel-controls flex h-14 w-[200px] items-center justify-center gap-3 rounded-full bg-[var(--surface-t2)] px-4 sm:w-[216px] sm:gap-4"
+            aria-label="Agent feature progress"
+          >
+            {slides.map((slide, index) => {
+              const fillWidth = scrollDriven
+                ? Math.max(0, Math.min(1, railProgress * slides.length - index))
+                : index <= active
+                  ? 1
+                  : 0;
+
+              return (
+                <button
+                  key={slide.label}
+                  type="button"
+                  aria-label={`Show ${slide.label}`}
+                  className="focusable-ring flex h-11 w-6 items-center justify-center rounded-full"
+                  onClick={() => animateTo(index)}
+                >
+                  <span
+                    className="relative block h-2 shrink-0 overflow-hidden rounded-[var(--bar-radius)] bg-[var(--bar-track)] transition-[width,background-color] duration-[250ms] ease-[var(--ease-premium)]"
+                    style={{
+                      width: index === active ? "var(--active-dot-width)" : "8px",
+                      boxShadow: "var(--bar-track-inset)",
+                    }}
+                  >
+                    <span
+                      className="absolute inset-y-0 left-0 rounded-[var(--bar-radius)] bg-[var(--bar-fill-ink)]"
+                      style={{ width: `${fillWidth * 100}%` }}
+                    />
+                  </span>
+                </button>
+              );
+            })}
+          </div>
           <IconButton aria-label="Previous agent feature" disabled={active === 0} onClick={() => animateTo(active - 1)}>
             <ArrowIcon direction="prev" />
           </IconButton>

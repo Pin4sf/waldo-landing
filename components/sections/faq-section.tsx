@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import * as Accordion from "@radix-ui/react-accordion";
 
 import { Aside, SectionIntro, withHighlights } from "@/components/landing-primitives";
 
@@ -48,70 +48,50 @@ const faqs = [
 ] as const;
 
 export function FaqSection() {
-  const [open, setOpen] = useState<number | null>(null);
-
   return (
     <section id="faq" className="section-shell w-full scroll-mt-28 flex flex-col gap-10 py-6 lg:py-8">
-      <SectionIntro
-        title={
-          <>
-            You&apos;re going to
-            <br />
-            ask these.
-          </>
-        }
-        aside="the fair objections."
-      />
+      <div data-animate="blur-fade">
+        <SectionIntro
+          title={
+            <>
+              You&apos;re going to
+              <br />
+              ask these.
+            </>
+          }
+          aside="the fair objections."
+        />
+      </div>
 
       <div className="mx-auto w-full max-w-[880px]">
-        {faqs.map((item, index) => {
-          const isOpen = open === index;
-          const panelId = `faq-panel-${index}`;
-          const buttonId = `faq-button-${index}`;
-          return (
-            <div
+        <Accordion.Root type="single" collapsible data-animate="stagger" data-stagger="0.045">
+          {faqs.map((item, index) => (
+            <Accordion.Item
               key={item.q}
+              value={`faq-${index}`}
+              data-stagger-item
               className="border-b border-[var(--border-default)]"
             >
-              <h3>
-                <button
-                  type="button"
-                  id={buttonId}
-                  aria-expanded={isOpen}
-                  aria-controls={panelId}
-                  onClick={() => setOpen(isOpen ? null : index)}
-                  className="focusable-ring flex w-full items-center justify-between gap-6 rounded-[12px] px-1 py-6 text-left sm:py-7"
-                >
+              <Accordion.Header>
+                <Accordion.Trigger className="group focusable-ring flex w-full items-center justify-between gap-6 rounded-[12px] px-1 py-6 text-left sm:py-7">
                   <span className="type-h3 text-[var(--ink)]">{item.q}</span>
                   <span
                     aria-hidden
-                    className="shrink-0 text-[var(--ink)]"
-                    style={{
-                      transition: "transform 260ms var(--ease-premium)",
-                      transform: isOpen ? "rotate(45deg)" : "rotate(0deg)",
-                      fontSize: "1.4rem",
-                      lineHeight: 1,
-                    }}
+                    className="shrink-0 text-[var(--ink)] transition-transform duration-[260ms] ease-[var(--ease-premium)] group-data-[state=open]:rotate-45"
+                    style={{ fontSize: "1.4rem", lineHeight: 1 }}
                   >
                     +
                   </span>
-                </button>
-              </h3>
-              <div
-                id={panelId}
-                role="region"
-                aria-labelledby={buttonId}
-                className={`grid transition-[grid-template-rows,opacity] duration-300 ease-[var(--ease-premium)] ${
-                  isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
-                }`}
-              >
+                </Accordion.Trigger>
+              </Accordion.Header>
+              <Accordion.Content className="grid overflow-hidden transition-[grid-template-rows,opacity] duration-300 ease-[var(--ease-premium)] data-[state=closed]:grid-rows-[0fr] data-[state=closed]:opacity-0 data-[state=open]:grid-rows-[1fr] data-[state=open]:opacity-100">
                 <div className="overflow-hidden">
                   <p className="type-body tone-secondary max-w-[72ch] px-1 pb-6">{withHighlights(item.a)}</p>
                 </div>
-              </div>
-            </div>
-          );
-        })}
+              </Accordion.Content>
+            </Accordion.Item>
+          ))}
+        </Accordion.Root>
       </div>
       <Aside className="text-center">simple answer. no fog.</Aside>
     </section>

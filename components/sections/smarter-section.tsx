@@ -12,24 +12,26 @@ const dimensions = [
 export function SmarterSection() {
   return (
     <section id="constellation" className="section-shell dark-panel overflow-hidden rounded-[24px] p-5 sm:p-6 lg:p-8">
-      <SectionIntro
-        dark
-        title={
-          <>
-            The longer it runs,
-            <br />
-            the more Waldo sees.
-          </>
-        }
-        aside="patterns you cannot see from the inside."
-      >
-        <p>
-          {withHighlights("Tuesdays and Thursdays looked ordinary until the pattern had enough shape. *Your worst sleep follows the heaviest meeting days.* You were too close to see it. Waldo was not.")}
-        </p>
-      </SectionIntro>
+      <div data-animate="blur-fade">
+        <SectionIntro
+          dark
+          title={
+            <>
+              The longer it runs,
+              <br />
+              the more Waldo sees.
+            </>
+          }
+          aside="patterns you cannot see from the inside."
+        >
+          <p>
+            {withHighlights("Tuesdays and Thursdays looked ordinary until the pattern had enough shape. *Your worst sleep follows the heaviest meeting days.* You were too close to see it. Waldo was not.")}
+          </p>
+        </SectionIntro>
+      </div>
 
-      <div className="mt-8 grid gap-5 lg:grid-cols-[1.15fr_.85fr]">
-        <div className="dark-card relative min-h-[420px] overflow-hidden rounded-[8px] p-5 sm:p-6">
+      <div className="mt-8 grid gap-5 lg:grid-cols-[1.15fr_.85fr]" data-animate="stagger" data-stagger="0.075">
+        <div data-stagger-item className="dark-card relative min-h-[420px] overflow-hidden rounded-[8px] p-5 sm:p-6">
           <div className="flex items-center justify-between gap-4">
             <div>
               <p className="type-label text-[var(--panel-ink)]">The Constellation</p>
@@ -66,7 +68,7 @@ export function SmarterSection() {
           </svg>
         </div>
 
-        <div className="grid gap-3">
+        <div className="grid gap-3" data-stagger-item>
           {dimensions.map(([label, value, read]) => (
             <div key={label} className="rounded-[8px] border border-[var(--panel-border)] bg-[var(--panel-surface)] p-4">
               <div className="flex items-baseline justify-between gap-4">

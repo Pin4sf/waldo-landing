@@ -15,13 +15,13 @@ export function WhereIsWaldoSection() {
 
   return (
     <section id="where" className="section-shell surface-card overflow-hidden p-6 sm:p-8 lg:p-12">
-      <div className="mx-auto flex max-w-[820px] flex-col items-center text-center">
+      <div className="mx-auto flex max-w-[820px] flex-col items-center text-center" data-animate="blur-fade">
         <h2 className="type-h1 text-[var(--ink)]" data-animate="headline">
           Where&apos;s Waldo?
           <br />
           Right now, handling —
         </h2>
-        <div className="mt-8 w-full max-w-[720px] overflow-hidden rounded-[16px] border border-[var(--border-default)] bg-[var(--surface-t1)] p-4 sm:p-5">
+        <div className="mt-8 w-full max-w-[720px] overflow-hidden rounded-[16px] border border-[var(--border-default)] bg-[var(--surface-t1)] p-4 sm:p-5" data-animate="blur-fade">
           <div className="ticker-window h-[88px] overflow-hidden sm:h-[76px]">
             <div className="where-ticker-track">
               {loop.map(([action, read], index) => (

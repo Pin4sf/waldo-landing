@@ -118,22 +118,24 @@ export function ActionFanSection() {
 
   return (
     <section id="action-fan" className="section-shell scroll-mt-28 flex flex-col gap-8 py-6 lg:gap-10 lg:py-8">
-      <SectionIntro
-        title={
-          <>
-            The moves stack up.
-            <br />
-            You see the useful one.
-          </>
-        }
-        aside="quiet, until it matters."
-      >
-        <p>
-          {withHighlights("The same agent work, shown as a *moving stack* instead of a grid.")}
-        </p>
-      </SectionIntro>
+      <div data-animate="blur-fade">
+        <SectionIntro
+          title={
+            <>
+              The moves stack up.
+              <br />
+              You see the useful one.
+            </>
+          }
+          aside="quiet, until it matters."
+        >
+          <p>
+            {withHighlights("The same agent work, shown as a *moving stack* instead of a grid.")}
+          </p>
+        </SectionIntro>
+      </div>
 
-      <div className="lg:hidden" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd} onClick={onClick}>
+      <div className="lg:hidden" data-animate="blur-fade" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd} onClick={onClick}>
         <div className="relative mx-auto w-full max-w-[420px] px-4 pt-5">
           <div className="absolute inset-x-8 top-0 h-full rounded-[22px] border border-[var(--border-default)] bg-[var(--surface-t2)] opacity-50" />
           <div className="absolute inset-x-6 top-2 h-full rounded-[22px] border border-[var(--border-default)] bg-[var(--surface-t2)] opacity-70" />
@@ -146,6 +148,7 @@ export function ActionFanSection() {
 
       <div
         className="relative mx-auto hidden h-[520px] w-full max-w-[1020px] cursor-pointer lg:block"
+        data-animate="blur-fade"
         onClick={onClick}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
@@ -242,7 +245,7 @@ export function SceneCloseSection() {
         </picture>
       </div>
 
-      <div className="relative z-[2] flex min-h-[760px] flex-col items-center justify-start px-4 pt-28 text-center">
+      <div className="relative z-[2] flex min-h-[760px] flex-col items-center justify-start px-4 pt-28 text-center" data-animate="blur-fade">
         <h2 className="type-h1 text-[var(--ink)]" data-animate="headline">
           You&apos;re not the first.
           <br />
@@ -258,4 +261,3 @@ export function SceneCloseSection() {
     </section>
   );
 }
-

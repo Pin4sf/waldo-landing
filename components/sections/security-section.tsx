@@ -1,5 +1,6 @@
 "use client";
 
+import * as Slider from "@radix-ui/react-slider";
 import { useState } from "react";
 
 import { Aside, SectionIntro, withHighlights } from "@/components/landing-primitives";
@@ -120,7 +121,7 @@ function SecurityIcon({ name }: { name: SecurityIconName }) {
 
 function SecurityCard({ card }: { card: (typeof securityCards)[number] }) {
   return (
-    <article data-rail-card="true" className="surface-card-top flex min-h-[210px] w-[280px] shrink-0 snap-start flex-col p-5 sm:w-[300px]">
+    <article data-rail-card="true" data-stagger-item className="surface-card-top flex min-h-[210px] w-[280px] shrink-0 snap-start flex-col p-5 sm:w-[300px]">
       <div className="flex h-12 w-12 items-center justify-center rounded-[10px] bg-[var(--surface-t3)]">
         <SecurityIcon name={card.icon} />
       </div>
@@ -194,20 +195,20 @@ function AutonomySlider() {
           ))}
         </div>
 
-        <label className="sr-only" htmlFor="autonomy-level">
-          Autonomy level
-        </label>
-        <input
-          id="autonomy-level"
-          type="range"
+        <Slider.Root
+          className="relative mt-6 flex h-8 w-full touch-none select-none items-center"
           min={0}
           max={2}
           step={1}
-          value={level}
-          onChange={(event) => setLevel(Number(event.target.value))}
-          className="mt-5 w-full"
-          style={{ accentColor: "var(--action)" }}
-        />
+          value={[level]}
+          onValueChange={([value]) => setLevel(value ?? 0)}
+          aria-label="Autonomy level"
+        >
+          <Slider.Track className="relative h-[var(--bar-h)] grow overflow-hidden rounded-[var(--bar-radius)] bg-[var(--bar-track)]">
+            <Slider.Range className="absolute h-full rounded-[var(--bar-radius)] bg-[var(--bar-fill-ink)]" />
+          </Slider.Track>
+          <Slider.Thumb className="focusable-ring block h-5 w-5 rounded-full border border-[var(--border-default)] bg-[var(--surface-t1)]" />
+        </Slider.Root>
 
         <div className="mt-5">
           <AutonomyPreview level={current} />
@@ -227,21 +228,23 @@ export function SecuritySection() {
 
   return (
     <section id="security" className="section-shell w-full scroll-mt-28 py-6 lg:py-8">
-      <SectionIntro
-        title={
-          <>
-            Your health data
-            <br />
-            stays yours.
-          </>
-        }
-        aside="private by default."
-      >
-        <p>
-          Waldo reads your most personal data: heart rate, sleep, stress, recovery. That is a responsibility we do not
-          take lightly.
-        </p>
-      </SectionIntro>
+      <div data-animate="blur-fade">
+        <SectionIntro
+          title={
+            <>
+              Your health data
+              <br />
+              stays yours.
+            </>
+          }
+          aside="private by default."
+        >
+          <p>
+            Waldo reads your most personal data: heart rate, sleep, stress, recovery. That is a responsibility we do not
+            take lightly.
+          </p>
+        </SectionIntro>
+      </div>
 
       <div className="mt-10">
         <div className="mb-4 flex justify-end">
@@ -255,6 +258,8 @@ export function SecuritySection() {
         <div
           ref={railRef}
           data-lenis-prevent
+          data-animate="stagger"
+          data-stagger="0.055"
           className="rail-fade flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           aria-label="Security commitments"
         >
@@ -264,7 +269,7 @@ export function SecuritySection() {
         </div>
       </div>
 
-      <div className="mt-4">
+      <div className="mt-4" data-animate="blur-fade">
         <AutonomySlider />
       </div>
     </section>

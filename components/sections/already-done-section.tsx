@@ -1,9 +1,10 @@
 "use client";
 
+import * as Accordion from "@radix-ui/react-accordion";
 import { useEffect, useRef, useState } from "react";
-import { motion, useReducedMotion } from "motion/react";
 
 import { Aside } from "@/components/landing-primitives";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 
 const AUTO_DWELL_MS = 6150;
 const AUTO_SCROLL_MS = 1000;
@@ -337,48 +338,21 @@ function PlayPauseIcon({ playing, ended }: { playing: boolean; ended: boolean })
 function PanelPill({
   panel,
   index,
-  isOpen,
-  onOpen,
 }: {
   panel: FeaturePanel;
   index: number;
-  isOpen: boolean;
-  onOpen: () => void;
 }) {
   const panelId = `${panel.label.replace(/[^a-z0-9]/gi, "-").toLowerCase()}-${index}`;
   const panelContentId = `${panelId}-content`;
   const cleanBody = panel.body.replaceAll("*", "");
-  const prefersReducedMotion = useReducedMotion();
-  const transition = prefersReducedMotion
-    ? { duration: 0 }
-    : { duration: 0.42, ease: [0.22, 1, 0.36, 1] as const };
 
   return (
-    <motion.div
-      layout
-      className={isOpen ? "w-full max-w-[440px]" : "w-fit max-w-full"}
-      transition={transition}
-    >
-      {isOpen ? (
-        <motion.article
-          id={panelContentId}
-          layout
-          initial={prefersReducedMotion ? false : { opacity: 0, y: -6, filter: "blur(5px)" }}
-          animate={prefersReducedMotion ? { opacity: 1 } : { opacity: 1, y: 0, filter: "blur(0px)" }}
-          transition={transition}
-          className="rounded-[16px] border border-[var(--border-default)] bg-[var(--surface-t2)] px-5 py-4"
-        >
-          <p className="type-body text-[var(--text-secondary)]">
-            <span className="font-medium text-[var(--ink)]">{panel.title}</span> {cleanBody}
-          </p>
-        </motion.article>
-      ) : (
-        <button
-          type="button"
-          className="focusable-ring flex w-fit max-w-full items-center gap-3 rounded-full border border-[var(--border-default)] bg-transparent px-4 py-3 text-left text-[var(--ink)] transition-[background-color] duration-150 ease-[var(--ease-premium)] hover:bg-[var(--surface-t3)]"
-          aria-expanded={false}
+    <Accordion.Item value={`${index}`} className="w-fit max-w-full data-[state=open]:w-full data-[state=open]:max-w-[440px]">
+      <Accordion.Header>
+        <Accordion.Trigger
+          id={panelId}
+          className="focusable-ring flex w-fit max-w-full items-center gap-3 rounded-full border border-[var(--border-default)] bg-transparent px-4 py-3 text-left text-[var(--ink)] transition-[background-color] duration-150 ease-[var(--ease-premium)] hover:bg-[var(--surface-t3)] data-[state=open]:hidden"
           aria-controls={panelContentId}
-          onClick={onOpen}
         >
           <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-[var(--border-default)] bg-transparent text-[var(--ink)]" aria-hidden>
             <span className="relative h-3 w-3">
@@ -387,9 +361,21 @@ function PanelPill({
             </span>
           </span>
           <span className="type-label">{panel.title}</span>
-        </button>
-      )}
-    </motion.div>
+        </Accordion.Trigger>
+      </Accordion.Header>
+      <Accordion.Content
+        id={panelContentId}
+        className="grid overflow-hidden transition-[grid-template-rows,opacity,filter,transform] duration-[420ms] ease-[var(--ease-premium)] data-[state=closed]:grid-rows-[0fr] data-[state=closed]:opacity-0 data-[state=closed]:blur-[5px] data-[state=closed]:-translate-y-1.5 data-[state=open]:grid-rows-[1fr] data-[state=open]:opacity-100 data-[state=open]:blur-0 data-[state=open]:translate-y-0"
+      >
+        <div className="overflow-hidden">
+          <article className="rounded-[16px] border border-[var(--border-default)] bg-[var(--surface-t2)] px-5 py-4">
+          <p className="type-body text-[var(--text-secondary)]">
+            <span className="font-medium text-[var(--ink)]">{panel.title}</span> {cleanBody}
+          </p>
+          </article>
+        </div>
+      </Accordion.Content>
+    </Accordion.Item>
   );
 }
 
@@ -422,13 +408,11 @@ function WatchSignalStage({ slide, panel }: { slide: ShowcaseSlide; panel: Featu
 function SlideContent({
   slide,
   openPanel,
-  onOpenPanel,
-  onClosePanel,
+  onPanelChange,
 }: {
   slide: ShowcaseSlide;
   openPanel: number | null;
-  onOpenPanel: (panelIndex: number) => void;
-  onClosePanel: () => void;
+  onPanelChange: (panelIndex: number | null) => void;
 }) {
   const panel = slide.panels[openPanel ?? 0] ?? slide.panels[0];
 
@@ -439,7 +423,7 @@ function SlideContent({
           type="button"
           aria-label="Collapse expanded field"
           className="focusable-ring absolute right-5 top-5 z-10 flex h-8 w-8 items-center justify-center rounded-full border border-[var(--border-default)] bg-[var(--surface-t1)] text-[var(--ink)] transition-[background-color] duration-150 ease-[var(--ease-premium)] hover:bg-[var(--surface-t2)]"
-          onClick={onClosePanel}
+          onClick={() => onPanelChange(null)}
         >
           <span aria-hidden className="relative h-3 w-3 rotate-45">
             <span className="absolute left-0 top-1/2 h-[1.5px] w-3 -translate-y-1/2 rounded-full bg-current" />
@@ -453,17 +437,22 @@ function SlideContent({
           <h3 className="type-h2 max-w-[16ch] text-[var(--ink)]">{slide.headline}</h3>
         </div>
 
-        <div className="space-y-3 pr-1 lg:min-h-0 lg:max-h-[400px] lg:overflow-y-auto" data-lenis-prevent>
+        <Accordion.Root
+          type="single"
+          collapsible
+          value={openPanel === null ? "" : `${openPanel}`}
+          onValueChange={(value) => onPanelChange(value === "" ? null : Number(value))}
+          className="space-y-3 pr-1 lg:min-h-0 lg:max-h-[400px] lg:overflow-y-auto"
+          data-lenis-prevent
+        >
           {slide.panels.map((item, index) => (
             <PanelPill
               key={item.label}
               panel={item}
               index={index}
-              isOpen={openPanel === index}
-              onOpen={() => onOpenPanel(index)}
             />
           ))}
-        </div>
+        </Accordion.Root>
       </div>
 
       <WatchSignalStage slide={slide} panel={panel} />
@@ -473,10 +462,12 @@ function SlideContent({
 
 export function AlreadyDoneSection() {
   const reducedMotion = usePrefersReducedMotion();
+  const sectionRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const scrollAnimationRef = useRef<number | null>(null);
   const progressAnimationRef = useRef<number | null>(null);
   const progressRef = useRef(0);
+  const activeRef = useRef(0);
   const lastProgressTickRef = useRef<number | null>(null);
   const scrollSnapTypeRef = useRef<string | null>(null);
   const programmaticScrollRef = useRef(false);
@@ -487,9 +478,10 @@ export function AlreadyDoneSection() {
   const [interactionPaused, setInteractionPaused] = useState(false);
   const [documentHidden, setDocumentHidden] = useState(false);
   const [isScrollAnimating, setIsScrollAnimating] = useState(false);
+  const [scrollDriven, setScrollDriven] = useState(false);
   const [openPanels, setOpenPanels] = useState<Record<number, number | null>>({});
 
-  const shouldTickProgress = playing && !ended && !reducedMotion && !interactionPaused && !documentHidden && !isScrollAnimating;
+  const shouldTickProgress = playing && !ended && !reducedMotion && !scrollDriven && !interactionPaused && !documentHidden && !isScrollAnimating;
   const activeSlide = slides[active];
   const activeLabel = activeSlide.tab;
 
@@ -497,6 +489,11 @@ export function AlreadyDoneSection() {
     const bounded = Math.max(0, Math.min(1, value));
     progressRef.current = bounded;
     setProgress(bounded);
+  };
+
+  const setActiveValue = (index: number) => {
+    activeRef.current = index;
+    setActive(index);
   };
 
   useEffect(() => {
@@ -516,6 +513,65 @@ export function AlreadyDoneSection() {
       if (progressAnimationRef.current !== null) window.cancelAnimationFrame(progressAnimationRef.current);
     };
   }, []);
+
+  useEffect(() => {
+    activeRef.current = active;
+  }, [active]);
+
+  useEffect(() => {
+    if (reducedMotion) return;
+
+    const section = sectionRef.current;
+    const track = trackRef.current;
+    if (!section || !track) return;
+
+    const mm = gsap.matchMedia();
+
+    mm.add("(min-width: 1024px)", () => {
+      const maxScroll = Math.max(0, track.scrollWidth - track.clientWidth);
+      if (maxScroll < 8) return undefined;
+
+      setScrollDriven(true);
+      setPlaying(false);
+      setEnded(false);
+      lastProgressTickRef.current = null;
+
+      const trigger = ScrollTrigger.create({
+        trigger: section,
+        start: "top top",
+        end: () => `+=${maxScroll + window.innerHeight * 0.5}`,
+        pin: true,
+        scrub: 0.9,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+        onUpdate: (self) => {
+          const rawIndex = self.progress * (slides.length - 1);
+          const nextIndex = Math.max(0, Math.min(slides.length - 1, Math.round(rawIndex)));
+          const localProgress = nextIndex >= slides.length - 1 ? self.progress : rawIndex - Math.floor(rawIndex);
+
+          programmaticScrollRef.current = true;
+          track.scrollLeft = maxScroll * self.progress;
+          window.requestAnimationFrame(() => {
+            programmaticScrollRef.current = false;
+          });
+
+          if (nextIndex !== activeRef.current) setActiveValue(nextIndex);
+          setProgressValue(self.progress >= 0.999 ? 1 : localProgress);
+          setEnded(self.progress >= 0.999);
+        },
+      });
+
+      ScrollTrigger.refresh();
+
+      return () => {
+        trigger.kill();
+        setScrollDriven(false);
+        programmaticScrollRef.current = false;
+      };
+    });
+
+    return () => mm.revert();
+  }, [reducedMotion]);
 
   useEffect(() => {
     if (!shouldTickProgress) {
@@ -578,7 +634,7 @@ export function AlreadyDoneSection() {
     lastProgressTickRef.current = null;
     setProgressValue(0);
     setEnded(false);
-    setActive(nextIndex);
+    setActiveValue(nextIndex);
     if (!track || !card) return;
 
     const paddingStart = parseFloat(window.getComputedStyle(track).paddingLeft) || 0;
@@ -648,7 +704,7 @@ export function AlreadyDoneSection() {
     });
 
     if (nearest !== active) {
-      setActive(nearest);
+      setActiveValue(nearest);
       setProgressValue(0);
       setEnded(false);
     }
@@ -656,10 +712,11 @@ export function AlreadyDoneSection() {
 
   return (
     <section
+      ref={sectionRef}
       id="already-handled"
       className="waldo-highlights w-screen max-w-none scroll-mt-28 overflow-hidden py-8 lg:py-12"
     >
-      <div className="mb-8 flex w-full flex-col gap-6 px-[var(--slide-padding)] lg:mb-10">
+      <div className="mb-8 flex w-full flex-col gap-6 px-[var(--slide-padding)] lg:mb-10" data-animate="blur-fade">
         <div>
           <p className="type-eyebrow mb-4 text-[var(--text-tertiary)]">Health features</p>
           <h2 className="type-h1 text-[var(--ink)]" data-animate="headline">
@@ -673,6 +730,8 @@ export function AlreadyDoneSection() {
       <div
         ref={trackRef}
         data-lenis-prevent
+        data-animate="stagger"
+        data-stagger="0.08"
         className="grid w-full auto-cols-[var(--slide-width)] grid-flow-col snap-x snap-mandatory scroll-pl-0 gap-[var(--slide-gap)] overflow-x-auto px-[var(--slide-padding)] pb-2 [scrollbar-width:none] max-[734px]:scroll-pl-[var(--slide-padding)] [&::-webkit-scrollbar]:hidden"
         aria-live="polite"
         aria-label={`Showing ${activeLabel}`}
@@ -707,20 +766,16 @@ export function AlreadyDoneSection() {
               aria-label={slide.tab}
               aria-current={isActive}
               data-lenis-prevent
+              data-stagger-item
               className="h-[var(--slide-height)] w-[var(--slide-width)] snap-center overflow-y-auto rounded-[24px] bg-[var(--surface-t2)] [scrollbar-width:none] max-[734px]:snap-start lg:overflow-hidden [&::-webkit-scrollbar]:hidden"
             >
               <SlideContent
                 slide={slide}
                 openPanel={openPanel}
-                onOpenPanel={(panelIndex) => {
+                onPanelChange={(panelIndex) => {
                   setPlaying(false);
                   setEnded(false);
                   setOpenPanels((current) => ({ ...current, [index]: panelIndex }));
-                }}
-                onClosePanel={() => {
-                  setPlaying(false);
-                  setEnded(false);
-                  setOpenPanels((current) => ({ ...current, [index]: null }));
                 }}
               />
             </article>
@@ -780,8 +835,10 @@ export function AlreadyDoneSection() {
           type="button"
           className="waldo-carousel-controls focusable-ring flex h-14 w-14 items-center justify-center rounded-full bg-[var(--surface-t2)] text-[var(--ink)] transition-[background-color] duration-150 ease-[var(--ease-premium)] hover:bg-[var(--surface-t1)]"
           style={{ animation: "waldo-carousel-control-in 940ms var(--ease-premium) both" }}
-          aria-label={ended ? "Replay carousel" : playing ? "Pause carousel" : "Play carousel"}
+          aria-label={scrollDriven ? "Carousel follows page scroll" : ended ? "Replay carousel" : playing ? "Pause carousel" : "Play carousel"}
+          disabled={scrollDriven}
           onClick={() => {
+            if (scrollDriven) return;
             if (ended) {
               scrollToSlide(0, false);
               setPlaying(true);

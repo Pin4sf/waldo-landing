@@ -42,6 +42,7 @@ export function HeroSection() {
       {/* Hero copy — sits inside the white circle, below Waldo. */}
       <div
         className="relative z-20 mx-auto flex max-w-[820px] flex-col items-center px-6 text-center"
+        data-animate="blur-fade"
         style={{
           paddingTop: "clamp(280px, 30.5vw, 560px)",
           paddingBottom: "clamp(160px, 15vw, 240px)",

@@ -45,7 +45,7 @@ export function FooterSection() {
       style={{ background: backgrounds[period] }}
     >
       <div className="mx-auto flex min-h-[760px] max-w-[1200px] flex-col items-center justify-between px-4 pb-8 pt-24 text-center sm:px-6 lg:px-10">
-        <div className="flex flex-col items-center gap-6">
+        <div className="flex flex-col items-center gap-6" data-animate="blur-fade">
           <h2 className="type-h1 text-[var(--ink)]" data-animate="headline">
             You&apos;re not the first.
             <br />
@@ -57,7 +57,7 @@ export function FooterSection() {
           <Aside>Your watch has been waiting for this.</Aside>
         </div>
 
-        <div className="relative flex w-full flex-col items-center">
+        <div className="relative flex w-full flex-col items-center" data-animate="blur-fade">
           <Image
             src="/illustrations/default.svg"
             alt="Waldo resting"
@@ -72,9 +72,9 @@ export function FooterSection() {
           >
             <div>
               <p className="type-label text-[var(--ink)]">Product</p>
-              <div className="mt-3 flex flex-wrap gap-3">
+              <div className="mt-3 flex flex-wrap gap-3" data-animate="stagger" data-stagger="0.045">
                 {footerLinks.map(([label, href]) => (
-                  <a key={label} href={href} className="type-caption tone-secondary rounded-full border border-[var(--border-default)] bg-[var(--surface-t1)] px-3 py-2 transition-[color,border-color] duration-150 hover:border-[var(--border-focus)] hover:text-[var(--ink)]">
+                  <a key={label} href={href} data-stagger-item className="type-caption tone-secondary rounded-full border border-[var(--border-default)] bg-[var(--surface-t1)] px-3 py-2 transition-[color,border-color] duration-150 hover:border-[var(--border-focus)] hover:text-[var(--ink)]">
                     {label}
                   </a>
                 ))}

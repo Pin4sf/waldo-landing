@@ -1,7 +1,6 @@
 "use client";
 
 import { Fragment } from "react";
-import { motion, useReducedMotion } from "motion/react";
 
 import { Aside, SectionIntro } from "@/components/landing-primitives";
 import { RailArrows, useRailScroll } from "@/components/rail-controls";
@@ -120,11 +119,10 @@ function SignalVisual({ signal }: { signal: HealthSignal }) {
 
 export function UseCasesSection() {
   const { railRef, canGoBack, canGoForward, scrollByCard } = useRailScroll();
-  const reducedMotion = useReducedMotion();
 
   return (
     <section id="use-cases" className="section-shell w-full scroll-mt-28 overflow-hidden py-6 lg:py-8">
-      <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+      <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between" data-animate="blur-fade">
         <SectionIntro
           eyebrow="Health signals"
           title={
@@ -148,23 +146,18 @@ export function UseCasesSection() {
       <div
         ref={railRef}
         data-lenis-prevent
+        data-animate="stagger"
+        data-stagger="0.055"
         className="rail-fade mt-10 snap-x snap-mandatory overflow-x-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         aria-label="Health signals"
       >
         <div className="flex w-max items-stretch">
           {healthSignals.map((signal, index) => (
             <Fragment key={signal.key}>
-              <motion.article
+              <article
                 id={`health-signal-${signal.key}`}
                 data-rail-card="true"
-                initial={reducedMotion ? false : { opacity: 0, y: 24, filter: "blur(10px)" }}
-                whileInView={reducedMotion ? undefined : { opacity: 1, y: 0, filter: "blur(0px)" }}
-                viewport={{ once: true, amount: 0.28, margin: "0px 0px -12% 0px" }}
-                transition={{
-                  duration: 0.72,
-                  delay: Math.min(index * 0.045, 0.18),
-                  ease: [0.22, 1, 0.36, 1] as const,
-                }}
+                data-stagger-item
                 className="surface-card flex min-h-[590px] w-[304px] shrink-0 snap-start scroll-mt-28 flex-col p-5 sm:w-[360px] lg:w-[430px]"
               >
                 <SignalVisual signal={signal} />
@@ -183,7 +176,7 @@ export function UseCasesSection() {
 
                 <h3 className="type-h3 mt-5 text-[var(--ink)]">{signal.headline}</h3>
                 <p className="type-body tone-secondary mt-3">{signal.body}</p>
-              </motion.article>
+              </article>
               {index < healthSignals.length - 1 ? <div aria-hidden className="w-4 shrink-0" /> : null}
             </Fragment>
           ))}

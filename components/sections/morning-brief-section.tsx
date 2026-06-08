@@ -213,14 +213,14 @@ export function MorningBriefSection() {
   return (
     <section id="brief" className="section-shell scroll-mt-28 overflow-hidden rounded-[44px] bg-[var(--surface-t2)] p-3">
       <div className="overflow-hidden rounded-[32px] border border-[var(--border-default)] bg-[var(--surface-t1)] pt-16 text-center sm:pt-20 lg:pt-24">
-        <div className="mx-auto flex max-w-[680px] flex-col items-center px-6">
+        <div className="mx-auto flex max-w-[680px] flex-col items-center px-6" data-animate="blur-fade">
           <h2 className="type-h2 text-[var(--ink)]">You have the signals. Waldo has the context.</h2>
           <p className="type-body tone-secondary mt-5 max-w-[52ch]">
             {withHighlights("Waldo reads all of your health insights. Then it does what no app has done before. *It acts.* Every other product shows you data, Waldo does something about it.")}
           </p>
         </div>
 
-        <div className="waldo-flow-stage relative mt-10 h-[440px] overflow-hidden sm:mt-12 lg:h-[520px]">
+        <div className="waldo-flow-stage relative mt-10 h-[440px] overflow-hidden sm:mt-12 lg:h-[520px]" data-animate="blur-fade">
           {scenarios.map((scenario, scenarioIndex) => (
             <div
               key={scenario.name}
