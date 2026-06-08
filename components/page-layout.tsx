@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { Navbar } from "./navbar";
 import { ScrollAnimations } from "./scroll-animations";
+import { SmoothScroll } from "./smooth-scroll";
 import { HeroSection } from "./sections/hero-section";
 import { HealthDataSection } from "./sections/health-data-section";
 import { MorningBriefSection } from "./sections/morning-brief-section";
@@ -32,6 +33,7 @@ export function PageLayout() {
 
   return (
     <div className="min-h-screen bg-[var(--surface-t3)] text-[var(--ink)]">
+      <SmoothScroll />
       <ScrollAnimations />
       <div
         className="fixed inset-x-0 top-0 z-50 flex justify-center"

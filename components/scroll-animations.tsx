@@ -6,6 +6,8 @@
 //
 // data-animate="headline"    → line-by-line or word-by-word reveal on scroll
 // data-animate="fade-up"     → single fade + lift on scroll
+// data-animate="blur-fade"   → de-blur + lift on scroll (soft, premium entrance)
+// data-animate="stagger"     → reveals [data-stagger-item] children in sequence
 // data-parallax-y="-60"      → parallax by that px amount as section scrolls
 
 import { useGSAP } from "@gsap/react";
@@ -15,6 +17,12 @@ gsap.registerPlugin(useGSAP);
 
 export function ScrollAnimations() {
   useGSAP(() => {
+    // Respect the user's motion preference — leave every element at its natural,
+    // fully-visible state and run nothing. (gsap.from would otherwise hide
+    // elements before revealing them, which is exactly what reduced-motion users
+    // are asking us not to do.)
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
     // ── 1. Headline reveals ─────────────────────────────────────────
     // Multi-line headlines (contain <br>) → each line clips up.
     // Single-line headlines → each word clips up with 55ms stagger.
@@ -72,7 +80,39 @@ export function ScrollAnimations() {
       });
     });
 
-    // ── 3. Parallax layers ──────────────────────────────────────────
+    // ── 3. Blur-fade ────────────────────────────────────────────────
+    // Soft "de-focus to focus" entrance — starts blurred + lifted, settles in.
+    gsap.utils.toArray<HTMLElement>("[data-animate='blur-fade']").forEach((el) => {
+      gsap.from(el, {
+        y: 24,
+        opacity: 0,
+        filter: "blur(12px)",
+        duration: 0.9,
+        ease: "power2.out",
+        scrollTrigger: { trigger: el, start: "top 88%", once: true },
+      });
+    });
+
+    // ── 4. Stagger groups ───────────────────────────────────────────
+    // Parent carries data-animate="stagger"; its [data-stagger-item] descendants
+    // reveal in sequence as the group scrolls into view. Optional stagger amount
+    // via data-stagger="0.12" (seconds).
+    gsap.utils.toArray<HTMLElement>("[data-animate='stagger']").forEach((group) => {
+      const items = group.querySelectorAll<HTMLElement>("[data-stagger-item]");
+      if (!items.length) return;
+      const amount = Number(group.dataset.stagger ?? 0.09);
+
+      gsap.from(items, {
+        y: 22,
+        opacity: 0,
+        duration: 0.7,
+        stagger: amount,
+        ease: "power2.out",
+        scrollTrigger: { trigger: group, start: "top 85%", once: true },
+      });
+    });
+
+    // ── 5. Parallax layers ──────────────────────────────────────────
     // data-parallax-y="-60" → element travels -60px over section scroll range.
     // Uses scrub for smooth tie to scroll position.
     gsap.utils.toArray<HTMLElement>("[data-parallax-y]").forEach((el) => {

@@ -66,6 +66,23 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Lenis smooth scroll — these classes are toggled on <html> by Lenis itself,
+   so they only take effect when Lenis is actually running (never under
+   prefers-reduced-motion, where Lenis is not instantiated). */
+.lenis,
+.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
 html[data-theme="dark"] {
   --surface-t1: #272725;
   --surface-t2: #1D1D1B;
