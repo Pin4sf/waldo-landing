@@ -8,6 +8,7 @@ import { IconButton } from "@/components/rail-controls";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 
 const SCROLL_DURATION_MS = 1000;
+const PINNED_SCROLL_QUERY = "(min-width: 1100px) and (min-height: 820px)";
 
 type AgentSlide = {
   label: string;
@@ -534,6 +535,8 @@ export function AgentFeaturesSection() {
   const animationRef = useRef<number | null>(null);
   const scrollSnapTypeRef = useRef<string | null>(null);
   const scrollDebounceRef = useRef<number | null>(null);
+  const scrollDrivenRef = useRef(false);
+  const railProgressRef = useRef(0);
   const activeRef = useRef(0);
   const [active, setActive] = useState(0);
   const [railProgress, setRailProgress] = useState(0);
@@ -575,11 +578,23 @@ export function AgentFeaturesSection() {
 
     const mm = gsap.matchMedia();
 
-    mm.add("(min-width: 1024px)", () => {
+    mm.add(PINNED_SCROLL_QUERY, () => {
       measureOffsets();
-      const maxScroll = Math.max(0, viewport.scrollWidth - viewport.clientWidth);
+      let maxScroll = Math.max(0, viewport.scrollWidth - viewport.clientWidth);
       if (maxScroll < 8) return undefined;
 
+      const snapToCard = (progress: number) => {
+        const points = offsetsRef.current.map((offset) => Math.max(0, Math.min(1, offset / Math.max(1, maxScroll))));
+        if (points.length === 0) return progress;
+
+        return points.reduce((nearest, point) => (
+          Math.abs(point - progress) < Math.abs(nearest - progress) ? point : nearest
+        ), points[0] ?? progress);
+      };
+
+      scrollDrivenRef.current = true;
+      const pinnedSnapType = viewport.style.scrollSnapType || window.getComputedStyle(viewport).scrollSnapType;
+      viewport.style.scrollSnapType = "none";
       setScrollDriven(true);
 
       const trigger = ScrollTrigger.create({
@@ -587,15 +602,31 @@ export function AgentFeaturesSection() {
         start: "top top",
         end: () => `+=${maxScroll + window.innerHeight * 0.45}`,
         pin: true,
-        scrub: 0.9,
+        pinSpacing: "margin",
+        scrub: true,
+        snap: {
+          snapTo: snapToCard,
+          duration: { min: 0.18, max: 0.38 },
+          delay: 0.04,
+          ease: "power2.out",
+        },
         anticipatePin: 1,
         invalidateOnRefresh: true,
+        onRefresh: () => {
+          maxScroll = Math.max(0, viewport.scrollWidth - viewport.clientWidth);
+        },
         onUpdate: (self) => {
           const rawIndex = self.progress * (slides.length - 1);
           const nextIndex = Math.max(0, Math.min(slides.length - 1, Math.round(rawIndex)));
+          const nextScrollLeft = maxScroll * self.progress;
 
-          viewport.scrollLeft = maxScroll * self.progress;
-          setRailProgress(self.progress);
+          if (Math.abs(viewport.scrollLeft - nextScrollLeft) > 0.5) {
+            viewport.scrollLeft = nextScrollLeft;
+          }
+          if (Math.abs(railProgressRef.current - self.progress) > 0.018 || self.progress <= 0.001 || self.progress >= 0.999) {
+            railProgressRef.current = self.progress;
+            setRailProgress(self.progress);
+          }
           if (nextIndex !== activeRef.current) setActiveValue(nextIndex);
         },
       });
@@ -604,6 +635,8 @@ export function AgentFeaturesSection() {
 
       return () => {
         trigger.kill();
+        scrollDrivenRef.current = false;
+        viewport.style.scrollSnapType = pinnedSnapType;
         setScrollDriven(false);
       };
     });
@@ -637,11 +670,12 @@ export function AgentFeaturesSection() {
       return;
     }
 
-    const startTime = performance.now();
+    let startTime: number | null = null;
     scrollSnapTypeRef.current = viewport.style.scrollSnapType || window.getComputedStyle(viewport).scrollSnapType;
     viewport.style.scrollSnapType = "none";
 
     const step = (now: number) => {
+      startTime ??= now;
       const elapsed = now - startTime;
       const progress = Math.min(1, elapsed / SCROLL_DURATION_MS);
       viewport.scrollLeft = from + distance * easeInOutQuad(progress);
@@ -661,6 +695,7 @@ export function AgentFeaturesSection() {
   const updateActiveFromScroll = () => {
     const viewport = viewportRef.current;
     if (!viewport) return;
+    if (scrollDrivenRef.current) return;
 
     const nearest = offsetsRef.current.reduce(
       (best, offset, index) => {
@@ -674,19 +709,22 @@ export function AgentFeaturesSection() {
   };
 
   const handleScroll = () => {
+    if (scrollDrivenRef.current) return;
     if (scrollDebounceRef.current) window.clearTimeout(scrollDebounceRef.current);
     scrollDebounceRef.current = window.setTimeout(updateActiveFromScroll, 200);
   };
 
   return (
-    <section ref={sectionRef} id="agent-features" className="waldo-agent-gallery w-screen max-w-none scroll-mt-28 overflow-hidden py-8 lg:py-12">
+    <section ref={sectionRef} id="agent-features" className="waldo-agent-gallery relative z-20 isolate min-h-[100svh] w-screen max-w-none scroll-mt-0 overflow-hidden bg-[var(--surface-t3)] pt-32 pb-8 lg:pt-36 lg:pb-12">
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 z-0 h-40 bg-[var(--surface-t3)] lg:h-56" />
       <div className="px-[var(--agent-side-padding)]" data-animate="blur-fade">
         <p className="type-eyebrow mb-4 text-[var(--text-tertiary)]">Agent features</p>
         <h2 className="type-h1 max-w-[760px] text-[var(--ink)]" data-animate="headline">
-          One agent. Twenty-four tools.
-          <br />
-          Your body is just the beginning.
+          One agent that you can utilize everywhere.
         </h2>
+        <p className="type-body tone-secondary mt-5 max-w-[620px]">
+          State-of-the-art agentic workflows for every user, not just technical teams.
+        </p>
       </div>
 
       <div

@@ -112,7 +112,6 @@ export default async function Image() {
         </div>
 
         {/* Right — mascot */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={mascotSrc}
           width={340}

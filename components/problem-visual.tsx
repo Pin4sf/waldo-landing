@@ -42,8 +42,8 @@ function DataTicker() {
     if (!node) return;
 
     if (reduce) {
-      setVisible(logLines.length);
-      return;
+      const frame = window.requestAnimationFrame(() => setVisible(logLines.length));
+      return () => window.cancelAnimationFrame(frame);
     }
 
     let timer: ReturnType<typeof setInterval> | null = null;

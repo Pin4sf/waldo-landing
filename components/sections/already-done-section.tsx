@@ -1,13 +1,14 @@
 "use client";
 
 import * as Accordion from "@radix-ui/react-accordion";
-import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
+import { useCallback, useEffect, useRef, useState } from "react";
 
-import { Aside } from "@/components/landing-primitives";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 
 const AUTO_DWELL_MS = 6150;
 const AUTO_SCROLL_MS = 1000;
+const PINNED_SCROLL_QUERY = "(min-width: 1100px) and (min-height: 820px)";
 
 function appleGalleryEase(progress: number) {
   const x1 = 0.2;
@@ -381,8 +382,8 @@ function PanelPill({
 
 function WatchSignalStage({ slide, panel }: { slide: ShowcaseSlide; panel: FeaturePanel }) {
   return (
-    <div className="relative flex h-full min-h-[300px] items-end justify-center overflow-hidden max-lg:min-h-[260px]">
-      <div className="relative mb-[-120px] h-[560px] w-[292px] rounded-[58px] border-[7px] border-[var(--ink)] bg-[var(--surface-t1)] sm:h-[620px] sm:w-[324px] lg:mb-[-150px] lg:h-[700px] lg:w-[366px]">
+    <div className="pointer-events-none relative z-0 flex h-full min-h-[260px] items-end justify-center overflow-hidden md:min-h-[420px] lg:min-h-[300px]">
+      <div className="relative mb-[-132px] h-[440px] w-[230px] rounded-[48px] border-[7px] border-[var(--ink)] bg-[var(--surface-t1)] sm:h-[500px] sm:w-[260px] lg:mb-[-150px] lg:h-[700px] lg:w-[366px]">
         <div className="absolute left-8 top-8 type-label text-[var(--ink)]">9:41</div>
         <div className="absolute left-1/2 top-7 h-7 w-28 -translate-x-1/2 rounded-full bg-[var(--ink)]" />
         <div className="absolute right-8 top-9 flex items-center gap-1.5 text-[var(--ink)]" aria-hidden>
@@ -391,9 +392,11 @@ function WatchSignalStage({ slide, panel }: { slide: ShowcaseSlide; panel: Featu
           <span className="h-5 w-1 rounded-full bg-current" />
           <span className="ml-1 h-3 w-6 rounded-[4px] border border-current" />
         </div>
-        <img
+        <Image
           src="/illustrations/default.svg"
           alt=""
+          width={112}
+          height={112}
           aria-hidden
           className="absolute left-1/2 top-[56%] h-24 w-24 -translate-x-1/2 -translate-y-1/2 object-contain lg:h-28 lg:w-28"
         />
@@ -417,7 +420,7 @@ function SlideContent({
   const panel = slide.panels[openPanel ?? 0] ?? slide.panels[0];
 
   return (
-    <div className="relative grid h-full min-h-0 gap-4 p-5 sm:p-6 lg:grid-cols-[minmax(300px,0.82fr)_minmax(400px,1.4fr)] lg:p-8">
+    <div className="relative grid h-full min-h-0 grid-rows-[auto_minmax(280px,1fr)] gap-6 overflow-hidden p-5 sm:p-6 md:grid-cols-[minmax(240px,0.86fr)_minmax(260px,1fr)] md:grid-rows-1 md:items-center md:gap-4 lg:grid-cols-[minmax(300px,0.82fr)_minmax(400px,1.4fr)] lg:p-8">
       {openPanel !== null ? (
         <button
           type="button"
@@ -432,7 +435,7 @@ function SlideContent({
         </button>
       ) : null}
 
-      <div className="flex min-h-0 flex-col justify-center pl-0 sm:pl-4 lg:pl-8">
+      <div className="relative z-10 flex min-h-0 flex-col justify-start pl-0 sm:pl-4 md:justify-center lg:pl-8">
         <div className="mb-8">
           <h3 className="type-h2 max-w-[16ch] text-[var(--ink)]">{slide.headline}</h3>
         </div>
@@ -471,6 +474,7 @@ export function AlreadyDoneSection() {
   const lastProgressTickRef = useRef<number | null>(null);
   const scrollSnapTypeRef = useRef<string | null>(null);
   const programmaticScrollRef = useRef(false);
+  const scrollDrivenRef = useRef(false);
   const [active, setActive] = useState(0);
   const [playing, setPlaying] = useState(true);
   const [progress, setProgress] = useState(0);
@@ -485,16 +489,16 @@ export function AlreadyDoneSection() {
   const activeSlide = slides[active];
   const activeLabel = activeSlide.tab;
 
-  const setProgressValue = (value: number) => {
+  const setProgressValue = useCallback((value: number) => {
     const bounded = Math.max(0, Math.min(1, value));
     progressRef.current = bounded;
     setProgress(bounded);
-  };
+  }, []);
 
-  const setActiveValue = (index: number) => {
+  const setActiveValue = useCallback((index: number) => {
     activeRef.current = index;
     setActive(index);
-  };
+  }, []);
 
   useEffect(() => {
     if (reducedMotion) setPlaying(false);
@@ -527,10 +531,30 @@ export function AlreadyDoneSection() {
 
     const mm = gsap.matchMedia();
 
-    mm.add("(min-width: 1024px)", () => {
-      const maxScroll = Math.max(0, track.scrollWidth - track.clientWidth);
+    mm.add(PINNED_SCROLL_QUERY, () => {
+      let maxScroll = Math.max(0, track.scrollWidth - track.clientWidth);
       if (maxScroll < 8) return undefined;
 
+      const getSnapPoints = () => {
+        const firstOffset = (track.children[0] as HTMLElement | undefined)?.offsetLeft ?? 0;
+        return Array.from(track.children).map((child) => {
+          const card = child as HTMLElement;
+          return Math.max(0, Math.min(1, (card.offsetLeft - firstOffset) / Math.max(1, maxScroll)));
+        });
+      };
+
+      const snapToCard = (progress: number) => {
+        const points = getSnapPoints();
+        if (points.length === 0) return progress;
+
+        return points.reduce((nearest, point) => (
+          Math.abs(point - progress) < Math.abs(nearest - progress) ? point : nearest
+        ), points[0] ?? progress);
+      };
+
+      scrollDrivenRef.current = true;
+      const pinnedSnapType = track.style.scrollSnapType || window.getComputedStyle(track).scrollSnapType;
+      track.style.scrollSnapType = "none";
       setScrollDriven(true);
       setPlaying(false);
       setEnded(false);
@@ -541,25 +565,41 @@ export function AlreadyDoneSection() {
         start: "top top",
         end: () => `+=${maxScroll + window.innerHeight * 0.5}`,
         pin: true,
-        // Lenis already smooths the scroll; keep scrub tight so the carousel
-        // tracks the pointer closely instead of double-lagging behind it.
-        scrub: 0.4,
+        pinSpacing: "margin",
+        scrub: true,
+        snap: {
+          snapTo: snapToCard,
+          duration: { min: 0.18, max: 0.38 },
+          delay: 0.04,
+          ease: "power2.out",
+        },
         anticipatePin: 1,
         invalidateOnRefresh: true,
+        onRefresh: () => {
+          maxScroll = Math.max(0, track.scrollWidth - track.clientWidth);
+        },
         onUpdate: (self) => {
           const rawIndex = self.progress * (slides.length - 1);
           const nextIndex = Math.max(0, Math.min(slides.length - 1, Math.round(rawIndex)));
           const localProgress = nextIndex >= slides.length - 1 ? self.progress : rawIndex - Math.floor(rawIndex);
+          const nextScrollLeft = maxScroll * self.progress;
 
           programmaticScrollRef.current = true;
-          track.scrollLeft = maxScroll * self.progress;
+          if (Math.abs(track.scrollLeft - nextScrollLeft) > 0.5) {
+            track.scrollLeft = nextScrollLeft;
+          }
           window.requestAnimationFrame(() => {
             programmaticScrollRef.current = false;
           });
 
           if (nextIndex !== activeRef.current) setActiveValue(nextIndex);
-          setProgressValue(self.progress >= 0.999 ? 1 : localProgress);
-          setEnded(self.progress >= 0.999);
+          if (Math.abs(progressRef.current - localProgress) > 0.018 || self.progress <= 0.001 || self.progress >= 0.999) {
+            setProgressValue(self.progress >= 0.999 ? 1 : localProgress);
+          }
+          setEnded((current) => {
+            const nextEnded = self.progress >= 0.999;
+            return current === nextEnded ? current : nextEnded;
+          });
         },
       });
 
@@ -567,13 +607,81 @@ export function AlreadyDoneSection() {
 
       return () => {
         trigger.kill();
+        scrollDrivenRef.current = false;
+        track.style.scrollSnapType = pinnedSnapType;
         setScrollDriven(false);
         programmaticScrollRef.current = false;
       };
     });
 
     return () => mm.revert();
-  }, [reducedMotion]);
+  }, [reducedMotion, setActiveValue, setProgressValue]);
+
+  const cancelScrollAnimation = useCallback(() => {
+    if (scrollAnimationRef.current !== null) {
+      window.cancelAnimationFrame(scrollAnimationRef.current);
+      scrollAnimationRef.current = null;
+    }
+    if (trackRef.current && scrollSnapTypeRef.current !== null) {
+      trackRef.current.style.scrollSnapType = scrollSnapTypeRef.current;
+      scrollSnapTypeRef.current = null;
+    }
+    programmaticScrollRef.current = false;
+    setIsScrollAnimating(false);
+  }, []);
+
+  const scrollToSlide = useCallback((index: number, auto = false) => {
+    const track = trackRef.current;
+    const nextIndex = Math.max(0, Math.min(index, slides.length - 1));
+    const card = track?.children[nextIndex] as HTMLElement | undefined;
+
+    cancelScrollAnimation();
+    lastProgressTickRef.current = null;
+    setProgressValue(0);
+    setEnded(false);
+    setActiveValue(nextIndex);
+    if (!track || !card) return;
+
+    const paddingStart = parseFloat(window.getComputedStyle(track).paddingLeft) || 0;
+    const left = card.offsetLeft - paddingStart;
+    const startLeft = track.scrollLeft;
+    const distance = left - startLeft;
+
+    if (reducedMotion || Math.abs(distance) < 1) {
+      track.scrollLeft = left;
+      return;
+    }
+
+    const duration = auto ? AUTO_SCROLL_MS : AUTO_SCROLL_MS;
+    let startTime: number | null = null;
+
+    programmaticScrollRef.current = true;
+    scrollSnapTypeRef.current = track.style.scrollSnapType || window.getComputedStyle(track).scrollSnapType;
+    track.style.scrollSnapType = "none";
+    setIsScrollAnimating(true);
+
+    const step = (now: number) => {
+      startTime ??= now;
+      const elapsed = now - startTime;
+      const progress = Math.min(1, elapsed / duration);
+
+      track.scrollLeft = startLeft + distance * appleGalleryEase(progress);
+
+      if (progress < 1) {
+        scrollAnimationRef.current = window.requestAnimationFrame(step);
+        return;
+      }
+
+      track.scrollLeft = left;
+      track.style.scrollSnapType = scrollSnapTypeRef.current ?? "";
+      scrollSnapTypeRef.current = null;
+      scrollAnimationRef.current = null;
+      programmaticScrollRef.current = false;
+      setIsScrollAnimating(false);
+    };
+
+    scrollAnimationRef.current = window.requestAnimationFrame(step);
+  }, [cancelScrollAnimation, reducedMotion, setActiveValue, setProgressValue]);
 
   useEffect(() => {
     if (!shouldTickProgress) {
@@ -612,72 +720,7 @@ export function AlreadyDoneSection() {
         progressAnimationRef.current = null;
       }
     };
-  }, [active, shouldTickProgress]);
-
-  const cancelScrollAnimation = () => {
-    if (scrollAnimationRef.current !== null) {
-      window.cancelAnimationFrame(scrollAnimationRef.current);
-      scrollAnimationRef.current = null;
-    }
-    if (trackRef.current && scrollSnapTypeRef.current !== null) {
-      trackRef.current.style.scrollSnapType = scrollSnapTypeRef.current;
-      scrollSnapTypeRef.current = null;
-    }
-    programmaticScrollRef.current = false;
-    setIsScrollAnimating(false);
-  };
-
-  const scrollToSlide = (index: number, auto = false) => {
-    const track = trackRef.current;
-    const nextIndex = Math.max(0, Math.min(index, slides.length - 1));
-    const card = track?.children[nextIndex] as HTMLElement | undefined;
-
-    cancelScrollAnimation();
-    lastProgressTickRef.current = null;
-    setProgressValue(0);
-    setEnded(false);
-    setActiveValue(nextIndex);
-    if (!track || !card) return;
-
-    const paddingStart = parseFloat(window.getComputedStyle(track).paddingLeft) || 0;
-    const left = card.offsetLeft - paddingStart;
-    const startLeft = track.scrollLeft;
-    const distance = left - startLeft;
-
-    if (reducedMotion || Math.abs(distance) < 1) {
-      track.scrollLeft = left;
-      return;
-    }
-
-    const duration = auto ? AUTO_SCROLL_MS : AUTO_SCROLL_MS;
-    const startTime = performance.now();
-
-    programmaticScrollRef.current = true;
-    scrollSnapTypeRef.current = track.style.scrollSnapType || window.getComputedStyle(track).scrollSnapType;
-    track.style.scrollSnapType = "none";
-    setIsScrollAnimating(true);
-
-    const step = (now: number) => {
-      const elapsed = now - startTime;
-      const progress = Math.min(1, elapsed / duration);
-
-      track.scrollLeft = startLeft + distance * appleGalleryEase(progress);
-
-      if (progress < 1) {
-        scrollAnimationRef.current = window.requestAnimationFrame(step);
-        return;
-      }
-
-      track.scrollLeft = left;
-      track.style.scrollSnapType = scrollSnapTypeRef.current ?? "";
-      scrollSnapTypeRef.current = null;
-      scrollAnimationRef.current = null;
-      programmaticScrollRef.current = false;
-      setIsScrollAnimating(false);
-    };
-
-    scrollAnimationRef.current = window.requestAnimationFrame(step);
-  };
+  }, [active, scrollToSlide, setProgressValue, shouldTickProgress]);
 
   const goTo = (index: number) => {
     setPlaying(false);
@@ -688,6 +731,7 @@ export function AlreadyDoneSection() {
   const handleScroll = () => {
     const track = trackRef.current;
     if (!track) return;
+    if (scrollDrivenRef.current) return;
     if (programmaticScrollRef.current) return;
 
     const trackCenter = track.scrollLeft + track.clientWidth / 2;
@@ -716,7 +760,7 @@ export function AlreadyDoneSection() {
     <section
       ref={sectionRef}
       id="already-handled"
-      className="waldo-highlights w-screen max-w-none scroll-mt-28 overflow-hidden py-8 lg:py-12"
+      className="waldo-highlights relative z-10 isolate min-h-[100svh] w-screen max-w-none scroll-mt-0 overflow-hidden bg-[var(--surface-t3)] pt-32 pb-8 lg:pt-36 lg:pb-12"
     >
       <div className="mb-8 flex w-full flex-col gap-6 px-[var(--slide-padding)] lg:mb-10" data-animate="blur-fade">
         <div>

@@ -36,7 +36,8 @@ export function FooterSection() {
   const [period, setPeriod] = useState<Period>("afternoon");
 
   useEffect(() => {
-    setPeriod(getPeriod());
+    const frame = window.requestAnimationFrame(() => setPeriod(getPeriod()));
+    return () => window.cancelAnimationFrame(frame);
   }, []);
 
   return (

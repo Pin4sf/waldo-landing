@@ -2,32 +2,40 @@
 
 import Link from "next/link";
 import { useState, useRef, useCallback } from "react";
+import { NavLink } from "./nav-link";
 import { WaldoLogoFull } from "./waldo-logo-full";
 
 const links = [
-  { label: "Brief", href: "#brief" },
-  { label: "Actions", href: "#actions" },
-  { label: "Now", href: "#where" },
-  { label: "Pattern", href: "#constellation" },
+  { label: "Features", tooltip: "not yet. but waldo already knows you clicked this." },
+  { label: "Pricing", tooltip: "free to find out. when we're ready." },
+  { label: "Blog", tooltip: "waldo's been busy. so have we." },
+  { label: "Sign in", tooltip: "you're early. that's actually a good sign." },
 ];
 
 function MobileNavItem({
   label,
-  href,
-  onClick,
+  tooltip,
+  open,
+  onTap,
 }: {
   label: string;
-  href: string;
-  onClick: () => void;
+  tooltip: string;
+  open: boolean;
+  onTap: () => void;
 }) {
   return (
-    <Link
-      href={href}
-      onClick={onClick}
-      className="type-label flex h-12 w-full items-center rounded-xl px-4 text-[var(--ink)] transition-[background-color] duration-150 hover:bg-[var(--surface-t1)]"
+    <button
+      type="button"
+      onClick={onTap}
+      className="flex w-full flex-col gap-1 rounded-xl px-4 py-3 text-left transition-colors hover:bg-black/[0.02]"
     >
-      {label}
-    </Link>
+      <span className="type-caption text-[var(--text-tertiary)]">{label}</span>
+      {open ? (
+        <span className="type-caption italic text-[var(--text-secondary)]" style={{ animation: "float-up 180ms var(--ease-premium) both" }}>
+          {tooltip}
+        </span>
+      ) : null}
+    </button>
   );
 }
 
@@ -39,6 +47,7 @@ export function Navbar({
   onNavLeave?: () => void;
 }) {
   const [menuOpen,   setMenuOpen]   = useState(false);
+  const [activeItem, setActiveItem] = useState<string | null>(null);
   const [logoWag,    setLogoWag]    = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -57,12 +66,18 @@ export function Navbar({
 
   const openMenu = () => {
     setMenuOpen(true);
+    setActiveItem(null);
     onNavEnter?.();
   };
 
   const closeMenu = () => {
     setMenuOpen(false);
+    setActiveItem(null);
     onNavLeave?.();
+  };
+
+  const toggleItem = (label: string) => {
+    setActiveItem((current) => (current === label ? null : label));
   };
 
   return (
@@ -82,24 +97,23 @@ export function Navbar({
         </Link>
 
         <div
-          className="hidden flex-1 items-center justify-center gap-1 px-6 md:flex"
+          className="hidden flex-1 items-center justify-center gap-1 px-6 lg:flex"
           onMouseEnter={handleDesktopEnter}
           onMouseLeave={handleDesktopLeave}
         >
           {links.map((l) => (
-            <Link
+            <NavLink
               key={l.label}
-              href={l.href}
-              className="focusable-ring type-label rounded-full px-4 py-2 text-[var(--ink)] transition-[background-color] duration-150 hover:bg-[var(--surface-t1)]"
-            >
-              {l.label}
-            </Link>
+              label={l.label}
+              tooltip={l.tooltip}
+              align={l.label === "Sign in" ? "right" : "center"}
+            />
           ))}
         </div>
 
         <button
           onClick={menuOpen ? closeMenu : openMenu}
-          className="focusable-ring mx-2 flex h-10 w-10 items-center justify-center rounded-xl text-[var(--text-secondary)] transition-[background-color,color] duration-150 hover:bg-[var(--surface-t1)] hover:text-[var(--ink)] md:hidden"
+          className="focusable-ring ml-auto mr-2 flex h-10 w-10 items-center justify-center rounded-xl text-[var(--text-secondary)] transition-[background-color,color] duration-150 hover:bg-[var(--surface-t1)] hover:text-[var(--ink)] lg:hidden"
           aria-label={menuOpen ? "Close menu" : "Open menu"}
         >
           {menuOpen ? (
@@ -117,9 +131,9 @@ export function Navbar({
 
         <Link
           href="/waitlist"
-          className="focusable-ring type-label flex h-12 items-center justify-center rounded-full bg-[var(--ink)] px-5 text-[var(--surface-t2)] transition-[transform,background-color] duration-300 ease-[var(--ease-premium)] hover:-translate-y-px hover:bg-[var(--dark-t1)] active:scale-[0.98] sm:px-6"
+          className="focusable-ring type-label hidden h-12 items-center justify-center rounded-full bg-[var(--ink)] px-5 text-[var(--surface-t2)] transition-[transform,background-color] duration-300 ease-[var(--ease-premium)] hover:-translate-y-px hover:bg-[var(--dark-t1)] active:scale-[0.98] sm:px-6 lg:flex"
         >
-          Let Waldo in →
+          Get early access
         </Link>
       </div>
 
@@ -131,18 +145,29 @@ export function Navbar({
             aria-hidden="true"
           />
           <div
-            className="surface-card absolute top-full mt-2 w-[calc(100vw-32px)] max-w-[360px] overflow-hidden p-2 md:hidden"
+            className="surface-card absolute top-full mt-2 w-[calc(100vw-32px)] max-w-[360px] overflow-hidden p-2 lg:hidden"
             style={{ animation: "content-enter 180ms var(--ease-premium) both" }}
           >
-            {links.map((l) => (
+            {links.map((l, index) => (
               <div key={l.label}>
                 <MobileNavItem
                   label={l.label}
-                  href={l.href}
-                  onClick={closeMenu}
+                  tooltip={l.tooltip}
+                  open={activeItem === l.label}
+                  onTap={() => toggleItem(l.label)}
                 />
+                {index < links.length - 1 ? <div className="mx-4 h-px bg-black/[0.05]" /> : null}
               </div>
             ))}
+            <div className="p-3">
+              <Link
+                href="/waitlist"
+                onClick={closeMenu}
+                className="focusable-ring type-label flex h-12 w-full items-center justify-center rounded-[18px] bg-[var(--ink)] px-5 text-[var(--surface-t2)] transition-[transform,background-color] duration-300 ease-[var(--ease-premium)] hover:bg-[var(--dark-t1)] active:scale-[0.98]"
+              >
+                Get early access
+              </Link>
+            </div>
           </div>
         </>
       )}
