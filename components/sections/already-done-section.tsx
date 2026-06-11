@@ -425,7 +425,7 @@ function SlideContent({
         <button
           type="button"
           aria-label="Collapse expanded field"
-          className="focusable-ring absolute right-5 top-5 z-10 flex h-8 w-8 items-center justify-center rounded-full border border-[var(--border-default)] bg-[var(--surface-t1)] text-[var(--ink)] transition-[background-color] duration-150 ease-[var(--ease-premium)] hover:bg-[var(--surface-t2)]"
+          className="focusable-ring absolute right-4 top-4 z-30 flex h-10 w-10 items-center justify-center rounded-full border border-[var(--border-default)] bg-[var(--surface-t1)] text-[var(--ink)] transition-[background-color] duration-150 ease-[var(--ease-premium)] hover:bg-[var(--surface-t2)] sm:right-5 sm:top-5"
           onClick={() => onPanelChange(null)}
         >
           <span aria-hidden className="relative h-3 w-3 rotate-45">
@@ -436,7 +436,7 @@ function SlideContent({
       ) : null}
 
       <div className="relative z-10 flex min-h-0 flex-col justify-start pl-0 sm:pl-4 md:justify-center lg:pl-8">
-        <div className="mb-8">
+        <div className="mb-8 pr-12 sm:pr-14">
           <h3 className="type-h2 max-w-[16ch] text-[var(--ink)]">{slide.headline}</h3>
         </div>
 
