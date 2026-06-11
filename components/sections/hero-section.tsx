@@ -27,62 +27,33 @@ export function HeroSection() {
       </div>
 
       <HeroProofScene states={waldoHeroStates}>
-        {({ active, activeState, progress, selectState, states }) => (
-          <div className="waldo-hero-copy relative z-20 mx-auto flex max-w-[840px] flex-col items-center px-6 text-center" data-animate="blur-fade">
-            <p className="type-caption hero-status-pill" aria-hidden="true">
-              {activeState.status}
-            </p>
-
-            <h1 className="type-display mt-5 text-[var(--ink)]" data-animate="fade-up">
+        {() => (
+          <div className="waldo-hero-copy relative z-20 mx-auto flex max-w-[840px] flex-col items-center px-6 text-center">
+            <h1 className="type-display text-[var(--ink)]">
               <span className="hero-title-mobile">
-                The first app that knows
+                The first app that
                 <br />
-                what kind of day
+                knows how you feel
                 <br />
-                you&apos;re having and gets
+                and does something
                 <br />
-                the work moving.
+                about it.
               </span>
               <span className="hero-title-desktop">
                 The first app that knows
                 <br />
-                what kind of day you&apos;re having
+                how you feel and does
                 <br />
-                and gets the work moving.
+                something about it.
               </span>
             </h1>
 
-            <p className="type-h3 hero-action-receipt mt-6 text-[var(--ink)]">{activeState.headlineReceipt}</p>
-
-            <p className="type-body tone-secondary mt-4 max-w-[62ch] sm:mt-5">
-              Waldo reads the signals your body already gives off, understands the work around you, and gets the right tools and agents moving.
-              <br className="hidden sm:inline" /> Calendar, inbox, tasks, apps, accounts, and agents. Already on it.
+            <p className="type-body tone-secondary mt-6 max-w-[58ch] sm:mt-8">
+              Waldo scans complex data from your health wearable, and
+              <br className="hidden sm:inline" /> figures your day before you smell your morning coffee.
             </p>
 
-            <div className="hero-progress-segments mt-7" role="tablist" aria-label="Hero proof states">
-              {states.map((state, index) => {
-                const isActive = index === active;
-                const isComplete = index < active;
-                const width = isActive ? progress * 100 : isComplete ? 100 : 0;
-
-                return (
-                  <button
-                    key={state.key}
-                    type="button"
-                    className="hero-progress-segment focusable-ring"
-                    aria-current={isActive ? "true" : undefined}
-                    aria-label={state.status}
-                    onClick={() => selectState(index)}
-                  >
-                    <span className="hero-progress-track">
-                      <span className="hero-progress-fill" style={{ width: `${width}%` }} />
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-
-            <WaldoCTA className="mt-3 sm:mt-6" />
+            <WaldoCTA className="mt-14 sm:mt-16" />
           </div>
         )}
       </HeroProofScene>

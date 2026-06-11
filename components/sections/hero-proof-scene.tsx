@@ -199,7 +199,11 @@ export function HeroProofScene({ children, states }: HeroProofSceneProps) {
       }}
       onPointerMove={handlePointerMove}
     >
-      <div className="waldo-context-field" aria-hidden="true" />
+      <div className="waldo-hero-shader" aria-hidden="true">
+        <span className="waldo-hero-shader-ring" />
+        <span className="waldo-hero-shader-sheen" />
+        <span className="waldo-hero-shader-grain" />
+      </div>
       <svg className="waldo-signal-path" viewBox="0 0 1200 760" aria-hidden="true">
         <path d="M210 220 C 350 230, 450 290, 545 360" />
         <path d="M265 520 C 380 470, 455 430, 548 382" />
@@ -209,7 +213,7 @@ export function HeroProofScene({ children, states }: HeroProofSceneProps) {
 
       <div className="waldo-proof-scene" aria-label="Waldo reads signals and completes work">
         <div className="waldo-proof-group waldo-proof-inputs">
-          {activeState.inputs.map((artifact, index) => (
+          {activeState.inputs.slice(0, 2).map((artifact, index) => (
             <ArtifactCard key={`${activeState.key}-${artifact.label}`} artifact={artifact} index={index} kind="input" />
           ))}
         </div>
@@ -234,7 +238,7 @@ export function HeroProofScene({ children, states }: HeroProofSceneProps) {
         </div>
 
         <div className="waldo-proof-group waldo-proof-outputs">
-          {activeState.outputs.map((receipt, index) => (
+          {activeState.outputs.slice(0, 1).map((receipt, index) => (
             <ReceiptCard key={`${activeState.key}-${receipt.time}-${receipt.action}`} receipt={receipt} index={index} />
           ))}
         </div>
