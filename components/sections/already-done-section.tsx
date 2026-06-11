@@ -348,11 +348,11 @@ function PanelPill({
   const cleanBody = panel.body.replaceAll("*", "");
 
   return (
-    <Accordion.Item value={`${index}`} className="w-fit max-w-full data-[state=open]:w-full data-[state=open]:max-w-[440px]">
+    <Accordion.Item value={`${index}`} className="waldo-panel-pill w-full max-w-[440px]">
       <Accordion.Header>
         <Accordion.Trigger
           id={panelId}
-          className="focusable-ring flex w-fit max-w-full items-center gap-3 rounded-full border border-[var(--border-default)] bg-transparent px-4 py-3 text-left text-[var(--ink)] transition-[background-color] duration-150 ease-[var(--ease-premium)] hover:bg-[var(--surface-t3)] data-[state=open]:hidden"
+          className="waldo-panel-trigger focusable-ring flex w-fit max-w-full items-center gap-3 overflow-hidden rounded-full border border-[var(--border-default)] bg-transparent px-4 py-3 text-left text-[var(--ink)] transition-[max-height,padding,border-color,background-color,opacity,transform] duration-[420ms] ease-[var(--ease-premium)] hover:bg-[var(--surface-t3)] data-[state=open]:max-h-0 data-[state=open]:pointer-events-none data-[state=open]:border-transparent data-[state=open]:py-0 data-[state=open]:opacity-0 data-[state=open]:scale-[0.98] data-[state=closed]:max-h-16 data-[state=closed]:opacity-100 data-[state=closed]:scale-100"
           aria-controls={panelContentId}
         >
           <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-[var(--border-default)] bg-transparent text-[var(--ink)]" aria-hidden>
@@ -366,10 +366,10 @@ function PanelPill({
       </Accordion.Header>
       <Accordion.Content
         id={panelContentId}
-        className="grid overflow-hidden transition-[grid-template-rows,opacity,filter,transform] duration-[420ms] ease-[var(--ease-premium)] data-[state=closed]:grid-rows-[0fr] data-[state=closed]:opacity-0 data-[state=closed]:blur-[5px] data-[state=closed]:-translate-y-1.5 data-[state=open]:grid-rows-[1fr] data-[state=open]:opacity-100 data-[state=open]:blur-0 data-[state=open]:translate-y-0"
+        className="waldo-panel-content grid overflow-hidden transition-[grid-template-rows,opacity,filter,transform] duration-[520ms] ease-[var(--ease-premium)] data-[state=closed]:grid-rows-[0fr] data-[state=closed]:opacity-0 data-[state=closed]:blur-[5px] data-[state=closed]:-translate-y-1.5 data-[state=open]:grid-rows-[1fr] data-[state=open]:opacity-100 data-[state=open]:blur-0 data-[state=open]:translate-y-0"
       >
         <div className="overflow-hidden">
-          <article className="rounded-[16px] border border-[var(--border-default)] bg-[var(--surface-t2)] px-5 py-4">
+          <article className="waldo-panel-card rounded-[16px] border border-[var(--border-default)] bg-[var(--surface-t2)] px-5 py-4">
           <p className="type-body text-[var(--text-secondary)]">
             <span className="font-medium text-[var(--ink)]">{panel.title}</span> {cleanBody}
           </p>

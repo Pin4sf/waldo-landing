@@ -17,7 +17,6 @@ import { WhereIsWaldoSection } from "./sections/where-is-waldo-section";
 import { LongGameSection } from "./sections/long-game-section";
 import { ActionFanSection, SceneCloseSection } from "./sections/downstream-build-sections";
 import { FaqSection } from "./sections/faq-section";
-import { FooterSection } from "./sections/footer-section";
 
 export function PageLayout() {
   const [dimmed, setDimmed] = useState(false);
@@ -80,8 +79,6 @@ export function PageLayout() {
           <FaqSection />
           <SceneCloseSection />
         </div>
-
-        <FooterSection />
       </div>
     </div>
   );

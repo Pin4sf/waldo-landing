@@ -77,7 +77,8 @@ html {
   scroll-behavior: auto !important;
 }
 .lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
+  overscroll-behavior-x: contain;
+  overscroll-behavior-y: auto;
 }
 .lenis.lenis-stopped {
   overflow: hidden;
@@ -304,6 +305,25 @@ body {
   }
 }
 
+@keyframes waldo-pill-card-open {
+  0% {
+    clip-path: inset(0 58% 0 0 round 999px);
+    filter: blur(6px);
+    opacity: 0;
+    transform: translate3d(0, -8px, 0) scale(0.96);
+  }
+  58% {
+    filter: blur(0);
+    opacity: 1;
+  }
+  100% {
+    clip-path: inset(0 0 0 0 round 16px);
+    filter: blur(0);
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
 @keyframes waldo-work-check-complete {
   0%, 35% {
     background: var(--surface-t1);
@@ -341,6 +361,18 @@ body {
 .waldo-mcp-step {
   animation: waldo-mcp-step-focus 5.8s var(--ease-premium) infinite;
   animation-delay: var(--step-delay, 0ms);
+}
+
+.waldo-panel-pill {
+  transition:
+    max-width 520ms var(--ease-premium),
+    transform 520ms var(--ease-premium);
+}
+
+.waldo-panel-content[data-state="open"] .waldo-panel-card {
+  animation: waldo-pill-card-open 560ms var(--ease-premium) both;
+  transform-origin: left center;
+  will-change: clip-path, opacity, transform, filter;
 }
 
 .waldo-work-row {
@@ -404,6 +436,7 @@ body {
   .waldo-tool-chip,
   .waldo-tool-path,
   .waldo-mcp-step,
+  .waldo-panel-content[data-state="open"] .waldo-panel-card,
   .waldo-work-check,
   .waldo-signal-path path,
   .waldo-constellation-node,
@@ -414,6 +447,13 @@ body {
   .waldo-work-check {
     background: var(--ink);
     color: var(--surface-t2);
+    transform: none;
+  }
+
+  .waldo-panel-content[data-state="open"] .waldo-panel-card {
+    clip-path: none;
+    filter: none;
+    opacity: 1;
     transform: none;
   }
 
