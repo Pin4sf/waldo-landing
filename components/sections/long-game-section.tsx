@@ -1,14 +1,4 @@
-import { Aside, SectionIntro, withHighlights } from "@/components/landing-primitives";
-
-const dimensions = [
-  ["Late messages", "3x", "same window *keeps repeating*."],
-  ["Short sleep", "5h 42m", "recovery *starts lower*."],
-  ["Meeting stack", "dense", "calls *keep clustering*."],
-  ["Lower recovery", "63", "the morning *needs more room*."],
-  ["Task carryover", "rising", "unfinished work *needs routing*."],
-  ["Agent handoff", "ready", "specialist pass *can start*."],
-  ["Wednesday protected", "held", "the week *learned from it*."],
-] as const;
+import { SectionIntro, withHighlights } from "@/components/landing-primitives";
 
 const constellationNodes = [
   [108, 86, "Late messages"],
@@ -41,8 +31,8 @@ export function LongGameSection() {
         </SectionIntro>
       </div>
 
-      <div className="mt-8 grid gap-5 lg:grid-cols-[1.15fr_.85fr]" data-animate="stagger" data-stagger="0.075">
-        <div data-stagger-item className="dark-card relative min-h-[420px] overflow-hidden rounded-[8px] p-5 sm:p-6">
+      <div className="mt-8" data-animate="fade-up">
+        <div className="dark-card relative mx-auto min-h-[420px] w-full max-w-[860px] overflow-hidden rounded-[8px] p-5 sm:p-6 lg:p-7">
           <div className="flex items-center justify-between gap-4">
             <div>
               <p className="type-label text-[var(--panel-ink)]">The Constellation</p>
@@ -73,25 +63,6 @@ export function LongGameSection() {
               </g>
             ))}
           </svg>
-        </div>
-
-        <div className="grid gap-3" data-stagger-item>
-          {dimensions.map(([label, value, read]) => (
-            <div key={label} className="rounded-[8px] border border-[var(--panel-border)] bg-[var(--panel-surface)] p-4">
-              <div className="flex items-baseline justify-between gap-4">
-                <p className="type-label text-[var(--panel-ink)]">{label}</p>
-                <p className="type-data text-[var(--panel-ink)]">{value}</p>
-              </div>
-              <p className="type-caption tone-d-secondary mt-2">{withHighlights(read)}</p>
-            </div>
-          ))}
-          <div className="rounded-[8px] border border-[var(--panel-border)] bg-[var(--panel-card)] p-4">
-            <div className="flex items-baseline justify-between gap-4">
-              <p className="type-label text-[var(--panel-ink)]">6 dimensions</p>
-              <p className="type-data text-[var(--panel-ink)]">watched</p>
-            </div>
-            <Aside className="mt-2 text-[var(--text-tertiary)]">enough angles to stop guessing.</Aside>
-          </div>
         </div>
       </div>
     </section>
