@@ -225,21 +225,21 @@ export function SceneCloseSection() {
   const sceneShift = (1 - progress) * 42;
 
   return (
-    <section ref={ref} id="scene-close" className="section-shell relative min-h-[760px] overflow-hidden rounded-[30px] bg-[var(--surface-t3)]">
+    <section ref={ref} id="scene-close" className="relative min-h-[100svh] w-screen self-start overflow-hidden bg-[var(--surface-t3)] [margin-left:calc(50%-50vw)] [margin-right:calc(50%-50vw)]">
       <div
         aria-hidden
-        className="pointer-events-none absolute bottom-0 left-0 z-[1] w-full select-none"
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-[calc(100%+48px)] select-none"
         style={{ transform: `translate3d(0, ${sceneShift}px, 0)`, willChange: "transform" }}
       >
-        <picture>
+        <picture className="block h-full w-full">
           <source media="(max-width: 639px) and (orientation: portrait)" srcSet="/assets/footer-bg-mobile.svg" />
           <source media="(orientation: landscape) and (max-height: 600px)" srcSet="/assets/footer-bg-mobile-landscape.svg" />
           <source media="(min-width: 640px) and (max-width: 1024px) and (orientation: portrait)" srcSet="/assets/footer-bg-tablet.svg" />
-          <img src="/assets/footer-bg.svg" alt="" className="waldo-breathe block w-full" />
+          <img src="/assets/footer-bg.svg" alt="" className="waldo-breathe block h-full w-full object-cover object-bottom" />
         </picture>
       </div>
 
-      <div className="relative z-[2] flex min-h-[760px] flex-col items-center justify-start px-4 pt-28 text-center" data-animate="blur-fade">
+      <div className="relative z-[2] mx-auto flex min-h-[100svh] max-w-[1200px] flex-col items-center justify-start px-4 pt-28 text-center sm:px-6 lg:px-10" data-animate="blur-fade">
         <h2 className="type-h1 text-[var(--ink)]" data-animate="headline">
           You&apos;re not the first.
           <br />
