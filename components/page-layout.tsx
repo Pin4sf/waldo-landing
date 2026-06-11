@@ -7,7 +7,6 @@ import { SmoothScroll } from "./smooth-scroll";
 import { HeroSection } from "./sections/hero-section";
 import { HealthDataSection } from "./sections/health-data-section";
 import { MorningBriefSection } from "./sections/morning-brief-section";
-import { SignalActionSection } from "./sections/signal-action-section";
 import { AlreadyDoneSection } from "./sections/already-done-section";
 import { AgentFeaturesSection } from "./sections/agent-features-section";
 import { UseCasesSection } from "./sections/use-cases-section";
@@ -67,7 +66,6 @@ export function PageLayout() {
           <HeroSection />
           <HealthDataSection />
           <MorningBriefSection />
-          <SignalActionSection />
           <AlreadyDoneSection />
           <AgentFeaturesSection />
           <UseCasesSection />
