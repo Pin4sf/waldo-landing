@@ -5,6 +5,7 @@ import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 
 
 import { Aside, withHighlights } from "@/components/landing-primitives";
 import { IconButton } from "@/components/rail-controls";
+import { AccountAgentConstellation } from "@/components/sections/account-agent-constellation";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 
 const SCROLL_DURATION_MS = 1000;
@@ -461,6 +462,76 @@ function McpWorkflowVisual() {
   );
 }
 
+function InterfaceLayerVisual() {
+  const columns = [
+    {
+      label: "Tools and agents",
+      items: ["Research agent", "Scheduling agent", "Writing agent", "Gmail", "Calendar"],
+    },
+    {
+      label: "Waldo human context",
+      items: ["rough morning", "sharp window", "approval needed", "work account only"],
+    },
+    {
+      label: "Work completed",
+      items: ["Brief returned", "Safer slot found", "Follow-up drafted", "Send left to you"],
+    },
+  ] as const;
+
+  const receipts = [
+    "Research agent returned the missing brief.",
+    "Scheduling agent found the safer slot.",
+    "Writing agent drafted the follow-up.",
+    "Waldo left the send button to you.",
+  ] as const;
+
+  return (
+    <div className="waldo-interface-layer h-full rounded-[8px] bg-[var(--surface-t1)] p-4 sm:p-5">
+      <div className="hidden h-full flex-col justify-between sm:flex">
+        <div className="grid flex-1 gap-3 lg:grid-cols-3">
+          {columns.map((column, columnIndex) => (
+            <div key={column.label} className="waldo-interface-column rounded-[16px] border border-[var(--border-default)] bg-[var(--surface-t2)] p-4">
+              <p className="type-caption text-[var(--text-tertiary)]">{column.label}</p>
+              <div className="mt-4 grid gap-2">
+                {column.items.map((item, itemIndex) => (
+                  <div
+                    key={item}
+                    className="waldo-interface-pill rounded-[10px] bg-[var(--surface-t1)] px-3 py-2"
+                    style={{ "--step-delay": `${(columnIndex * 240) + itemIndex * 120}ms` } as CSSProperties}
+                  >
+                    <p className="type-caption text-[var(--ink)]">{item}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-3 grid gap-2 sm:grid-cols-2">
+          {receipts.map((receipt) => (
+            <div key={receipt} className="rounded-[12px] border border-[var(--border-default)] bg-[var(--surface-t2)] px-3 py-2.5">
+              <p className="type-caption text-[var(--ink)]">{receipt}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="grid h-full content-between gap-3 sm:hidden">
+        {columns.map((column) => (
+          <div key={column.label} className="rounded-[14px] border border-[var(--border-default)] bg-[var(--surface-t2)] p-3">
+            <p className="type-caption text-[var(--text-tertiary)]">{column.label}</p>
+            <p className="type-label mt-1 text-[var(--ink)]">{column.items[0]}</p>
+          </div>
+        ))}
+        <div className="rounded-[14px] border border-[var(--border-default)] bg-[var(--surface-t2)] p-3">
+          <p className="type-caption text-[var(--text-tertiary)]">Receipt</p>
+          <p className="type-label mt-1 text-[var(--ink)]">Waldo left the send button to you.</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function OvernightVisual() {
   return (
     <div className="flex h-full flex-col justify-center rounded-[8px] border border-[var(--border-default)] bg-[var(--surface-t1)] p-4">
@@ -481,6 +552,24 @@ function OvernightVisual() {
 }
 
 const slides: AgentSlide[] = [
+  {
+    label: "Constellation",
+    headline: "Every app, account, and agent.",
+    description:
+      "Waldo reads the human context from Apple Health, then routes the right work through calendar, inbox, tasks, documents, and specialist agents. The output is not another app switch. It is a receipt.",
+    wide: true,
+    aside: "one orbit around the day.",
+    visual: <AccountAgentConstellation />,
+  },
+  {
+    label: "Interface layer",
+    headline: "Agents can act. Waldo knows the human.",
+    description:
+      "Agents know tools. Waldo tells them what kind of day the human is having, which account is in scope, and where the final approval gate belongs.",
+    wide: true,
+    aside: "the human layer for agent work.",
+    visual: <InterfaceLayerVisual />,
+  },
   {
     label: "Chat",
     headline: "Every thread remembers.",
@@ -718,12 +807,12 @@ export function AgentFeaturesSection() {
     <section ref={sectionRef} id="agent-features" className="waldo-agent-gallery relative z-20 isolate min-h-[100svh] w-screen max-w-none scroll-mt-0 overflow-hidden bg-[var(--surface-t3)] pt-32 pb-8 lg:pt-36 lg:pb-12">
       <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 z-0 h-40 bg-[var(--surface-t3)] lg:h-56" />
       <div className="px-[var(--agent-side-padding)]" data-animate="blur-fade">
-        <p className="type-eyebrow mb-4 text-[var(--text-tertiary)]">Agent features</p>
+        <p className="type-eyebrow mb-4 text-[var(--text-tertiary)]">Apps, accounts, agents</p>
         <h2 className="type-h1 max-w-[760px] text-[var(--ink)]" data-animate="headline">
-          One agent that you can utilize everywhere.
+          Every app, account, and agent.
         </h2>
         <p className="type-body tone-secondary mt-5 max-w-[620px]">
-          State-of-the-art agentic workflows for every user, not just technical teams.
+          Agents can act. Waldo tells them what kind of day the human is having.
         </p>
       </div>
 

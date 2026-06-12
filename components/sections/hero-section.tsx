@@ -1,5 +1,7 @@
 import Image from "next/image";
 import { WaldoCTA } from "@/components/landing-primitives";
+import { HeroProofScene } from "@/components/sections/hero-proof-scene";
+import { waldoHeroStates } from "@/components/sections/waldo-capability-data";
 
 export function HeroSection() {
   return (
@@ -24,59 +26,37 @@ export function HeroSection() {
         />
       </div>
 
-      {/* Waldo — straddles the top edge of the white inner circle, as in the Figma reference. */}
-      <div
-        className="pointer-events-none absolute left-1/2 z-20 w-[84px] -translate-x-1/2 -translate-y-1/2 sm:w-[108px] lg:w-[124px]"
-        style={{ top: "clamp(180px, 21.5vw, 430px)" }}
-      >
-        <Image
-          src="/illustrations/default.svg"
-          alt="Waldo"
-          width={169}
-          height={131}
-          priority
-          className="hero-mascot-shadow h-auto w-full"
-        />
-      </div>
+      <HeroProofScene states={waldoHeroStates}>
+        {() => (
+          <div className="waldo-hero-copy relative z-20 mx-auto flex max-w-[840px] flex-col items-center px-6 text-center">
+            <h1 className="type-display text-[var(--ink)]">
+              <span className="hero-title-mobile">
+                The first app that
+                <br />
+                knows how you feel
+                <br />
+                and does something
+                <br />
+                about it.
+              </span>
+              <span className="hero-title-desktop">
+                The first app that knows
+                <br />
+                how you feel and does
+                <br />
+                something about it.
+              </span>
+            </h1>
 
-      {/* Hero copy — sits inside the white circle, below Waldo. */}
-      <div
-        className="relative z-20 mx-auto flex max-w-[820px] flex-col items-center px-6 text-center"
-        data-animate="blur-fade"
-        style={{
-          paddingTop: "clamp(280px, 30.5vw, 560px)",
-          paddingBottom: "clamp(160px, 15vw, 240px)",
-        }}
-      >
-        <h1 className="type-display text-[var(--ink)]" data-animate="fade-up">
-          <span className="hero-title-mobile">
-            The first app that
-            <br />
-            knows how you feel
-            <br />
-            and does something
-            <br />
-            about it.
-          </span>
-          <span className="hero-title-desktop">
-            The first app that knows
-            <br />
-            how you feel and does
-            <br />
-            something about it.
-          </span>
-        </h1>
+            <p className="type-body tone-secondary mt-6 max-w-[58ch] sm:mt-8">
+              Waldo scans complex data from your health wearable, and
+              <br className="hidden sm:inline" /> figures your day before you smell your morning coffee.
+            </p>
 
-        <p className="type-body tone-secondary mt-6 max-w-[58ch] sm:mt-8">
-          Waldo scans complex data from your health wearable, and
-          <br className="hidden sm:inline" /> figures your day before you smell your morning coffee.
-        </p>
-
-        <WaldoCTA className="mt-14 sm:mt-16" />
-
-        {/* Connector wave — left→right floating marquee of source connectors.
-            Awaiting the connector list from the owner before building. */}
-      </div>
+            <WaldoCTA className="mt-14 sm:mt-16" />
+          </div>
+        )}
+      </HeroProofScene>
     </section>
   );
 }

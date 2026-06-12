@@ -121,7 +121,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body
         className="bg-[var(--surface-t3)] text-[var(--ink)] antialiased"
-        style={{ fontFamily: "var(--font-body)" }}
       >
         <SunflowerCursor>{children}</SunflowerCursor>
       </body>

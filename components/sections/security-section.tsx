@@ -70,6 +70,24 @@ const autonomyLevels = [
   },
 ] as const;
 
+const accountBoundaryLanes = [
+  {
+    account: "suyash@work.com",
+    badge: "WORK",
+    outputs: ["Product review moved", "Linear task created"],
+  },
+  {
+    account: "suyash@gmail.com",
+    badge: "PERSONAL",
+    outputs: ["Dinner block protected", "Personal email left untouched"],
+  },
+  {
+    account: "team@company.com",
+    badge: "TEAM",
+    outputs: ["Team brief attached", "Shared doc kept in Drive"],
+  },
+] as const;
+
 function SecurityIcon({ name }: { name: SecurityIconName }) {
   const common = {
     fill: "none",
@@ -223,6 +241,39 @@ function AutonomySlider() {
   );
 }
 
+function AccountBoundaryVisual() {
+  return (
+    <div className="waldo-account-boundary surface-card grid gap-4 p-4 lg:grid-cols-[0.85fr_1.15fr]">
+      <div className="rounded-[16px] bg-[var(--surface-t1)] p-5">
+        <p className="type-caption text-[var(--text-tertiary)]">Account boundaries</p>
+        <h3 className="type-h2 mt-3 text-[var(--ink)]">Whole day, separated lanes.</h3>
+        <p className="type-body tone-secondary mt-4">
+          Waldo can understand the day without blending the accounts that make it up.
+        </p>
+        <Aside className="mt-5">context crosses the day. permissions do not.</Aside>
+      </div>
+
+      <div className="grid gap-3">
+        {accountBoundaryLanes.map((lane) => (
+          <article key={lane.account} className="waldo-boundary-lane rounded-[16px] border border-[var(--border-default)] bg-[var(--surface-t1)] p-4">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <p className="type-label text-[var(--ink)]">{lane.account}</p>
+              <span className="type-caption rounded-full bg-[var(--ink)] px-3 py-1 text-[var(--surface-t2)]">{lane.badge}</span>
+            </div>
+            <div className="mt-3 grid gap-2 sm:grid-cols-2">
+              {lane.outputs.map((output) => (
+                <div key={output} className="rounded-[10px] bg-[var(--surface-t2)] px-3 py-2">
+                  <p className="type-caption text-[var(--ink)]">{output}</p>
+                </div>
+              ))}
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export function SecuritySection() {
   const { railRef, canGoBack, canGoForward, scrollByCard } = useRailScroll();
 
@@ -232,16 +283,15 @@ export function SecuritySection() {
         <SectionIntro
           title={
             <>
-              Your health data
+              Work and personal
               <br />
-              stays yours.
+              stay separate.
             </>
           }
-          aside="private by default."
+          aside="control travels with the account."
         >
           <p>
-            Waldo reads your most personal data: heart rate, sleep, stress, recovery. That is a responsibility we do not
-            take lightly.
+            Waldo can understand the whole day without blending the accounts that make it up.
           </p>
         </SectionIntro>
       </div>
@@ -257,7 +307,6 @@ export function SecuritySection() {
         </div>
         <div
           ref={railRef}
-          data-lenis-prevent
           data-animate="stagger"
           data-stagger="0.055"
           className="rail-fade flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
@@ -267,6 +316,10 @@ export function SecuritySection() {
             <SecurityCard key={card.headline} card={card} />
           ))}
         </div>
+      </div>
+
+      <div className="mt-5" data-animate="blur-fade">
+        <AccountBoundaryVisual />
       </div>
 
       <div className="mt-4" data-animate="blur-fade">

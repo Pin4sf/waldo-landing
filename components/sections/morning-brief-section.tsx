@@ -158,6 +158,15 @@ const scenarios: FlowScenario[] = [
   },
 ];
 
+const workingChecklist = [
+  "Read overnight recovery",
+  "Checked calendar density",
+  "Pulled inbox pressure",
+  "Moved the review",
+  "Drafted the note",
+  "Logged the receipt",
+] as const;
+
 function ConnectorIcon({ connector, index }: { connector: Insight["connectors"][number]; index: number }) {
   if (!connector.src) {
     return (
@@ -209,16 +218,45 @@ function InsightCard({ insight }: { insight: Insight }) {
   );
 }
 
+function WorkingChecklist() {
+  return (
+    <div
+      className="waldo-work-checklist mx-auto mt-8 grid max-w-[760px] gap-2 px-6 sm:grid-cols-2 lg:grid-cols-3"
+      data-animate="stagger"
+      data-stagger="0.055"
+      aria-label="Waldo morning work checklist"
+    >
+      {workingChecklist.map((item, index) => (
+        <div
+          key={item}
+          data-stagger-item
+          className="waldo-work-row flex items-center gap-3 rounded-[14px] border border-[var(--border-default)] bg-[var(--surface-t2)] px-3.5 py-3 text-left"
+          style={{ "--check-delay": `${index * 700}ms` } as CSSProperties}
+        >
+          <span className="waldo-work-check flex h-6 w-6 shrink-0 items-center justify-center rounded-full" aria-hidden>
+            <svg className="h-3.5 w-3.5" viewBox="0 0 16 16" fill="none">
+              <path d="M3.4 8.1 6.6 11.2 12.8 4.8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </span>
+          <span className="type-caption text-[var(--ink)]">{item}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export function MorningBriefSection() {
   return (
     <section id="brief" className="section-shell scroll-mt-28 overflow-hidden rounded-[44px] bg-[var(--surface-t2)] p-3">
       <div className="overflow-hidden rounded-[32px] border border-[var(--border-default)] bg-[var(--surface-t1)] pt-16 text-center sm:pt-20 lg:pt-24">
         <div className="mx-auto flex max-w-[680px] flex-col items-center px-6" data-animate="blur-fade">
-          <h2 className="type-h2 text-[var(--ink)]">You have the signals. Waldo has the context.</h2>
+          <h2 className="type-h2 text-[var(--ink)]">Waldo is already working.</h2>
           <p className="type-body tone-secondary mt-5 max-w-[52ch]">
-            {withHighlights("Waldo reads all of your health insights. Then it does what no app has done before. *It acts.* Every other product shows you data, Waldo does something about it.")}
+            {withHighlights("The signal is only the start. Waldo reads the morning, checks the work around it, and leaves receipts for what changed.")}
           </p>
         </div>
+
+        <WorkingChecklist />
 
         <div className="waldo-flow-stage relative mt-10 h-[440px] overflow-hidden sm:mt-12 lg:h-[520px]" data-animate="blur-fade">
           {scenarios.map((scenario, scenarioIndex) => (

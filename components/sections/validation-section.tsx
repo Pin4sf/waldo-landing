@@ -5,7 +5,7 @@ import Image from "next/image";
 import { Aside, SectionIntro, withHighlights } from "@/components/landing-primitives";
 
 const guidanceBars = [
-  ["Health / wellness", 27.2],
+  ["Health guidance", 27.2],
   ["Professional / career", 25.9],
   ["Relationships", 12.3],
   ["Financial", 10.9],
@@ -25,10 +25,11 @@ const visionConnectors = [
 const compatibilityItems = [
   { label: "Apple Watch", src: "/assets/health-apple-watch.png", imageClassName: "max-h-8 max-w-[58px]" },
   { label: "WHOOP", src: "/assets/health-whoop.png", imageClassName: "max-h-9 max-w-[46px]" },
-  // Oura, Garmin, and Fitbit logos are not present in the supplied assets yet.
+  // Oura, Garmin, Samsung, and Fitbit logos are not present in the supplied assets yet.
   // Keep monochrome placeholders until the owner supplies exact logo files.
   { label: "Oura" },
   { label: "Garmin" },
+  { label: "Samsung" },
   { label: "Fitbit" },
 ] as const;
 
@@ -40,7 +41,7 @@ function BarChartCard() {
           <p className="type-caption text-[var(--text-tertiary)]">Anthropic research</p>
           <h3 className="type-h2 mt-3 text-[var(--ink)]">Health guidance is already happening.</h3>
           <p className="type-body tone-secondary mt-4">
-            {withHighlights("Anthropic found health and wellness was the largest personal-guidance category. *The demand is already here.*")}
+            {withHighlights("Anthropic found health guidance was the largest personal-guidance category. *The demand is already here.*")}
           </p>
           <Aside className="mt-5">structure beats a loose chat window.</Aside>
         </div>

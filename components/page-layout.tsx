@@ -13,10 +13,9 @@ import { UseCasesSection } from "./sections/use-cases-section";
 import { ValidationSection } from "./sections/validation-section";
 import { SecuritySection } from "./sections/security-section";
 import { WhereIsWaldoSection } from "./sections/where-is-waldo-section";
-import { SmarterSection } from "./sections/smarter-section";
+import { LongGameSection } from "./sections/long-game-section";
 import { ActionFanSection, SceneCloseSection } from "./sections/downstream-build-sections";
 import { FaqSection } from "./sections/faq-section";
-import { FooterSection } from "./sections/footer-section";
 
 export function PageLayout() {
   const [dimmed, setDimmed] = useState(false);
@@ -61,7 +60,7 @@ export function PageLayout() {
         }}
       >
         <div
-          className="mx-auto flex max-w-[1200px] flex-col items-center px-4 pb-20 sm:px-6 lg:px-10"
+          className="mx-auto flex max-w-[1200px] flex-col items-center px-4 pb-0 sm:px-6 lg:px-10"
           style={{ gap: "clamp(3rem, 5vw, 5rem)" }}
         >
           <HeroSection />
@@ -73,13 +72,11 @@ export function PageLayout() {
           <ActionFanSection />
           <ValidationSection />
           <SecuritySection />
-          <SmarterSection />
+          <LongGameSection />
           <WhereIsWaldoSection />
           <FaqSection />
           <SceneCloseSection />
         </div>
-
-        <FooterSection />
       </div>
     </div>
   );
