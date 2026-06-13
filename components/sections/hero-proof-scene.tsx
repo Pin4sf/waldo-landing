@@ -186,15 +186,15 @@ export function HeroProofScene({ children, states }: HeroProofSceneProps) {
     return null;
   }
 
+  const transitionCueClass = !reducedMotion && !paused && progress > 0.76 ? " waldo-hero-transition-cue" : "";
+
   return (
     <div
       ref={sceneRef}
-      className={`waldo-hero-stage waldo-hero-state-${activeState.key}`}
+      className={`waldo-hero-stage waldo-hero-state-${activeState.key}${transitionCueClass}`}
       onFocusCapture={() => setPaused(true)}
       onBlurCapture={() => setPaused(false)}
-      onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => {
-        setPaused(false);
         resetPointerField();
       }}
       onPointerMove={handlePointerMove}
@@ -203,6 +203,17 @@ export function HeroProofScene({ children, states }: HeroProofSceneProps) {
         <span className="waldo-hero-shader-ring" />
         <span className="waldo-hero-shader-sheen" />
         <span className="waldo-hero-shader-grain" />
+      </div>
+      <div className="waldo-hero-gradient-field" aria-hidden="true">
+        <div className="waldo-hero-gradient-flow">
+          <div className="waldo-hero-gradient-boost">
+            <span className="waldo-hero-gradient-mesh waldo-hero-gradient-mesh-a" />
+            <span className="waldo-hero-gradient-mesh waldo-hero-gradient-mesh-b" />
+            <span className="waldo-hero-gradient-mesh waldo-hero-gradient-mesh-c" />
+            <span className="waldo-hero-gradient-mesh waldo-hero-gradient-mesh-d" />
+          </div>
+        </div>
+        <span className="waldo-hero-gradient-grain" />
       </div>
       <svg className="waldo-signal-path" viewBox="0 0 1200 760" aria-hidden="true">
         <path d="M210 220 C 350 230, 450 290, 545 360" />
