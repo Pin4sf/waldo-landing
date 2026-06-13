@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Image, { type StaticImageData } from "next/image";
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 
 import { Aside, withHighlights } from "@/components/landing-primitives";
@@ -11,6 +11,12 @@ import { gsap, ScrollTrigger } from "@/lib/gsap";
 const SCROLL_DURATION_MS = 1000;
 const PINNED_SCROLL_QUERY = "(min-width: 1100px) and (min-height: 820px)";
 
+type AgentVisualAsset = {
+  src: StaticImageData;
+  alt: string;
+  nodeId: string;
+};
+
 type AgentSlide = {
   label: string;
   headline: string;
@@ -18,6 +24,7 @@ type AgentSlide = {
   wide?: boolean;
   aside?: string;
   visual: ReactNode;
+  visualAsset?: AgentVisualAsset;
 };
 
 type Connector = {
@@ -841,7 +848,22 @@ export function AgentFeaturesSection() {
             >
               <article className="h-full">
                 <div className="h-[var(--agent-card-height)] overflow-hidden rounded-[24px] border border-[var(--border-default)] bg-[var(--surface-t2)] p-4">
-                  {slide.visual}
+                  {slide.visualAsset ? (
+                    <div
+                      key={slide.visualAsset.nodeId}
+                      className="waldo-agent-visual-shell relative flex h-full items-center justify-center overflow-hidden rounded-[8px] bg-[var(--surface-t1)]"
+                      data-node-id={slide.visualAsset.nodeId}
+                    >
+                      <Image
+                        src={slide.visualAsset.src}
+                        alt={slide.visualAsset.alt}
+                        sizes={slide.wide ? "(min-width: 1024px) 764px, 92vw" : "(min-width: 1024px) 372px, 82vw"}
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+                  ) : (
+                    slide.visual
+                  )}
                 </div>
                 <div className="mt-[var(--agent-card-block-top)] px-[var(--agent-card-block-inline)]">
                   <h3 className="type-h2 text-[var(--ink)]">{slide.headline}</h3>

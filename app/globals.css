@@ -324,6 +324,30 @@ body {
   }
 }
 
+@keyframes waldo-card-visual-enter {
+  from {
+    opacity: 0;
+    filter: blur(18px);
+    transform: translate3d(0, 22px, 0) scale(0.975);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes waldo-card-visual-glow {
+  0%, 100% {
+    opacity: 0.36;
+    transform: translate3d(0, 8px, 0) scale(0.96);
+  }
+  50% {
+    opacity: 0.58;
+    transform: translate3d(0, 0, 0) scale(1.04);
+  }
+}
+
 @keyframes waldo-work-check-complete {
   0%, 35% {
     background: var(--surface-t1);
@@ -366,6 +390,63 @@ body {
   will-change: clip-path, opacity, transform, filter;
 }
 
+.waldo-card-visual-shell {
+  animation: waldo-card-visual-enter 760ms var(--ease-premium) both;
+  display: flex;
+  justify-content: center;
+  filter: drop-shadow(0 28px 52px rgba(26, 26, 26, 0.12));
+  max-width: 100%;
+  transform-origin: 52% 58%;
+  width: min(90%, 560px);
+  will-change: transform, opacity, filter;
+}
+
+.waldo-card-visual-shell[data-visual-shape="phone"] {
+  width: min(72%, 400px);
+}
+
+.waldo-card-visual-shell[data-visual-shape="watch"] {
+  width: min(62%, 330px);
+}
+
+.waldo-card-visual-shell[data-visual-shape="tablet"] {
+  width: min(96%, 580px);
+}
+
+.waldo-card-visual-shell[data-visual-shape="network"] {
+  width: min(94%, 600px);
+}
+
+.waldo-card-visual-image {
+  border-radius: clamp(20px, 3vw, 35px);
+  height: auto;
+  max-height: min(66vh, 520px);
+  max-width: 100%;
+  object-fit: contain;
+  width: 100%;
+}
+
+.waldo-card-visual-glow {
+  animation: waldo-card-visual-glow 5.8s var(--ease-premium) infinite;
+}
+
+.waldo-panel-trigger {
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.72) inset;
+}
+
+.waldo-panel-trigger[data-state="closed"]:hover {
+  transform: translate3d(0, -1px, 0);
+}
+
+.waldo-panel-card {
+  box-shadow: var(--shadow-card);
+}
+
+.waldo-agent-visual-shell {
+  animation: waldo-card-visual-enter 680ms var(--ease-premium) both;
+  box-shadow: inset 0 0 0 1px var(--border-default);
+}
+
 .waldo-work-row {
   box-shadow: 0 10px 26px rgba(26, 26, 26, 0.04);
 }
@@ -405,11 +486,68 @@ body {
   transform: translateY(-1px);
 }
 
+@media (max-width: 734px) {
+  .waldo-health-slide-content {
+    display: flex !important;
+    flex-direction: column;
+    gap: 28px;
+    height: auto !important;
+    min-height: 100%;
+    overflow: visible !important;
+  }
+
+  .waldo-health-slide-copy {
+    flex: 0 0 auto;
+  }
+
+  .waldo-health-mobile-stage {
+    margin: -4px 0 24px;
+  }
+
+  .waldo-health-visual-stage {
+    flex: 0 0 auto;
+    height: auto !important;
+    min-height: clamp(260px, 42vh, 360px);
+    overflow: visible !important;
+    padding-bottom: 18px;
+  }
+
+  .waldo-health-mobile-stage .waldo-health-visual-stage {
+    min-height: clamp(236px, 35vh, 304px);
+    padding-bottom: 0;
+  }
+
+  .waldo-card-visual-shell {
+    width: min(96%, 460px);
+  }
+
+  .waldo-card-visual-shell[data-visual-shape="phone"],
+  .waldo-card-visual-shell[data-visual-shape="watch"] {
+    width: min(78%, 330px);
+  }
+
+  .waldo-card-visual-shell[data-visual-shape="tablet"],
+  .waldo-card-visual-shell[data-visual-shape="network"] {
+    width: min(98%, 480px);
+  }
+
+  .waldo-card-visual-image {
+    max-height: min(36vh, 304px);
+  }
+
+  .waldo-health-mobile-stage .waldo-card-visual-image {
+    max-height: min(32vh, 280px);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .waldo-tool-chip,
   .waldo-tool-path,
   .waldo-mcp-step,
   .waldo-panel-content[data-state="open"] .waldo-panel-card,
+  .waldo-card-visual-shell,
+  .waldo-card-visual-glow,
+  .waldo-agent-visual-shell,
   .waldo-work-check,
   .waldo-signal-path path,
   .waldo-constellation-node,
@@ -420,6 +558,12 @@ body {
   .waldo-work-check {
     background: var(--ink);
     color: var(--surface-t2);
+    transform: none;
+  }
+
+  .waldo-card-visual-shell,
+  .waldo-card-visual-glow {
+    filter: none;
     transform: none;
   }
 

@@ -1,9 +1,19 @@
 "use client";
 
 import * as Accordion from "@radix-ui/react-accordion";
-import Image from "next/image";
+import Image, { type StaticImageData } from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import edgeCircadianContext from "@/public/figma-assets/waldo-cards/edge-circadian-context.png";
+import edgeCooldown from "@/public/figma-assets/waldo-cards/edge-cooldown.png";
+import edgeFetchMidday from "@/public/figma-assets/waldo-cards/edge-fetch-midday.png";
+import edgePhoneStress from "@/public/figma-assets/waldo-cards/edge-phone-stress.png";
+import morningLockscreenIpad from "@/public/figma-assets/waldo-cards/morning-lockscreen-ipad.png";
+import morningOverview from "@/public/figma-assets/waldo-cards/morning-overview.png";
+import morningPhoneRestingState from "@/public/figma-assets/waldo-cards/morning-phone-resting-state.png";
+import morningPhoneSleepDebt from "@/public/figma-assets/waldo-cards/morning-phone-sleep-debt.png";
+import morningSleepStage from "@/public/figma-assets/waldo-cards/morning-sleep-stage.png";
+import morningWatchHrv from "@/public/figma-assets/waldo-cards/morning-watch-hrv.png";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 
 const AUTO_DWELL_MS = 6150;
@@ -36,12 +46,20 @@ function appleGalleryEase(progress: number) {
 type VisualKind = "recovery" | "stress" | "patterns" | "body" | "longGame";
 type HealthTone = "sleep" | "heart" | "stress" | "recovery" | "motion";
 
+type HealthCardVisual = {
+  image: StaticImageData;
+  alt: string;
+  nodeId: string;
+  shape?: "cluster" | "network" | "phone" | "tablet" | "watch";
+};
+
 type FeaturePanel = {
   label: string;
   title: string;
   body: string;
   tone: HealthTone;
   metric: string;
+  visual?: HealthCardVisual;
 };
 
 type ShowcaseSlide = {
@@ -50,6 +68,7 @@ type ShowcaseSlide = {
   aside: string;
   visual: VisualKind;
   badge?: string;
+  defaultVisual?: HealthCardVisual;
   panels: FeaturePanel[];
 };
 
@@ -59,6 +78,12 @@ const slides: ShowcaseSlide[] = [
     headline: "Mornings, sorted.",
     aside: "already on it.",
     visual: "recovery",
+    defaultVisual: {
+      image: morningOverview,
+      alt: "Waldo morning health feature card showing recovery, sleep, and resting-state signals.",
+      nodeId: "1309:10627",
+      shape: "cluster",
+    },
     panels: [
       {
         label: "Sleep, stage by stage.",
@@ -67,6 +92,12 @@ const slides: ShowcaseSlide[] = [
           "Waldo tracks deep, REM, light, and awake. Duration alone does not tell you much. *Deep sleep in a short night can beat light sleep in a long one.* Waldo knows the difference.",
         tone: "sleep",
         metric: "stages read",
+        visual: {
+          image: morningSleepStage,
+          alt: "Waldo sleep stages card exported from Figma.",
+          nodeId: "1315:7427",
+          shape: "phone",
+        },
       },
       {
         label: "HRV tells the real story.",
@@ -75,6 +106,12 @@ const slides: ShowcaseSlide[] = [
           "Heart rate variability is the closest thing to a readiness signal your body produces. Waldo checks RMSSD against your 7-day baseline. *When it dips, Waldo acts on it.*",
         tone: "heart",
         metric: "baseline checked",
+        visual: {
+          image: morningWatchHrv,
+          alt: "Waldo HRV Apple Watch card exported from Figma.",
+          nodeId: "1315:7928",
+          shape: "watch",
+        },
       },
       {
         label: "Resting state, quietly watched.",
@@ -83,6 +120,12 @@ const slides: ShowcaseSlide[] = [
           "Resting heart rate, respiratory rate, wrist temperature, and blood oxygen paint one picture: how recovered your nervous system actually is. *Waldo reads all four every night.*",
         tone: "recovery",
         metric: "4 signals",
+        visual: {
+          image: morningPhoneRestingState,
+          alt: "Waldo resting-state phone card exported from Figma.",
+          nodeId: "1305:22308",
+          shape: "cluster",
+        },
       },
       {
         label: "Sleep debt does not lie.",
@@ -91,6 +134,12 @@ const slides: ShowcaseSlide[] = [
           "A 14-day weighted average tracks how much sleep you owe yourself. One bad night is recoverable. Four in a row is a pattern. *Waldo adjusts your week before the crash lands.*",
         tone: "sleep",
         metric: "14-day debt",
+        visual: {
+          image: morningPhoneSleepDebt,
+          alt: "Waldo sleep-debt phone card exported from Figma.",
+          nodeId: "1309:7908",
+          shape: "phone",
+        },
       },
       {
         label: "What Waldo does about it.",
@@ -99,6 +148,12 @@ const slides: ShowcaseSlide[] = [
           "Recovery at 63 and a 9am meeting? Pushed to 10:30. Recovery at 85? Your calendar stays untouched. *You wake up to the result, not the reasoning.*",
         tone: "recovery",
         metric: "morning moved",
+        visual: {
+          image: morningLockscreenIpad,
+          alt: "Waldo morning lock-screen action card exported from Figma.",
+          nodeId: "1309:9685",
+          shape: "tablet",
+        },
       },
     ],
   },
@@ -107,6 +162,12 @@ const slides: ShowcaseSlide[] = [
     headline: "The edge, taken off.",
     aside: "you didn't ask. you didn't need to.",
     visual: "stress",
+    defaultVisual: {
+      image: edgePhoneStress,
+      alt: "Waldo stress confidence phone card exported from Figma.",
+      nodeId: "1309:10094",
+      shape: "cluster",
+    },
     panels: [
       {
         label: "Stress confidence.",
@@ -115,6 +176,12 @@ const slides: ShowcaseSlide[] = [
           "Most apps give you a number. Waldo watches confidence: how certain the signal is that stress is sustained. *When the read is strong enough to trust, Waldo moves.*",
         tone: "stress",
         metric: "confidence rising",
+        visual: {
+          image: edgePhoneStress,
+          alt: "Waldo stress confidence phone card exported from Figma.",
+          nodeId: "1309:10094",
+          shape: "cluster",
+        },
       },
       {
         label: "The Fetch fires mid-day.",
@@ -123,6 +190,12 @@ const slides: ShowcaseSlide[] = [
           "The moment stress sustains above threshold, Waldo pulls low-priority meetings from your afternoon and blocks recovery time. *No prompt asking if you are okay. Just cleared space.*",
         tone: "stress",
         metric: "space cleared",
+        visual: {
+          image: edgeFetchMidday,
+          alt: "Waldo Fetch mid-day stress card exported from Figma.",
+          nodeId: "1315:13117",
+          shape: "network",
+        },
       },
       {
         label: "Cooldown built in.",
@@ -131,6 +204,12 @@ const slides: ShowcaseSlide[] = [
           "Dismiss a Fetch and Waldo backs off. It does not nag. It waits, watches, and only fires again if the signal re-escalates after the cooldown. *Quiet by design.*",
         tone: "recovery",
         metric: "cooldown active",
+        visual: {
+          image: edgeCooldown,
+          alt: "Waldo stress cooldown card exported from Figma.",
+          nodeId: "1322:7921",
+          shape: "network",
+        },
       },
       {
         label: "Circadian context matters.",
@@ -139,6 +218,12 @@ const slides: ShowcaseSlide[] = [
           "A stress spike in the morning means something different than one after lunch. Waldo checks stress against circadian position and Form before deciding whether to intervene. *Context keeps it from overreacting.*",
         tone: "motion",
         metric: "context checked",
+        visual: {
+          image: edgeCircadianContext,
+          alt: "Waldo circadian stress context card exported from Figma.",
+          nodeId: "1322:7682",
+          shape: "network",
+        },
       },
       {
         label: "What Waldo does about it.",
@@ -147,6 +232,12 @@ const slides: ShowcaseSlide[] = [
           "Stress climbing and your investor call matters? That stays. The low-priority 4:30? Pulled. *Waldo moves what you would cancel yourself and keeps what you would not.*",
         tone: "stress",
         metric: "meeting pulled",
+        visual: {
+          image: edgePhoneStress,
+          alt: "Waldo stress action card exported from Figma.",
+          nodeId: "1309:10094",
+          shape: "cluster",
+        },
       },
     ],
   },
@@ -380,29 +471,57 @@ function PanelPill({
   );
 }
 
-function WatchSignalStage({ slide, panel }: { slide: ShowcaseSlide; panel: FeaturePanel }) {
+function HealthFeatureVisualStage({
+  slide,
+  panel,
+  activePanel,
+}: {
+  slide: ShowcaseSlide;
+  panel: FeaturePanel;
+  activePanel: number | null;
+}) {
+  const visual = activePanel === null
+    ? slide.defaultVisual ?? panel.visual
+    : panel.visual ?? slide.defaultVisual;
+
+  if (!visual) {
+    return (
+      <div className="waldo-health-visual-stage pointer-events-none relative z-0 flex h-full min-h-[260px] items-end justify-center overflow-hidden md:min-h-[420px] lg:min-h-[300px]">
+        <div className="relative mb-[-132px] h-[440px] w-[230px] rounded-[48px] border-[7px] border-[var(--ink)] bg-[var(--surface-t1)] sm:h-[500px] sm:w-[260px] lg:mb-[-150px] lg:h-[700px] lg:w-[366px]">
+          <div className="absolute left-8 top-8 type-label text-[var(--ink)]">9:41</div>
+          <div className="absolute left-1/2 top-7 h-7 w-28 -translate-x-1/2 rounded-full bg-[var(--ink)]" />
+          <Image
+            src="/illustrations/default.svg"
+            alt=""
+            width={112}
+            height={112}
+            aria-hidden
+            className="absolute left-1/2 top-[56%] h-24 w-24 -translate-x-1/2 -translate-y-1/2 object-contain lg:h-28 lg:w-28"
+          />
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="pointer-events-none relative z-0 flex h-full min-h-[260px] items-end justify-center overflow-hidden md:min-h-[420px] lg:min-h-[300px]">
-      <div className="relative mb-[-132px] h-[440px] w-[230px] rounded-[48px] border-[7px] border-[var(--ink)] bg-[var(--surface-t1)] sm:h-[500px] sm:w-[260px] lg:mb-[-150px] lg:h-[700px] lg:w-[366px]">
-        <div className="absolute left-8 top-8 type-label text-[var(--ink)]">9:41</div>
-        <div className="absolute left-1/2 top-7 h-7 w-28 -translate-x-1/2 rounded-full bg-[var(--ink)]" />
-        <div className="absolute right-8 top-9 flex items-center gap-1.5 text-[var(--ink)]" aria-hidden>
-          <span className="h-2.5 w-1 rounded-full bg-current" />
-          <span className="h-3.5 w-1 rounded-full bg-current" />
-          <span className="h-5 w-1 rounded-full bg-current" />
-          <span className="ml-1 h-3 w-6 rounded-[4px] border border-current" />
-        </div>
+    <div className="waldo-health-visual-stage pointer-events-none relative z-0 flex h-full min-h-[260px] items-center justify-center overflow-hidden md:min-h-[420px] lg:min-h-[300px]">
+      <div aria-hidden className="waldo-card-visual-glow absolute inset-x-[12%] bottom-[8%] h-[32%] rounded-full bg-[var(--accent-subtle)] blur-3xl" />
+      <div
+        key={`${visual.nodeId}-${activePanel ?? "default"}`}
+        className="waldo-card-visual-shell relative"
+        data-node-id={visual.nodeId}
+        data-visual-shape={visual.shape ?? "cluster"}
+      >
         <Image
-          src="/illustrations/default.svg"
-          alt=""
-          width={112}
-          height={112}
-          aria-hidden
-          className="absolute left-1/2 top-[56%] h-24 w-24 -translate-x-1/2 -translate-y-1/2 object-contain lg:h-28 lg:w-28"
+          src={visual.image}
+          alt={visual.alt}
+          sizes="(min-width: 1024px) 580px, (min-width: 640px) 64vw, 92vw"
+          className="waldo-card-visual-image select-none"
+          fetchPriority={activePanel === null ? "high" : "auto"}
+          loading="eager"
+          unoptimized
+          style={{ height: "auto", width: "100%" }}
         />
-        <div className="sr-only">
-          {slide.headline}: {panel.metric}
-        </div>
       </div>
     </div>
   );
@@ -420,7 +539,7 @@ function SlideContent({
   const panel = slide.panels[openPanel ?? 0] ?? slide.panels[0];
 
   return (
-    <div className="relative grid h-full min-h-0 grid-rows-[auto_minmax(280px,1fr)] gap-6 overflow-hidden p-5 sm:p-6 md:grid-cols-[minmax(240px,0.86fr)_minmax(260px,1fr)] md:grid-rows-1 md:items-center md:gap-4 lg:grid-cols-[minmax(300px,0.82fr)_minmax(400px,1.4fr)] lg:p-8">
+    <div className="waldo-health-slide-content relative grid h-full min-h-0 grid-rows-[auto_minmax(280px,1fr)] gap-6 overflow-hidden p-5 sm:p-6 md:grid-cols-[minmax(240px,0.86fr)_minmax(260px,1fr)] md:grid-rows-1 md:items-center md:gap-4 lg:grid-cols-[minmax(300px,0.82fr)_minmax(400px,1.4fr)] lg:p-8">
       {openPanel !== null ? (
         <button
           type="button"
@@ -435,9 +554,13 @@ function SlideContent({
         </button>
       ) : null}
 
-      <div className="relative z-10 flex min-h-0 flex-col justify-start pl-0 sm:pl-4 md:justify-center lg:pl-8">
+      <div className="waldo-health-slide-copy relative z-10 flex min-h-0 flex-col justify-start pl-0 sm:pl-4 md:justify-center lg:pl-8">
         <div className="mb-8 pr-12 sm:pr-14">
           <h3 className="type-h2 max-w-[16ch] text-[var(--ink)]">{slide.headline}</h3>
+        </div>
+
+        <div className="waldo-health-mobile-stage md:hidden">
+          <HealthFeatureVisualStage slide={slide} panel={panel} activePanel={openPanel} />
         </div>
 
         <Accordion.Root
@@ -458,7 +581,9 @@ function SlideContent({
         </Accordion.Root>
       </div>
 
-      <WatchSignalStage slide={slide} panel={panel} />
+      <div className="hidden h-full min-h-0 md:block">
+        <HealthFeatureVisualStage slide={slide} panel={panel} activePanel={openPanel} />
+      </div>
     </div>
   );
 }
