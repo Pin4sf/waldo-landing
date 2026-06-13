@@ -417,6 +417,7 @@ body {
 
 .waldo-card-visual-shell[data-node-id="1309:9685"] {
   align-self: flex-end;
+  align-items: flex-start;
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.22), transparent 28%),
     linear-gradient(180deg, #171716 0%, #050505 100%);
@@ -427,13 +428,18 @@ body {
     inset 0 1px 0 rgba(255, 255, 255, 0.28),
     inset 0 -1px 0 rgba(255, 255, 255, 0.1);
   flex: 0 0 auto;
-  margin-bottom: clamp(-66px, -5vw, -40px);
-  margin-right: clamp(-180px, -11vw, -96px);
+  justify-content: flex-start;
+  margin-bottom: clamp(-58px, -4vw, -44px);
+  margin-right: clamp(-72px, -5vw, -44px);
   max-height: none;
   max-width: none;
-  padding: clamp(10px, 1.4vw, 16px);
+  padding:
+    clamp(20px, 2vw, 28px)
+    clamp(9px, 1vw, 14px)
+    clamp(8px, 1vw, 12px)
+    clamp(18px, 1.8vw, 26px);
   position: relative;
-  width: clamp(500px, 43vw, 580px);
+  width: clamp(480px, 40vw, 540px);
 }
 
 .waldo-card-visual-shell[data-node-id="1309:9685"]::before {
@@ -455,7 +461,7 @@ body {
   border-radius: clamp(18px, 3vw, 28px);
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
   display: block;
-  max-height: min(66vh, calc(var(--slide-height) - 8px), 520px);
+  max-height: min(58vh, calc(var(--slide-height) - 48px), 470px);
   overflow: hidden;
 }
 
