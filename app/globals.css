@@ -392,9 +392,11 @@ body {
 
 .waldo-card-visual-shell {
   animation: waldo-card-visual-enter 760ms var(--ease-premium) both;
+  align-items: center;
   display: flex;
   justify-content: center;
   filter: drop-shadow(0 28px 52px rgba(26, 26, 26, 0.12));
+  max-height: calc(var(--slide-height) - 72px);
   max-width: 100%;
   transform-origin: 52% 58%;
   width: min(90%, 560px);
@@ -420,10 +422,10 @@ body {
 .waldo-card-visual-image {
   border-radius: clamp(20px, 3vw, 35px);
   height: auto;
-  max-height: min(66vh, 520px);
+  max-height: min(62vh, calc(var(--slide-height) - 72px), 520px);
   max-width: 100%;
   object-fit: contain;
-  width: 100%;
+  width: auto;
 }
 
 .waldo-card-visual-glow {

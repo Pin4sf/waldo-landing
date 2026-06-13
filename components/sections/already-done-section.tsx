@@ -2,7 +2,7 @@
 
 import * as Accordion from "@radix-ui/react-accordion";
 import Image, { type StaticImageData } from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type WheelEvent } from "react";
 
 import edgeCircadianContext from "@/public/figma-assets/waldo-cards/edge-circadian-context.png";
 import edgeCooldown from "@/public/figma-assets/waldo-cards/edge-cooldown.png";
@@ -504,7 +504,7 @@ function HealthFeatureVisualStage({
   }
 
   return (
-    <div className="waldo-health-visual-stage pointer-events-none relative z-0 flex h-full min-h-[260px] items-center justify-center overflow-hidden md:min-h-[420px] lg:min-h-[300px]">
+    <div className="waldo-health-visual-stage pointer-events-none relative z-0 flex h-full min-h-[260px] items-center justify-center overflow-visible md:min-h-[420px] lg:min-h-[300px]">
       <div aria-hidden className="waldo-card-visual-glow absolute inset-x-[12%] bottom-[8%] h-[32%] rounded-full bg-[var(--accent-subtle)] blur-3xl" />
       <div
         key={`${visual.nodeId}-${activePanel ?? "default"}`}
@@ -520,7 +520,6 @@ function HealthFeatureVisualStage({
           fetchPriority={activePanel === null ? "high" : "auto"}
           loading="eager"
           unoptimized
-          style={{ height: "auto", width: "100%" }}
         />
       </div>
     </div>
@@ -594,6 +593,8 @@ export function AlreadyDoneSection() {
   const trackRef = useRef<HTMLDivElement>(null);
   const scrollAnimationRef = useRef<number | null>(null);
   const progressAnimationRef = useRef<number | null>(null);
+  const pinnedTriggerRef = useRef<ReturnType<typeof ScrollTrigger.create> | null>(null);
+  const wheelIntentRef = useRef<number | null>(null);
   const progressRef = useRef(0);
   const activeRef = useRef(0);
   const lastProgressTickRef = useRef<number | null>(null);
@@ -727,11 +728,13 @@ export function AlreadyDoneSection() {
           });
         },
       });
+      pinnedTriggerRef.current = trigger;
 
       ScrollTrigger.refresh();
 
       return () => {
         trigger.kill();
+        if (pinnedTriggerRef.current === trigger) pinnedTriggerRef.current = null;
         scrollDrivenRef.current = false;
         track.style.scrollSnapType = pinnedSnapType;
         setScrollDriven(false);
@@ -766,6 +769,18 @@ export function AlreadyDoneSection() {
     setEnded(false);
     setActiveValue(nextIndex);
     if (!track || !card) return;
+
+    const pinnedTrigger = pinnedTriggerRef.current;
+    if (scrollDrivenRef.current && pinnedTrigger) {
+      const targetProgress = slides.length <= 1 ? 0 : nextIndex / (slides.length - 1);
+      const targetScrollTop = pinnedTrigger.start + (pinnedTrigger.end - pinnedTrigger.start) * targetProgress;
+
+      window.scrollTo({
+        top: targetScrollTop,
+        behavior: reducedMotion ? "auto" : "smooth",
+      });
+      return;
+    }
 
     const paddingStart = parseFloat(window.getComputedStyle(track).paddingLeft) || 0;
     const left = card.offsetLeft - paddingStart;
@@ -853,6 +868,22 @@ export function AlreadyDoneSection() {
     scrollToSlide(index, false);
   };
 
+  const handleWheel = (event: WheelEvent<HTMLDivElement>) => {
+    if (!scrollDrivenRef.current) return;
+    if (Math.abs(event.deltaX) < 18 || Math.abs(event.deltaX) <= Math.abs(event.deltaY)) return;
+
+    event.preventDefault();
+    const now = window.performance.now();
+    if (wheelIntentRef.current !== null && now - wheelIntentRef.current < 520) return;
+
+    wheelIntentRef.current = now;
+    setPlaying(false);
+    setEnded(false);
+    setInteractionPaused(true);
+    scrollToSlide(activeRef.current + (event.deltaX > 0 ? 1 : -1), false);
+    window.setTimeout(() => setInteractionPaused(false), 520);
+  };
+
   const handleScroll = () => {
     const track = trackRef.current;
     if (!track) return;
@@ -906,6 +937,7 @@ export function AlreadyDoneSection() {
         aria-live="polite"
         aria-label={`Showing ${activeLabel}`}
         onScroll={handleScroll}
+        onWheel={handleWheel}
         onPointerDown={() => {
           cancelScrollAnimation();
           setPlaying(false);
