@@ -6,6 +6,7 @@ import { useCallback, useEffect, useRef, useState, type PointerEvent as ReactPoi
 
 import edgeCircadianContext from "@/public/figma-assets/waldo-cards/edge-circadian-context.png";
 import edgeCooldown from "@/public/figma-assets/waldo-cards/edge-cooldown.png";
+import edgeDefaultState from "@/public/figma-assets/waldo-cards/edge-default-state.png";
 import edgeFetchMidday from "@/public/figma-assets/waldo-cards/edge-fetch-midday.png";
 import edgePhoneStress from "@/public/figma-assets/waldo-cards/edge-phone-stress.png";
 import edgeWaldoAction from "@/public/figma-assets/waldo-cards/edge-waldo-action.png";
@@ -212,10 +213,10 @@ const slides: ShowcaseSlide[] = [
     aside: "you didn't ask. you didn't need to.",
     visual: "stress",
     defaultVisual: {
-      image: edgePhoneStress,
-      alt: "Waldo stress confidence phone card exported from Figma.",
-      nodeId: "1309:10094",
-      shape: "cluster",
+      image: edgeDefaultState,
+      alt: "Waldo edge default state card showing recovery, resting-state, and health signal context.",
+      nodeId: "edge-default-state",
+      shape: "network",
     },
     panels: [
       {
