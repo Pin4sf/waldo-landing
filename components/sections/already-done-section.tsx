@@ -2,25 +2,26 @@
 
 import * as Accordion from "@radix-ui/react-accordion";
 import Image, { type StaticImageData } from "next/image";
-import { useCallback, useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
+import { useCallback, useEffect, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from "react";
 
+import connectingConstellation from "@/public/figma-assets/waldo-cards/connecting-constellation.png";
+import connectingPatrol from "@/public/figma-assets/waldo-cards/connecting-patrol.png";
+import connectingSpot from "@/public/figma-assets/waldo-cards/connecting-spot.png";
 import edgeCircadianContext from "@/public/figma-assets/waldo-cards/edge-circadian-context.png";
-import edgeCooldown from "@/public/figma-assets/waldo-cards/edge-cooldown.png";
+import edgeCooldownHandoff from "@/public/figma-assets/waldo-cards/edge-cooldown-handoff.png";
 import edgeDefaultState from "@/public/figma-assets/waldo-cards/edge-default-state.png";
 import edgeFetchMidday from "@/public/figma-assets/waldo-cards/edge-fetch-midday.png";
 import edgePhoneStress from "@/public/figma-assets/waldo-cards/edge-phone-stress.png";
-import edgeWaldoAction from "@/public/figma-assets/waldo-cards/edge-waldo-action.png";
+import edgeWaldoActionCalendar from "@/public/figma-assets/waldo-cards/edge-waldo-action-calendar.png";
 import morningLockscreenIpad from "@/public/figma-assets/waldo-cards/morning-lockscreen-ipad.png";
 import morningOverview from "@/public/figma-assets/waldo-cards/morning-overview.png";
 import morningPhoneRestingState from "@/public/figma-assets/waldo-cards/morning-phone-resting-state.png";
 import morningPhoneSleepDebt from "@/public/figma-assets/waldo-cards/morning-phone-sleep-debt.png";
 import morningSleepStage from "@/public/figma-assets/waldo-cards/morning-sleep-stage.png";
 import morningWatchHrv from "@/public/figma-assets/waldo-cards/morning-watch-hrv.png";
-import { gsap, ScrollTrigger } from "@/lib/gsap";
 
 const AUTO_DWELL_MS = 6150;
 const AUTO_SCROLL_MS = 1000;
-const PINNED_SCROLL_QUERY = "(min-width: 1100px) and (min-height: 820px)";
 const DRAG_START_THRESHOLD_PX = 8;
 const SCROLLBAR_GUTTER_PX = 18;
 const INTERACTIVE_CAROUSEL_SELECTOR = [
@@ -66,12 +67,12 @@ type HealthCardVisual = {
   image: StaticImageData;
   alt: string;
   nodeId: string;
-  shape?: "cluster" | "network" | "phone" | "tablet" | "watch";
+  shape?: "artifact" | "cluster" | "network" | "phone" | "tablet" | "watch";
   backdrop?: {
     image: StaticImageData;
     alt: string;
     nodeId: string;
-    shape?: "cluster" | "network" | "phone" | "tablet" | "watch";
+    shape?: "artifact" | "cluster" | "network" | "phone" | "tablet" | "watch";
   };
 };
 
@@ -255,16 +256,10 @@ const slides: ShowcaseSlide[] = [
         tone: "recovery",
         metric: "cooldown active",
         visual: {
-          image: edgeCooldown,
-          alt: "Waldo stress cooldown card exported from Figma.",
+          image: edgeCooldownHandoff,
+          alt: "Waldo cooldown handoff infographic exported from Figma.",
           nodeId: "1322:7921",
-          shape: "network",
-          backdrop: {
-            image: edgeFetchMidday,
-            alt: "Blurred Waldo Fetch mid-day stress context behind the cooldown handoff.",
-            nodeId: "1315:13117",
-            shape: "network",
-          },
+          shape: "artifact",
         },
       },
       {
@@ -289,10 +284,10 @@ const slides: ShowcaseSlide[] = [
         tone: "stress",
         metric: "meeting pulled",
         visual: {
-          image: edgeWaldoAction,
-          alt: "Waldo calendar action card showing Form-aware meeting protection.",
+          image: edgeWaldoActionCalendar,
+          alt: "Waldo Calendar action view showing protected meetings and moved work.",
           nodeId: "edge-waldo-action",
-          shape: "network",
+          shape: "artifact",
         },
       },
     ],
@@ -302,6 +297,12 @@ const slides: ShowcaseSlide[] = [
     headline: "Connecting the Dots",
     aside: "~70 scans a day. you never notice.",
     visual: "patterns",
+    defaultVisual: {
+      image: connectingPatrol,
+      alt: "Waldo Patrol timeline showing logged Brief, Fetch, and Adjustment events.",
+      nodeId: "1399:7457",
+      shape: "artifact",
+    },
     panels: [
       {
         label: "The Patrol keeps watch.",
@@ -310,6 +311,12 @@ const slides: ShowcaseSlide[] = [
           "Waldo scans your biometric signals against your calendar, tasks, and communication load throughout the day. Most scans find nothing notable. *The useful ones get logged.*",
         tone: "recovery",
         metric: "quiet scan",
+        visual: {
+          image: connectingPatrol,
+          alt: "Waldo Patrol timeline showing logged Brief, Fetch, and Adjustment events.",
+          nodeId: "1399:7457",
+          shape: "artifact",
+        },
       },
       {
         label: "Spots are single observations.",
@@ -318,14 +325,26 @@ const slides: ShowcaseSlide[] = [
           "\"Your worst sleep follows your heaviest meeting days.\" One data point. One sentence. Waldo surfaces it when confidence is high enough, not before. *Small, useful, restrained.*",
         tone: "sleep",
         metric: "Spot found",
+        visual: {
+          image: connectingSpot,
+          alt: "Waldo Spot infographic connecting sleep, HRV, Gmail, Calendar, Form, and Weight signals.",
+          nodeId: "1400:7699",
+          shape: "artifact",
+        },
       },
       {
-        label: "Constellations connect dots.",
+        label: "Constellations connect the dots.",
         title: "Constellations connect the dots.",
         body:
           "Multiple Spots link into a named behavioral pattern. The Tuesday Crash becomes something Waldo can name, track, and act on. *Coming soon.*",
         tone: "heart",
         metric: "pattern named",
+        visual: {
+          image: connectingConstellation,
+          alt: "Waldo Constellation graph showing linked signals behind the Tuesday Crash pattern.",
+          nodeId: "1403:12317",
+          shape: "artifact",
+        },
       },
       {
         label: "Pre-activity readiness.",
@@ -334,6 +353,12 @@ const slides: ShowcaseSlide[] = [
           "Before a high-stakes meeting, Waldo checks your Form score, context from last week, attendee list, and duration. *Not a generic reminder. A readiness check grounded in your actual data.*",
         tone: "motion",
         metric: "ready check",
+        visual: {
+          image: connectingSpot,
+          alt: "Waldo Spot infographic connecting sleep, HRV, Gmail, Calendar, Form, and Weight signals.",
+          nodeId: "1403:12473",
+          shape: "artifact",
+        },
       },
       {
         label: "What Waldo does about it.",
@@ -342,6 +367,12 @@ const slides: ShowcaseSlide[] = [
           "Patterns are not useful if nothing changes. Tuesday overload causing Wednesday depletion? *Waldo starts protecting Wednesday mornings before the cycle repeats.*",
         tone: "recovery",
         metric: "cycle broken",
+        visual: {
+          image: connectingSpot,
+          alt: "Waldo Spot infographic connecting sleep, HRV, Gmail, Calendar, Form, and Weight signals.",
+          nodeId: "1403:12629",
+          shape: "artifact",
+        },
       },
     ],
   },
@@ -493,34 +524,107 @@ function PanelPill({
   const panelId = `${panel.label.replace(/[^a-z0-9]/gi, "-").toLowerCase()}-${index}`;
   const panelContentId = `${panelId}-content`;
   const cleanBody = panel.body.replaceAll("*", "");
+  const itemRef = useRef<HTMLDivElement>(null);
+  const measureRef = useRef<HTMLSpanElement>(null);
+  const openMeasureRef = useRef<HTMLDivElement>(null);
+  const [pillMetrics, setPillMetrics] = useState<{ closed: number; open: number; height: number } | null>(null);
+
+  useEffect(() => {
+    const measure = measureRef.current;
+    const openMeasure = openMeasureRef.current;
+    const item = itemRef.current;
+    if (!measure || !openMeasure) return undefined;
+    let mounted = true;
+
+    const updateMetrics = () => {
+      if (!mounted) return;
+      const closed = Math.ceil(measure.getBoundingClientRect().width);
+      const available = item?.parentElement?.clientWidth ?? 440;
+      const open = Math.max(closed, Math.min(440, Math.floor(available)));
+      openMeasure.style.width = `${open}px`;
+      const height = Math.max(52, Math.ceil(openMeasure.scrollHeight));
+      setPillMetrics({ closed, open, height });
+    };
+
+    const frame = window.requestAnimationFrame(updateMetrics);
+    void document.fonts?.ready.then(updateMetrics);
+
+    return () => {
+      mounted = false;
+      window.cancelAnimationFrame(frame);
+    };
+  }, [panel.title]);
+
+  const itemStyle = pillMetrics
+    ? ({
+      "--closed-inline-size": `${pillMetrics.closed}px`,
+      "--open-inline-size": `${pillMetrics.open}px`,
+      "--open-block-size": `${pillMetrics.height}px`,
+    } as CSSProperties)
+    : undefined;
 
   return (
-    <Accordion.Item value={`${index}`} className="waldo-panel-pill w-full max-w-[440px]">
+    <Accordion.Item ref={itemRef} value={`${index}`} className="waldo-panel-pill" style={itemStyle}>
+      <span
+        ref={measureRef}
+        className="waldo-panel-measure flex items-center gap-3 px-4 py-3"
+        aria-hidden
+        style={{
+          left: 0,
+          opacity: 0,
+          pointerEvents: "none",
+          position: "absolute",
+          top: 0,
+          visibility: "hidden",
+          whiteSpace: "nowrap",
+          width: "max-content",
+        }}
+      >
+        <span className="h-6 w-6 shrink-0" />
+        <span className="type-label whitespace-nowrap">{panel.title}</span>
+      </span>
+      <div
+        ref={openMeasureRef}
+        className="waldo-panel-open-measure"
+        aria-hidden
+        style={{
+          left: 0,
+          opacity: 0,
+          pointerEvents: "none",
+          position: "absolute",
+          top: 0,
+          visibility: "hidden",
+          width: pillMetrics ? `${pillMetrics.open}px` : "440px",
+        }}
+      >
+        <div className="waldo-panel-open-measure-header px-4 py-3">
+          <span className="type-label whitespace-nowrap">{panel.title}</span>
+        </div>
+        <div className="px-5 pb-4 pt-0">
+          <p className="type-body text-[var(--text-secondary)]">{cleanBody}</p>
+        </div>
+      </div>
       <Accordion.Header>
         <Accordion.Trigger
           id={panelId}
-          className="waldo-panel-trigger focusable-ring flex w-fit max-w-full items-center gap-3 overflow-hidden rounded-full border border-[var(--border-default)] bg-transparent px-4 py-3 text-left text-[var(--ink)] transition-[max-height,padding,border-color,background-color,opacity,transform] duration-[420ms] ease-[var(--ease-premium)] hover:bg-[var(--surface-t3)] data-[state=open]:max-h-0 data-[state=open]:pointer-events-none data-[state=open]:border-transparent data-[state=open]:py-0 data-[state=open]:opacity-0 data-[state=open]:scale-[0.98] data-[state=closed]:max-h-16 data-[state=closed]:opacity-100 data-[state=closed]:scale-100"
+          className="waldo-panel-trigger focusable-ring flex items-center gap-3 px-4 py-3 text-left text-[var(--ink)]"
           aria-controls={panelContentId}
         >
-          <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-[var(--border-default)] bg-transparent text-[var(--ink)]" aria-hidden>
+          <span className="waldo-panel-plus flex items-center justify-center rounded-full border border-[var(--border-default)] bg-transparent text-[var(--ink)]" aria-hidden>
             <span className="relative h-3 w-3">
               <span className="absolute left-0 top-1/2 h-[1.5px] w-3 -translate-y-1/2 rounded-full bg-current" />
               <span className="absolute left-1/2 top-0 h-3 w-[1.5px] -translate-x-1/2 rounded-full bg-current" />
             </span>
           </span>
-          <span className="type-label">{panel.title}</span>
+          <span className="type-label whitespace-nowrap">{panel.title}</span>
         </Accordion.Trigger>
       </Accordion.Header>
       <Accordion.Content
         id={panelContentId}
-        className="waldo-panel-content grid overflow-hidden transition-[grid-template-rows,opacity,filter,transform] duration-[520ms] ease-[var(--ease-premium)] data-[state=closed]:grid-rows-[0fr] data-[state=closed]:opacity-0 data-[state=closed]:blur-[5px] data-[state=closed]:-translate-y-1.5 data-[state=open]:grid-rows-[1fr] data-[state=open]:opacity-100 data-[state=open]:blur-0 data-[state=open]:translate-y-0"
+        className="waldo-panel-content grid overflow-hidden"
       >
-        <div className="overflow-hidden">
-          <article className="waldo-panel-card rounded-[16px] border border-[var(--border-default)] bg-[var(--surface-t2)] px-5 py-4">
-          <p className="type-body text-[var(--text-secondary)]">
-            <span className="font-medium text-[var(--ink)]">{panel.title}</span> {cleanBody}
-          </p>
-          </article>
+        <div className="waldo-panel-card overflow-hidden px-5 pb-4 pt-0">
+          <p className="type-body text-[var(--text-secondary)]">{cleanBody}</p>
         </div>
       </Accordion.Content>
     </Accordion.Item>
@@ -693,14 +797,11 @@ export function AlreadyDoneSection() {
   const trackRef = useRef<HTMLDivElement>(null);
   const scrollAnimationRef = useRef<number | null>(null);
   const progressAnimationRef = useRef<number | null>(null);
-  const pinnedTriggerRef = useRef<ReturnType<typeof ScrollTrigger.create> | null>(null);
-  const wheelIntentRef = useRef<number | null>(null);
   const progressRef = useRef(0);
   const activeRef = useRef(0);
   const lastProgressTickRef = useRef<number | null>(null);
   const scrollSnapTypeRef = useRef<string | null>(null);
   const programmaticScrollRef = useRef(false);
-  const scrollDrivenRef = useRef(false);
   const dragStateRef = useRef<CarouselDragState | null>(null);
   const [active, setActive] = useState(0);
   const [playing, setPlaying] = useState(true);
@@ -710,10 +811,9 @@ export function AlreadyDoneSection() {
   const [documentHidden, setDocumentHidden] = useState(false);
   const [isScrollAnimating, setIsScrollAnimating] = useState(false);
   const [isDraggingTrack, setIsDraggingTrack] = useState(false);
-  const [scrollDriven, setScrollDriven] = useState(false);
   const [openPanels, setOpenPanels] = useState<Record<number, number | null>>({});
 
-  const shouldTickProgress = playing && !ended && !reducedMotion && !scrollDriven && !interactionPaused && !documentHidden && !isScrollAnimating;
+  const shouldTickProgress = playing && !ended && !reducedMotion && !interactionPaused && !documentHidden && !isScrollAnimating;
   const activeSlide = slides[active];
   const activeLabel = activeSlide.tab;
 
@@ -750,82 +850,6 @@ export function AlreadyDoneSection() {
     activeRef.current = active;
   }, [active]);
 
-  useEffect(() => {
-    if (reducedMotion) return;
-
-    const section = sectionRef.current;
-    const track = trackRef.current;
-    if (!section || !track) return;
-
-    const mm = gsap.matchMedia();
-
-    mm.add(PINNED_SCROLL_QUERY, () => {
-      let maxScroll = Math.max(0, track.scrollWidth - track.clientWidth);
-      if (maxScroll < 8) return undefined;
-
-      scrollDrivenRef.current = true;
-      const pinnedSnapType = track.style.scrollSnapType || window.getComputedStyle(track).scrollSnapType;
-      track.style.scrollSnapType = "none";
-      setScrollDriven(true);
-      setPlaying(false);
-      setEnded(false);
-      lastProgressTickRef.current = null;
-
-      const trigger = ScrollTrigger.create({
-        trigger: section,
-        start: "top top",
-        end: () => `+=${maxScroll + window.innerHeight * 0.5}`,
-        pin: true,
-        pinSpacing: "margin",
-        scrub: true,
-        anticipatePin: 1,
-        invalidateOnRefresh: true,
-        onRefresh: () => {
-          maxScroll = Math.max(0, track.scrollWidth - track.clientWidth);
-        },
-        onUpdate: (self) => {
-          if (dragStateRef.current?.isDragging) return;
-
-          const rawIndex = self.progress * (slides.length - 1);
-          const nextIndex = Math.max(0, Math.min(slides.length - 1, Math.round(rawIndex)));
-          const localProgress = nextIndex >= slides.length - 1 ? self.progress : rawIndex - Math.floor(rawIndex);
-          const nextScrollLeft = maxScroll * self.progress;
-
-          programmaticScrollRef.current = true;
-          if (Math.abs(track.scrollLeft - nextScrollLeft) > 0.5) {
-            track.scrollLeft = nextScrollLeft;
-          }
-          window.requestAnimationFrame(() => {
-            programmaticScrollRef.current = false;
-          });
-
-          if (nextIndex !== activeRef.current) setActiveValue(nextIndex);
-          if (Math.abs(progressRef.current - localProgress) > 0.018 || self.progress <= 0.001 || self.progress >= 0.999) {
-            setProgressValue(self.progress >= 0.999 ? 1 : localProgress);
-          }
-          setEnded((current) => {
-            const nextEnded = self.progress >= 0.999;
-            return current === nextEnded ? current : nextEnded;
-          });
-        },
-      });
-      pinnedTriggerRef.current = trigger;
-
-      ScrollTrigger.refresh();
-
-      return () => {
-        trigger.kill();
-        if (pinnedTriggerRef.current === trigger) pinnedTriggerRef.current = null;
-        scrollDrivenRef.current = false;
-        track.style.scrollSnapType = pinnedSnapType;
-        setScrollDriven(false);
-        programmaticScrollRef.current = false;
-      };
-    });
-
-    return () => mm.revert();
-  }, [reducedMotion, setActiveValue, setProgressValue]);
-
   const cancelScrollAnimation = useCallback(() => {
     if (scrollAnimationRef.current !== null) {
       window.cancelAnimationFrame(scrollAnimationRef.current);
@@ -850,18 +874,6 @@ export function AlreadyDoneSection() {
     setEnded(false);
     setActiveValue(nextIndex);
     if (!track || !card) return;
-
-    const pinnedTrigger = pinnedTriggerRef.current;
-    if (scrollDrivenRef.current && pinnedTrigger) {
-      const targetProgress = slides.length <= 1 ? 0 : nextIndex / (slides.length - 1);
-      const targetScrollTop = pinnedTrigger.start + (pinnedTrigger.end - pinnedTrigger.start) * targetProgress;
-
-      window.scrollTo({
-        top: targetScrollTop,
-        behavior: reducedMotion ? "auto" : "smooth",
-      });
-      return;
-    }
 
     const paddingStart = parseFloat(window.getComputedStyle(track).paddingLeft) || 0;
     const left = card.offsetLeft - paddingStart;
@@ -949,30 +961,6 @@ export function AlreadyDoneSection() {
     scrollToSlide(index, false);
   };
 
-  const handleWheelIntent = useCallback((event: globalThis.WheelEvent) => {
-    if (!scrollDrivenRef.current) return;
-    if (Math.abs(event.deltaX) < 18 || Math.abs(event.deltaX) <= Math.abs(event.deltaY)) return;
-
-    if (event.cancelable) event.preventDefault();
-    const now = window.performance.now();
-    if (wheelIntentRef.current !== null && now - wheelIntentRef.current < 520) return;
-
-    wheelIntentRef.current = now;
-    setPlaying(false);
-    setEnded(false);
-    setInteractionPaused(true);
-    scrollToSlide(activeRef.current + (event.deltaX > 0 ? 1 : -1), false);
-    window.setTimeout(() => setInteractionPaused(false), 520);
-  }, [scrollToSlide]);
-
-  useEffect(() => {
-    const track = trackRef.current;
-    if (!track) return undefined;
-
-    track.addEventListener("wheel", handleWheelIntent, { passive: false });
-    return () => track.removeEventListener("wheel", handleWheelIntent);
-  }, [handleWheelIntent]);
-
   const getNearestSlideIndex = useCallback((scrollLeft: number) => {
     const track = trackRef.current;
     if (!track) return activeRef.current;
@@ -1028,25 +1016,8 @@ export function AlreadyDoneSection() {
     if (!track || !state.isDragging || !snapToNearest) return;
 
     const nearest = getNearestSlideIndex(state.currentScrollLeft);
-    const card = track.children[nearest] as HTMLElement | undefined;
-    const pinnedTrigger = pinnedTriggerRef.current;
-
-    if (scrollDrivenRef.current && pinnedTrigger && card) {
-      const paddingStart = parseFloat(window.getComputedStyle(track).paddingLeft) || 0;
-      const left = clamp(card.offsetLeft - paddingStart, 0, state.maxScroll);
-      const targetProgress = left / Math.max(1, state.maxScroll);
-      const targetScrollTop = pinnedTrigger.start + (pinnedTrigger.end - pinnedTrigger.start) * targetProgress;
-
-      track.scrollLeft = left;
-      setActiveValue(nearest);
-      setProgressValue(0);
-      setEnded(nearest >= slides.length - 1);
-      window.scrollTo({ top: targetScrollTop, behavior: "auto" });
-      return;
-    }
-
     scrollToSlide(nearest, false);
-  }, [getNearestSlideIndex, restoreDragSideEffects, scrollToSlide, setActiveValue, setProgressValue]);
+  }, [getNearestSlideIndex, restoreDragSideEffects, scrollToSlide]);
 
   const handlePointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
     if (event.pointerType === "mouse" && event.button !== 0) return;
@@ -1104,24 +1075,7 @@ export function AlreadyDoneSection() {
     event.preventDefault();
 
     const nextScrollLeft = clamp(state.startScrollLeft - deltaX, 0, state.maxScroll);
-    const pinnedTrigger = pinnedTriggerRef.current;
     state.currentScrollLeft = nextScrollLeft;
-
-    if (scrollDrivenRef.current && pinnedTrigger) {
-      const targetProgress = nextScrollLeft / Math.max(1, state.maxScroll);
-      const targetScrollTop = pinnedTrigger.start + (pinnedTrigger.end - pinnedTrigger.start) * targetProgress;
-
-      track.scrollLeft = nextScrollLeft;
-      const rawIndex = targetProgress * (slides.length - 1);
-      const nextIndex = Math.max(0, Math.min(slides.length - 1, Math.round(rawIndex)));
-      const localProgress = nextIndex >= slides.length - 1 ? targetProgress : rawIndex - Math.floor(rawIndex);
-
-      if (nextIndex !== activeRef.current) setActiveValue(nextIndex);
-      setProgressValue(targetProgress >= 0.999 ? 1 : localProgress);
-      setEnded(targetProgress >= 0.999);
-      window.scrollTo({ top: targetScrollTop, behavior: "auto" });
-      return;
-    }
 
     track.scrollLeft = nextScrollLeft;
   };
@@ -1149,7 +1103,6 @@ export function AlreadyDoneSection() {
   const handleScroll = () => {
     const track = trackRef.current;
     if (!track) return;
-    if (scrollDrivenRef.current) return;
     if (programmaticScrollRef.current) return;
 
     const nearest = getNearestSlideIndex(track.scrollLeft);
@@ -1278,10 +1231,8 @@ export function AlreadyDoneSection() {
           type="button"
           className="waldo-carousel-controls focusable-ring flex h-14 w-14 items-center justify-center rounded-full bg-[var(--surface-t2)] text-[var(--ink)] transition-[background-color] duration-150 ease-[var(--ease-premium)] hover:bg-[var(--surface-t1)]"
           style={{ animation: "waldo-carousel-control-in 940ms var(--ease-premium) both" }}
-          aria-label={scrollDriven ? "Carousel follows page scroll" : ended ? "Replay carousel" : playing ? "Pause carousel" : "Play carousel"}
-          disabled={scrollDriven}
+          aria-label={ended ? "Replay carousel" : playing ? "Pause carousel" : "Play carousel"}
           onClick={() => {
-            if (scrollDriven) return;
             if (ended) {
               scrollToSlide(0, false);
               setPlaying(true);

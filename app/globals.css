@@ -324,13 +324,26 @@ body {
   }
 }
 
-@keyframes waldo-card-visual-enter {
-  from {
+@keyframes waldo-panel-copy-reveal {
+  0% {
     opacity: 0;
-    filter: blur(18px);
-    transform: translate3d(0, 22px, 0) scale(0.975);
   }
-  to {
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes waldo-card-visual-enter {
+  0% {
+    opacity: 0;
+    filter: blur(10px);
+    transform: translate3d(0, 14px, 0) scale(0.982);
+  }
+  42% {
+    opacity: 1;
+    filter: blur(2px);
+  }
+  100% {
     opacity: 1;
     filter: blur(0);
     transform: translate3d(0, 0, 0) scale(1);
@@ -405,19 +418,81 @@ body {
 }
 
 .waldo-panel-pill {
+  background: transparent;
+  border: 1px solid var(--border-default);
+  border-radius: 999px;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.72) inset;
+  height: 52px;
+  interpolate-size: allow-keywords;
+  min-block-size: 52px;
+  overflow: hidden;
+  position: relative;
   transition:
-    max-width 520ms var(--ease-premium),
-    transform 520ms var(--ease-premium);
+    background-color 420ms var(--ease-premium),
+    border-color 420ms var(--ease-premium),
+    border-radius 120ms ease-out,
+    box-shadow 420ms var(--ease-premium),
+    height 720ms cubic-bezier(0.2, 0, 0, 1),
+    transform 520ms var(--ease-premium),
+    width 680ms cubic-bezier(0.2, 0, 0, 1);
+  width: var(--closed-inline-size, fit-content);
+  max-width: 100%;
+  will-change: border-radius, background-color, height, transform, width;
+}
+
+.waldo-panel-pill[data-state="closed"] {
+  height: 52px;
+}
+
+.waldo-panel-pill[data-state="closed"]:hover {
+  background: var(--surface-t3);
+  transform: translate3d(0, -1px, 0);
+}
+
+.waldo-panel-pill[data-state="open"] {
+  background: var(--surface-t2);
+  border-radius: 18px;
+  box-shadow: var(--shadow-card);
+  height: var(--open-block-size, auto);
+  max-width: 100%;
+  width: var(--open-inline-size, 440px);
+}
+
+.waldo-panel-measure {
+  left: 0;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  visibility: hidden;
+  white-space: nowrap;
+  width: max-content;
+}
+
+.waldo-panel-open-measure {
+  left: 0;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  visibility: hidden;
+  width: var(--open-inline-size, 440px);
+}
+
+.waldo-panel-open-measure-header {
+  align-items: center;
+  display: flex;
+  min-height: 50px;
 }
 
 .waldo-panel-content[data-state="open"] .waldo-panel-card {
-  animation: waldo-pill-card-open 560ms var(--ease-premium) both;
+  animation: waldo-panel-copy-reveal 280ms ease-out 240ms both;
   transform-origin: left center;
-  will-change: clip-path, opacity, transform, filter;
+  will-change: opacity;
 }
 
 .waldo-card-visual-shell {
-  animation: waldo-card-visual-enter 760ms var(--ease-premium) both;
+  animation: waldo-card-visual-enter 820ms var(--ease-premium) 70ms both;
   align-items: center;
   display: flex;
   justify-content: center;
@@ -467,6 +542,16 @@ body {
 
 .waldo-card-visual-shell[data-visual-shape="network"] {
   width: min(104%, 760px);
+}
+
+.waldo-card-visual-shell[data-visual-shape="artifact"] {
+  filter: none;
+  width: min(108%, 760px);
+}
+
+.waldo-card-visual-shell[data-visual-shape="artifact"] .waldo-card-visual-image {
+  border-radius: 0;
+  max-height: min(68vh, calc(var(--slide-height) - 48px), 560px);
 }
 
 .waldo-card-visual-shell[data-visual-composite="blurred-backdrop"] {
@@ -519,15 +604,62 @@ body {
 }
 
 .waldo-panel-trigger {
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.72) inset;
+  border-radius: inherit;
+  min-height: 50px;
+  transform-origin: left center;
+  transition:
+    gap 320ms var(--ease-premium),
+    padding 620ms var(--ease-premium),
+    transform 520ms var(--ease-premium),
+    width 680ms cubic-bezier(0.2, 0, 0, 1);
+  width: max-content;
+  max-width: 100%;
 }
 
-.waldo-panel-trigger[data-state="closed"]:hover {
-  transform: translate3d(0, -1px, 0);
+.waldo-panel-trigger[data-state="open"] {
+  gap: 0;
+  padding-bottom: 8px;
+  width: 100%;
+}
+
+.waldo-panel-plus {
+  flex: 0 0 1.5rem;
+  height: 1.5rem;
+  overflow: hidden;
+  transition:
+    border-color 220ms ease-out,
+    flex-basis 260ms var(--ease-premium),
+    opacity 180ms ease-out,
+    transform 260ms var(--ease-premium),
+    width 260ms var(--ease-premium);
+  width: 1.5rem;
+}
+
+.waldo-panel-pill[data-state="open"] .waldo-panel-plus {
+  border-color: transparent !important;
+  border-width: 0 !important;
+  flex: 0 0 0 !important;
+  opacity: 0 !important;
+  padding: 0 !important;
+  transform: scale(0.72) !important;
+  width: 0 !important;
+  min-width: 0 !important;
+}
+
+.waldo-panel-content {
+  opacity: 0;
+  transition: opacity 180ms ease-out;
+}
+
+.waldo-panel-content[data-state="open"] {
+  opacity: 1;
+  transition: opacity 260ms ease-out 220ms;
 }
 
 .waldo-panel-card {
-  box-shadow: var(--shadow-card);
+  box-shadow: none;
+  min-height: 0;
+  opacity: 1;
 }
 
 .waldo-agent-visual-shell {
@@ -617,6 +749,14 @@ body {
   .waldo-card-visual-shell[data-visual-shape="tablet"],
   .waldo-card-visual-shell[data-visual-shape="network"] {
     width: min(98%, 480px);
+  }
+
+  .waldo-card-visual-shell[data-visual-shape="artifact"] {
+    width: min(104%, 520px);
+  }
+
+  .waldo-card-visual-shell[data-visual-shape="artifact"] .waldo-card-visual-image {
+    max-height: min(34vh, 300px);
   }
 
   .waldo-health-visual-stage--corner-ipad {
@@ -1850,6 +1990,8 @@ body {
 
 .waldo-smart-panel {
   --smart-panel-h: clamp(700px, 68vw, 790px);
+  --smart-cycle: 36s;
+  --smart-output-cycle: 45s;
   --smart-phone-w: clamp(275px, 26vw, 340px);
   background:
     radial-gradient(ellipse at 48% 78%, rgba(251, 148, 63, 0.15) 0%, transparent 38%),
@@ -1946,7 +2088,7 @@ body {
   --flow-drift: 0px;
   --flow-rotate: 0deg;
   --flow-scale: 1;
-  animation: waldo-smart-source-flow 18s linear infinite;
+  animation: waldo-smart-source-flow var(--smart-cycle) linear infinite;
   animation-delay: var(--flow-delay);
   filter: drop-shadow(20px 20px 44.5px rgba(0, 0, 0, 0.08));
   left: 50%;
@@ -1956,6 +2098,10 @@ body {
   transform-origin: center;
   width: var(--card-width);
   will-change: transform, opacity, filter;
+}
+
+.waldo-smart-asset-card {
+  z-index: 24;
 }
 
 .waldo-smart-metric-card {
@@ -2118,7 +2264,7 @@ body {
 
 .waldo-smart-receipt {
   --receipt-delay: 0s;
-  animation: waldo-smart-receipt-flow 18s cubic-bezier(0.2, 0.82, 0.2, 1) infinite;
+  animation: waldo-smart-receipt-flow var(--smart-output-cycle) cubic-bezier(0.2, 0.82, 0.2, 1) infinite;
   animation-delay: var(--receipt-delay);
   background: #fff;
   border: 1px solid rgba(26, 26, 26, 0.08);
@@ -2165,6 +2311,18 @@ body {
 
 .waldo-smart-receipt[data-tone="calendar"] .waldo-smart-receipt-dot {
   background: #8bd943;
+}
+
+.waldo-smart-receipt[data-tone="recovery"] .waldo-smart-receipt-dot {
+  background: #16d77d;
+}
+
+.waldo-smart-receipt[data-tone="stress"] .waldo-smart-receipt-dot {
+  background: #fb943f;
+}
+
+.waldo-smart-receipt[data-tone="nutrition"] .waldo-smart-receipt-dot {
+  background: #ffbe32;
 }
 
 .waldo-smart-receipt-body {
@@ -2249,22 +2407,22 @@ body {
 }
 
 @keyframes waldo-smart-receipt-flow {
-  0%, 10% {
+  0%, 9% {
     filter: blur(1.5px);
     opacity: 0;
     transform: translate3d(-240px, 20px, 0) rotate(-1.2deg) scale(0.9);
   }
-  16% {
+  13% {
     filter: blur(0);
     opacity: 1;
-    transform: translate3d(-92px, 6px, 0) rotate(-0.4deg) scale(0.96);
+    transform: translate3d(-72px, 4px, 0) rotate(-0.35deg) scale(0.97);
   }
-  21%, 30% {
+  17%, 26% {
     filter: blur(0);
     opacity: 1;
     transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
   }
-  36% {
+  31% {
     filter: blur(0.5px);
     opacity: 0;
     transform: translate3d(42px, -6px, 0) rotate(0.4deg) scale(0.98);
@@ -2344,7 +2502,7 @@ body {
   }
 
   .waldo-smart-phone-output-lane .waldo-smart-receipt {
-    animation: waldo-smart-phone-receipt-flow 18s cubic-bezier(0.2, 0.82, 0.2, 1) infinite;
+    animation: waldo-smart-phone-receipt-flow var(--smart-output-cycle) cubic-bezier(0.2, 0.82, 0.2, 1) infinite;
     animation-delay: var(--receipt-delay);
     border-radius: 14px;
     box-shadow: 0 16px 34px rgba(26, 26, 26, 0.12);
@@ -2430,12 +2588,17 @@ body {
       opacity: 0;
       transform: translate3d(-50%, 118px, 0) scale(0.86);
     }
-    17%, 40% {
+    13% {
+      filter: blur(0);
+      opacity: 1;
+      transform: translate3d(-50%, 18px, 0) scale(0.96);
+    }
+    17%, 26% {
       filter: blur(0);
       opacity: 1;
       transform: translate3d(-50%, 0, 0) scale(1);
     }
-    50%, 100% {
+    31%, 100% {
       filter: blur(0.5px);
       opacity: 0;
       transform: translate3d(calc(-50% + 18px), -12px, 0) scale(0.98);
@@ -2443,17 +2606,22 @@ body {
   }
 
   @keyframes waldo-smart-phone-receipt-flow {
-    0%, 10% {
+    0%, 9% {
       filter: blur(1.5px);
       opacity: 0;
       transform: translate3d(-50%, 86px, 0) scale(0.82);
     }
-    17%, 40% {
+    13% {
+      filter: blur(0);
+      opacity: 1;
+      transform: translate3d(-50%, 14px, 0) scale(0.96);
+    }
+    17%, 26% {
       filter: blur(0);
       opacity: 1;
       transform: translate3d(-50%, 0, 0) scale(1);
     }
-    50%, 100% {
+    31%, 100% {
       filter: blur(0.5px);
       opacity: 0;
       transform: translate3d(-50%, -28px, 0) scale(0.96);
