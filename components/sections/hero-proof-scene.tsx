@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type PointerEvent, type ReactNode } from "react";
 
 import type { WaldoActionReceipt, WaldoArtifact, WaldoHeroState } from "@/components/sections/waldo-capability-data";
+import { useElementInView } from "@/hooks/use-element-in-view";
 
 const HERO_DWELL_MS = 6000;
 
@@ -115,6 +116,7 @@ export function HeroProofScene({ children, states }: HeroProofSceneProps) {
   const progressRef = useRef(0);
   const sceneRef = useRef<HTMLDivElement>(null);
   const reducedMotion = usePrefersReducedMotion();
+  const sceneInView = useElementInView(sceneRef);
   const activeState = states[active] ?? states[0];
 
   useEffect(() => {
@@ -127,7 +129,7 @@ export function HeroProofScene({ children, states }: HeroProofSceneProps) {
   }, [states.length]);
 
   useEffect(() => {
-    if (reducedMotion || paused || states.length < 2) {
+    if (reducedMotion || paused || !sceneInView || states.length < 2) {
       return;
     }
 
@@ -151,10 +153,10 @@ export function HeroProofScene({ children, states }: HeroProofSceneProps) {
 
     frame = window.requestAnimationFrame(tick);
     return () => window.cancelAnimationFrame(frame);
-  }, [active, paused, reducedMotion, states.length]);
+  }, [active, paused, reducedMotion, sceneInView, states.length]);
 
   const handlePointerMove = (event: PointerEvent<HTMLDivElement>) => {
-    if (reducedMotion) return;
+    if (reducedMotion || !sceneInView) return;
 
     const rect = event.currentTarget.getBoundingClientRect();
     const x = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));

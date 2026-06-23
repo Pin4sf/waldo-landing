@@ -1,9 +1,4 @@
-"use client";
-
-import { useRef, useState } from "react";
-import { Navbar } from "./navbar";
-import { ScrollAnimations } from "./scroll-animations";
-import { SmoothScroll } from "./smooth-scroll";
+import { PageChrome } from "./page-chrome";
 import { HeroSection } from "./sections/hero-section";
 import { HealthDataSection } from "./sections/health-data-section";
 import { MorningBriefSection } from "./sections/morning-brief-section";
@@ -18,66 +13,26 @@ import { ActionFanSection, SceneCloseSection } from "./sections/downstream-build
 import { FaqSection } from "./sections/faq-section";
 
 export function PageLayout() {
-  const [dimmed, setDimmed] = useState(false);
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const handleNavEnter = () => {
-    if (timerRef.current) clearTimeout(timerRef.current);
-    setDimmed(true);
-  };
-
-  const handleNavLeave = () => {
-    timerRef.current = setTimeout(() => setDimmed(false), 80);
-  };
-
   return (
-    <div className="min-h-screen bg-[var(--surface-t3)] text-[var(--ink)]">
-      <SmoothScroll />
-      <ScrollAnimations />
+    <PageChrome>
       <div
-        className="fixed inset-x-0 top-0 z-50 flex justify-center"
-        style={{ paddingTop: "20px", paddingBottom: "16px" }}
+        className="mx-auto flex max-w-[1200px] flex-col items-center px-4 pb-0 sm:px-6 lg:px-10"
+        style={{ gap: "clamp(3rem, 5vw, 5rem)" }}
       >
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            backdropFilter:     "blur(16px)",
-            WebkitBackdropFilter: "blur(16px)",
-            maskImage:          "linear-gradient(to bottom, black 55%, transparent 100%)",
-            WebkitMaskImage:    "linear-gradient(to bottom, black 55%, transparent 100%)",
-          }}
-        />
-        <div className="w-full max-w-[1200px] px-4 sm:px-6 lg:px-10">
-          <Navbar onNavEnter={handleNavEnter} onNavLeave={handleNavLeave} />
-        </div>
+        <HeroSection />
+        <HealthDataSection />
+        <MorningBriefSection />
+        <AlreadyDoneSection />
+        <AgentFeaturesSection />
+        <UseCasesSection />
+        <ActionFanSection />
+        <ValidationSection />
+        <SecuritySection />
+        <LongGameSection />
+        <WhereIsWaldoSection />
+        <FaqSection />
+        <SceneCloseSection />
       </div>
-
-      <div
-        style={{
-          opacity:       dimmed ? 0.4 : 1,
-          transition:    "opacity 200ms ease-out",
-          pointerEvents: dimmed ? "none" : undefined,
-        }}
-      >
-        <div
-          className="mx-auto flex max-w-[1200px] flex-col items-center px-4 pb-0 sm:px-6 lg:px-10"
-          style={{ gap: "clamp(3rem, 5vw, 5rem)" }}
-        >
-          <HeroSection />
-          <HealthDataSection />
-          <MorningBriefSection />
-          <AlreadyDoneSection />
-          <AgentFeaturesSection />
-          <UseCasesSection />
-          <ActionFanSection />
-          <ValidationSection />
-          <SecuritySection />
-          <LongGameSection />
-          <WhereIsWaldoSection />
-          <FaqSection />
-          <SceneCloseSection />
-        </div>
-      </div>
-    </div>
+    </PageChrome>
   );
 }

@@ -128,23 +128,33 @@ body {
 .waldo-highlights {
   --slide-gap: 20px;
   --slide-width: min(87.5vw, 1260px);
-  --slide-height: 580px;
+  --slide-height: min(50.7vw, 730px);
   --slide-padding: max(6.25vw, calc((100vw - 1260px) / 2), 24px);
   --active-dot-width: 48px;
   --bar-dwell: 6.15s;
+  --health-frame-radius: 24px;
 }
 
 @media (max-width: 1068px) {
   .waldo-highlights {
-    --slide-height: 660px;
+    --slide-width: min(87.5vw, 940px);
+    --slide-height: min(50.7vw, 544px);
+  }
+}
+
+@media (max-width: 900px) and (min-width: 735px) {
+  .waldo-highlights {
+    --slide-width: min(87.5vw, 760px);
+    --slide-height: clamp(430px, 56vw, 520px);
   }
 }
 
 @media (max-width: 734px) {
   .waldo-highlights {
-    --slide-width: max(calc(87.5vw - 20px), 280px);
-    --slide-height: 720px;
+    --slide-width: max(calc(90vw - 20px), 280px);
+    --slide-height: clamp(520px, 132vw, 620px);
     --active-dot-width: 32px;
+    --health-frame-radius: 20px;
   }
 }
 
@@ -171,9 +181,9 @@ body {
 
 @media (max-width: 734px) {
   .waldo-agent-gallery {
-    --agent-viewport-content: 420.875px;
-    --agent-side-padding: max(24px, calc(50% - 152px));
-    --agent-wide-card-width: 304px;
+    --agent-card-width: min(88vw, 344px);
+    --agent-wide-card-width: min(92vw, 392px);
+    --agent-side-padding: max(18px, calc((100vw - var(--agent-wide-card-width)) / 2));
   }
 }
 
@@ -192,7 +202,8 @@ body {
   }
 
   .waldo-highlights {
-    --slide-height: clamp(280px, calc(100svh - 300px), 520px);
+    --slide-width: min(87.5vw, 898px);
+    --slide-height: min(50.7vw, 520px);
   }
 
   .waldo-highlights > [data-animate="blur-fade"] {
@@ -200,7 +211,7 @@ body {
   }
 
   .waldo-highlights article {
-    overflow-y: auto;
+    overflow: hidden;
   }
 
   .waldo-agent-gallery {
@@ -417,14 +428,89 @@ body {
   animation-delay: var(--step-delay, 0ms);
 }
 
+.waldo-health-frame-card {
+  aspect-ratio: 4208 / 2436;
+  box-shadow: 0 24px 70px rgba(26, 26, 26, 0.08);
+  height: var(--slide-height);
+  isolation: isolate;
+  position: relative;
+}
+
+.waldo-health-slide-content {
+  background: var(--surface-t1);
+}
+
+.waldo-health-frame-image {
+  animation: waldo-card-visual-enter 680ms var(--ease-premium) 80ms both;
+  height: 100%;
+  object-fit: contain;
+  object-position: center center;
+  pointer-events: none;
+  width: 100%;
+  z-index: 0;
+}
+
+.waldo-health-frame-scrim {
+  background:
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--surface-t1) 96%, transparent) 0%,
+      color-mix(in srgb, var(--surface-t1) 86%, transparent) 26%,
+      color-mix(in srgb, var(--surface-t1) 48%, transparent) 45%,
+      transparent 66%
+    );
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: 1;
+}
+
+.waldo-health-frame-overlay {
+  left: clamp(24px, 4vw, 58px);
+  max-height: calc(100% - 12px);
+  max-width: min(420px, 36%);
+  overflow-y: auto;
+  padding-right: 4px;
+  position: absolute;
+  scrollbar-width: none;
+  top: 50%;
+  transform: translateY(-50%);
+  width: min(420px, 36%);
+  z-index: 2;
+}
+
+.waldo-health-frame-overlay::-webkit-scrollbar {
+  display: none;
+}
+
+.waldo-health-frame-heading {
+  margin-bottom: clamp(12px, 1.45vw, 20px);
+  max-width: 15ch;
+}
+
+.waldo-health-pill-rail {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(6px, 0.55vw, 7px);
+  max-width: 100%;
+  padding-bottom: 2px;
+}
+
+.waldo-health-pill-paddles {
+  display: none;
+}
+
 .waldo-panel-pill {
-  background: transparent;
-  border: 1px solid var(--border-default);
+  backdrop-filter: blur(18px) saturate(1.05);
+  background: color-mix(in srgb, var(--surface-t1) 48%, transparent);
+  border: 1px solid color-mix(in srgb, var(--ink) 10%, transparent);
   border-radius: 999px;
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.72) inset;
-  height: 52px;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.72) inset,
+    0 2px 8px rgba(26, 26, 26, 0.035);
+  height: 46px;
   interpolate-size: allow-keywords;
-  min-block-size: 52px;
+  min-block-size: 46px;
   overflow: hidden;
   position: relative;
   transition:
@@ -437,22 +523,26 @@ body {
     width 680ms cubic-bezier(0.2, 0, 0, 1);
   width: var(--closed-inline-size, fit-content);
   max-width: 100%;
-  will-change: border-radius, background-color, height, transform, width;
+  will-change: border-radius, background-color, height, width;
 }
 
 .waldo-panel-pill[data-state="closed"] {
-  height: 52px;
+  height: 46px;
 }
 
 .waldo-panel-pill[data-state="closed"]:hover {
-  background: var(--surface-t3);
-  transform: translate3d(0, -1px, 0);
+  background: color-mix(in srgb, var(--surface-t1) 72%, transparent);
+  border-color: color-mix(in srgb, var(--ink) 16%, transparent);
 }
 
 .waldo-panel-pill[data-state="open"] {
-  background: var(--surface-t2);
+  background: color-mix(in srgb, var(--surface-t1) 90%, transparent);
+  border-color: color-mix(in srgb, var(--ink) 14%, transparent);
   border-radius: 18px;
-  box-shadow: var(--shadow-card);
+  box-shadow:
+    0 16px 34px rgba(26, 26, 26, 0.065),
+    0 4px 12px rgba(26, 26, 26, 0.045),
+    inset 0 1px 0 rgba(255, 255, 255, 0.86);
   height: var(--open-block-size, auto);
   max-width: 100%;
   width: var(--open-inline-size, 440px);
@@ -482,7 +572,7 @@ body {
 .waldo-panel-open-measure-header {
   align-items: center;
   display: flex;
-  min-height: 50px;
+  min-height: 44px;
 }
 
 .waldo-panel-content[data-state="open"] .waldo-panel-card {
@@ -605,7 +695,7 @@ body {
 
 .waldo-panel-trigger {
   border-radius: inherit;
-  min-height: 50px;
+  min-height: 44px;
   transform-origin: left center;
   transition:
     gap 320ms var(--ease-premium),
@@ -614,6 +704,11 @@ body {
     width 680ms cubic-bezier(0.2, 0, 0, 1);
   width: max-content;
   max-width: 100%;
+}
+
+.waldo-health-pill-rail .waldo-panel-trigger .type-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .waldo-panel-trigger[data-state="open"] {
@@ -662,9 +757,40 @@ body {
   opacity: 1;
 }
 
+.waldo-panel-body {
+  font-size: clamp(0.86rem, 0.18vw + 0.82rem, 0.94rem);
+  line-height: 1.36;
+}
+
+.waldo-validation-intro [data-animate="headline"] {
+  line-height: 1.22;
+}
+
 .waldo-agent-visual-shell {
   animation: waldo-card-visual-enter 680ms var(--ease-premium) both;
-  box-shadow: inset 0 0 0 1px var(--border-default);
+}
+
+.waldo-agent-visual-shell--frame {
+  background: #fff;
+}
+
+.waldo-agent-media-card {
+  aspect-ratio: 2960 / 1876;
+}
+
+.waldo-agent-frame-image {
+  object-fit: cover;
+  object-position: 50% 50%;
+}
+
+@media (max-width: 734px) {
+  .waldo-agent-visual-shell--frame[data-node-id="agent-apps-accounts"] .waldo-agent-frame-image {
+    object-position: 50% 50%;
+  }
+
+  .waldo-agent-visual-shell--frame[data-node-id="agent-context-thread"] .waldo-agent-frame-image {
+    object-position: 50% 50%;
+  }
 }
 
 .waldo-work-row {
@@ -706,99 +832,211 @@ body {
   transform: translateY(-1px);
 }
 
+@media (max-width: 900px) and (min-width: 735px) {
+  .waldo-health-frame-image {
+    object-fit: cover;
+    object-position: 80% center;
+  }
+
+  .waldo-health-frame-scrim {
+    background:
+      linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--surface-t1) 94%, transparent) 0%,
+        color-mix(in srgb, var(--surface-t1) 76%, transparent) 34%,
+        transparent 72%
+      ),
+      linear-gradient(
+        0deg,
+        color-mix(in srgb, var(--surface-t1) 76%, transparent) 0%,
+        transparent 46%
+      );
+  }
+
+  .waldo-health-frame-overlay {
+    bottom: clamp(20px, 4vw, 36px);
+    left: clamp(20px, 4vw, 40px);
+    max-height: 62%;
+    max-width: min(390px, calc(100% - 48px));
+    top: auto;
+    transform: none;
+    width: min(390px, calc(100% - 48px));
+  }
+
+  .waldo-health-frame-heading {
+    margin-bottom: 18px;
+  }
+}
+
 @media (max-width: 734px) {
-  .waldo-health-slide-content {
-    display: flex !important;
-    flex-direction: column;
-    gap: 28px;
-    height: auto !important;
-    min-height: 100%;
-    overflow: visible !important;
+  .waldo-health-frame-image {
+    object-fit: cover;
+    object-position: 80% center;
   }
 
-  .waldo-health-slide-copy {
-    flex: 0 0 auto;
+  .waldo-health-frame-scrim {
+    background:
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--surface-t1) 18%, transparent) 0%,
+        transparent 22%,
+        transparent 78%,
+        color-mix(in srgb, var(--surface-t1) 8%, transparent) 100%
+      );
   }
 
-  .waldo-health-mobile-stage {
-    margin: -4px 0 24px;
+  .waldo-health-frame-overlay {
+    inset: 0;
+    max-height: none;
+    max-width: none;
+    overflow: visible;
+    padding-right: 0;
+    transform: none;
+    width: 100%;
   }
 
-  .waldo-health-visual-stage {
-    flex: 0 0 auto;
-    height: auto !important;
-    min-height: clamp(260px, 42vh, 360px);
-    overflow: visible !important;
-    padding-bottom: 18px;
+  .waldo-health-frame-heading {
+    left: clamp(20px, 6vw, 28px);
+    max-width: 13ch;
+    margin-bottom: 0;
+    position: absolute;
+    top: clamp(22px, 7vw, 34px);
+    z-index: 2;
   }
 
-  .waldo-health-mobile-stage .waldo-health-visual-stage {
-    min-height: clamp(236px, 35vh, 304px);
+  .waldo-health-frame-heading .type-h2 {
+    font-size: clamp(1.35rem, 1.08rem + 1.6vw, 1.85rem);
+    line-height: 1.08;
+  }
+
+  .waldo-health-pill-rail {
+    --mobile-pass-gap: 10px;
+    --mobile-pass-width: min(348px, calc(var(--slide-width) - 16px));
+    align-items: flex-end;
+    bottom: 16px;
+    display: flex;
+    flex-direction: row;
+    gap: var(--mobile-pass-gap);
+    left: calc((var(--slide-width) - var(--mobile-pass-width)) / 2);
+    max-width: none;
     padding-bottom: 0;
+    pointer-events: auto;
+    position: absolute;
+    transform:
+      translate3d(
+        calc(-1 * var(--active-panel, 0) * (var(--mobile-pass-width) + var(--mobile-pass-gap))),
+        0,
+        0
+      );
+    transition: transform 720ms cubic-bezier(0.2, 0, 0, 1);
+    width: max-content;
+    will-change: transform;
+    z-index: 3;
   }
 
-  .waldo-card-visual-shell {
-    width: min(96%, 460px);
+  .waldo-health-pill-paddles {
+    display: block;
   }
 
-  .waldo-card-visual-shell[data-visual-shape="phone"],
-  .waldo-card-visual-shell[data-visual-shape="watch"] {
-    width: min(78%, 330px);
+  .waldo-health-pill-nav {
+    align-items: center;
+    backdrop-filter: blur(14px) saturate(1.05);
+    background: color-mix(in srgb, var(--surface-t1) 38%, transparent);
+    border: 0;
+    border-radius: 999px;
+    bottom: 16px;
+    color: color-mix(in srgb, var(--ink) 78%, transparent);
+    display: flex;
+    height: 88px;
+    justify-content: center;
+    position: absolute;
+    transition:
+      background-color 220ms var(--ease-premium),
+      color 220ms var(--ease-premium),
+      opacity 220ms var(--ease-premium),
+      transform 220ms var(--ease-premium);
+    width: 40px;
+    z-index: 4;
   }
 
-  .waldo-card-visual-shell[data-visual-shape="tablet"],
-  .waldo-card-visual-shell[data-visual-shape="network"] {
-    width: min(98%, 480px);
+  .waldo-health-pill-nav:hover {
+    background: color-mix(in srgb, var(--surface-t1) 62%, transparent);
+    color: var(--ink);
   }
 
-  .waldo-card-visual-shell[data-visual-shape="artifact"] {
-    width: min(104%, 520px);
+  .waldo-health-pill-nav:active {
+    transform: scale(0.96);
   }
 
-  .waldo-card-visual-shell[data-visual-shape="artifact"] .waldo-card-visual-image {
-    max-height: min(34vh, 300px);
+  .waldo-health-pill-nav:disabled {
+    opacity: 0.26;
+    pointer-events: none;
   }
 
-  .waldo-health-visual-stage--corner-ipad {
-    min-height: clamp(250px, 38vh, 330px);
-    overflow: hidden !important;
+  .waldo-health-pill-nav--previous {
+    left: 0;
   }
 
-  .waldo-card-visual-shell[data-node-id="1309:9685"] {
-    margin-bottom: clamp(-50px, -10vw, -30px);
-    margin-right: clamp(-138px, -30vw, -82px);
-    padding: 0;
-    width: clamp(350px, 92vw, 500px);
+  .waldo-health-pill-nav--next {
+    right: 0;
   }
 
-  .waldo-card-visual-shell[data-node-id="1309:9685"] .waldo-card-visual-image {
-    border-radius: 0;
-    max-height: min(36vh, 318px);
+  .waldo-panel-pill {
+    flex: 0 0 var(--mobile-pass-width);
+    height: 56px;
+    max-width: none;
+    min-block-size: 56px;
+    width: var(--mobile-pass-width);
+    will-change: border-radius, background-color, height;
   }
 
-  .waldo-card-visual-shell[data-visual-composite="blurred-backdrop"] {
-    aspect-ratio: 1.06;
-    max-height: min(35vh, 310px);
-    width: min(98%, 480px);
+  .waldo-panel-pill[data-state="closed"] {
+    height: 56px;
   }
 
-  .waldo-card-visual-layer--backdrop {
-    max-width: 112%;
-    opacity: 0.24;
+  .waldo-panel-pill[data-state="open"] {
+    border-radius: 24px;
+    height: var(--open-block-size, 148px);
+    width: var(--mobile-pass-width);
   }
 
-  .waldo-card-visual-layer--foreground {
-    left: 54%;
-    max-height: 52%;
-    max-width: 78%;
+  .waldo-panel-trigger {
+    min-height: 56px;
+    padding: 1rem 1.15rem;
+    width: 100%;
   }
 
-  .waldo-card-visual-image {
-    max-height: min(36vh, 304px);
+  .waldo-panel-trigger[data-state="open"] {
+    min-height: 52px;
+    padding: 1rem 1.2rem 0.45rem;
   }
 
-  .waldo-health-mobile-stage .waldo-card-visual-image {
-    max-height: min(32vh, 280px);
+  .waldo-panel-open-measure {
+    width: var(--mobile-pass-width);
+  }
+
+  .waldo-panel-open-measure-header {
+    min-height: 52px;
+  }
+
+  .waldo-panel-card,
+  .waldo-panel-open-measure-card {
+    padding: 0 2.35rem 1.15rem;
+  }
+
+  .waldo-panel-card .type-body {
+    font-size: 0.9rem;
+    line-height: 1.42;
+  }
+
+  .waldo-panel-content[data-state="open"] .waldo-panel-card {
+    animation: waldo-panel-copy-reveal 240ms ease-out 170ms both;
+  }
+}
+
+@media (max-width: 430px) {
+  .waldo-health-frame-image {
+    object-position: 80% center;
   }
 }
 
@@ -807,6 +1045,7 @@ body {
   .waldo-tool-path,
   .waldo-mcp-step,
   .waldo-panel-content[data-state="open"] .waldo-panel-card,
+  .waldo-health-frame-image,
   .waldo-card-visual-shell,
   .waldo-card-visual-layer,
   .waldo-card-visual-glow,
@@ -1032,6 +1271,18 @@ body {
 .focusable-ring:focus-visible {
   outline: 2px solid var(--action);
   outline-offset: 3px;
+}
+
+.waldo-health-pill-rail .waldo-panel-trigger.focusable-ring:focus-visible {
+  outline: 0 !important;
+  outline-offset: 0 !important;
+}
+
+.waldo-health-pill-rail .waldo-panel-pill:has(.waldo-panel-trigger.focusable-ring:focus-visible) {
+  box-shadow:
+    0 0 0 2px color-mix(in srgb, var(--ink) 18%, transparent),
+    0 18px 48px rgba(26, 26, 26, 0.11),
+    inset 0 1px 0 rgba(255, 255, 255, 0.86);
 }
 
 .hero-floating-card {

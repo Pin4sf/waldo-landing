@@ -142,6 +142,7 @@ export function ValidationSection() {
           eyebrow="Not just promises."
           title="Proof."
           aside="honest numbers only."
+          className="waldo-validation-intro"
         />
       </div>
 

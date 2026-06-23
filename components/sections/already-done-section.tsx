@@ -4,21 +4,32 @@ import * as Accordion from "@radix-ui/react-accordion";
 import Image, { type StaticImageData } from "next/image";
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from "react";
 
-import connectingConstellation from "@/public/figma-assets/waldo-cards/connecting-constellation.png";
-import connectingPatrol from "@/public/figma-assets/waldo-cards/connecting-patrol.png";
-import connectingSpot from "@/public/figma-assets/waldo-cards/connecting-spot.png";
-import edgeCircadianContext from "@/public/figma-assets/waldo-cards/edge-circadian-context.png";
-import edgeCooldownHandoff from "@/public/figma-assets/waldo-cards/edge-cooldown-handoff.png";
-import edgeDefaultState from "@/public/figma-assets/waldo-cards/edge-default-state.png";
-import edgeFetchMidday from "@/public/figma-assets/waldo-cards/edge-fetch-midday.png";
-import edgePhoneStress from "@/public/figma-assets/waldo-cards/edge-phone-stress.png";
-import edgeWaldoActionCalendar from "@/public/figma-assets/waldo-cards/edge-waldo-action-calendar.png";
-import morningLockscreenIpad from "@/public/figma-assets/waldo-cards/morning-lockscreen-ipad.png";
-import morningOverview from "@/public/figma-assets/waldo-cards/morning-overview.png";
-import morningPhoneRestingState from "@/public/figma-assets/waldo-cards/morning-phone-resting-state.png";
-import morningPhoneSleepDebt from "@/public/figma-assets/waldo-cards/morning-phone-sleep-debt.png";
-import morningSleepStage from "@/public/figma-assets/waldo-cards/morning-sleep-stage.png";
-import morningWatchHrv from "@/public/figma-assets/waldo-cards/morning-watch-hrv.png";
+import { useElementInView } from "@/hooks/use-element-in-view";
+import dots01Patrol from "@/public/figma-assets/health-carousel/dots-01-patrol.webp";
+import dots02Spot from "@/public/figma-assets/health-carousel/dots-02-spot.webp";
+import dots03Constellation from "@/public/figma-assets/health-carousel/dots-03-constellation.webp";
+import dots04Readiness from "@/public/figma-assets/health-carousel/dots-04-readiness.webp";
+import dots05WednesdayProtected from "@/public/figma-assets/health-carousel/dots-05-wednesday-protected.webp";
+import edge01StressElevated from "@/public/figma-assets/health-carousel/edge-01-stress-elevated.webp";
+import edge02ContextGraph from "@/public/figma-assets/health-carousel/edge-02-context-graph.webp";
+import edge03RunPlan from "@/public/figma-assets/health-carousel/edge-03-run-plan.webp";
+import edge04FormSpike from "@/public/figma-assets/health-carousel/edge-04-form-spike.webp";
+import edge05CalendarAction from "@/public/figma-assets/health-carousel/edge-05-calendar-action.webp";
+import gut01SleepSignal from "@/public/figma-assets/health-carousel/gut-01-sleep-signal.webp";
+import gut02HeartRate from "@/public/figma-assets/health-carousel/gut-02-heart-rate.webp";
+import gut03StressAction from "@/public/figma-assets/health-carousel/gut-03-stress-action.webp";
+import gut04RecoveryCheck from "@/public/figma-assets/health-carousel/gut-04-recovery-check.webp";
+import gut05MotionContext from "@/public/figma-assets/health-carousel/gut-05-motion-context.webp";
+import habits01DeepDive from "@/public/figma-assets/health-carousel/habits-01-deep-dive.webp";
+import habits02DreamingMode from "@/public/figma-assets/health-carousel/habits-02-dreaming-mode.webp";
+import habits03Corrections from "@/public/figma-assets/health-carousel/habits-03-corrections.webp";
+import habits04Slope from "@/public/figma-assets/health-carousel/habits-04-slope.webp";
+import habits05RunIt from "@/public/figma-assets/health-carousel/habits-05-run-it.webp";
+import mornings01Action from "@/public/figma-assets/health-carousel/mornings-01-action.webp";
+import mornings02HrvWatch from "@/public/figma-assets/health-carousel/mornings-02-hrv-watch.webp";
+import mornings03RestingState from "@/public/figma-assets/health-carousel/mornings-03-resting-state.webp";
+import mornings04Sleep from "@/public/figma-assets/health-carousel/mornings-04-sleep.webp";
+import mornings05SleepDebt from "@/public/figma-assets/health-carousel/mornings-05-sleep-debt.webp";
 
 const AUTO_DWELL_MS = 6150;
 const AUTO_SCROLL_MS = 1000;
@@ -67,13 +78,6 @@ type HealthCardVisual = {
   image: StaticImageData;
   alt: string;
   nodeId: string;
-  shape?: "artifact" | "cluster" | "network" | "phone" | "tablet" | "watch";
-  backdrop?: {
-    image: StaticImageData;
-    alt: string;
-    nodeId: string;
-    shape?: "artifact" | "cluster" | "network" | "phone" | "tablet" | "watch";
-  };
 };
 
 type FeaturePanel = {
@@ -82,7 +86,7 @@ type FeaturePanel = {
   body: string;
   tone: HealthTone;
   metric: string;
-  visual?: HealthCardVisual;
+  visual: HealthCardVisual;
 };
 
 type ShowcaseSlide = {
@@ -91,7 +95,6 @@ type ShowcaseSlide = {
   aside: string;
   visual: VisualKind;
   badge?: string;
-  defaultVisual?: HealthCardVisual;
   panels: FeaturePanel[];
 };
 
@@ -129,25 +132,18 @@ const slides: ShowcaseSlide[] = [
     headline: "Mornings, sorted.",
     aside: "already on it.",
     visual: "recovery",
-    defaultVisual: {
-      image: morningOverview,
-      alt: "Waldo morning health feature card showing recovery, sleep, and resting-state signals.",
-      nodeId: "1309:10627",
-      shape: "phone",
-    },
     panels: [
       {
-        label: "Sleep, stage by stage.",
-        title: "Sleep, stage by stage.",
+        label: "What Waldo does about it.",
+        title: "What Waldo does about it.",
         body:
-          "Waldo tracks deep, REM, light, and awake. Duration alone does not tell you much. *Deep sleep in a short night can beat light sleep in a long one.* Waldo knows the difference.",
-        tone: "sleep",
-        metric: "stages read",
+          "Recovery at 63 and a 9am meeting? Pushed to 10:30. Recovery at 85? Your calendar stays untouched. *You wake up to the result, not the reasoning.*",
+        tone: "recovery",
+        metric: "morning moved",
         visual: {
-          image: morningSleepStage,
-          alt: "Waldo sleep stages card exported from Figma.",
-          nodeId: "1315:7427",
-          shape: "phone",
+          image: mornings01Action,
+          alt: "Full Waldo morning frame showing an orange calendar surface and a recovery-driven 9am meeting move.",
+          nodeId: "1686558135",
         },
       },
       {
@@ -158,10 +154,9 @@ const slides: ShowcaseSlide[] = [
         tone: "heart",
         metric: "baseline checked",
         visual: {
-          image: morningWatchHrv,
-          alt: "Waldo HRV Apple Watch card exported from Figma.",
-          nodeId: "1315:7928",
-          shape: "watch",
+          image: mornings02HrvWatch,
+          alt: "Full Waldo morning frame showing an Apple Watch HRV card with 65ms rising.",
+          nodeId: "1686558130",
         },
       },
       {
@@ -172,10 +167,22 @@ const slides: ShowcaseSlide[] = [
         tone: "recovery",
         metric: "4 signals",
         visual: {
-          image: morningPhoneRestingState,
-          alt: "Waldo resting-state phone card exported from Figma.",
-          nodeId: "1305:22308",
-          shape: "cluster",
+          image: mornings03RestingState,
+          alt: "Full Waldo morning frame showing resting-state health signals over a phone screen.",
+          nodeId: "1686558133",
+        },
+      },
+      {
+        label: "Sleep, stage by stage.",
+        title: "Sleep, stage by stage.",
+        body:
+          "Waldo tracks deep, REM, light, and awake. Duration alone does not tell you much. *Deep sleep in a short night can beat light sleep in a long one.* Waldo knows the difference.",
+        tone: "sleep",
+        metric: "stages read",
+        visual: {
+          image: mornings04Sleep,
+          alt: "Full Waldo morning frame showing a Sleep screen with required sleep and sleep schedule context.",
+          nodeId: "1686558134",
         },
       },
       {
@@ -186,24 +193,9 @@ const slides: ShowcaseSlide[] = [
         tone: "sleep",
         metric: "14-day debt",
         visual: {
-          image: morningPhoneSleepDebt,
-          alt: "Waldo sleep-debt phone card exported from Figma.",
-          nodeId: "1309:7908",
-          shape: "phone",
-        },
-      },
-      {
-        label: "What Waldo does about it.",
-        title: "What Waldo does about it.",
-        body:
-          "Recovery at 63 and a 9am meeting? Pushed to 10:30. Recovery at 85? Your calendar stays untouched. *You wake up to the result, not the reasoning.*",
-        tone: "recovery",
-        metric: "morning moved",
-        visual: {
-          image: morningLockscreenIpad,
-          alt: "Waldo morning lock-screen action card exported from Figma.",
-          nodeId: "1309:9685",
-          shape: "tablet",
+          image: mornings05SleepDebt,
+          alt: "Full Waldo morning frame showing a sleep-debt chart and next-day adjustment context.",
+          nodeId: "1686558132",
         },
       },
     ],
@@ -213,12 +205,6 @@ const slides: ShowcaseSlide[] = [
     headline: "The edge, taken off.",
     aside: "you didn't ask. you didn't need to.",
     visual: "stress",
-    defaultVisual: {
-      image: edgeDefaultState,
-      alt: "Waldo edge default state card showing recovery, resting-state, and health signal context.",
-      nodeId: "edge-default-state",
-      shape: "network",
-    },
     panels: [
       {
         label: "Stress confidence.",
@@ -228,10 +214,9 @@ const slides: ShowcaseSlide[] = [
         tone: "stress",
         metric: "confidence rising",
         visual: {
-          image: edgePhoneStress,
-          alt: "Waldo stress confidence phone card exported from Figma.",
-          nodeId: "1309:10094",
-          shape: "cluster",
+          image: edge01StressElevated,
+          alt: "Full Waldo edge frame showing an elevated stress gauge over a Health Stats phone screen.",
+          nodeId: "1686558136",
         },
       },
       {
@@ -242,10 +227,9 @@ const slides: ShowcaseSlide[] = [
         tone: "stress",
         metric: "space cleared",
         visual: {
-          image: edgeFetchMidday,
-          alt: "Waldo Fetch mid-day stress card exported from Figma.",
-          nodeId: "1315:13117",
-          shape: "network",
+          image: edge02ContextGraph,
+          alt: "Full Waldo edge frame showing connected health signals and a recovery action card.",
+          nodeId: "1686558138",
         },
       },
       {
@@ -256,10 +240,9 @@ const slides: ShowcaseSlide[] = [
         tone: "recovery",
         metric: "cooldown active",
         visual: {
-          image: edgeCooldownHandoff,
-          alt: "Waldo cooldown handoff infographic exported from Figma.",
-          nodeId: "1322:7921",
-          shape: "artifact",
+          image: edge03RunPlan,
+          alt: "Full Waldo edge frame showing blurred context and a prompt asking whether to run the plan.",
+          nodeId: "1686558140",
         },
       },
       {
@@ -270,10 +253,9 @@ const slides: ShowcaseSlide[] = [
         tone: "motion",
         metric: "context checked",
         visual: {
-          image: edgeCircadianContext,
-          alt: "Waldo circadian stress context card exported from Figma.",
-          nodeId: "1322:7682",
-          shape: "network",
+          image: edge04FormSpike,
+          alt: "Full Waldo edge frame showing a phone Form chart with a stress spike and contextual action.",
+          nodeId: "1686558141",
         },
       },
       {
@@ -284,10 +266,9 @@ const slides: ShowcaseSlide[] = [
         tone: "stress",
         metric: "meeting pulled",
         visual: {
-          image: edgeWaldoActionCalendar,
-          alt: "Waldo Calendar action view showing protected meetings and moved work.",
-          nodeId: "edge-waldo-action",
-          shape: "artifact",
+          image: edge05CalendarAction,
+          alt: "Full Waldo edge frame showing a calendar where lower-priority work is moved while important calls stay protected.",
+          nodeId: "1686558142",
         },
       },
     ],
@@ -297,12 +278,6 @@ const slides: ShowcaseSlide[] = [
     headline: "Connecting the Dots",
     aside: "~70 scans a day. you never notice.",
     visual: "patterns",
-    defaultVisual: {
-      image: connectingPatrol,
-      alt: "Waldo Patrol timeline showing logged Brief, Fetch, and Adjustment events.",
-      nodeId: "1399:7457",
-      shape: "artifact",
-    },
     panels: [
       {
         label: "The Patrol keeps watch.",
@@ -312,10 +287,9 @@ const slides: ShowcaseSlide[] = [
         tone: "recovery",
         metric: "quiet scan",
         visual: {
-          image: connectingPatrol,
-          alt: "Waldo Patrol timeline showing logged Brief, Fetch, and Adjustment events.",
-          nodeId: "1399:7457",
-          shape: "artifact",
+          image: dots01Patrol,
+          alt: "Full Waldo Connecting the Dots frame showing a Patrol timeline with Brief, Fetch, and Adjustment entries.",
+          nodeId: "1686558143",
         },
       },
       {
@@ -326,10 +300,9 @@ const slides: ShowcaseSlide[] = [
         tone: "sleep",
         metric: "Spot found",
         visual: {
-          image: connectingSpot,
-          alt: "Waldo Spot infographic connecting sleep, HRV, Gmail, Calendar, Form, and Weight signals.",
-          nodeId: "1400:7699",
-          shape: "artifact",
+          image: dots02Spot,
+          alt: "Full Waldo Connecting the Dots frame showing the Spot card: Tuesdays are expensive.",
+          nodeId: "1686558144",
         },
       },
       {
@@ -340,10 +313,9 @@ const slides: ShowcaseSlide[] = [
         tone: "heart",
         metric: "pattern named",
         visual: {
-          image: connectingConstellation,
-          alt: "Waldo Constellation graph showing linked signals behind the Tuesday Crash pattern.",
-          nodeId: "1403:12317",
-          shape: "artifact",
+          image: dots03Constellation,
+          alt: "Full Waldo Connecting the Dots frame showing a Tuesday Crash constellation graph.",
+          nodeId: "1686558146",
         },
       },
       {
@@ -354,10 +326,9 @@ const slides: ShowcaseSlide[] = [
         tone: "motion",
         metric: "ready check",
         visual: {
-          image: connectingSpot,
-          alt: "Waldo Spot infographic connecting sleep, HRV, Gmail, Calendar, Form, and Weight signals.",
-          nodeId: "1403:12473",
-          shape: "artifact",
+          image: dots04Readiness,
+          alt: "Full Waldo Connecting the Dots frame showing investor call readiness with calendar and Form context.",
+          nodeId: "1686558147",
         },
       },
       {
@@ -368,10 +339,9 @@ const slides: ShowcaseSlide[] = [
         tone: "recovery",
         metric: "cycle broken",
         visual: {
-          image: connectingSpot,
-          alt: "Waldo Spot infographic connecting sleep, HRV, Gmail, Calendar, Form, and Weight signals.",
-          nodeId: "1403:12629",
-          shape: "artifact",
+          image: dots05WednesdayProtected,
+          alt: "Full Waldo Connecting the Dots frame showing a calendar heatmap with next Wednesday mornings protected.",
+          nodeId: "1686558148",
         },
       },
     ],
@@ -389,6 +359,11 @@ const slides: ShowcaseSlide[] = [
           "Stages, duration, debt, bedtime consistency. The point is not the data. *Short night? Your morning adjusts. Debt accumulating? Your week shifts before the crash.*",
         tone: "sleep",
         metric: "tomorrow adjusted",
+        visual: {
+          image: gut01SleepSignal,
+          alt: "Full Waldo gut feeling frame showing sleep and recovery charts with an explanatory Waldo card.",
+          nodeId: "1686558149",
+        },
       },
       {
         label: "Heart rate that means something.",
@@ -397,6 +372,11 @@ const slides: ShowcaseSlide[] = [
           "HRV trends, resting HR, and baseline tracking are not notifications. A dip below your 7-day average becomes a trigger. *Waldo connects the signal to your calendar.*",
         tone: "heart",
         metric: "HRV read",
+        visual: {
+          image: gut02HeartRate,
+          alt: "Full Waldo gut feeling frame showing a Recovery phone screen with heart-rate context.",
+          nodeId: "1686558150",
+        },
       },
       {
         label: "Stress you do not manage.",
@@ -405,6 +385,11 @@ const slides: ShowcaseSlide[] = [
           "Real-time confidence scoring is not a daily summary. It is a live signal that triggers The Fetch when it sustains too long. *Waldo catches it before you feel it.*",
         tone: "stress",
         metric: "Fetch armed",
+        visual: {
+          image: gut03StressAction,
+          alt: "Full Waldo gut feeling frame comparing no-Waldo and Waldo action states for elevated HR.",
+          nodeId: "1686558151",
+        },
       },
       {
         label: "Recovery drives the day.",
@@ -413,6 +398,11 @@ const slides: ShowcaseSlide[] = [
           "Sleep, HRV, and resting state combine into one score. The score powers The Brief. The Brief powers your morning. *One signal, end to end.*",
         tone: "recovery",
         metric: "Brief ready",
+        visual: {
+          image: gut04RecoveryCheck,
+          alt: "Full Waldo gut feeling frame showing recovery and watch readiness checks with cleared evening context.",
+          nodeId: "1686558152",
+        },
       },
       {
         label: "Motion with context.",
@@ -421,6 +411,11 @@ const slides: ShowcaseSlide[] = [
           "Steps, exercise, VO2 Max, and active energy are more than counts. *A hard workout at 7am means your 9am needs to be light.*",
         tone: "motion",
         metric: "load softened",
+        visual: {
+          image: gut05MotionContext,
+          alt: "Full Waldo gut feeling frame showing load and motion context with protected windows.",
+          nodeId: "1686558153",
+        },
       },
     ],
   },
@@ -432,12 +427,17 @@ const slides: ShowcaseSlide[] = [
     badge: "Coming soon",
     panels: [
       {
-        label: "Memory that compounds.",
-        title: "Memory that compounds.",
+        label: "Deep dives compound.",
+        title: "Deep dives compound.",
         body:
-          "Waldo remembers facts, events, discoveries, preferences, and advice. It does not just remember your HRV. *It remembers what usually causes it to drop.*",
+          "Waldo turns a pattern into a readable deep dive: what happened, what changed, and what to do next. *It stops being a chart and becomes memory you can act on.*",
         tone: "heart",
         metric: "memory linked",
+        visual: {
+          image: habits01DeepDive,
+          alt: "Full Waldo old habits frame showing a deep dive phone screen about sleep and circadian mismatch.",
+          nodeId: "1686558165",
+        },
       },
       {
         label: "Dreaming Mode.",
@@ -446,6 +446,11 @@ const slides: ShowcaseSlide[] = [
           "At 2am, Waldo consolidates. It promotes patterns, merges related memories, and pre-builds tomorrow's Brief. *By the time you wake up, it already knows what kind of day is waiting.*",
         tone: "sleep",
         metric: "2am pass",
+        visual: {
+          image: habits02DreamingMode,
+          alt: "Full Waldo old habits frame showing overnight Dreaming Mode consolidation.",
+          nodeId: "1686558166",
+        },
       },
       {
         label: "Corrections sharpen it.",
@@ -454,6 +459,11 @@ const slides: ShowcaseSlide[] = [
           "Undo a Fetch? Waldo learns. Keep a meeting it tried to move? Noted. *The first week has friction. The third week feels quietly familiar.*",
         tone: "recovery",
         metric: "model tuned",
+        visual: {
+          image: habits03Corrections,
+          alt: "Full Waldo old habits frame showing corrections, undo and decline states, and pattern confirmation.",
+          nodeId: "1686558167",
+        },
       },
       {
         label: "The Slope watches trajectory.",
@@ -462,6 +472,11 @@ const slides: ShowcaseSlide[] = [
           "Four weeks of data across recovery, form, demand, meeting load, communication pressure, and task pileup. *When the whole picture declines, Waldo escalates.*",
         tone: "motion",
         metric: "4-week slope",
+        visual: {
+          image: habits04Slope,
+          alt: "Full Waldo old habits frame showing The Slope and a four-week trajectory comparison.",
+          nodeId: "1686558168",
+        },
       },
       {
         label: "What Waldo does about it.",
@@ -470,6 +485,11 @@ const slides: ShowcaseSlide[] = [
           "When The Tuesday Crash repeats, Waldo does not just tell you. *It starts protecting Wednesdays, then keeps doing it.*",
         tone: "stress",
         metric: "Wednesday held",
+        visual: {
+          image: habits05RunIt,
+          alt: "Full Waldo old habits frame showing a Tuesday Crash run-it prompt with protected outcomes.",
+          nodeId: "1686558169",
+        },
       },
     ],
   },
@@ -514,6 +534,20 @@ function PlayPauseIcon({ playing, ended }: { playing: boolean; ended: boolean })
   );
 }
 
+function PillPaddleIcon({ direction }: { direction: "previous" | "next" }) {
+  return (
+    <svg width="15" height="20" viewBox="0 0 15 20" fill="none" aria-hidden>
+      <path
+        d={direction === "next" ? "M5.25 4.5 10.25 10 5.25 15.5" : "M9.75 4.5 4.75 10l5 5.5"}
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2.25"
+      />
+    </svg>
+  );
+}
+
 function PanelPill({
   panel,
   index,
@@ -539,21 +573,31 @@ function PanelPill({
     const updateMetrics = () => {
       if (!mounted) return;
       const closed = Math.ceil(measure.getBoundingClientRect().width);
+      const mobile = window.matchMedia("(max-width: 734px)").matches;
+      const slideWidth = item?.closest<HTMLElement>(".waldo-health-slide-content")?.clientWidth ?? window.innerWidth;
       const available = item?.parentElement?.clientWidth ?? 440;
-      const open = Math.max(closed, Math.min(440, Math.floor(available)));
+      const open = mobile
+        ? Math.max(280, Math.min(348, Math.floor(slideWidth - 16)))
+        : Math.max(closed, Math.min(440, Math.floor(available)));
       openMeasure.style.width = `${open}px`;
       const height = Math.max(52, Math.ceil(openMeasure.scrollHeight));
       setPillMetrics({ closed, open, height });
     };
 
     const frame = window.requestAnimationFrame(updateMetrics);
+    const observer = new ResizeObserver(updateMetrics);
+    if (item) observer.observe(item);
+    if (item?.parentElement) observer.observe(item.parentElement);
     void document.fonts?.ready.then(updateMetrics);
+    window.addEventListener("resize", updateMetrics);
 
     return () => {
       mounted = false;
+      observer.disconnect();
       window.cancelAnimationFrame(frame);
+      window.removeEventListener("resize", updateMetrics);
     };
-  }, [panel.title]);
+  }, [cleanBody, panel.title]);
 
   const itemStyle = pillMetrics
     ? ({
@@ -567,7 +611,7 @@ function PanelPill({
     <Accordion.Item ref={itemRef} value={`${index}`} className="waldo-panel-pill" style={itemStyle}>
       <span
         ref={measureRef}
-        className="waldo-panel-measure flex items-center gap-3 px-4 py-3"
+        className="waldo-panel-measure flex items-center gap-3 px-4 py-2.5"
         aria-hidden
         style={{
           left: 0,
@@ -597,17 +641,17 @@ function PanelPill({
           width: pillMetrics ? `${pillMetrics.open}px` : "440px",
         }}
       >
-        <div className="waldo-panel-open-measure-header px-4 py-3">
+        <div className="waldo-panel-open-measure-header px-4 py-2.5">
           <span className="type-label whitespace-nowrap">{panel.title}</span>
         </div>
-        <div className="px-5 pb-4 pt-0">
-          <p className="type-body text-[var(--text-secondary)]">{cleanBody}</p>
+        <div className="waldo-panel-open-measure-card px-5 pb-3.5 pt-0">
+          <p className="waldo-panel-body type-body text-[var(--text-secondary)]">{cleanBody}</p>
         </div>
       </div>
       <Accordion.Header>
         <Accordion.Trigger
           id={panelId}
-          className="waldo-panel-trigger focusable-ring flex items-center gap-3 px-4 py-3 text-left text-[var(--ink)]"
+          className="waldo-panel-trigger focusable-ring flex items-center gap-3 px-4 py-2.5 text-left text-[var(--ink)]"
           aria-controls={panelContentId}
         >
           <span className="waldo-panel-plus flex items-center justify-center rounded-full border border-[var(--border-default)] bg-transparent text-[var(--ink)]" aria-hidden>
@@ -623,156 +667,64 @@ function PanelPill({
         id={panelContentId}
         className="waldo-panel-content grid overflow-hidden"
       >
-        <div className="waldo-panel-card overflow-hidden px-5 pb-4 pt-0">
-          <p className="type-body text-[var(--text-secondary)]">{cleanBody}</p>
+        <div className="waldo-panel-card overflow-hidden px-5 pb-3.5 pt-0">
+          <p className="waldo-panel-body type-body text-[var(--text-secondary)]">{cleanBody}</p>
         </div>
       </Accordion.Content>
     </Accordion.Item>
   );
 }
 
-function HealthFeatureVisualStage({
-  slide,
-  panel,
-  activePanel,
-}: {
-  slide: ShowcaseSlide;
-  panel: FeaturePanel;
-  activePanel: number | null;
-}) {
-  const visual = activePanel === null
-    ? slide.defaultVisual ?? panel.visual
-    : panel.visual ?? slide.defaultVisual;
-
-  if (!visual) {
-    return (
-      <div className="waldo-health-visual-stage pointer-events-none relative z-0 flex h-full min-h-[260px] items-end justify-center overflow-hidden md:min-h-[420px] lg:min-h-[300px]">
-        <div className="relative mb-[-132px] h-[440px] w-[230px] rounded-[48px] border-[7px] border-[var(--ink)] bg-[var(--surface-t1)] sm:h-[500px] sm:w-[260px] lg:mb-[-150px] lg:h-[700px] lg:w-[366px]">
-          <div className="absolute left-8 top-8 type-label text-[var(--ink)]">9:41</div>
-          <div className="absolute left-1/2 top-7 h-7 w-28 -translate-x-1/2 rounded-full bg-[var(--ink)]" />
-          <Image
-            src="/illustrations/default.svg"
-            alt=""
-            width={112}
-            height={112}
-            aria-hidden
-            draggable={false}
-            className="absolute left-1/2 top-[56%] h-24 w-24 -translate-x-1/2 -translate-y-1/2 object-contain lg:h-28 lg:w-28"
-          />
-        </div>
-      </div>
-    );
-  }
-
-  const isCornerIpadVisual = visual.nodeId === "1309:9685";
-  const stageClassName = [
-    "waldo-health-visual-stage pointer-events-none relative z-0 flex h-full min-h-[260px] overflow-visible md:min-h-[420px] lg:min-h-[300px]",
-    isCornerIpadVisual
-      ? "waldo-health-visual-stage--corner-ipad items-end justify-end"
-      : "items-center justify-center",
-  ].join(" ");
-
-  if (visual.backdrop) {
-    return (
-      <div className={stageClassName}>
-        <div aria-hidden className="waldo-card-visual-glow absolute inset-x-[12%] bottom-[8%] h-[32%] rounded-full bg-[var(--accent-subtle)] blur-3xl" />
-        <div
-          key={`${visual.nodeId}-${visual.backdrop.nodeId}-${activePanel ?? "default"}`}
-          className="waldo-card-visual-shell waldo-card-visual-shell--layered relative"
-          data-node-id={visual.nodeId}
-          data-visual-shape={visual.shape ?? "cluster"}
-          data-visual-composite="blurred-backdrop"
-        >
-          <Image
-            src={visual.backdrop.image}
-            alt={visual.backdrop.alt}
-            sizes="(min-width: 1024px) 640px, (min-width: 640px) 70vw, 96vw"
-            className="waldo-card-visual-layer waldo-card-visual-layer--backdrop select-none"
-            loading="eager"
-            draggable={false}
-            unoptimized
-          />
-          <Image
-            src={visual.image}
-            alt={visual.alt}
-            sizes="(min-width: 1024px) 480px, (min-width: 640px) 54vw, 86vw"
-            className="waldo-card-visual-layer waldo-card-visual-layer--foreground select-none"
-            loading="eager"
-            draggable={false}
-            unoptimized
-          />
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className={stageClassName}>
-      <div aria-hidden className="waldo-card-visual-glow absolute inset-x-[12%] bottom-[8%] h-[32%] rounded-full bg-[var(--accent-subtle)] blur-3xl" />
-      <div
-        key={`${visual.nodeId}-${activePanel ?? "default"}`}
-        className="waldo-card-visual-shell relative"
-        data-node-id={visual.nodeId}
-        data-visual-shape={visual.shape ?? "cluster"}
-      >
-        <Image
-          src={visual.image}
-          alt={visual.alt}
-          sizes="(min-width: 1024px) 580px, (min-width: 640px) 64vw, 92vw"
-          className="waldo-card-visual-image select-none"
-          fetchPriority={activePanel === null ? "high" : "auto"}
-          loading="eager"
-          draggable={false}
-          unoptimized
-        />
-      </div>
-    </div>
-  );
-}
-
 function SlideContent({
   slide,
   openPanel,
+  isActive,
   onPanelChange,
+  onPanelInteraction,
 }: {
   slide: ShowcaseSlide;
-  openPanel: number | null;
-  onPanelChange: (panelIndex: number | null) => void;
+  openPanel: number;
+  isActive: boolean;
+  onPanelChange: (panelIndex: number) => void;
+  onPanelInteraction: () => void;
 }) {
-  const panel = slide.panels[openPanel ?? 0] ?? slide.panels[0];
+  const panel = slide.panels[openPanel] ?? slide.panels[0];
+  const canGoBack = openPanel > 0;
+  const canGoForward = openPanel < slide.panels.length - 1;
+  const goToAdjacentPanel = (direction: "previous" | "next") => {
+    onPanelInteraction();
+    onPanelChange(openPanel + (direction === "next" ? 1 : -1));
+  };
 
   return (
-    <div className="waldo-health-slide-content relative grid h-full min-h-0 grid-rows-[auto_minmax(280px,1fr)] gap-6 overflow-hidden p-5 sm:p-6 md:grid-cols-[minmax(240px,0.86fr)_minmax(260px,1fr)] md:grid-rows-1 md:items-center md:gap-4 lg:grid-cols-[minmax(300px,0.82fr)_minmax(400px,1.4fr)] lg:p-8">
-      {openPanel !== null ? (
-        <button
-          type="button"
-          aria-label="Collapse expanded field"
-          className="focusable-ring absolute right-4 top-4 z-30 flex h-10 w-10 items-center justify-center rounded-full border border-[var(--border-default)] bg-[var(--surface-t1)] text-[var(--ink)] transition-[background-color] duration-150 ease-[var(--ease-premium)] hover:bg-[var(--surface-t2)] sm:right-5 sm:top-5"
-          onClick={() => onPanelChange(null)}
-        >
-          <span aria-hidden className="relative h-3 w-3 rotate-45">
-            <span className="absolute left-0 top-1/2 h-[1.5px] w-3 -translate-y-1/2 rounded-full bg-current" />
-            <span className="absolute left-1/2 top-0 h-3 w-[1.5px] -translate-x-1/2 rounded-full bg-current" />
-          </span>
-        </button>
-      ) : null}
+    <div
+      className="waldo-health-slide-content relative h-full min-h-0 overflow-hidden"
+      data-active-panel={openPanel}
+    >
+      <Image
+        key={panel.visual.nodeId}
+        src={panel.visual.image}
+        alt={panel.visual.alt}
+        fill
+        sizes="(min-width: 1280px) 1260px, (min-width: 735px) 87.5vw, 92vw"
+        className="waldo-health-frame-image select-none"
+        fetchPriority={isActive ? "high" : "auto"}
+        loading={isActive ? "eager" : "lazy"}
+        draggable={false}
+        unoptimized
+      />
+      <div aria-hidden className="waldo-health-frame-scrim" />
 
-      <div className="waldo-health-slide-copy relative z-10 flex min-h-0 flex-col justify-start pl-0 sm:pl-4 md:justify-center lg:pl-8">
-        <div className="mb-8 pr-12 sm:pr-14">
-          <h3 className="type-h2 max-w-[16ch] text-[var(--ink)]">{slide.headline}</h3>
+      <div className="waldo-health-frame-overlay">
+        <div className="waldo-health-frame-heading">
+          <h3 className="type-h2 text-[var(--ink)]">{slide.headline}</h3>
         </div>
-
-        <div className="waldo-health-mobile-stage md:hidden">
-          <HealthFeatureVisualStage slide={slide} panel={panel} activePanel={openPanel} />
-        </div>
-
         <Accordion.Root
           type="single"
-          collapsible
-          value={openPanel === null ? "" : `${openPanel}`}
-          onValueChange={(value) => onPanelChange(value === "" ? null : Number(value))}
-          className="space-y-3 pr-1 lg:min-h-0 lg:max-h-[400px] lg:overflow-y-auto"
-          data-lenis-prevent
+          value={`${openPanel}`}
+          onValueChange={(value) => onPanelChange(value === "" ? 0 : Number(value))}
+          className="waldo-health-pill-rail"
+          style={{ "--active-panel": openPanel } as CSSProperties}
         >
           {slide.panels.map((item, index) => (
             <PanelPill
@@ -782,10 +734,42 @@ function SlideContent({
             />
           ))}
         </Accordion.Root>
-      </div>
-
-      <div className="hidden h-full min-h-0 md:block">
-        <HealthFeatureVisualStage slide={slide} panel={panel} activePanel={openPanel} />
+        <div className="waldo-health-pill-paddles">
+          <button
+            type="button"
+            className="waldo-health-pill-nav waldo-health-pill-nav--previous focusable-ring"
+            aria-label={`Previous ${slide.tab} detail`}
+            disabled={!canGoBack}
+            onPointerDown={(event) => {
+              event.stopPropagation();
+              onPanelInteraction();
+            }}
+            onClick={(event) => {
+              event.preventDefault();
+              event.stopPropagation();
+              goToAdjacentPanel("previous");
+            }}
+          >
+            <PillPaddleIcon direction="previous" />
+          </button>
+          <button
+            type="button"
+            className="waldo-health-pill-nav waldo-health-pill-nav--next focusable-ring"
+            aria-label={`Next ${slide.tab} detail`}
+            disabled={!canGoForward}
+            onPointerDown={(event) => {
+              event.stopPropagation();
+              onPanelInteraction();
+            }}
+            onClick={(event) => {
+              event.preventDefault();
+              event.stopPropagation();
+              goToAdjacentPanel("next");
+            }}
+          >
+            <PillPaddleIcon direction="next" />
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -811,9 +795,10 @@ export function AlreadyDoneSection() {
   const [documentHidden, setDocumentHidden] = useState(false);
   const [isScrollAnimating, setIsScrollAnimating] = useState(false);
   const [isDraggingTrack, setIsDraggingTrack] = useState(false);
-  const [openPanels, setOpenPanels] = useState<Record<number, number | null>>({});
+  const [openPanels, setOpenPanels] = useState<Record<number, number>>({});
+  const sectionInView = useElementInView(sectionRef);
 
-  const shouldTickProgress = playing && !ended && !reducedMotion && !interactionPaused && !documentHidden && !isScrollAnimating;
+  const shouldTickProgress = playing && !ended && !reducedMotion && !interactionPaused && !documentHidden && !isScrollAnimating && sectionInView;
   const activeSlide = slides[active];
   const activeLabel = activeSlide.tab;
 
@@ -1133,7 +1118,6 @@ export function AlreadyDoneSection() {
 
       <div
         ref={trackRef}
-        data-lenis-prevent
         data-animate="stagger"
         data-stagger="0.08"
         className={[
@@ -1154,7 +1138,7 @@ export function AlreadyDoneSection() {
       >
         {slides.map((slide, index) => {
           const isActive = active === index;
-          const openPanel = Object.prototype.hasOwnProperty.call(openPanels, index) ? openPanels[index] ?? null : null;
+          const openPanel = openPanels[index] ?? 0;
 
           return (
             <article
@@ -1163,15 +1147,23 @@ export function AlreadyDoneSection() {
               aria-label={slide.tab}
               aria-current={isActive}
               data-stagger-item
-              className="h-[var(--slide-height)] w-[var(--slide-width)] snap-center overflow-y-auto rounded-[24px] bg-[var(--surface-t1)] [scrollbar-width:none] max-[734px]:snap-start lg:overflow-hidden [&::-webkit-scrollbar]:hidden"
+              className="waldo-health-frame-card h-[var(--slide-height)] w-[var(--slide-width)] snap-center overflow-hidden rounded-[24px] bg-[var(--surface-t1)] max-[734px]:snap-start"
             >
               <SlideContent
                 slide={slide}
                 openPanel={openPanel}
-                onPanelChange={(panelIndex) => {
+                isActive={isActive}
+                onPanelInteraction={() => {
+                  cancelScrollAnimation();
                   setPlaying(false);
                   setEnded(false);
-                  setOpenPanels((current) => ({ ...current, [index]: panelIndex }));
+                }}
+                onPanelChange={(panelIndex) => {
+                  cancelScrollAnimation();
+                  setPlaying(false);
+                  setEnded(false);
+                  const nextPanel = clamp(panelIndex, 0, slide.panels.length - 1);
+                  setOpenPanels((current) => ({ ...current, [index]: nextPanel }));
                 }}
               />
             </article>
