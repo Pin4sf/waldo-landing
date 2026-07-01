@@ -5,6 +5,8 @@ import { useEffect } from "react";
 import { useImagePreloader } from "@/hooks/use-image-preloader";
 import appsAccountsAgents from "@/public/waldo-web-assets/agent-features/apps-accounts-agents.webp";
 import contextThread from "@/public/waldo-web-assets/agent-features/context-thread.webp";
+import draftsReadyToGo from "@/public/waldo-web-assets/agent-features/drafts-ready-to-go.webp";
+import overnightPatrol from "@/public/waldo-web-assets/agent-features/overnight-patrol.webp";
 import dots01Patrol from "@/public/figma-assets/health-carousel/dots-01-patrol.webp";
 import dots02Spot from "@/public/figma-assets/health-carousel/dots-02-spot.webp";
 import dots03Constellation from "@/public/figma-assets/health-carousel/dots-03-constellation.webp";
@@ -71,10 +73,18 @@ const carouselPrioritySources = [
   habits01DeepDive.src,
   appsAccountsAgents.src,
   contextThread.src,
+  draftsReadyToGo.src,
+  overnightPatrol.src,
 ];
 
 const prioritySourceSet = new Set(carouselPrioritySources);
-const deferredCarouselSources = [...healthCarouselSources, appsAccountsAgents.src, contextThread.src].filter((source) => !prioritySourceSet.has(source));
+const deferredCarouselSources = [
+  ...healthCarouselSources,
+  appsAccountsAgents.src,
+  contextThread.src,
+  draftsReadyToGo.src,
+  overnightPatrol.src,
+].filter((source) => !prioritySourceSet.has(source));
 
 export function HomepageCarouselPreloader() {
   const { preloadMany } = useImagePreloader();

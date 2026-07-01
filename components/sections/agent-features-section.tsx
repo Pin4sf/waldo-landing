@@ -1,7 +1,7 @@
 "use client";
 
 import Image, { type StaticImageData } from "next/image";
-import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { Aside, withHighlights } from "@/components/landing-primitives";
 import { IconButton } from "@/components/rail-controls";
@@ -9,6 +9,8 @@ import { useElementInView } from "@/hooks/use-element-in-view";
 import { useImagePreloader } from "@/hooks/use-image-preloader";
 import appsAccountsAgents from "@/public/waldo-web-assets/agent-features/apps-accounts-agents.webp";
 import contextThread from "@/public/waldo-web-assets/agent-features/context-thread.webp";
+import draftsReadyToGo from "@/public/waldo-web-assets/agent-features/drafts-ready-to-go.webp";
+import overnightPatrol from "@/public/waldo-web-assets/agent-features/overnight-patrol.webp";
 
 const SCROLL_DURATION_MS = 1000;
 
@@ -24,19 +26,8 @@ type AgentSlide = {
   description: string;
   wide?: boolean;
   aside?: string;
-  visual?: ReactNode;
-  visualAsset?: AgentVisualAsset;
+  visualAsset: AgentVisualAsset;
 };
-
-const overnightLog = [
-  ["11:14pm", "The Close: day summary delivered"],
-  ["11:15pm", "Patrol: quiet hours activated"],
-  ["2:00am", "Dreaming Mode: consolidated 14 memories"],
-  ["2:01am", 'Promoted pattern: "Tuesday crashes" (3+ occurrences)'],
-  ["2:02am", "Pre-computed tomorrow's Brief (2.3 seconds)"],
-  ["6:12am", "Patrol: scanned overnight HRV"],
-  ["6:14am", "Brief ready. Waiting for your alarm."],
-] as const;
 
 function usePrefersReducedMotion() {
   const [reduced, setReduced] = useState(false);
@@ -67,49 +58,6 @@ function ArrowIcon({ direction }: { direction: "prev" | "next" }) {
         strokeLinejoin="round"
       />
     </svg>
-  );
-}
-
-function DraftsVisual() {
-  const drafts = [
-    ["Document", "Q3 Engineering Retro", "Based on: Linear tickets, Calendar, team velocity", "Export to Drive"],
-    ["Email", "Re: Product strategy review", '"Hey Suyash, We do not care if you received..."', "Send requires your tap"],
-    ["Task", "Review deck before Friday", "Priority: High, Due: Thu, Source: Calendar follow-up", "Created in Todoist"],
-  ] as const;
-
-  return (
-    <div className="flex h-full flex-col justify-center gap-3">
-      {drafts.map(([type, title, body, action]) => (
-        <div key={title} className="rounded-[16px] border border-[var(--border-default)] bg-[var(--surface-t1)] p-4">
-          <div className="flex items-center justify-between gap-3">
-            <p className="type-caption text-[var(--text-tertiary)]">{type}</p>
-            <span className="h-2 w-2 rounded-full bg-[var(--text-tertiary)]" aria-hidden />
-          </div>
-          <p className="type-label mt-3 text-[var(--ink)]">{title}</p>
-          <p className="type-caption tone-secondary mt-2">{body}</p>
-          <p className="type-aside tone-tertiary mt-3">{action}</p>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function OvernightVisual() {
-  return (
-    <div className="flex h-full flex-col justify-center rounded-[8px] border border-[var(--border-default)] bg-[var(--surface-t1)] p-4">
-      <div className="mb-4 flex items-center gap-2">
-        <span className="h-2 w-2 rounded-full bg-[var(--zone-peak)]" aria-hidden />
-        <p className="type-caption uppercase text-[var(--text-tertiary)]">Overnight patrol</p>
-      </div>
-      <div className="grid gap-2">
-        {overnightLog.map(([time, line]) => (
-          <div key={time + line} className="grid grid-cols-[62px_1fr] gap-3 rounded-[10px] bg-[var(--surface-t2)] px-3 py-2">
-            <p className="type-data text-[var(--text-tertiary)]">{time}</p>
-            <p className="type-caption text-[var(--ink)]">{line}</p>
-          </div>
-        ))}
-      </div>
-    </div>
   );
 }
 
@@ -145,20 +93,30 @@ const slides: AgentSlide[] = [
     headline: "Waldo drafts. You approve.",
     description:
       "Emails, documents, tasks, spreadsheet entries. Waldo creates them. You review them. *Emails never auto-send.* Tasks never auto-complete. Some things always need a human.",
+    wide: true,
     aside: "hands off until your tap.",
-    visual: <DraftsVisual />,
+    visualAsset: {
+      src: draftsReadyToGo,
+      alt: "Waldo showing ready-to-go follow-up work alongside a schedule view for approval.",
+      nodeId: "agent-drafts-ready-to-go",
+    },
   },
   {
     label: "Overnight",
     headline: "Waldo works while you sleep.",
     description:
       "At 2am, Waldo dreams. It consolidates what it learned, finds patterns, and pre-builds your morning. *By the time your alarm goes off, it is already done.* Other agents wait for your prompt. Waldo's prompt is your pulse - updated every 15 minutes, running even at 2am.",
+    wide: true,
     aside: "start a task. take a nap. come back to it handled.",
-    visual: <OvernightVisual />,
+    visualAsset: {
+      src: overnightPatrol,
+      alt: "Waldo overnight patrol timeline showing The Close and Dreaming Mode tasks.",
+      nodeId: "agent-overnight-patrol",
+    },
   },
 ];
 
-const agentVisualSources = slides.flatMap((slide) => (slide.visualAsset ? [slide.visualAsset.src.src] : []));
+const agentVisualSources = slides.map((slide) => slide.visualAsset.src.src);
 
 export function AgentFeaturesSection() {
   const reducedMotion = usePrefersReducedMotion();
@@ -175,7 +133,7 @@ export function AgentFeaturesSection() {
   const sectionNearView = useElementInView(sectionRef, "1200px");
 
   const warmAgentSlide = useCallback((index: number) => {
-    const source = slides[index]?.visualAsset?.src.src;
+    const source = slides[index]?.visualAsset.src.src;
     if (source) preload(source, { immediate: true });
   }, [preload]);
 
@@ -321,26 +279,22 @@ export function AgentFeaturesSection() {
             >
               <article className="h-full">
                 <div
-                  className={`${slide.visualAsset ? "waldo-agent-media-card border-transparent bg-transparent p-0" : "h-[var(--agent-card-height)] border-[var(--border-default)] bg-[var(--surface-t2)] p-4"} overflow-hidden rounded-[24px] border`}
+                  className="waldo-agent-media-card overflow-hidden rounded-[24px] border border-transparent bg-transparent p-0"
                 >
-                  {slide.visualAsset ? (
-                    <div
-                      key={slide.visualAsset.nodeId}
-                      className="waldo-agent-visual-shell waldo-agent-visual-shell--frame relative flex h-full items-center justify-center overflow-hidden rounded-[24px] bg-[var(--surface-t1)]"
-                      data-node-id={slide.visualAsset.nodeId}
-                    >
-                      <Image
-                        src={slide.visualAsset.src}
-                        alt={slide.visualAsset.alt}
-                        sizes={slide.wide ? "(min-width: 1024px) 764px, 92vw" : "(min-width: 1024px) 372px, 82vw"}
-                        className="waldo-agent-frame-image h-full w-full object-contain"
-                        fetchPriority={index === active ? "high" : "auto"}
-                        loading={index === active || index < 2 ? "eager" : "lazy"}
-                      />
-                    </div>
-                  ) : (
-                    slide.visual
-                  )}
+                  <div
+                    key={slide.visualAsset.nodeId}
+                    className="waldo-agent-visual-shell waldo-agent-visual-shell--frame relative flex h-full items-center justify-center overflow-hidden rounded-[24px] bg-[var(--surface-t1)]"
+                    data-node-id={slide.visualAsset.nodeId}
+                  >
+                    <Image
+                      src={slide.visualAsset.src}
+                      alt={slide.visualAsset.alt}
+                      sizes={slide.wide ? "(min-width: 1024px) 764px, 92vw" : "(min-width: 1024px) 372px, 82vw"}
+                      className="waldo-agent-frame-image h-full w-full object-contain"
+                      fetchPriority={index === active ? "high" : "auto"}
+                      loading={index === active || index < 2 ? "eager" : "lazy"}
+                    />
+                  </div>
                 </div>
                 <div className="mt-[var(--agent-card-block-top)] px-[var(--agent-card-block-inline)]">
                   <h3 className="type-h2 text-[var(--ink)]">{slide.headline}</h3>
