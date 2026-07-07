@@ -35,6 +35,40 @@ test("features route focuses on feature sections and comments out duplicated nar
   }
 });
 
+test("feature hero keeps proof motion without per-frame React or filter-heavy cues", () => {
+  const scene = read("components/sections/hero-proof-scene.tsx");
+  const globals = read("app/globals.css");
+
+  assert.match(scene, /transitionCue/);
+  assert.match(scene, /cueTimeoutRef/);
+  assert.match(scene, /rotationTimeoutRef/);
+  assert.match(scene, /window\.setTimeout/);
+  assert.doesNotMatch(scene, /setProgress/);
+  assert.doesNotMatch(scene, /progressRef/);
+  assert.doesNotMatch(scene, /requestAnimationFrame/);
+  assert.doesNotMatch(scene, /waldo-hero-gradient-grain/);
+
+  const boostRule = globals.slice(
+    globals.indexOf(".waldo-hero-gradient-boost::before"),
+    globals.indexOf(".waldo-hero-gradient-mesh"),
+  );
+  const meshRule = globals.slice(
+    globals.indexOf(".waldo-hero-gradient-mesh {"),
+    globals.indexOf(".waldo-hero-gradient-mesh-a"),
+  );
+  const cueRules = globals.slice(
+    globals.indexOf(".waldo-hero-transition-cue .waldo-hero-gradient-flow"),
+    globals.indexOf(".waldo-proof-card .type-aside"),
+  );
+
+  assert.match(boostRule, /filter:\s*blur\(30px\)/);
+  assert.doesNotMatch(boostRule, /transition:[^}]*filter/s);
+  assert.doesNotMatch(boostRule, /will-change:[^;]*filter/);
+  assert.match(meshRule, /filter:\s*blur\(38px\)\s+saturate\(1\.04\)/);
+  assert.doesNotMatch(meshRule, /will-change:[^;]*filter/);
+  assert.doesNotMatch(cueRules, /filter:/);
+});
+
 test("root route renders the redesigned homepage shell", () => {
   const homePage = read("app/page.tsx");
 
