@@ -593,6 +593,9 @@ function SlideContent({
   const panel = slide.panels[openPanel] ?? slide.panels[0];
   const canGoBack = openPanel > 0;
   const canGoForward = openPanel < slide.panels.length - 1;
+  const imageLoadProps = isActive
+    ? ({ fetchPriority: "high", preload: true } as const)
+    : ({ fetchPriority: "auto", loading: "lazy" } as const);
   const goToAdjacentPanel = (direction: "previous" | "next") => {
     onPanelInteraction();
     const nextPanel = openPanel + (direction === "next" ? 1 : -1);
@@ -612,10 +615,9 @@ function SlideContent({
         fill
         sizes="(min-width: 1280px) 1260px, (min-width: 735px) 87.5vw, 92vw"
         className="waldo-health-frame-image select-none"
-        fetchPriority={isActive ? "high" : "auto"}
-        loading={isActive ? "eager" : "lazy"}
         draggable={false}
         unoptimized
+        {...imageLoadProps}
       />
       <div aria-hidden className="waldo-health-frame-scrim" />
 
@@ -729,9 +731,10 @@ export function AlreadyDoneSection() {
         </div>
       </div>
 
-      <div className="waldo-health-vertical-stack" data-animate="stagger" data-stagger="0.08">
+      <div className="waldo-health-vertical-stack">
         {slides.map((slide, index) => {
           const openPanel = openPanels[index] ?? 0;
+          const shouldRenderContent = Math.abs(activeHealthIndex - index) <= 1;
 
           return (
             <article
@@ -742,22 +745,26 @@ export function AlreadyDoneSection() {
               id={`health-feature-card-${index}`}
               aria-label={slide.tab}
               data-active={activeHealthIndex === index}
+              data-render-mode={index < 2 ? "warm" : "deferred"}
               data-health-index={index}
-              data-stagger-item
               className="waldo-health-vertical-card min-h-[82svh]"
             >
               <div className="waldo-health-frame-card overflow-hidden rounded-[24px] bg-[var(--surface-t1)]">
-                <SlideContent
-                  slide={slide}
-                  openPanel={openPanel}
-                  isActive={activeHealthIndex === index}
-                  onPanelIntent={() => undefined}
-                  onPanelInteraction={() => undefined}
-                  onPanelChange={(panelIndex) => {
-                    const nextPanel = clamp(panelIndex, 0, slide.panels.length - 1);
-                    setOpenPanels((current) => ({ ...current, [index]: nextPanel }));
-                  }}
-                />
+                {shouldRenderContent ? (
+                  <SlideContent
+                    slide={slide}
+                    openPanel={openPanel}
+                    isActive={activeHealthIndex === index}
+                    onPanelIntent={() => undefined}
+                    onPanelInteraction={() => undefined}
+                    onPanelChange={(panelIndex) => {
+                      const nextPanel = clamp(panelIndex, 0, slide.panels.length - 1);
+                      setOpenPanels((current) => ({ ...current, [index]: nextPanel }));
+                    }}
+                  />
+                ) : (
+                  <div className="waldo-health-frame-placeholder" aria-hidden="true" />
+                )}
               </div>
             </article>
           );

@@ -118,7 +118,8 @@ export function HeroProofScene({ children, states }: HeroProofSceneProps) {
   const rotationTimeoutRef = useRef<number | null>(null);
   const sceneRef = useRef<HTMLDivElement>(null);
   const reducedMotion = usePrefersReducedMotion();
-  const sceneInView = useElementInView(sceneRef);
+  const sceneNearViewport = useElementInView(sceneRef);
+  const sceneMotionActive = useElementInView(sceneRef, "-35% 0px -35% 0px");
   const activeState = states[active] ?? states[0];
 
   const selectState = useCallback((index: number) => {
@@ -151,7 +152,7 @@ export function HeroProofScene({ children, states }: HeroProofSceneProps) {
       resetCueTimeoutRef.current = null;
     }, 0);
 
-    if (reducedMotion || paused || !sceneInView || states.length < 2) {
+    if (reducedMotion || paused || !sceneMotionActive || states.length < 2) {
       return clearHeroTimers;
     }
 
@@ -165,10 +166,10 @@ export function HeroProofScene({ children, states }: HeroProofSceneProps) {
     }, HERO_DWELL_MS);
 
     return clearHeroTimers;
-  }, [active, paused, reducedMotion, sceneInView, states.length]);
+  }, [active, paused, reducedMotion, sceneMotionActive, states.length]);
 
   const handlePointerMove = (event: PointerEvent<HTMLDivElement>) => {
-    if (reducedMotion || !sceneInView) return;
+    if (reducedMotion || !sceneNearViewport) return;
 
     const rect = event.currentTarget.getBoundingClientRect();
     const x = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
@@ -200,12 +201,14 @@ export function HeroProofScene({ children, states }: HeroProofSceneProps) {
     return null;
   }
 
-  const transitionCueClass = !reducedMotion && !paused && transitionCue ? " waldo-hero-transition-cue" : "";
+  const heroMotionActive = !reducedMotion && sceneMotionActive;
+  const transitionCueClass = heroMotionActive && !paused && transitionCue ? " waldo-hero-transition-cue" : "";
 
   return (
     <div
       ref={sceneRef}
       className={`waldo-hero-stage waldo-hero-state-${activeState.key}${transitionCueClass}`}
+      data-scene-active={heroMotionActive}
       onFocusCapture={() => setPaused(true)}
       onBlurCapture={() => setPaused(false)}
       onMouseLeave={() => {
@@ -217,16 +220,6 @@ export function HeroProofScene({ children, states }: HeroProofSceneProps) {
         <span className="waldo-hero-shader-ring" />
         <span className="waldo-hero-shader-sheen" />
         <span className="waldo-hero-shader-grain" />
-      </div>
-      <div className="waldo-hero-gradient-field" aria-hidden="true">
-        <div className="waldo-hero-gradient-flow">
-          <div className="waldo-hero-gradient-boost">
-            <span className="waldo-hero-gradient-mesh waldo-hero-gradient-mesh-a" />
-            <span className="waldo-hero-gradient-mesh waldo-hero-gradient-mesh-b" />
-            <span className="waldo-hero-gradient-mesh waldo-hero-gradient-mesh-c" />
-            <span className="waldo-hero-gradient-mesh waldo-hero-gradient-mesh-d" />
-          </div>
-        </div>
       </div>
       <svg className="waldo-signal-path" viewBox="0 0 1200 760" aria-hidden="true">
         <path d="M210 220 C 350 230, 450 290, 545 360" />

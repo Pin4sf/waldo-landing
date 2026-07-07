@@ -14,6 +14,8 @@ test("current homepage is preserved at the features route", () => {
 test("features route focuses on feature sections and comments out duplicated narrative beats", () => {
   const layout = read("components/page-layout.tsx");
 
+  assert.equal(existsSync("components/homepage-carousel-preloader.tsx"), false);
+  assert.doesNotMatch(layout, /HomepageCarouselPreloader/);
   assert.match(layout, /<AlreadyDoneSection \/>/);
   assert.match(layout, /<ActionFanSection \/>/);
   assert.match(layout, /<SecuritySection \/>/);
@@ -42,31 +44,31 @@ test("feature hero keeps proof motion without per-frame React or filter-heavy cu
   assert.match(scene, /transitionCue/);
   assert.match(scene, /cueTimeoutRef/);
   assert.match(scene, /rotationTimeoutRef/);
+  assert.match(scene, /sceneMotionActive/);
+  assert.match(scene, /data-scene-active=\{heroMotionActive\}/);
   assert.match(scene, /window\.setTimeout/);
   assert.doesNotMatch(scene, /setProgress/);
   assert.doesNotMatch(scene, /progressRef/);
   assert.doesNotMatch(scene, /requestAnimationFrame/);
+  assert.doesNotMatch(scene, /waldo-hero-gradient-field/);
+  assert.doesNotMatch(scene, /waldo-hero-gradient-flow/);
+  assert.doesNotMatch(scene, /waldo-hero-gradient-mesh/);
   assert.doesNotMatch(scene, /waldo-hero-gradient-grain/);
 
-  const boostRule = globals.slice(
-    globals.indexOf(".waldo-hero-gradient-boost::before"),
-    globals.indexOf(".waldo-hero-gradient-mesh"),
-  );
-  const meshRule = globals.slice(
-    globals.indexOf(".waldo-hero-gradient-mesh {"),
-    globals.indexOf(".waldo-hero-gradient-mesh-a"),
-  );
   const cueRules = globals.slice(
-    globals.indexOf(".waldo-hero-transition-cue .waldo-hero-gradient-flow"),
+    globals.indexOf(".waldo-hero-transition-cue .hero-floating-card"),
     globals.indexOf(".waldo-proof-card .type-aside"),
   );
 
-  assert.match(boostRule, /filter:\s*blur\(30px\)/);
-  assert.doesNotMatch(boostRule, /transition:[^}]*filter/s);
-  assert.doesNotMatch(boostRule, /will-change:[^;]*filter/);
-  assert.match(meshRule, /filter:\s*blur\(38px\)\s+saturate\(1\.04\)/);
-  assert.doesNotMatch(meshRule, /will-change:[^;]*filter/);
+  assert.doesNotMatch(globals, /waldo-hero-gradient-field/);
+  assert.doesNotMatch(globals, /waldo-hero-gradient-flow/);
+  assert.doesNotMatch(globals, /waldo-hero-gradient-boost/);
+  assert.doesNotMatch(globals, /waldo-hero-gradient-mesh/);
+  assert.doesNotMatch(globals, /@keyframes waldo-hero-shader-flow/);
+  assert.doesNotMatch(globals, /@keyframes waldo-hero-mesh/);
   assert.doesNotMatch(cueRules, /filter:/);
+  assert.match(globals, /\.waldo-hero-stage\[data-scene-active="false"\][\s\S]*animation-play-state:\s*paused/);
+  assert.match(globals, /\.waldo-proof-scene\s*\{[^}]*contain:\s*layout paint style/s);
 });
 
 test("root route renders the redesigned homepage shell", () => {
@@ -377,7 +379,14 @@ test("features health cards render as vertical viewport sections without carouse
 
   assert.match(section, /waldo-health-vertical-stack/);
   assert.match(section, /waldo-health-vertical-card/);
+  assert.match(section, /shouldRenderContent/);
+  assert.match(section, /imageLoadProps/);
+  assert.match(section, /preload:\s*true/);
+  assert.match(section, /data-render-mode=\{index < 2 \? "warm" : "deferred"\}/);
+  assert.match(section, /waldo-health-frame-placeholder/);
   assert.match(section, /min-h-\[82svh\]/);
+  assert.doesNotMatch(section, /data-animate="stagger"/);
+  assert.doesNotMatch(section, /data-stagger-item/);
   assert.doesNotMatch(section, /trackRef/);
   assert.doesNotMatch(section, /waldo-carousel-controls/);
   assert.doesNotMatch(section, /PlayPauseIcon/);
@@ -390,6 +399,8 @@ test("features health cards render as vertical viewport sections without carouse
   assert.match(globals, /\.waldo-health-vertical-stack\s*\{[^}]*gap:\s*clamp\(0\.75rem,\s*2vw,\s*1\.75rem\)/s);
   assert.match(globals, /\.waldo-health-vertical-stack\s*\{[^}]*padding-bottom:\s*clamp\(6rem,\s*18svh,\s*12rem\)/s);
   assert.match(globals, /\.waldo-health-vertical-card\s*\{[^}]*padding-block:\s*clamp\(0\.5rem,\s*2svh,\s*1\.5rem\)/s);
+  assert.match(globals, /\.waldo-health-vertical-card\s*\{[^}]*contain:\s*layout paint style/s);
+  assert.match(globals, /\.waldo-health-vertical-card\[data-render-mode="deferred"\]\s*\{[^}]*content-visibility:\s*auto/s);
 });
 
 test("features health cards use centered masked heading and active-card reveal without scroll hijacking", () => {
@@ -414,8 +425,29 @@ test("features health cards use centered masked heading and active-card reveal w
   assert.doesNotMatch(globals, /\.waldo-health-heading-block\s*\{[^}]*position:\s*sticky/s);
   assert.match(globals, /\.waldo-health-heading-mask\s*\{[^}]*overflow:\s*hidden/s);
   assert.doesNotMatch(globals, /waldo-health-active-chapter/);
-  assert.match(globals, /\.waldo-health-vertical-card\s+\.waldo-health-frame-card\s*\{[^}]*filter:\s*blur\(10px\)/s);
-  assert.match(globals, /\.waldo-health-vertical-card\[data-active="true"\]\s+\.waldo-health-frame-card\s*\{[^}]*filter:\s*none/s);
+
+  const healthFrameRule = globals.slice(
+    globals.indexOf(".waldo-health-vertical-card .waldo-health-frame-card"),
+    globals.indexOf(".waldo-health-vertical-card[data-active=\"true\"] .waldo-health-frame-card"),
+  );
+  const activeHealthFrameRule = globals.slice(
+    globals.indexOf(".waldo-health-vertical-card[data-active=\"true\"] .waldo-health-frame-card"),
+    globals.indexOf(".waldo-faq-icon"),
+  );
+  const visualEnter = globals.slice(
+    globals.indexOf("@keyframes waldo-card-visual-enter"),
+    globals.indexOf("@keyframes waldo-card-backdrop-recede"),
+  );
+  const healthPillRule = globals.slice(
+    globals.indexOf(".waldo-panel-pill {"),
+    globals.indexOf(".waldo-panel-pill[data-state=\"closed\"]"),
+  );
+
+  assert.doesNotMatch(healthFrameRule, /filter:/);
+  assert.doesNotMatch(healthFrameRule, /will-change:[^;]*filter/);
+  assert.doesNotMatch(activeHealthFrameRule, /filter:/);
+  assert.doesNotMatch(visualEnter, /filter:/);
+  assert.doesNotMatch(healthPillRule, /backdrop-filter/);
 });
 
 test("death of chatbox motion follows premium interaction standards", () => {
