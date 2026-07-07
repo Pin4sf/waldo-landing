@@ -1769,108 +1769,6 @@ body {
   display: none;
 }
 
-.waldo-hero-gradient-field {
-  contain: layout paint style;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-  position: absolute;
-  transition: opacity 180ms var(--ease-out-strong);
-  z-index: 4;
-  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 10%, #000 84%, transparent 100%);
-  mask-image: linear-gradient(180deg, transparent 0%, #000 10%, #000 84%, transparent 100%);
-}
-
-.waldo-hero-gradient-flow,
-.waldo-hero-gradient-boost {
-  inset: -10% -12% -14%;
-  position: absolute;
-  transform-origin: 50% 50%;
-  will-change: transform;
-}
-
-.waldo-hero-gradient-flow {
-  animation: waldo-hero-shader-flow 20s ease-in-out infinite alternate;
-}
-
-.waldo-hero-gradient-boost {
-  animation: waldo-hero-shader-breathe 11s ease-in-out infinite alternate;
-}
-
-.waldo-hero-gradient-boost::before {
-  background:
-    linear-gradient(104deg, transparent 8%, rgba(35, 136, 255, 0.12) 24%, rgba(255, 229, 138, 0.28) 46%, rgba(251, 148, 63, 0.2) 60%, rgba(124, 58, 237, 0.12) 76%, transparent 94%);
-  content: "";
-  filter: blur(30px);
-  height: 44%;
-  left: -8%;
-  opacity: 0.34;
-  position: absolute;
-  top: 34%;
-  transform: translate3d(-4%, 2%, 0) rotate(-3deg) scale(1);
-  transition:
-    opacity 560ms var(--ease-premium),
-    transform 560ms var(--ease-premium);
-  width: 118%;
-  will-change: opacity, transform;
-}
-
-.waldo-hero-gradient-mesh {
-  border-radius: 9999px;
-  display: block;
-  filter: blur(38px) saturate(1.04);
-  position: absolute;
-  will-change: transform, opacity;
-}
-
-.waldo-hero-gradient-mesh-a {
-  background:
-    radial-gradient(ellipse at 34% 42%, rgba(35, 136, 255, 0.34) 0%, rgba(35, 136, 255, 0.18) 36%, transparent 68%),
-    radial-gradient(ellipse at 72% 58%, rgba(104, 212, 226, 0.22) 0%, transparent 62%);
-  height: 52%;
-  left: -18%;
-  opacity: 0.52;
-  top: 5%;
-  width: 72%;
-  animation: waldo-hero-mesh-a 17s ease-in-out infinite alternate;
-}
-
-.waldo-hero-gradient-mesh-b {
-  background:
-    radial-gradient(ellipse at 52% 48%, rgba(255, 229, 138, 0.62) 0%, rgba(255, 229, 138, 0.3) 38%, transparent 72%),
-    radial-gradient(ellipse at 72% 42%, rgba(251, 148, 63, 0.34) 0%, transparent 64%);
-  height: 56%;
-  opacity: 0.72;
-  right: -10%;
-  top: 10%;
-  width: 78%;
-  animation: waldo-hero-mesh-b 18s ease-in-out infinite alternate;
-}
-
-.waldo-hero-gradient-mesh-c {
-  background:
-    radial-gradient(ellipse at 38% 42%, rgba(251, 148, 63, 0.22) 0%, transparent 58%),
-    radial-gradient(ellipse at 70% 60%, rgba(124, 58, 237, 0.16) 0%, transparent 58%);
-  height: 48%;
-  left: 18%;
-  opacity: 0.52;
-  top: 38%;
-  width: 76%;
-  animation: waldo-hero-mesh-c 16s ease-in-out infinite alternate;
-}
-
-.waldo-hero-gradient-mesh-d {
-  background:
-    radial-gradient(ellipse at 50% 50%, rgba(250, 250, 248, 0.88) 0%, rgba(250, 250, 248, 0.42) 42%, transparent 74%),
-    radial-gradient(ellipse at 36% 62%, rgba(35, 136, 255, 0.2) 0%, transparent 68%);
-  bottom: -12%;
-  height: 48%;
-  opacity: 0.72;
-  right: 2%;
-  width: 66%;
-  animation: waldo-hero-mesh-d 19s ease-in-out infinite alternate;
-}
-
 .waldo-signal-path {
   display: none;
   height: 100%;
@@ -2293,23 +2191,6 @@ body {
   animation: waldo-card-type-throb 1040ms ease-in-out infinite alternate;
 }
 
-.waldo-hero-transition-cue .waldo-hero-gradient-flow {
-  animation-duration: 5.8s;
-}
-
-.waldo-hero-transition-cue .waldo-hero-gradient-boost {
-  animation-duration: 4.2s;
-}
-
-.waldo-hero-transition-cue .waldo-hero-gradient-boost::before {
-  opacity: 0.6;
-  transform: translate3d(6%, -4%, 0) rotate(-5deg) scale(1.08);
-}
-
-.waldo-hero-stage[data-scene-active="false"] .waldo-hero-gradient-flow,
-.waldo-hero-stage[data-scene-active="false"] .waldo-hero-gradient-boost,
-.waldo-hero-stage[data-scene-active="false"] .waldo-hero-gradient-boost::before,
-.waldo-hero-stage[data-scene-active="false"] .waldo-hero-gradient-mesh,
 .waldo-hero-stage[data-scene-active="false"] .waldo-proof-inputs,
 .waldo-hero-stage[data-scene-active="false"] .waldo-proof-reads,
 .waldo-hero-stage[data-scene-active="false"] .waldo-proof-outputs,
@@ -2319,7 +2200,6 @@ body {
   animation-play-state: paused;
 }
 
-.waldo-hero-stage[data-scene-active="false"] .waldo-hero-gradient-field,
 .waldo-hero-stage[data-scene-active="false"] .waldo-proof-scene,
 .waldo-hero-stage[data-scene-active="false"] .waldo-signal-path,
 #hero:has(.waldo-hero-stage[data-scene-active="false"]) .hero-dome-image {
@@ -2328,7 +2208,6 @@ body {
   will-change: auto;
 }
 
-.waldo-hero-stage[data-scene-active="true"] .waldo-hero-gradient-field,
 .waldo-hero-stage[data-scene-active="true"] .waldo-proof-scene {
   visibility: visible;
 }
@@ -2496,44 +2375,6 @@ body {
   }
 }
 
-@keyframes waldo-hero-shader-flow {
-  from {
-    transform: translate3d(calc(var(--hero-drift-far-x) - 28px), calc(var(--hero-drift-far-y) - 12px), 0) rotate(-1.4deg) scale(1.02);
-  }
-  to {
-    transform: translate3d(calc(var(--hero-drift-far-x) + 34px), calc(var(--hero-drift-far-y) + 10px), 0) rotate(1.2deg) scale(1.055);
-  }
-}
-
-@keyframes waldo-hero-shader-breathe {
-  from {
-    transform: translate3d(-18px, -6px, 0) scaleX(1);
-  }
-  to {
-    transform: translate3d(22px, 8px, 0) scaleX(1.035);
-  }
-}
-
-@keyframes waldo-hero-mesh-a {
-  from { transform: translate3d(-2%, -3%, 0) scale(1); opacity: 0.48; }
-  to   { transform: translate3d(6%, 5%, 0) scale(1.08); opacity: 0.58; }
-}
-
-@keyframes waldo-hero-mesh-b {
-  from { transform: translate3d(4%, -2%, 0) scale(1.02); opacity: 0.66; }
-  to   { transform: translate3d(-5%, 5%, 0) scale(1.1); opacity: 0.78; }
-}
-
-@keyframes waldo-hero-mesh-c {
-  from { transform: translate3d(-4%, 5%, 0) scale(0.98); opacity: 0.48; }
-  to   { transform: translate3d(5%, -3%, 0) scale(1.06); opacity: 0.6; }
-}
-
-@keyframes waldo-hero-mesh-d {
-  from { transform: translate3d(4%, 2%, 0) scale(1); opacity: 0.64; }
-  to   { transform: translate3d(-4%, -5%, 0) scale(1.08); opacity: 0.78; }
-}
-
 @keyframes waldo-hero-grain-drift {
   0%, 100% {
     transform: translate3d(-1%, -1%, 0);
@@ -2697,10 +2538,6 @@ body {
   .waldo-hero-shader-ring,
   .waldo-hero-shader-sheen,
   .waldo-hero-shader-grain,
-  .waldo-hero-gradient-flow,
-  .waldo-hero-gradient-boost,
-  .waldo-hero-gradient-boost::before,
-  .waldo-hero-gradient-mesh,
   .waldo-proof-card::after,
   .waldo-proof-value,
   .waldo-proof-card .type-label,
@@ -2721,8 +2558,6 @@ body {
   .waldo-hero-shader-ring,
   .waldo-hero-shader-sheen,
   .waldo-hero-shader-grain,
-  .waldo-hero-gradient-flow,
-  .waldo-hero-gradient-boost,
   .waldo-proof-group,
   .waldo-phone-core {
     rotate: 0deg;

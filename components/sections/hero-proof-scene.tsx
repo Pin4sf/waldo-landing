@@ -221,16 +221,6 @@ export function HeroProofScene({ children, states }: HeroProofSceneProps) {
         <span className="waldo-hero-shader-sheen" />
         <span className="waldo-hero-shader-grain" />
       </div>
-      <div className="waldo-hero-gradient-field" aria-hidden="true">
-        <div className="waldo-hero-gradient-flow">
-          <div className="waldo-hero-gradient-boost">
-            <span className="waldo-hero-gradient-mesh waldo-hero-gradient-mesh-a" />
-            <span className="waldo-hero-gradient-mesh waldo-hero-gradient-mesh-b" />
-            <span className="waldo-hero-gradient-mesh waldo-hero-gradient-mesh-c" />
-            <span className="waldo-hero-gradient-mesh waldo-hero-gradient-mesh-d" />
-          </div>
-        </div>
-      </div>
       <svg className="waldo-signal-path" viewBox="0 0 1200 760" aria-hidden="true">
         <path d="M210 220 C 350 230, 450 290, 545 360" />
         <path d="M265 520 C 380 470, 455 430, 548 382" />

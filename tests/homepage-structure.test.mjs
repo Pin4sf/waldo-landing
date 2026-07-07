@@ -50,29 +50,24 @@ test("feature hero keeps proof motion without per-frame React or filter-heavy cu
   assert.doesNotMatch(scene, /setProgress/);
   assert.doesNotMatch(scene, /progressRef/);
   assert.doesNotMatch(scene, /requestAnimationFrame/);
+  assert.doesNotMatch(scene, /waldo-hero-gradient-field/);
+  assert.doesNotMatch(scene, /waldo-hero-gradient-flow/);
+  assert.doesNotMatch(scene, /waldo-hero-gradient-mesh/);
   assert.doesNotMatch(scene, /waldo-hero-gradient-grain/);
 
-  const boostRule = globals.slice(
-    globals.indexOf(".waldo-hero-gradient-boost::before"),
-    globals.indexOf(".waldo-hero-gradient-mesh"),
-  );
-  const meshRule = globals.slice(
-    globals.indexOf(".waldo-hero-gradient-mesh {"),
-    globals.indexOf(".waldo-hero-gradient-mesh-a"),
-  );
   const cueRules = globals.slice(
-    globals.indexOf(".waldo-hero-transition-cue .waldo-hero-gradient-flow"),
+    globals.indexOf(".waldo-hero-transition-cue .hero-floating-card"),
     globals.indexOf(".waldo-proof-card .type-aside"),
   );
 
-  assert.match(boostRule, /filter:\s*blur\(30px\)/);
-  assert.doesNotMatch(boostRule, /transition:[^}]*filter/s);
-  assert.doesNotMatch(boostRule, /will-change:[^;]*filter/);
-  assert.match(meshRule, /filter:\s*blur\(38px\)\s+saturate\(1\.04\)/);
-  assert.doesNotMatch(meshRule, /will-change:[^;]*filter/);
+  assert.doesNotMatch(globals, /waldo-hero-gradient-field/);
+  assert.doesNotMatch(globals, /waldo-hero-gradient-flow/);
+  assert.doesNotMatch(globals, /waldo-hero-gradient-boost/);
+  assert.doesNotMatch(globals, /waldo-hero-gradient-mesh/);
+  assert.doesNotMatch(globals, /@keyframes waldo-hero-shader-flow/);
+  assert.doesNotMatch(globals, /@keyframes waldo-hero-mesh/);
   assert.doesNotMatch(cueRules, /filter:/);
   assert.match(globals, /\.waldo-hero-stage\[data-scene-active="false"\][\s\S]*animation-play-state:\s*paused/);
-  assert.match(globals, /\.waldo-hero-stage\[data-scene-active="false"\] \.waldo-hero-gradient-field,[\s\S]*visibility:\s*hidden/);
   assert.match(globals, /\.waldo-proof-scene\s*\{[^}]*contain:\s*layout paint style/s);
 });
 
