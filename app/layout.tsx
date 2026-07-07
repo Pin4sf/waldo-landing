@@ -1,28 +1,33 @@
 import type { Metadata } from "next";
 import { AssetProtection } from "@/components/asset-protection";
 import { mottle, sfProRounded } from "@/lib/fonts";
+import {
+  BRAND_POSITIONING,
+  HAPPY_WALDO_IMAGE_URL,
+  LOGO_IMAGE_URL,
+  OG_DESCRIPTION,
+  OG_IMAGE_URL,
+  SITE_DESCRIPTION,
+  SITE_KEYWORDS,
+  SITE_NAME,
+  SITE_TITLE,
+  SITE_URL,
+} from "@/lib/site-metadata";
 import { SunflowerCursor } from "@/components/sunflower-cursor";
 import "./globals.css";
-
-const SITE_URL = "https://heywaldo.in";
-// Absolute OG image URL — required for WhatsApp, Telegram, LinkedIn, iMessage, Slack
-const OG_IMAGE_URL = `${SITE_URL}/opengraph-image`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
 
-  // Browser tab + Google headline (~60 chars)
-  title: "Waldo — Already on it.",
+  applicationName: SITE_NAME,
+  title: {
+    default: SITE_TITLE,
+    template: `%s | ${SITE_NAME}`,
+  },
 
-  // Google snippet + fallback description (~155 chars)
-  description:
-    "Waldo reads your wearable, understands what last night means for today, then moves the parts of your day that should move.",
+  description: SITE_DESCRIPTION,
 
-  keywords: [
-    "wearable data", "Apple Watch", "WHOOP integration",
-    "HRV monitoring", "sleep signals", "calendar protection",
-    "personal agent", "recovery signals", "stress detection",
-  ],
+  keywords: SITE_KEYWORDS,
 
   alternates: { canonical: SITE_URL },
 
@@ -32,14 +37,11 @@ export const metadata: Metadata = {
     apple: "/logodots.svg",
   },
 
-  // ── Open Graph — used by WhatsApp, LinkedIn, Slack, iMessage, Telegram, Facebook ──
   openGraph: {
-    title: "Waldo — Already on it.",
-    // Hook for social shares — seen under the headline on link previews
-    description:
-      "Your wearable has been collecting HRV, sleep, and stress data every night. Waldo reads all of it and moves the day before you have to.",
+    title: SITE_TITLE,
+    description: OG_DESCRIPTION,
     url: SITE_URL,
-    siteName: "Waldo",
+    siteName: SITE_NAME,
     type: "website",
     locale: "en_US",
     images: [
@@ -47,27 +49,22 @@ export const metadata: Metadata = {
         url: OG_IMAGE_URL,
         width: 1200,
         height: 630,
-        alt: "Waldo reads wearable data and handles the day before it gets heavy",
+        alt: "Happy Waldo beside the action layer for the human day",
         type: "image/png",
       },
     ],
   },
 
-  // ── Twitter / X Card — summary_large_image shows the full banner ──
   twitter: {
     card: "summary_large_image",
-    title: "Waldo — Already on it.",
-    // Twitter descriptions can be punchier / shorter
-    description:
-      "HRV dipped. Sleep was short. Meeting load is high. Waldo already moved your 9am and blocked your afternoon. You didn't ask. Already on it.",
+    title: SITE_TITLE,
+    description: OG_DESCRIPTION,
     images: [
       {
         url: OG_IMAGE_URL,
-        alt: "Waldo — Already on it",
+        alt: "Happy Waldo beside the action layer for the human day",
       },
     ],
-    creator: "@heywaldo",
-    site: "@heywaldo",
   },
 
   robots: {
@@ -76,8 +73,16 @@ export const metadata: Metadata = {
     googleBot: { index: true, follow: true, noimageindex: false },
   },
 
-  authors: [{ name: "Waldo", url: SITE_URL }],
+  authors: [{ name: SITE_NAME, url: SITE_URL }],
+  creator: SITE_NAME,
+  publisher: SITE_NAME,
   category: "Software",
+  referrer: "strict-origin-when-cross-origin",
+  formatDetection: {
+    telephone: false,
+    address: false,
+    email: false,
+  },
 };
 
 const jsonLd = {
@@ -86,26 +91,45 @@ const jsonLd = {
     {
       "@type": "Organization",
       "@id": `${SITE_URL}/#organization`,
-      name: "Waldo",
+      name: SITE_NAME,
       url: SITE_URL,
-      logo: { "@type": "ImageObject", url: `${SITE_URL}/logo.svg` },
-      description:
-        "Waldo reads wearable data and handles the day before it gets heavy.",
-      sameAs: ["https://twitter.com/heywaldo"],
+      logo: { "@type": "ImageObject", url: LOGO_IMAGE_URL },
+      image: { "@type": "ImageObject", url: HAPPY_WALDO_IMAGE_URL },
+      description: BRAND_POSITIONING,
     },
     {
       "@type": "WebSite",
       "@id": `${SITE_URL}/#website`,
       url: SITE_URL,
-      name: "Waldo",
-      description: "A personal agent built around wearable data.",
+      name: SITE_NAME,
+      description: SITE_DESCRIPTION,
+      inLanguage: "en-US",
+      publisher: { "@id": `${SITE_URL}/#organization` },
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": `${SITE_URL}/#software`,
+      name: SITE_NAME,
+      applicationCategory: "Personal agent",
+      operatingSystem: "iOS, web",
+      description: BRAND_POSITIONING,
+      image: HAPPY_WALDO_IMAGE_URL,
+      url: SITE_URL,
+      featureList: [
+        "Reads body signals alongside calendar, task, communication, learning, and memory context",
+        "Helps decide what moves, what stays, and what gets protected",
+        "Turns repeated daily signals into patterns over time",
+      ],
     },
     {
       "@type": "WebPage",
       "@id": `${SITE_URL}/#webpage`,
       url: SITE_URL,
-      name: "Waldo — Already on it",
+      name: SITE_TITLE,
       isPartOf: { "@id": `${SITE_URL}/#website` },
+      about: { "@id": `${SITE_URL}/#software` },
+      primaryImageOfPage: { "@type": "ImageObject", url: OG_IMAGE_URL },
+      description: SITE_DESCRIPTION,
       inLanguage: "en-US",
     },
   ],
