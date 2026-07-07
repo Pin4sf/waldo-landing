@@ -86,6 +86,44 @@ test("new homepage keeps the Figma hero copy and deployed footer scene", () => {
   assert.doesNotMatch(homePage, /new-home-footer-art/);
 });
 
+test("site metadata reflects current Waldo positioning and happy dog imagery", () => {
+  const siteMetadata = read("lib/site-metadata.ts");
+  const layout = read("app/layout.tsx");
+  const homePage = read("app/page.tsx");
+  const featuresPage = read("app/features/page.tsx");
+  const waitlistPage = read("app/waitlist/page.tsx");
+  const ogImage = read("app/opengraph-image.tsx");
+  const sitemap = read("app/sitemap.ts");
+  const robots = read("app/robots.ts");
+
+  assert.match(siteMetadata, /Action layer for the human day/);
+  assert.match(siteMetadata, /closes the daily workflow loop/);
+  assert.match(siteMetadata, /what moves, what stays, what gets protected/);
+  assert.match(siteMetadata, /good-week-dark-mode\.svg/);
+  assert.match(siteMetadata, /LAST_CONTENT_UPDATE/);
+
+  assert.match(layout, /SITE_TITLE/);
+  assert.match(layout, /SoftwareApplication/);
+  assert.match(layout, /HAPPY_WALDO_IMAGE_URL/);
+  assert.match(layout, /featureList/);
+  assert.match(layout, /formatDetection/);
+  assert.doesNotMatch(layout, /Waldo — Already on it\./);
+  assert.doesNotMatch(layout, /twitter\.com\/heywaldo/);
+
+  assert.match(homePage, /export const metadata/);
+  assert.match(featuresPage, /FEATURES_DESCRIPTION/);
+  assert.match(featuresPage, /what moves, what stays, and what gets protected/);
+  assert.match(waitlistPage, /WAITLIST_DESCRIPTION/);
+  assert.match(waitlistPage, /Let Waldo in/);
+
+  assert.match(ogImage, /Happy Waldo beside the action layer for the human day/);
+  assert.match(ogImage, /HAPPY_WALDO_IMAGE_PATH/);
+  assert.match(ogImage, /Action layer/);
+  assert.match(ogImage, /human day/);
+  assert.match(sitemap, /LAST_CONTENT_UPDATE/);
+  assert.match(robots, /SITE_URL/);
+});
+
 test("new homepage moves FAQ above the closing footer CTA", () => {
   const homePage = read("components/home/new-home-page.tsx");
 

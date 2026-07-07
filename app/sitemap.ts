@@ -1,22 +1,25 @@
 import type { MetadataRoute } from "next";
+import { LAST_CONTENT_UPDATE, SITE_URL } from "@/lib/site-metadata";
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  const lastModified = new Date(LAST_CONTENT_UPDATE);
+
   return [
     {
-      url: "https://heywaldo.in",
-      lastModified: new Date(),
+      url: SITE_URL,
+      lastModified,
       changeFrequency: "weekly",
       priority: 1,
     },
     {
-      url: "https://heywaldo.in/waitlist",
-      lastModified: new Date(),
+      url: `${SITE_URL}/waitlist`,
+      lastModified,
       changeFrequency: "daily",
       priority: 0.9,
     },
     {
-      url: "https://heywaldo.in/features",
-      lastModified: new Date(),
+      url: `${SITE_URL}/features`,
+      lastModified,
       changeFrequency: "weekly",
       priority: 0.8,
     },
