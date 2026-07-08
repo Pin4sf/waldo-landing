@@ -5,8 +5,14 @@ import { useState, useRef, useCallback } from "react";
 import { NavLink } from "./nav-link";
 import { WaldoLogoFull } from "./waldo-logo-full";
 
-const links = [
-  { label: "Features", tooltip: "not yet. but waldo already knows you clicked this." },
+type HeaderLink = {
+  label: string;
+  tooltip: string;
+  href?: string;
+};
+
+const links: HeaderLink[] = [
+  { label: "Features", href: "/features", tooltip: "Explore the full tour of Waldo." },
   { label: "Pricing", tooltip: "free to find out. when we're ready." },
   { label: "Blog", tooltip: "waldo's been busy. so have we." },
   { label: "Sign in", tooltip: "you're early. that's actually a good sign." },
@@ -15,14 +21,33 @@ const links = [
 function MobileNavItem({
   label,
   tooltip,
+  href,
   open,
   onTap,
 }: {
   label: string;
   tooltip: string;
+  href?: string;
   open: boolean;
   onTap: () => void;
 }) {
+  if (href) {
+    return (
+      <Link
+        href={href}
+        onClick={onTap}
+        className="flex w-full flex-col gap-1 rounded-xl px-4 py-3 text-left transition-colors hover:bg-black/[0.02]"
+      >
+        <span className="type-caption text-[var(--text-tertiary)]">{label}</span>
+        {open ? (
+          <span className="type-caption italic text-[var(--text-secondary)]" style={{ animation: "float-up 180ms var(--ease-premium) both" }}>
+            {tooltip}
+          </span>
+        ) : null}
+      </Link>
+    );
+  }
+
   return (
     <button
       type="button"
@@ -106,6 +131,7 @@ export function Navbar({
               key={l.label}
               label={l.label}
               tooltip={l.tooltip}
+              href={l.href}
               align={l.label === "Sign in" ? "right" : "center"}
             />
           ))}
@@ -133,7 +159,7 @@ export function Navbar({
           href="/waitlist"
           className="focusable-ring type-label hidden h-12 items-center justify-center rounded-full bg-[var(--ink)] px-5 text-[var(--surface-t2)] transition-[transform,background-color] duration-300 ease-[var(--ease-premium)] hover:-translate-y-px hover:bg-[var(--dark-t1)] active:scale-[0.98] sm:px-6 lg:flex"
         >
-          Get early access
+          Let Waldo in →
         </Link>
       </div>
 
@@ -153,8 +179,12 @@ export function Navbar({
                 <MobileNavItem
                   label={l.label}
                   tooltip={l.tooltip}
+                  href={l.href}
                   open={activeItem === l.label}
-                  onTap={() => toggleItem(l.label)}
+                  onTap={() => {
+                    if (l.href) closeMenu();
+                    else toggleItem(l.label);
+                  }}
                 />
                 {index < links.length - 1 ? <div className="mx-4 h-px bg-black/[0.05]" /> : null}
               </div>
@@ -165,7 +195,7 @@ export function Navbar({
                 onClick={closeMenu}
                 className="focusable-ring type-label flex h-12 w-full items-center justify-center rounded-[18px] bg-[var(--ink)] px-5 text-[var(--surface-t2)] transition-[transform,background-color] duration-300 ease-[var(--ease-premium)] hover:bg-[var(--dark-t1)] active:scale-[0.98]"
               >
-                Get early access
+                Let Waldo in →
               </Link>
             </div>
           </div>

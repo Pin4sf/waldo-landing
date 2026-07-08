@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import sectionTwoAsset from "@/components/assets/section-2.png";
+import sectionTwoAsset from "@/components/assets/section-2.webp";
 
 export function HealthDataSection() {
   return (
@@ -8,7 +8,7 @@ export function HealthDataSection() {
       id="problem"
       className="section-shell scroll-mt-28 overflow-hidden rounded-[44px] border border-[var(--border-default)] bg-[var(--surface-t2)] p-3"
     >
-      <div className="flex min-h-[620px] flex-col items-center overflow-hidden rounded-[32px] border border-[var(--border-default)] bg-[var(--surface-t1)] px-5 pt-14 pb-12 text-center sm:min-h-[720px] sm:px-10 sm:pt-24 sm:pb-16 lg:min-h-[760px] lg:px-16 lg:pt-28">
+      <div className="flex min-h-[620px] flex-col items-center overflow-hidden rounded-[32px] border border-[var(--border-default)] bg-[var(--surface-t1)] px-5 pt-14 pb-0 text-center sm:min-h-[720px] sm:px-10 sm:pt-24 lg:min-h-[760px] lg:px-16 lg:pt-28">
         <div className="mx-auto flex max-w-[760px] flex-col items-center" data-animate="blur-fade">
           <p className="type-aside tone-tertiary">You already have everything Waldo needs.</p>
 

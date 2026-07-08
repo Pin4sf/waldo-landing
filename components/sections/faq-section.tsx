@@ -73,19 +73,19 @@ export function FaqSection() {
               className="border-b border-[var(--border-default)]"
             >
               <Accordion.Header>
-                <Accordion.Trigger className="group focusable-ring flex w-full items-center justify-between gap-6 rounded-[12px] px-1 py-6 text-left sm:py-7">
+                <Accordion.Trigger className="waldo-faq-trigger group focusable-ring flex w-full items-center justify-between gap-6 rounded-[12px] px-1 py-6 text-left sm:py-7">
                   <span className="type-h3 text-[var(--ink)]">{item.q}</span>
                   <span
                     aria-hidden
-                    className="shrink-0 text-[var(--ink)] transition-transform duration-[260ms] ease-[var(--ease-premium)] group-data-[state=open]:rotate-45"
+                    className="waldo-faq-icon shrink-0 text-[var(--ink)]"
                     style={{ fontSize: "1.4rem", lineHeight: 1 }}
                   >
                     +
                   </span>
                 </Accordion.Trigger>
               </Accordion.Header>
-              <Accordion.Content className="grid overflow-hidden transition-[grid-template-rows,opacity] duration-300 ease-[var(--ease-premium)] data-[state=closed]:grid-rows-[0fr] data-[state=closed]:opacity-0 data-[state=open]:grid-rows-[1fr] data-[state=open]:opacity-100">
-                <div className="overflow-hidden">
+              <Accordion.Content className="waldo-faq-content">
+                <div className="waldo-faq-content-inner">
                   <p className="type-body tone-secondary max-w-[72ch] px-1 pb-6">{withHighlights(item.a)}</p>
                 </div>
               </Accordion.Content>

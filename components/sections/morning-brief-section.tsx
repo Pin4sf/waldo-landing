@@ -1,297 +1,710 @@
-import Image, { type StaticImageData } from "next/image";
-import type { CSSProperties } from "react";
+import Image from "next/image";
+import type { CSSProperties, ReactNode } from "react";
 
 import { WaldoFace } from "./waldo-face";
+import { SmartSectionActivity } from "./smart-section-activity";
 
-import { withHighlights } from "@/components/landing-primitives";
+import phoneMockup from "@/components/assets/iphone-mockup.webp";
 
-import notificationGmail from "@/components/assets/Frame 1000007147.png";
-import notificationGmailWork from "@/components/assets/Frame 1000007149.png";
-import notificationMessage from "@/components/assets/Frame 1000007145.png";
-import notificationSlack from "@/components/assets/Frame 1000007144.png";
-import notificationSlackWork from "@/components/assets/Frame 1000007138.png";
-import phoneMockup from "@/components/assets/iphone-mockup.png";
-import recoveryCard from "@/components/assets/Frame 1000007158-1.png";
-import sleepChart from "@/components/assets/Frame 1000007156.png";
-import sleepDuration from "@/components/assets/Frame 1000007150.png";
-import sleepScore from "@/components/assets/Frame 1000007151.png";
-import sleepStage from "@/components/assets/Frame 1000007152.png";
-import stressGauge from "@/components/assets/Frame 1000007157.png";
-import stressLine from "@/components/assets/Frame 1000007158.png";
-import vitalsCard from "@/components/assets/Frame 1000007153.png";
-import zoneOne from "@/components/assets/Frame 1000007163.png";
-import zoneThree from "@/components/assets/Frame 1000007161.png";
-import zoneTwo from "@/components/assets/Frame 1000007162.png";
-
-type SourceCard = {
-  asset: StaticImageData;
-  className: string;
+type FlowStyle = CSSProperties & {
+  "--card-width"?: string;
+  "--flow-delay"?: string;
+  "--flow-y"?: string;
+  "--flow-drift"?: string;
+  "--flow-rotate"?: string;
+  "--flow-scale"?: string;
+  "--receipt-delay"?: string;
 };
 
-type Insight = {
-  tone: "recovery" | "pressure" | "stress" | "form" | "pattern";
-  tags: string[];
-  message: string;
+type SourceCardBase = {
+  width: string;
+  y: string;
+  delay: string;
+  drift?: string;
+  rotate?: string;
+  scale?: string;
+};
+
+type SourceAssetCard = SourceCardBase & {
+  kind?: "asset";
+  src: string;
+  alt: string;
+  naturalWidth: number;
+  naturalHeight: number;
+};
+
+type SourceConnectorCard = SourceCardBase & {
+  kind: "connector";
+  label: string;
+  icon: string;
+  tone: string;
+};
+
+type SourceCard = SourceAssetCard | SourceConnectorCard;
+
+type ProcessedCard = {
+  tone: "sleep" | "inbox" | "calendar" | "nutrition" | "stress" | "recovery";
+  eyebrow: string;
+  label: string;
+  body: ReactNode;
   aside: string;
   connectors: Array<{
     label: string;
     src?: string;
   }>;
+  delay: string;
 };
 
-type FlowScenario = {
-  name: string;
-  sources: SourceCard[];
-  insight: Insight;
-};
-
-const scenarios: FlowScenario[] = [
+const sourceCards: SourceAssetCard[] = [
   {
-    name: "Sleep",
-    sources: [
-      { asset: sleepScore, className: "left-[2%] top-[25%] w-[300px]" },
-      { asset: sleepDuration, className: "left-[8%] top-[9%] w-[300px]" },
-      { asset: sleepChart, className: "left-[16%] top-[54%] w-[330px]" },
-      { asset: sleepStage, className: "left-[2%] top-[49%] w-[170px]" },
-      { asset: vitalsCard, className: "left-[25%] top-[23%] w-[170px]" },
-    ],
-    insight: {
-      tone: "recovery",
-      tags: ["Sleep", "Recovery", "Calendar"],
-      message:
-        "6 hours 12. Late bedtime pulled your *Recovery to 63*. Pushed the 9am product strategy review to 10:30. You need the extra hour more than they need punctuality.",
-      aside: "already moved.",
-      connectors: [
-        { label: "Google Calendar", src: "/assets/composio-connectors/googlecalendar.svg" },
-        { label: "Gmail", src: "/assets/composio-connectors/gmail.svg" },
-        { label: "More" },
-      ],
-    },
+    src: "/figma-assets/waldo-smart-flow/slack-sales-review.webp",
+    alt: "Slack sales review message card.",
+    naturalWidth: 614,
+    naturalHeight: 312,
+    width: "300px",
+    y: "284px",
+    delay: "-35.2s",
+    drift: "-10px",
+    rotate: "-1.4deg",
   },
   {
-    name: "Signal pressure",
-    sources: [
-      { asset: notificationSlack, className: "left-[2%] top-[12%] w-[320px]" },
-      { asset: notificationGmail, className: "left-[19%] top-[28%] w-[320px]" },
-      { asset: notificationSlackWork, className: "left-[8%] top-[52%] w-[320px]" },
-      { asset: notificationGmailWork, className: "left-[28%] top-[5%] w-[320px]" },
-      { asset: notificationMessage, className: "left-[1%] top-[36%] w-[320px]" },
-    ],
-    insight: {
-      tone: "pressure",
-      tags: ["Slack", "Gmail", "Signal Pressure"],
-      message:
-        "104 newsletter emails archived. Two Slack threads came in after midnight. Surfaced the Q1 deck thread, batched the rest. You have *2 things that actually need you* this morning, not 108.",
-      aside: "inbox: handled.",
-      connectors: [
-        { label: "Slack", src: "/assets/composio-connectors/slack.svg" },
-        { label: "Gmail", src: "/assets/composio-connectors/gmail.svg" },
-        { label: "Google Calendar", src: "/assets/composio-connectors/googlecalendar.svg" },
-      ],
-    },
+    src: "/figma-assets/waldo-smart-flow/sleep-duration.webp",
+    alt: "Time asleep summary card.",
+    naturalWidth: 636,
+    naturalHeight: 319,
+    width: "310px",
+    y: "260px",
+    delay: "-33.6s",
+    drift: "8px",
+    rotate: "1deg",
+    scale: "0.96",
   },
   {
-    name: "Stress",
-    sources: [
-      { asset: stressLine, className: "left-[4%] top-[30%] w-[340px]" },
-      { asset: stressGauge, className: "left-[24%] top-[11%] w-[180px]" },
-      { asset: zoneThree, className: "left-[2%] top-[12%] w-[170px]" },
-      { asset: zoneTwo, className: "left-[31%] top-[56%] w-[170px]" },
-      { asset: vitalsCard, className: "left-[7%] top-[58%] w-[170px]" },
-    ],
-    insight: {
-      tone: "stress",
-      tags: ["Stress", "Calendar", "Motion"],
-      message:
-        "Stress is sitting at medium and your morning has 3 meetings stacked. *Blocked 1-2pm for recovery*. If the 11:30 runs long, I'll pull it at the 45-minute mark.",
-      aside: "afternoon: protected.",
-      connectors: [
-        { label: "Google Calendar", src: "/assets/composio-connectors/googlecalendar.svg" },
-        { label: "Slack", src: "/assets/composio-connectors/slack.svg" },
-        { label: "Gmail", src: "/assets/composio-connectors/gmail.svg" },
-      ],
-    },
+    src: "/figma-assets/waldo-smart-flow/slack-q1-data.webp",
+    alt: "Slack Q1 sales data message card.",
+    naturalWidth: 614,
+    naturalHeight: 330,
+    width: "302px",
+    y: "350px",
+    delay: "-32s",
+    drift: "-18px",
+    rotate: "0.6deg",
   },
   {
-    name: "Form",
-    sources: [
-      { asset: recoveryCard, className: "left-[10%] top-[15%] w-[250px]" },
-      { asset: vitalsCard, className: "left-[29%] top-[33%] w-[170px]" },
-      { asset: stressGauge, className: "left-[1%] top-[38%] w-[180px]" },
-      { asset: zoneOne, className: "left-[18%] top-[58%] w-[170px]" },
-      { asset: sleepStage, className: "left-[2%] top-[8%] w-[170px]" },
-    ],
-    insight: {
-      tone: "form",
-      tags: ["Form", "Circadian", "Calendar"],
-      message:
-        "Form is at 68: steady, not great. Your best window today is *10:30am to 12pm*. I've held it clear. The deck review is in there. You'll want sharp hours for that one.",
-      aside: "focus: locked.",
-      connectors: [
-        { label: "Google Calendar", src: "/assets/composio-connectors/googlecalendar.svg" },
-        { label: "Linear", src: "/assets/composio-connectors/linear.svg" },
-        { label: "Gmail", src: "/assets/composio-connectors/gmail.svg" },
-      ],
-    },
+    src: "/figma-assets/waldo-smart-flow/sleep-score.webp",
+    alt: "Sleep score card showing a 74 score.",
+    naturalWidth: 637,
+    naturalHeight: 461,
+    width: "294px",
+    y: "424px",
+    delay: "-30.4s",
+    drift: "10px",
+    rotate: "1.3deg",
   },
   {
-    name: "Pattern",
-    sources: [
-      { asset: sleepChart, className: "left-[3%] top-[48%] w-[340px]" },
-      { asset: recoveryCard, className: "left-[21%] top-[16%] w-[250px]" },
-      { asset: sleepDuration, className: "left-[4%] top-[8%] w-[300px]" },
-      { asset: sleepScore, className: "left-[13%] top-[31%] w-[300px]" },
-      { asset: vitalsCard, className: "left-[1%] top-[59%] w-[170px]" },
-    ],
-    insight: {
-      tone: "pattern",
-      tags: ["Sleep Debt", "Weekly Pattern", "Recovery"],
-      message:
-        "Third Sunday in a row you went to bed past 1am. Your Monday Recovery has *dropped 15%* each time. This is becoming a pattern.",
-      aside: "the spot: sunday nights.",
-      connectors: [
-        { label: "Google Calendar", src: "/assets/composio-connectors/googlecalendar.svg" },
-        { label: "Notion", src: "/assets/composio-connectors/notion.svg" },
-        { label: "More" },
-      ],
-    },
+    src: "/figma-assets/waldo-smart-flow/imessage-sunday-binge.webp",
+    alt: "iMessage card about watching the next episodes.",
+    naturalWidth: 614,
+    naturalHeight: 330,
+    width: "302px",
+    y: "306px",
+    delay: "-28.8s",
+    drift: "12px",
+    rotate: "1.1deg",
+  },
+  {
+    src: "/figma-assets/waldo-smart-flow/vitals-typical.webp",
+    alt: "Vitals card showing typical overnight readings.",
+    naturalWidth: 408,
+    naturalHeight: 395,
+    width: "188px",
+    y: "362px",
+    delay: "-27.2s",
+    drift: "-14px",
+    rotate: "-0.8deg",
+    scale: "0.92",
+  },
+  {
+    src: "/figma-assets/waldo-smart-flow/calendar-product-review.webp",
+    alt: "Calendar product strategy review card.",
+    naturalWidth: 614,
+    naturalHeight: 386,
+    width: "302px",
+    y: "486px",
+    delay: "-25.6s",
+    drift: "-6px",
+    rotate: "-1deg",
+  },
+  {
+    src: "/figma-assets/waldo-smart-flow/sleep-stages.webp",
+    alt: "Sleep stages card showing 6 hours and 12 minutes.",
+    naturalWidth: 396,
+    naturalHeight: 395,
+    width: "178px",
+    y: "442px",
+    delay: "-24s",
+    drift: "18px",
+    rotate: "0.8deg",
+    scale: "0.94",
+  },
+  {
+    src: "/figma-assets/waldo-smart-flow/gmail-lifestyle-newsletter.webp",
+    alt: "Gmail healthy lifestyle newsletter backlog card.",
+    naturalWidth: 614,
+    naturalHeight: 330,
+    width: "302px",
+    y: "562px",
+    delay: "-22.4s",
+    drift: "8px",
+    rotate: "0.8deg",
+  },
+  {
+    src: "/figma-assets/waldo-smart-flow/hours-vs-need.webp",
+    alt: "Hours versus sleep need chart.",
+    naturalWidth: 636,
+    naturalHeight: 492,
+    width: "318px",
+    y: "532px",
+    delay: "-20.8s",
+    drift: "-12px",
+    rotate: "-0.6deg",
+    scale: "0.94",
+  },
+  {
+    src: "/figma-assets/waldo-smart-flow/gmail-work-sales-review.webp",
+    alt: "Gmail work sales review meeting card.",
+    naturalWidth: 614,
+    naturalHeight: 312,
+    width: "302px",
+    y: "316px",
+    delay: "-19.2s",
+    drift: "-22px",
+    rotate: "-0.8deg",
+  },
+  {
+    src: "/figma-assets/waldo-smart-flow/recovery-week.webp",
+    alt: "Weekly recovery bar chart card.",
+    naturalWidth: 450,
+    naturalHeight: 372,
+    width: "228px",
+    y: "410px",
+    delay: "-17.6s",
+    drift: "6px",
+    rotate: "1.6deg",
+    scale: "0.9",
+  },
+  {
+    src: "/figma-assets/waldo-smart-flow/stress-monitor.webp",
+    alt: "Stress monitor gauge card.",
+    naturalWidth: 366,
+    naturalHeight: 373,
+    width: "188px",
+    y: "508px",
+    delay: "-16s",
+    drift: "-4px",
+    rotate: "-1.2deg",
+    scale: "0.94",
+  },
+  {
+    src: "/figma-assets/waldo-smart-flow/stress-heart-rate.webp",
+    alt: "Stress and heart rate chart card.",
+    naturalWidth: 648,
+    naturalHeight: 516,
+    width: "324px",
+    y: "460px",
+    delay: "-14.4s",
+    drift: "12px",
+    rotate: "0.8deg",
+    scale: "0.92",
+  },
+  {
+    src: "/figma-assets/waldo-smart-flow/zone-5.webp",
+    alt: "Zone 5 activity load card.",
+    naturalWidth: 648,
+    naturalHeight: 256,
+    width: "324px",
+    y: "618px",
+    delay: "-12.8s",
+    drift: "-8px",
+    rotate: "-0.9deg",
+    scale: "0.92",
+  },
+  {
+    src: "/figma-assets/waldo-smart-flow/zone-4.webp",
+    alt: "Zone 4 activity load card.",
+    naturalWidth: 648,
+    naturalHeight: 256,
+    width: "324px",
+    y: "282px",
+    delay: "-11.2s",
+    drift: "6px",
+    rotate: "0.8deg",
+    scale: "0.92",
+  },
+  {
+    src: "/figma-assets/waldo-smart-flow/zone-3.webp",
+    alt: "Zone 3 activity load card.",
+    naturalWidth: 648,
+    naturalHeight: 256,
+    width: "324px",
+    y: "626px",
+    delay: "-9.6s",
+    drift: "10px",
+    rotate: "1.1deg",
+    scale: "0.92",
+  },
+  {
+    src: "/figma-assets/waldo-smart-flow/zone-2.webp",
+    alt: "Zone 2 activity load card.",
+    naturalWidth: 648,
+    naturalHeight: 256,
+    width: "324px",
+    y: "352px",
+    delay: "-8s",
+    drift: "-10px",
+    rotate: "-0.7deg",
+    scale: "0.92",
+  },
+  {
+    src: "/figma-assets/waldo-smart-flow/zone-1.webp",
+    alt: "Zone 1 activity load card.",
+    naturalWidth: 648,
+    naturalHeight: 256,
+    width: "324px",
+    y: "590px",
+    delay: "-6.4s",
+    drift: "-4px",
+    rotate: "-1.2deg",
+    scale: "0.92",
+  },
+  {
+    src: "/figma-assets/waldo-smart-flow/net-energy.webp",
+    alt: "Net energy card showing minus 100 kilocalories.",
+    naturalWidth: 690,
+    naturalHeight: 394,
+    width: "322px",
+    y: "334px",
+    delay: "-4.8s",
+    drift: "14px",
+    rotate: "0.7deg",
+    scale: "0.92",
+  },
+  {
+    src: "/figma-assets/waldo-smart-flow/nutrition-macros.webp",
+    alt: "Nutritional details card with fat, carbs, and protein.",
+    naturalWidth: 690,
+    naturalHeight: 520,
+    width: "322px",
+    y: "456px",
+    delay: "-3.2s",
+    drift: "-12px",
+    rotate: "-0.8deg",
+    scale: "0.9",
+  },
+  {
+    src: "/figma-assets/waldo-smart-flow/nutrition-minerals.webp",
+    alt: "Nutrition minerals card showing magnesium, calcium, and vitamin D.",
+    naturalWidth: 428,
+    naturalHeight: 582,
+    width: "196px",
+    y: "298px",
+    delay: "-1.6s",
+    drift: "8px",
+    rotate: "1deg",
+    scale: "0.9",
+  },
+  {
+    src: "/figma-assets/waldo-smart-flow/nutrition-fiber.webp",
+    alt: "Nutrition card showing fiber, potassium, and iron.",
+    naturalWidth: 432,
+    naturalHeight: 582,
+    width: "196px",
+    y: "536px",
+    delay: "0s",
+    drift: "-8px",
+    rotate: "-1deg",
+    scale: "0.9",
   },
 ];
 
-const workingChecklist = [
-  "Read overnight recovery",
-  "Checked calendar density",
-  "Pulled inbox pressure",
-  "Moved the review",
-  "Drafted the note",
-  "Logged the receipt",
-] as const;
+const workspaceConnectorCards: SourceConnectorCard[] = [
+  {
+    kind: "connector",
+    label: "Gmail",
+    icon: "/assets/connectors/gmail.svg",
+    tone: "gmail",
+    width: "132px",
+    y: "324px",
+    delay: "-34.4s",
+    drift: "16px",
+    rotate: "1deg",
+  },
+  {
+    kind: "connector",
+    label: "Drive",
+    icon: "/assets/connectors/google-drive.svg",
+    tone: "drive",
+    width: "128px",
+    y: "488px",
+    delay: "-31.2s",
+    drift: "-10px",
+    rotate: "-1deg",
+    scale: "0.98",
+  },
+  {
+    kind: "connector",
+    label: "Outlook",
+    icon: "/assets/connectors/microsoft-outlook.svg",
+    tone: "outlook",
+    width: "136px",
+    y: "274px",
+    delay: "-29.6s",
+    drift: "10px",
+    rotate: "0.7deg",
+  },
+  {
+    kind: "connector",
+    label: "Slack",
+    icon: "/assets/connectors/slack.svg",
+    tone: "slack",
+    width: "126px",
+    y: "576px",
+    delay: "-26.4s",
+    drift: "-16px",
+    rotate: "-1.2deg",
+  },
+  {
+    kind: "connector",
+    label: "WhatsApp",
+    icon: "/assets/connectors/whatsapp.svg",
+    tone: "whatsapp",
+    width: "150px",
+    y: "394px",
+    delay: "-23.2s",
+    drift: "16px",
+    rotate: "1.2deg",
+  },
+  {
+    kind: "connector",
+    label: "Telegram",
+    icon: "/assets/connectors/telegram.svg",
+    tone: "telegram",
+    width: "148px",
+    y: "524px",
+    delay: "-20s",
+    drift: "-8px",
+    rotate: "-0.8deg",
+    scale: "0.98",
+  },
+  {
+    kind: "connector",
+    label: "Figma",
+    icon: "/assets/connectors/figma.svg",
+    tone: "figma",
+    width: "128px",
+    y: "338px",
+    delay: "-18.4s",
+    drift: "-18px",
+    rotate: "-1.1deg",
+  },
+  {
+    kind: "connector",
+    label: "Linear",
+    icon: "/assets/connectors/linear.svg",
+    tone: "linear",
+    width: "132px",
+    y: "604px",
+    delay: "-15.2s",
+    drift: "14px",
+    rotate: "1deg",
+  },
+  {
+    kind: "connector",
+    label: "GitHub",
+    icon: "/assets/connectors/github.svg",
+    tone: "github",
+    width: "134px",
+    y: "304px",
+    delay: "-12s",
+    drift: "-12px",
+    rotate: "-0.7deg",
+  },
+  {
+    kind: "connector",
+    label: "Asana",
+    icon: "/assets/connectors/asana.svg",
+    tone: "asana",
+    width: "126px",
+    y: "458px",
+    delay: "-8.8s",
+    drift: "18px",
+    rotate: "1.1deg",
+  },
+  {
+    kind: "connector",
+    label: "Zendesk",
+    icon: "/assets/connectors/zendesk.svg",
+    tone: "zendesk",
+    width: "140px",
+    y: "586px",
+    delay: "-5.6s",
+    drift: "-14px",
+    rotate: "-1deg",
+  },
+  {
+    kind: "connector",
+    label: "Salesforce",
+    icon: "/assets/connectors/salesforce.svg",
+    tone: "salesforce",
+    width: "154px",
+    y: "378px",
+    delay: "-2.4s",
+    drift: "12px",
+    rotate: "0.9deg",
+  },
+  {
+    kind: "connector",
+    label: "Notion",
+    icon: "/assets/connectors/notion.svg",
+    tone: "notion",
+    width: "128px",
+    y: "538px",
+    delay: "-0.8s",
+    drift: "-10px",
+    rotate: "-0.8deg",
+  },
+  {
+    kind: "connector",
+    label: "HubSpot",
+    icon: "/assets/composio-connectors/hubspot.svg",
+    tone: "hubspot",
+    width: "138px",
+    y: "306px",
+    delay: "1.6s",
+    drift: "18px",
+    rotate: "1.2deg",
+  },
+];
 
-function ConnectorIcon({ connector, index }: { connector: Insight["connectors"][number]; index: number }) {
+const sourceFlowCards: SourceCard[] = sourceCards.flatMap((card, index) => {
+  const connector = workspaceConnectorCards[index];
+  return connector ? [card, connector] : [card];
+});
+
+const processedCards: ProcessedCard[] = [
+  {
+    tone: "sleep",
+    eyebrow: "Sleep",
+    label: "Brief",
+    body: (
+      <>
+        6h 12m asleep and a 74 score. Waldo moved the <strong>9am Q1 review</strong> to the first safer window.
+      </>
+    ),
+    aside: "you need the extra hour more than they need punctuality.",
+    connectors: [
+      { label: "Google Calendar", src: "/assets/composio-connectors/googlecalendar.svg" },
+      { label: "Gmail", src: "/assets/composio-connectors/gmail.svg" },
+      { label: "More" },
+    ],
+    delay: "-8.6s",
+  },
+  {
+    tone: "inbox",
+    eyebrow: "Inbox",
+    label: "Pressure",
+    body: (
+      <>
+        104 emails, 49 Slack pings, and two late asks. Waldo kept <strong>the real work</strong> and muted the rest.
+      </>
+    ),
+    aside: "noise moved out of the way.",
+    connectors: [
+      { label: "Slack", src: "/assets/composio-connectors/slack.svg" },
+      { label: "Gmail", src: "/assets/composio-connectors/gmail.svg" },
+      { label: "More" },
+    ],
+    delay: "0.4s",
+  },
+  {
+    tone: "recovery",
+    eyebrow: "Recovery",
+    label: "Load",
+    body: (
+      <>
+        Recovery dipped, sleep need rose, and zone load stacked up. Waldo protected <strong>deep work after lunch.</strong>
+      </>
+    ),
+    aside: "your body got veto power before the calendar did.",
+    connectors: [
+      { label: "Google Calendar", src: "/assets/composio-connectors/googlecalendar.svg" },
+      { label: "Linear", src: "/assets/composio-connectors/linear.svg" },
+      { label: "More" },
+    ],
+    delay: "9.4s",
+  },
+  {
+    tone: "stress",
+    eyebrow: "Stress",
+    label: "Cooldown",
+    body: (
+      <>
+        Stress climbed while heart rate stayed noisy. Waldo delayed low-priority messages until <strong>the signal cooled.</strong>
+      </>
+    ),
+    aside: "not another alert. a quieter afternoon.",
+    connectors: [
+      { label: "Slack", src: "/assets/composio-connectors/slack.svg" },
+      { label: "Gmail", src: "/assets/composio-connectors/gmail.svg" },
+      { label: "More" },
+    ],
+    delay: "18.4s",
+  },
+  {
+    tone: "nutrition",
+    eyebrow: "Nutrition",
+    label: "Fuel",
+    body: (
+      <>
+        Magnesium, fiber, and net energy were off. Waldo suggested a <strong>lighter lunch window</strong> before meetings resumed.
+      </>
+    ),
+    aside: "small inputs, better afternoon.",
+    connectors: [
+      { label: "Google Calendar", src: "/assets/composio-connectors/googlecalendar.svg" },
+      { label: "Gmail", src: "/assets/composio-connectors/gmail.svg" },
+      { label: "More" },
+    ],
+    delay: "27.4s",
+  },
+];
+
+function ConnectorIcon({ connector }: { connector: ProcessedCard["connectors"][number] }) {
   if (!connector.src) {
     return (
-      <span
-        className="waldo-connector-frame flex h-9 w-9 items-center justify-center rounded-full border border-[var(--border-default)] bg-[var(--surface-t1)] text-[var(--text-secondary)]"
-        style={{ zIndex: 20 - index }}
-      >
+      <span className="waldo-smart-connector" aria-label={connector.label}>
         +
       </span>
     );
   }
 
   return (
-    <span
-      className="waldo-connector-frame flex h-9 w-9 items-center justify-center rounded-full border border-[var(--border-default)] bg-[var(--surface-t1)] p-1.5"
-      style={{ zIndex: 20 - index }}
-    >
-      <Image src={connector.src} alt={connector.label} width={24} height={24} />
+    <span className="waldo-smart-connector">
+      <Image src={connector.src} alt={connector.label} width={18} height={18} />
     </span>
   );
 }
 
-function InsightCard({ insight }: { insight: Insight }) {
-  return (
-    <article
-      className="waldo-flow-output absolute right-[2%] top-[43%] z-20 w-[min(330px,32vw)] rounded-[22px] border border-[var(--border-default)] bg-[var(--surface-t1)] p-6 text-left"
-    >
-      <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-        <span className="waldo-insight-dot" data-tone={insight.tone} />
-        {insight.tags.map((tag, tagIndex) => (
-          <span
-            key={tag}
-            className={tagIndex === 0 ? "type-label text-[var(--ink)]" : "type-label text-[var(--text-tertiary)]"}
-          >
-            {tag}
-          </span>
-        ))}
+function SourceCardItem({ card }: { card: SourceCard }) {
+  const style: FlowStyle = {
+    "--card-width": card.width,
+    "--flow-delay": card.delay,
+    "--flow-y": card.y,
+    "--flow-drift": card.drift ?? "0px",
+    "--flow-rotate": card.rotate ?? "0deg",
+    "--flow-scale": card.scale ?? "1",
+  };
+
+  if (card.kind === "connector") {
+    return (
+      <div className="waldo-smart-source-card waldo-smart-logo-card" data-logo-tone={card.tone} style={style}>
+        <span className="waldo-smart-logo-icon" aria-hidden>
+          <Image src={card.icon} alt="" width={24} height={24} />
+        </span>
+        <span className="waldo-smart-logo-label">{card.label}</span>
       </div>
-      <p className="type-body tone-secondary mt-4">
-        {withHighlights(insight.message)}
-      </p>
-      <p className="type-aside tone-tertiary mt-5">{insight.aside}</p>
-      <div className="mt-5 flex items-center" aria-label="Connectors involved">
-        {insight.connectors.map((connector, connectorIndex) => (
-          <ConnectorIcon key={connector.label} connector={connector} index={connectorIndex} />
+    );
+  }
+
+  return (
+    <div className="waldo-smart-source-card waldo-smart-asset-card" style={style}>
+      <Image
+        src={card.src}
+        alt={card.alt}
+        width={card.naturalWidth}
+        height={card.naturalHeight}
+        className="h-auto w-full select-none"
+        sizes="(min-width: 1024px) 340px, 190px"
+      />
+    </div>
+  );
+}
+
+function ProcessedReceipt({ card }: { card: ProcessedCard }) {
+  const style: FlowStyle = {
+    "--receipt-delay": card.delay,
+  };
+
+  return (
+    <article className="waldo-smart-receipt" data-tone={card.tone} style={style}>
+      <div className="waldo-smart-receipt-tags">
+        <span className="waldo-smart-receipt-dot" />
+        <span>{card.eyebrow}</span>
+        <span>{card.label}</span>
+      </div>
+      <p className="waldo-smart-receipt-body">{card.body}</p>
+      <p className="waldo-smart-receipt-aside">{card.aside}</p>
+      <div className="waldo-smart-connectors" aria-label="Connectors involved">
+        {card.connectors.map((connector) => (
+          <ConnectorIcon key={connector.label} connector={connector} />
         ))}
       </div>
     </article>
   );
 }
 
-function WorkingChecklist() {
-  return (
-    <div
-      className="waldo-work-checklist mx-auto mt-8 grid max-w-[760px] gap-2 px-6 sm:grid-cols-2 lg:grid-cols-3"
-      data-animate="stagger"
-      data-stagger="0.055"
-      aria-label="Waldo morning work checklist"
-    >
-      {workingChecklist.map((item, index) => (
-        <div
-          key={item}
-          data-stagger-item
-          className="waldo-work-row flex items-center gap-3 rounded-[14px] border border-[var(--border-default)] bg-[var(--surface-t2)] px-3.5 py-3 text-left"
-          style={{ "--check-delay": `${index * 700}ms` } as CSSProperties}
-        >
-          <span className="waldo-work-check flex h-6 w-6 shrink-0 items-center justify-center rounded-full" aria-hidden>
-            <svg className="h-3.5 w-3.5" viewBox="0 0 16 16" fill="none">
-              <path d="M3.4 8.1 6.6 11.2 12.8 4.8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </span>
-          <span className="type-caption text-[var(--ink)]">{item}</span>
-        </div>
-      ))}
-    </div>
-  );
-}
+type MorningBriefSectionProps = {
+  showIntro?: boolean;
+};
 
-export function MorningBriefSection() {
+export function MorningBriefSection({ showIntro = true }: MorningBriefSectionProps) {
   return (
     <section id="brief" className="section-shell scroll-mt-28 overflow-hidden rounded-[44px] bg-[var(--surface-t2)] p-3">
-      <div className="overflow-hidden rounded-[32px] border border-[var(--border-default)] bg-[var(--surface-t1)] pt-16 text-center sm:pt-20 lg:pt-24">
-        <div className="mx-auto flex max-w-[680px] flex-col items-center px-6" data-animate="blur-fade">
-          <h2 className="type-h2 text-[var(--ink)]">Waldo is already working.</h2>
-          <p className="type-body tone-secondary mt-5 max-w-[52ch]">
-            {withHighlights("The signal is only the start. Waldo reads the morning, checks the work around it, and leaves receipts for what changed.")}
-          </p>
-        </div>
+      <SmartSectionActivity className="waldo-smart-panel relative overflow-hidden rounded-[32px] border border-[var(--border-default)] bg-[var(--surface-t1)] text-center">
+        {showIntro ? (
+          <div className="waldo-smart-copy" data-animate="blur-fade">
+            <h2 className="type-h2 text-[var(--ink)]">Smart like Alfred, goofy like Pluto.</h2>
+            <p className="type-body tone-secondary mt-5">
+              It handles the serious part quietly, before you&apos;ve asked. Then it tells you about it like a dog that&apos;s a little
+              pleased with itself.
+            </p>
+          </div>
+        ) : null}
 
-        <WorkingChecklist />
+        <div className="waldo-smart-stage" data-animate="blur-fade">
+          <div className="waldo-smart-source-lane" aria-hidden>
+            {sourceFlowCards.map((card, index) => (
+              <SourceCardItem
+                key={card.kind === "connector" ? `${card.label}-${index}` : `${card.src}-${index}`}
+                card={card}
+              />
+            ))}
+          </div>
 
-        <div className="waldo-flow-stage relative mt-10 h-[440px] overflow-hidden sm:mt-12 lg:h-[520px]" data-animate="blur-fade">
-          {scenarios.map((scenario, scenarioIndex) => (
-            <div
-              key={scenario.name}
-              aria-hidden={scenarioIndex !== 0}
-              className="waldo-flow-scenario"
-              data-reduced-default={scenarioIndex === 0 ? "true" : undefined}
-              style={{ "--scenario-delay": `${scenarioIndex * 12}s` } as CSSProperties}
-            >
-              <div className="waldo-flow-inputs absolute inset-0 z-[6]">
-                {scenario.sources.slice(0, 3).map((source, sourceIndex) => (
-                  <div
-                    key={`${scenario.name}-${sourceIndex}`}
-                    className={`waldo-source-card absolute ${source.className}`}
-                    style={{ "--card-delay": `${sourceIndex * 2}s` } as CSSProperties}
-                  >
-                    <Image src={source.asset} alt="" className="h-auto w-full select-none" sizes="360px" />
-                  </div>
+          <div className="waldo-smart-phone-wrap" aria-hidden>
+            <div className="waldo-smart-phone-screen">
+              <div className="waldo-smart-processing-field">
+                <span />
+                <span />
+                <span />
+              </div>
+              <div className="waldo-smart-phone-output-lane">
+                {processedCards.map((card) => (
+                  <ProcessedReceipt key={`phone-${card.eyebrow}-${card.label}`} card={card} />
                 ))}
               </div>
-              <InsightCard insight={scenario.insight} />
             </div>
-          ))}
-
-          {/* Phone rises from the bottom; its lower portion is clipped by the
-              stage's overflow (which sits flush at the card's bottom edge), matching
-              the Figma crop. The section background is already white, so no backdrop
-              panel is needed behind it. */}
-          <div className="absolute bottom-[-140px] left-1/2 z-30 w-[min(284px,26vw)] min-w-[216px] -translate-x-1/2 sm:left-[47%]">
             <WaldoFace />
-            <Image src={phoneMockup} alt="" className="relative z-30 h-auto w-full select-none" sizes="340px" />
+            <Image src={phoneMockup} alt="" className="waldo-smart-phone-image relative z-40 h-auto w-full select-none" sizes="420px" />
+          </div>
+
+          <div className="waldo-smart-output-lane">
+            {processedCards.map((card) => (
+              <ProcessedReceipt key={`${card.eyebrow}-${card.label}`} card={card} />
+            ))}
           </div>
         </div>
-      </div>
+      </SmartSectionActivity>
     </section>
   );
 }

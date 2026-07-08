@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { WaldoCTA } from "@/components/landing-primitives";
 import { HeroProofScene } from "@/components/sections/hero-proof-scene";

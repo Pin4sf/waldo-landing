@@ -60,10 +60,10 @@ export function FooterSection() {
 
         <div className="relative flex w-full flex-col items-center" data-animate="blur-fade">
           <Image
-            src="/illustrations/default.svg"
+            src="/assets/home/mascots/good-sleep-dark-mode.svg"
             alt="Waldo resting"
-            width={220}
-            height={171}
+            width={199}
+            height={145}
             className="waldo-breathe mb-8 h-auto w-[180px] sm:w-[220px]"
           />
 

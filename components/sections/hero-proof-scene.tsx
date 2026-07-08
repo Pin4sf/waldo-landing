@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type PointerEvent, type ReactNode } from "react";
 
 import type { WaldoActionReceipt, WaldoArtifact, WaldoHeroState } from "@/components/sections/waldo-capability-data";
+import { useElementInView } from "@/hooks/use-element-in-view";
 
 const HERO_DWELL_MS = 6000;
 
@@ -110,51 +111,64 @@ function ReceiptCard({ receipt, index }: { receipt: WaldoActionReceipt; index: n
 
 export function HeroProofScene({ children, states }: HeroProofSceneProps) {
   const [active, setActive] = useState(0);
-  const [progress, setProgress] = useState(0);
+  const [transitionCue, setTransitionCue] = useState(false);
   const [paused, setPaused] = useState(false);
-  const progressRef = useRef(0);
+  const resetCueTimeoutRef = useRef<number | null>(null);
+  const cueTimeoutRef = useRef<number | null>(null);
+  const rotationTimeoutRef = useRef<number | null>(null);
   const sceneRef = useRef<HTMLDivElement>(null);
   const reducedMotion = usePrefersReducedMotion();
+  const sceneInView = useElementInView(sceneRef);
   const activeState = states[active] ?? states[0];
 
-  useEffect(() => {
-    progressRef.current = progress;
-  }, [progress]);
-
   const selectState = useCallback((index: number) => {
+    if (states.length === 0) return;
+
     setActive(((index % states.length) + states.length) % states.length);
-    setProgress(0);
+    setTransitionCue(false);
   }, [states.length]);
 
   useEffect(() => {
-    if (reducedMotion || paused || states.length < 2) {
-      return;
-    }
-
-    let frame = 0;
-    const startedAt = window.performance.now() - progressRef.current * HERO_DWELL_MS;
-
-    const tick = (now: number) => {
-      const nextProgress = Math.min((now - startedAt) / HERO_DWELL_MS, 1);
-      setProgress(nextProgress);
-      progressRef.current = nextProgress;
-
-      if (nextProgress >= 1) {
-        setActive((current) => (current + 1) % states.length);
-        setProgress(0);
-        progressRef.current = 0;
-        return;
+    const clearHeroTimers = () => {
+      if (resetCueTimeoutRef.current !== null) {
+        window.clearTimeout(resetCueTimeoutRef.current);
+        resetCueTimeoutRef.current = null;
       }
 
-      frame = window.requestAnimationFrame(tick);
+      if (cueTimeoutRef.current !== null) {
+        window.clearTimeout(cueTimeoutRef.current);
+        cueTimeoutRef.current = null;
+      }
+
+      if (rotationTimeoutRef.current !== null) {
+        window.clearTimeout(rotationTimeoutRef.current);
+        rotationTimeoutRef.current = null;
+      }
     };
 
-    frame = window.requestAnimationFrame(tick);
-    return () => window.cancelAnimationFrame(frame);
-  }, [active, paused, reducedMotion, states.length]);
+    resetCueTimeoutRef.current = window.setTimeout(() => {
+      setTransitionCue(false);
+      resetCueTimeoutRef.current = null;
+    }, 0);
+
+    if (reducedMotion || paused || !sceneInView || states.length < 2) {
+      return clearHeroTimers;
+    }
+
+    cueTimeoutRef.current = window.setTimeout(() => {
+      setTransitionCue(true);
+    }, HERO_DWELL_MS * 0.76);
+
+    rotationTimeoutRef.current = window.setTimeout(() => {
+      setActive((current) => (current + 1) % states.length);
+      setTransitionCue(false);
+    }, HERO_DWELL_MS);
+
+    return clearHeroTimers;
+  }, [active, paused, reducedMotion, sceneInView, states.length]);
 
   const handlePointerMove = (event: PointerEvent<HTMLDivElement>) => {
-    if (reducedMotion) return;
+    if (reducedMotion || !sceneInView) return;
 
     const rect = event.currentTarget.getBoundingClientRect();
     const x = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
@@ -186,15 +200,15 @@ export function HeroProofScene({ children, states }: HeroProofSceneProps) {
     return null;
   }
 
+  const transitionCueClass = !reducedMotion && !paused && transitionCue ? " waldo-hero-transition-cue" : "";
+
   return (
     <div
       ref={sceneRef}
-      className={`waldo-hero-stage waldo-hero-state-${activeState.key}`}
+      className={`waldo-hero-stage waldo-hero-state-${activeState.key}${transitionCueClass}`}
       onFocusCapture={() => setPaused(true)}
       onBlurCapture={() => setPaused(false)}
-      onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => {
-        setPaused(false);
         resetPointerField();
       }}
       onPointerMove={handlePointerMove}
@@ -203,6 +217,16 @@ export function HeroProofScene({ children, states }: HeroProofSceneProps) {
         <span className="waldo-hero-shader-ring" />
         <span className="waldo-hero-shader-sheen" />
         <span className="waldo-hero-shader-grain" />
+      </div>
+      <div className="waldo-hero-gradient-field" aria-hidden="true">
+        <div className="waldo-hero-gradient-flow">
+          <div className="waldo-hero-gradient-boost">
+            <span className="waldo-hero-gradient-mesh waldo-hero-gradient-mesh-a" />
+            <span className="waldo-hero-gradient-mesh waldo-hero-gradient-mesh-b" />
+            <span className="waldo-hero-gradient-mesh waldo-hero-gradient-mesh-c" />
+            <span className="waldo-hero-gradient-mesh waldo-hero-gradient-mesh-d" />
+          </div>
+        </div>
       </div>
       <svg className="waldo-signal-path" viewBox="0 0 1200 760" aria-hidden="true">
         <path d="M210 220 C 350 230, 450 290, 545 360" />
@@ -224,7 +248,7 @@ export function HeroProofScene({ children, states }: HeroProofSceneProps) {
               <span />
               <span />
             </div>
-            <Image src="/illustrations/default.svg" alt="" width={169} height={131} priority className="waldo-phone-mascot" />
+            <Image src="/assets/home/mascots/Vector.svg" alt="" width={184} height={143} priority className="waldo-phone-mascot" />
             <p className="type-caption mt-3 text-[var(--text-tertiary)]">Waldo read</p>
             <p className="type-data waldo-phone-value">{activeState.reads[0]?.value}</p>
             <p className="type-aside tone-tertiary">{activeState.reads[0]?.read}</p>
@@ -244,7 +268,7 @@ export function HeroProofScene({ children, states }: HeroProofSceneProps) {
         </div>
       </div>
 
-      {children({ active, activeState, progress: reducedMotion ? 0 : progress, selectState, states })}
+      {children({ active, activeState, progress: !reducedMotion && transitionCue ? 1 : 0, selectState, states })}
     </div>
   );
 }

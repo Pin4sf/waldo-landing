@@ -224,7 +224,7 @@ function WaldoDisplay({ period, config }: { period: TimePeriod; config: typeof T
       )}
 
       <Image
-        src={isNight || period === "evening" ? "/illustrations/success.svg" : "/illustrations/default.svg"}
+        src={isNight || period === "evening" ? "/assets/home/mascots/good-sleep-dark-mode.svg" : "/assets/home/mascots/good-week-dark-mode.svg"}
         alt="Waldo"
         width={150}
         height={150}

@@ -113,16 +113,16 @@ const typeTokens = [
 ];
 
 const actionCards = [
-  ["The Brief", "/figma-assets/icon-daily-brief.png", "Morning read, plain language, actions already made.", "Recovery"],
-  ["The Fetch", "/figma-assets/icon-waldo-brief.png", "Stress intervention that protects the next useful block.", "Form"],
-  ["The Adjustment", "/figma-assets/icon-adjustment.png", "End-of-week load management across future time.", "Weight"],
-  ["The Patrol", "/figma-assets/icon-patrol.png", "Background monitoring log for what Waldo noticed.", "Always on"],
-  ["The Spot", "/figma-assets/icon-spot.png", "A single pattern observation, kept short and useful.", "Pattern"],
-  ["The Constellation", "/figma-assets/icon-constellation.png", "Several Spots connected into a named behavior pattern.", "Long game"],
-  ["The Window", "/figma-assets/logo-small.png", "Best focus hours protected from calendar pressure.", "Focus"],
-  ["The Heads-Up", "/figma-assets/icon-arrow-right.png", "Early warning before a likely crash lands.", "Prediction"],
-  ["The Close", "/figma-assets/footer-illustration.png", "End-of-day account of what changed and what is next.", "Daily close"],
-  ["The Handoff", "/figma-assets/icon-waldo-brief.png", "Logged transfer into another connected tool.", "Connector"],
+  ["The Brief", "/figma-assets/icon-daily-brief.webp", "Morning read, plain language, actions already made.", "Recovery"],
+  ["The Fetch", "/assets/home/mascots/Vector.svg", "Stress intervention that protects the next useful block.", "Form"],
+  ["The Adjustment", "/figma-assets/icon-adjustment.webp", "End-of-week load management across future time.", "Weight"],
+  ["The Patrol", "/figma-assets/icon-patrol.webp", "Background monitoring log for what Waldo noticed.", "Always on"],
+  ["The Spot", "/figma-assets/icon-spot.webp", "A single pattern observation, kept short and useful.", "Pattern"],
+  ["The Constellation", "/figma-assets/icon-constellation.webp", "Several Spots connected into a named behavior pattern.", "Long game"],
+  ["The Window", "/figma-assets/logo-small.webp", "Best focus hours protected from calendar pressure.", "Focus"],
+  ["The Heads-Up", "/figma-assets/icon-arrow-right.webp", "Early warning before a likely crash lands.", "Prediction"],
+  ["The Close", "/figma-assets/footer-illustration.webp", "End-of-day account of what changed and what is next.", "Daily close"],
+  ["The Handoff", "/assets/home/mascots/Vector.svg", "Logged transfer into another connected tool.", "Connector"],
 ];
 
 const motionLines = [

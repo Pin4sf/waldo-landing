@@ -23,8 +23,8 @@ const visionConnectors = [
 ] as const;
 
 const compatibilityItems = [
-  { label: "Apple Watch", src: "/assets/health-apple-watch.png", imageClassName: "max-h-8 max-w-[58px]" },
-  { label: "WHOOP", src: "/assets/health-whoop.png", imageClassName: "max-h-9 max-w-[46px]" },
+  { label: "Apple Watch", src: "/assets/health-apple-watch.webp", imageClassName: "max-h-8 max-w-[58px]" },
+  { label: "WHOOP", src: "/assets/health-whoop.webp", imageClassName: "max-h-9 max-w-[46px]" },
   // Oura, Garmin, Samsung, and Fitbit logos are not present in the supplied assets yet.
   // Keep monochrome placeholders until the owner supplies exact logo files.
   { label: "Oura" },
@@ -142,6 +142,7 @@ export function ValidationSection() {
           eyebrow="Not just promises."
           title="Proof."
           aside="honest numbers only."
+          className="waldo-validation-intro"
         />
       </div>
 
