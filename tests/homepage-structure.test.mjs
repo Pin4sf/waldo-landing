@@ -140,23 +140,34 @@ test("new homepage moves FAQ above the closing footer CTA", () => {
 test("FAQ accordion uses restrained disclosure motion with reduced-motion fallback", () => {
   const section = read("components/sections/faq-section.tsx");
   const globals = read("app/globals.css");
+  const faqInnerRule = globals.slice(
+    globals.indexOf(".waldo-faq-content-inner {"),
+    globals.indexOf('.waldo-faq-content[data-state="open"] .waldo-faq-content-inner'),
+  );
 
   assert.match(section, /waldo-faq-trigger/);
   assert.match(section, /waldo-faq-icon/);
   assert.match(section, /waldo-faq-content/);
   assert.match(section, /waldo-faq-content-inner/);
   assert.doesNotMatch(section, /transition-all/);
+  assert.doesNotMatch(section, /waldo:sync-scroll/);
+  assert.doesNotMatch(section, /onPointerDownCapture/);
+  assert.match(section, /onValueChange=\{setOpenItem\}/);
+  assert.match(section, /forceMount/);
+  assert.match(section, /aria-hidden=\{openItem !== itemValue\}/);
 
-  assert.match(globals, /\.waldo-faq-content\s*\{[^}]*height:\s*0/s);
-  assert.match(globals, /\.waldo-faq-content\[data-state="open"\]\s*\{[^}]*animation:\s*waldo-faq-open 560ms/s);
-  assert.match(globals, /\.waldo-faq-content\[data-state="closed"\]\s*\{[^}]*animation:\s*waldo-faq-close 360ms/s);
-  assert.match(globals, /@keyframes\s+waldo-faq-open[\s\S]*height:\s*var\(--radix-accordion-content-height\)/);
+  assert.match(section, /overflowAnchor:\s*"none"/);
+  assert.match(globals, /\.waldo-faq-content\s*\{[^}]*display:\s*grid/s);
+  assert.match(globals, /\.waldo-faq-content\s*\{[^}]*grid-template-rows:\s*0fr/s);
+  assert.match(globals, /\.waldo-faq-content\s*\{[^}]*transition:\s*grid-template-rows 260ms cubic-bezier\(0\.23, 1, 0\.32, 1\)/s);
+  assert.match(globals, /\.waldo-faq-content\[data-state="open"\]\s*\{[^}]*grid-template-rows:\s*1fr/s);
+  assert.doesNotMatch(globals, /waldo-faq-open|waldo-faq-close|waldo-faq-answer-in|waldo-faq-answer-out/);
   assert.match(globals, /\.waldo-faq-content-inner\s*\{[^}]*opacity:\s*0/s);
-  assert.match(globals, /\.waldo-faq-content-inner\s*\{[^}]*filter:\s*blur\(4px\)/s);
-  assert.match(globals, /\.waldo-faq-content-inner\s*\{[^}]*transform:\s*translate3d\(0,\s*-10px,\s*0\)/s);
-  assert.match(globals, /\.waldo-faq-content\[data-state="open"\]\s+\.waldo-faq-content-inner\s*\{[^}]*animation:\s*waldo-faq-answer-in 560ms/s);
-  assert.match(globals, /@keyframes\s+waldo-faq-answer-in[\s\S]*opacity:\s*0[\s\S]*opacity:\s*1/);
-  assert.match(globals, /prefers-reduced-motion:\s*reduce[\s\S]*\.waldo-faq-content[\s\S]*animation:\s*none !important/s);
+  assert.doesNotMatch(faqInnerRule, /filter:/);
+  assert.match(faqInnerRule, /transform:\s*translate3d\(0,\s*-8px,\s*0\)/);
+  assert.match(globals, /\.waldo-faq-content\[data-state="open"\]\s+\.waldo-faq-content-inner\s*\{[^}]*opacity:\s*1/s);
+  assert.match(globals, /\.waldo-faq-content\[data-state="open"\]\s+\.waldo-faq-content-inner\s*\{[^}]*transition-delay:\s*35ms/s);
+  assert.match(globals, /prefers-reduced-motion:\s*reduce[\s\S]*\.waldo-faq-content\[data-state="open"\][\s\S]*grid-template-rows:\s*1fr/s);
 });
 
 test("Mottle replaces Corben as the headline font", () => {
@@ -564,7 +575,7 @@ test("handled cards use the Interface Craft selectable deck interaction", () => 
   assert.match(section, /window\.visualViewport\?\.addEventListener\("resize",\s*handleResize\)/);
   assert.match(section, /breakpointQuery\.addEventListener\("change",\s*handleResize\)/);
   assert.match(section, /new ResizeObserver\(handleResize\)/);
-  assert.match(section, /layoutResizeObserver\.observe\(document\.documentElement\)/);
+  assert.doesNotMatch(section, /layoutResizeObserver\.observe\(document\.documentElement\)/);
   assert.match(section, /layoutResizeObserver\.observe\(stageRef\.current\)/);
   assert.match(section, /window\.visualViewport\?\.removeEventListener\("resize",\s*handleResize\)/);
   assert.match(section, /breakpointQuery\.removeEventListener\("change",\s*handleResize\)/);

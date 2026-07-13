@@ -1,6 +1,7 @@
 "use client";
 
 import * as Accordion from "@radix-ui/react-accordion";
+import { useState } from "react";
 
 import { SectionIntro } from "@/components/landing-primitives";
 
@@ -51,19 +52,15 @@ const faqs = [
   },
 ] as const;
 
-function syncScrollLayer() {
-  window.dispatchEvent(new Event("waldo:sync-scroll"));
-}
-
-function syncScrollLayerAfterLayout() {
-  syncScrollLayer();
-  requestAnimationFrame(syncScrollLayer);
-  window.setTimeout(syncScrollLayer, 280);
-}
-
 export function FaqSection() {
+  const [openItem, setOpenItem] = useState("");
+
   return (
-    <section id="faq" className="new-faq-section section-shell w-full scroll-mt-28 flex flex-col gap-10 py-6 lg:py-8">
+    <section
+      id="faq"
+      className="new-faq-section section-shell w-full scroll-mt-28 flex flex-col gap-10 py-6 lg:py-8"
+      style={{ overflowAnchor: "none" }}
+    >
       <div data-animate="blur-fade">
         <SectionIntro
           className="new-faq-intro"
@@ -73,32 +70,42 @@ export function FaqSection() {
       </div>
 
       <div className="new-faq-list mx-auto w-full">
-        <Accordion.Root type="single" collapsible data-animate="stagger" data-stagger="0.045" onValueChange={syncScrollLayerAfterLayout}>
-          {faqs.map((item, index) => (
-            <Accordion.Item
-              key={item.q}
-              value={`faq-${index}`}
-              data-stagger-item
-              className="border-b border-[var(--border-default)]"
-            >
-              <Accordion.Header>
-                <Accordion.Trigger
-                  className="waldo-faq-trigger group focusable-ring flex w-full items-center justify-between gap-6 rounded-[12px] px-1 py-6 text-left sm:py-7"
-                  onPointerDownCapture={syncScrollLayer}
-                >
-                  <span className="type-h3 min-w-0 flex-1 text-[#1A1A1A]">{item.q}</span>
-                  <span aria-hidden className="waldo-faq-icon shrink-0 text-[#1A1A1A]" style={{ fontSize: "1.4rem", lineHeight: 1 }}>
-                    +
-                  </span>
-                </Accordion.Trigger>
-              </Accordion.Header>
-              <Accordion.Content className="waldo-faq-content">
-                <div className="waldo-faq-content-inner">
-                  <p className="type-body w-full px-1 pb-6 font-normal text-[#1A1A1A]/60">{item.a}</p>
-                </div>
-              </Accordion.Content>
-            </Accordion.Item>
-          ))}
+        <Accordion.Root
+          type="single"
+          collapsible
+          value={openItem}
+          onValueChange={setOpenItem}
+          data-animate="stagger"
+          data-stagger="0.045"
+        >
+          {faqs.map((item, index) => {
+            const itemValue = `faq-${index}`;
+
+            return (
+              <Accordion.Item
+                key={item.q}
+                value={itemValue}
+                data-stagger-item
+                className="border-b border-[var(--border-default)]"
+              >
+                <Accordion.Header>
+                  <Accordion.Trigger
+                    className="waldo-faq-trigger group focusable-ring flex w-full items-center justify-between gap-6 rounded-[12px] px-1 py-6 text-left sm:py-7"
+                  >
+                    <span className="type-h3 min-w-0 flex-1 text-[#1A1A1A]">{item.q}</span>
+                    <span aria-hidden className="waldo-faq-icon shrink-0 text-[#1A1A1A]" style={{ fontSize: "1.4rem", lineHeight: 1 }}>
+                      +
+                    </span>
+                  </Accordion.Trigger>
+                </Accordion.Header>
+                <Accordion.Content forceMount aria-hidden={openItem !== itemValue} className="waldo-faq-content">
+                  <div className="waldo-faq-content-inner">
+                    <p className="type-body w-full px-1 pb-6 font-normal text-[#1A1A1A]/60">{item.a}</p>
+                  </div>
+                </Accordion.Content>
+              </Accordion.Item>
+            );
+          })}
         </Accordion.Root>
       </div>
     </section>

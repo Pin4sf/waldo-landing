@@ -357,7 +357,6 @@ export function HandledCardsSection() {
     breakpointQuery.addEventListener("change", handleResize);
     if (typeof ResizeObserver !== "undefined") {
       layoutResizeObserver = new ResizeObserver(handleResize);
-      layoutResizeObserver.observe(document.documentElement);
       if (stageRef.current) {
         layoutResizeObserver.observe(stageRef.current);
       }
