@@ -1,7 +1,6 @@
 "use client";
 
 import * as Accordion from "@radix-ui/react-accordion";
-import type { KeyboardEvent } from "react";
 
 import { SectionIntro } from "@/components/landing-primitives";
 
@@ -56,27 +55,10 @@ function syncScrollLayer() {
   window.dispatchEvent(new Event("waldo:sync-scroll"));
 }
 
-function preserveScrollAfterToggle() {
-  const scrollTop = window.scrollY;
-
-  const restore = () => {
-    window.scrollTo({ top: scrollTop, left: 0, behavior: "instant" });
-    syncScrollLayer();
-  };
-
+function syncScrollLayerAfterLayout() {
   syncScrollLayer();
-  requestAnimationFrame(() => {
-    restore();
-    requestAnimationFrame(restore);
-  });
-  window.setTimeout(restore, 180);
-  window.setTimeout(restore, 520);
-}
-
-function preserveKeyboardToggleScroll(event: KeyboardEvent<HTMLButtonElement>) {
-  if (event.key === "Enter" || event.key === " ") {
-    preserveScrollAfterToggle();
-  }
+  requestAnimationFrame(syncScrollLayer);
+  window.setTimeout(syncScrollLayer, 280);
 }
 
 export function FaqSection() {
@@ -91,7 +73,7 @@ export function FaqSection() {
       </div>
 
       <div className="new-faq-list mx-auto w-full">
-        <Accordion.Root type="single" collapsible data-animate="stagger" data-stagger="0.045">
+        <Accordion.Root type="single" collapsible data-animate="stagger" data-stagger="0.045" onValueChange={syncScrollLayerAfterLayout}>
           {faqs.map((item, index) => (
             <Accordion.Item
               key={item.q}
@@ -102,8 +84,6 @@ export function FaqSection() {
               <Accordion.Header>
                 <Accordion.Trigger
                   className="waldo-faq-trigger group focusable-ring flex w-full items-center justify-between gap-6 rounded-[12px] px-1 py-6 text-left sm:py-7"
-                  onClickCapture={preserveScrollAfterToggle}
-                  onKeyDownCapture={preserveKeyboardToggleScroll}
                   onPointerDownCapture={syncScrollLayer}
                 >
                   <span className="type-h3 min-w-0 flex-1 text-[#1A1A1A]">{item.q}</span>
