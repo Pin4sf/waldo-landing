@@ -150,7 +150,9 @@ body {
 body {
   background: var(--surface-t3);
   font-family: var(--font-body);
+  font-size: 18px;
   letter-spacing: 0.02em;
+  line-height: 28px;
 }
 
 .waldo-highlights {
@@ -1249,10 +1251,10 @@ body {
 
 .type-body {
   font-family: var(--font-body);
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 400;
   letter-spacing: 0.02em;
-  line-height: 30px;
+  line-height: 28px;
 }
 
 .type-label {
@@ -3913,12 +3915,12 @@ body {
   --new-data-bento-visual-rail: 760px;
   --new-visual-rail: 980px;
   --new-editorial-copy-width: 815px;
-  --new-editorial-body-width: 815px;
+  --new-editorial-body-width: 540px;
   --new-editorial-narrow-copy-width: 615px;
   --new-editorial-subhead-width: 390px;
   --new-editorial-h2-size: 1.875rem;
-  --new-editorial-body-size: 20px;
-  --new-editorial-body-line-height: 30px;
+  --new-editorial-body-size: 18px;
+  --new-editorial-body-line-height: 28px;
   --new-home-muted-band: #f4f3f0;
   background: var(--new-home-base);
   overflow: hidden;
@@ -7898,8 +7900,8 @@ body {
 
 .new-faq-list {
   margin-inline: auto;
-  max-width: var(--new-editorial-narrow-copy-width);
-  width: min(var(--new-editorial-narrow-copy-width), calc(100vw - 64px));
+  max-width: var(--new-editorial-body-width);
+  width: min(var(--new-editorial-body-width), calc(100vw - 64px));
 }
 
 .new-scene-close-section {

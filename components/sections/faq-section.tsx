@@ -65,7 +65,6 @@ export function FaqSection() {
         <SectionIntro
           className="new-faq-intro"
           title="You're going to ask these."
-          aside="the fair objections."
         />
       </div>
 

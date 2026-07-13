@@ -137,6 +137,28 @@ test("new homepage moves FAQ above the closing footer CTA", () => {
   assert.match(homePage, /<WhereWaldoSection \/>[\s\S]*<FaqSection \/>[\s\S]*<SceneCloseSection \/>/);
 });
 
+test("homepage editorial copy uses the requested 18px / 28px rhythm and 540px rail", () => {
+  const globals = read("app/globals.css");
+
+  assert.match(globals, /body\s*\{[^}]*font-size:\s*18px;[^}]*line-height:\s*28px;/s);
+  assert.match(globals, /\.type-body\s*\{[^}]*font-size:\s*18px;[^}]*line-height:\s*28px;/s);
+  assert.match(globals, /--new-editorial-body-width:\s*540px;/);
+  assert.match(globals, /--new-editorial-body-size:\s*18px;/);
+  assert.match(globals, /--new-editorial-body-line-height:\s*28px;/);
+  assert.match(globals, /\.new-faq-list\s*\{[^}]*max-width:\s*var\(--new-editorial-body-width\)/s);
+});
+
+test("FAQ omits the fair objections aside", () => {
+  const section = read("components/sections/faq-section.tsx");
+
+  assert.doesNotMatch(section, /fair objections/i);
+});
+
+test("repository shares the improve-animations skill", () => {
+  assert.equal(existsSync(".claude/skills/improve-animations/SKILL.md"), true);
+  assert.equal(existsSync(".claude/skills/improve-animations/AUDIT.md"), true);
+});
+
 test("FAQ accordion uses restrained disclosure motion with reduced-motion fallback", () => {
   const section = read("components/sections/faq-section.tsx");
   const globals = read("app/globals.css");
