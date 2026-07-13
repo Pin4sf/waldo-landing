@@ -8550,14 +8550,8 @@ body {
     white-space: normal;
   }
 
-  .new-home-menu-item:first-child .new-home-menu-comment,
-  .new-home-menu-item:last-child .new-home-menu-comment,
   .new-home-menu-item:hover .new-home-menu-comment,
-  .new-home-menu-item:focus-visible .new-home-menu-comment,
-  .new-home-menu-item:first-child:hover .new-home-menu-comment,
-  .new-home-menu-item:first-child:focus-visible .new-home-menu-comment,
-  .new-home-menu-item:last-child:hover .new-home-menu-comment,
-  .new-home-menu-item:last-child:focus-visible .new-home-menu-comment {
+  .new-home-menu-item:focus-visible .new-home-menu-comment {
     max-height: 42px;
     transform: none;
   }

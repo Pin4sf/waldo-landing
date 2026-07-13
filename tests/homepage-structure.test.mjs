@@ -188,8 +188,12 @@ test("new homepage nav uses the menu button and full nav option set", () => {
   assert.equal(existsSync("components/home/new-home-nav.tsx"), true);
 
   const nav = read("components/home/new-home-nav.tsx");
+  const desktopNav = read("components/navbar.tsx");
   assert.match(nav, /Menu/);
-  assert.match(nav, /Features/);
+  assert.match(nav, /\{ label: "Features", tooltip: "Explore the full tour of Waldo\." \}/);
+  assert.doesNotMatch(nav, /\{ label: "Features", href:/);
+  assert.match(desktopNav, /\{ label: "Features", tooltip: "Explore the full tour of Waldo\." \}/);
+  assert.doesNotMatch(desktopNav, /\{ label: "Features", href:/);
   assert.match(nav, /Pricing/);
   assert.match(nav, /Blog/);
   assert.match(nav, /Sign In/);
@@ -598,8 +602,8 @@ test("handled cards use the Interface Craft selectable deck interaction", () => 
   assert.match(section, /new-handled-cta-panel/);
   assert.match(section, /This is what .handled. looks like\./);
   assert.match(section, /Waldo plans like Napoleon/);
-  assert.match(section, /href="\/features"/);
-  assert.match(section, /Learn More →/);
+  assert.doesNotMatch(section, /href="\/features"/);
+  assert.doesNotMatch(section, /Learn More →/);
   assert.doesNotMatch(section, /className="new-handled-cta-panel"\s+data-animate="blur-fade"/);
   assert.doesNotMatch(section, /className="new-handled-deck-stage"\s+data-animate="blur-fade"/);
   assert.doesNotMatch(section, /renderHandledGraphic/);
@@ -1094,10 +1098,8 @@ test("new homepage includes the where beat and updated closing CTA copy", () => 
   assert.match(closeSection, /And then you'll be the one they're looking out for\./);
   assert.match(closeSection, /WaldoCTA/);
   assert.match(closeSection, /new-scene-close-actions/);
-  assert.match(closeSection, /new-scene-close-secondary-cta/);
-  assert.match(closeSection, /href="\/features"/);
-  assert.match(closeSection, /Explore features/);
-  assert.match(closeSection, /\["Explore features",\s*"\/features"\]/);
+  assert.doesNotMatch(closeSection, /href="\/features"/);
+  assert.doesNotMatch(closeSection, /Explore features/);
   assert.doesNotMatch(closeSection, /Get Started/);
   assert.match(closeSection, /new-scene-close-copy-zone/);
   assert.match(closeSection, /new-scene-close-art/);

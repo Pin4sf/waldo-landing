@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { type CSSProperties, useCallback, useEffect, useRef, useState } from "react";
 
 import { ConnectorChip } from "@/components/connectors/connector-chip";
@@ -213,9 +212,6 @@ export function ProfessionSection() {
           <p className="type-body tone-secondary">
             <strong>Waldo works with every profession.</strong> With the tools and playbooks already tuned for how you work; from a grandma’s bakery down the street to the C-suite - he’s got all of it handled.
           </p>
-          <Link className="new-profession-link" href="/features">
-            See All Applications →
-          </Link>
         </div>
       </div>
 

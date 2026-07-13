@@ -21,7 +21,7 @@ type NavItem = {
 };
 
 const navItems: NavItem[] = [
-  { label: "Features", href: "/features", tooltip: "Explore the full tour of Waldo." },
+  { label: "Features", tooltip: "Explore the full tour of Waldo." },
   { label: "Pricing", tooltip: "free to find out. when we're ready." },
   { label: "Blog", tooltip: "waldo's been busy. so have we." },
   { label: "Sign In", tooltip: "you're early. that's actually a good sign." },

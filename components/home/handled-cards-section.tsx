@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import {
   useCallback,
   useEffect,
@@ -655,9 +654,6 @@ export function HandledCardsSection() {
             <br className="new-reference-break" />{" "}
             cheetah; all in the body of a <span className="new-reference-accent">friendly dalmatian.</span>
           </p>
-          <Link className="new-handled-feature-link" href="/features">
-            Learn More →
-          </Link>
         </div>
       </div>
     </section>
