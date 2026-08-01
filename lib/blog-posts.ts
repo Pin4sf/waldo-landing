@@ -30,6 +30,7 @@ export type BlogPost = {
   author: BlogAuthor;
   image: string;
   imageAlt: string;
+  audio: string;
   artCredit: string;
   sources: BlogSource[];
 };
@@ -99,6 +100,7 @@ const BLOG_POST_SEEDS: BlogPostSeed[] = [
     author: DEFAULT_BLOG_AUTHOR,
     image: "/assets/blogs/cli-agent.webp",
     imageAlt: "A warm editorial illustration of a command line becoming an open doorway",
+    audio: "/assets/blogs/audio/what-is-a-cli-agent.m4a",
     artCredit: "Waldo, made with OpenAI",
     sources: [
       {
@@ -128,6 +130,7 @@ const BLOG_POST_SEEDS: BlogPostSeed[] = [
     author: HEALTH_SYSTEMS_AUTHOR,
     image: "/assets/blogs/health-app-mirror.webp",
     imageAlt: "A spotted orange trail crossing from a mirror into a protected day",
+    audio: "/assets/blogs/audio/health-apps-are-mirrors.m4a",
     artCredit: "Waldo, made with OpenAI",
     sources: [
       {
@@ -149,6 +152,7 @@ const BLOG_POST_SEEDS: BlogPostSeed[] = [
     author: BRAND_AUTHOR,
     image: "/assets/blogs/why-a-dalmatian.webp",
     imageAlt: "A resting Dalmatian studying a constellation made from its own spots",
+    audio: "/assets/blogs/audio/why-a-dalmatian.m4a",
     artCredit: "Waldo, made with OpenAI",
     sources: [
       {
@@ -170,6 +174,7 @@ const BLOG_POST_SEEDS: BlogPostSeed[] = [
     author: CONTINUITY_AUTHOR,
     image: "/assets/blogs/patterns.webp",
     imageAlt: "A run of calendar pages connected by a quiet constellation of spots",
+    audio: "/assets/blogs/audio/patterns-your-ai-cannot-see.m4a",
     artCredit: "Waldo, made with OpenAI",
     sources: [{ label: "Waldo pattern architecture, May 2026", href: "/features" }],
   },
@@ -185,6 +190,7 @@ const BLOG_POST_SEEDS: BlogPostSeed[] = [
     author: CONNECTORS_AUTHOR,
     image: "/assets/blogs/connectors-and-professions.webp",
     imageAlt: "Different working days connected into one clear and protected window",
+    audio: "/assets/blogs/audio/explain-your-job-to-a-computer.m4a",
     artCredit: "Waldo, made with OpenAI",
     sources: [{ label: "Waldo connector architecture, May 2026", href: "/features" }],
   },
@@ -200,6 +206,7 @@ const BLOG_POST_SEEDS: BlogPostSeed[] = [
     author: PRIVACY_AUTHOR,
     image: "/assets/blogs/your-data.webp",
     imageAlt: "A small protected archive translating private signals into a simple note",
+    audio: "/assets/blogs/audio/what-we-do-with-your-data.m4a",
     artCredit: "Waldo, made with OpenAI",
     sources: [
       {
@@ -253,9 +260,9 @@ function hydrateBlogPost(seed: BlogPostSeed): BlogPost {
   };
 }
 
-export const BLOG_POSTS: BlogPost[] = BLOG_POST_SEEDS.map(hydrateBlogPost).filter(
-  (post) => post.status === "published",
-);
+export const BLOG_POSTS: BlogPost[] = BLOG_POST_SEEDS.map(hydrateBlogPost)
+  .filter((post) => post.status === "published")
+  .sort((a, b) => b.datePublished.localeCompare(a.datePublished));
 
 export function findBlogPost(slug: string) {
   return BLOG_POSTS.find((post) => post.slug === slug);

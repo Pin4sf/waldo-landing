@@ -3,7 +3,7 @@ type: article
 status: published
 title: What we actually do with your data, explained to your grandmother
 tags: [waldo, blog, privacy, security]
-created: 2026-07-28
+created: 2026-08-01
 published: 2026-08-01
 updated: 2026-08-01
 site_section: privacy
@@ -11,13 +11,13 @@ site_section: privacy
 
 # What we actually do with your data, explained to your grandmother
 
-Nobody has ever read a privacy policy. They are written by lawyers, for other lawyers, in a font size chosen to end the conversation.
+Almost nobody reads a privacy policy. They are written by lawyers, for other lawyers, in a font size chosen to end the conversation.
 
-So here it is the other way, as if explaining it to your grandmother. She is sharp, she is suspicious of anything free, and she will ask the one question you were hoping to skip.
+So here it is another way: the version you might explain to your grandmother. She is sharp, suspicious of anything free, and very likely to ask the one question you were hoping to skip.
 
 ## Start with the permission
 
-Waldo does not arrive with permission to everything. You connect the tools you want it to use. Each connection has a job, and the autonomy setting decides whether Waldo only explains an action, asks before taking it, or carries it out on its own.
+Waldo does not arrive with permission to everything. You choose the tools it can use. Each connection has a specific job, and the autonomy setting decides whether Waldo explains an action, asks before taking it, or carries it out on its own.
 
 No connection means no access. Removing a connection means Waldo stops using it. That is the first privacy rule because it is the one you can inspect without trusting a slogan.
 
@@ -39,7 +39,7 @@ That is not a medical claim. Waldo does not diagnose, treat, or prevent anything
 
 ## What an action should show you
 
-When Waldo moves something, the action should not appear out of nowhere. It shows the reason, the tool it touched, and the change it made. You keep the undo.
+When Waldo moves something, the action should never appear out of nowhere. You see the reason, the tool it touched, and the change it made. You also keep the undo.
 
 If the reason is wrong, the correction matters. The goal is not a mysterious system that becomes more confident while you become less certain. The goal is an agent you can inspect and correct.
 
@@ -55,7 +55,7 @@ We will not claim certifications Waldo has not earned. We will not imply that en
 
 ## The short version for the fridge
 
-You choose the connections. Private message content stays private. Biometric data stays on-device and in your private Waldo instance. It is encrypted, not sold, not shared with third parties, and not used to train models.
+You choose the connections. Private message content stays private. Biometric data stays on-device and inside your private Waldo instance. It is encrypted, never sold, never shared with third parties, and never used to train models.
 
 Waldo should be able to explain what it touched and let you undo it. If that standard is not met, it is not ready for your data.
 

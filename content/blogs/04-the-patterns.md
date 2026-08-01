@@ -4,8 +4,8 @@ status: published
 title: You are stuck in a loop and your AI cannot tell
 tags: [waldo, blog, patterns, memory]
 created: 2026-07-28
-published: 2026-08-01
-updated: 2026-08-01
+published: 2026-07-28
+updated: 2026-07-28
 site_section: constellation
 ---
 
@@ -15,15 +15,15 @@ Count how many times you have explained your job to an AI this month.
 
 Not asked it something. Explained yourself to it. Who you are, what you do, what the project is, what you tried last week, why the obvious answer will not work here. You typed all of that out, got something useful, closed the tab, and then did the entire thing again on Thursday from scratch.
 
-You are not using an assistant. You are running a very good intern through orientation, again and again, forever.
+You are not quite using an assistant. You are running a very good intern through orientation again and again, forever.
 
 ## The loop
 
-It goes like this. You hit something hard. You describe it in detail. You get a solid answer, or three quarters of one. You apply it. It half works. You go back and explain the same context again to describe the new problem.
+It goes like this: you hit something hard, describe it in detail, and get a solid answer, or perhaps three quarters of one. You apply it. It half works. So you go back, explain the same context, and describe the new problem.
 
 Later you have the identical conversation about the identical problem, and neither of you notices, because one of you is exhausted and the other one has no memory of the last session.
 
-The output is genuinely good every time. That is what makes it hard to see. Nothing is broken, nothing accumulates. Every session starts at zero and ends at zero. It is Groundhog Day with a token bill.
+The output can be genuinely good. That is what makes the problem hard to see. Nothing is obviously broken; nothing accumulates either. Every session starts at zero and ends at zero. It is Groundhog Day with a token bill.
 
 The missing thing is not intelligence. It is the second time. Nobody is holding the observation from two weeks ago next to the one from today and going: hang on, this is the same thing.
 
@@ -59,7 +59,7 @@ Every one of those is boring on its own. That is the point. It is boring, specif
 
 ## Then the Spots start touching each other
 
-The interesting part is not the individual observation. It is what happens when two of them turn out to be the same story.
+The interesting part is not one observation. It is the moment two of them turn out to belong to the same story.
 
 Late messages and next-morning sleep efficiency. Meeting density and the recovery slope that follows. Which hours you take hard conversations in and how those conversations tend to go.
 
@@ -79,7 +79,7 @@ Compounding is invisible per unit and enormous over time. You cannot feel a slig
 
 ## What we do about it
 
-Waldo watches continuously and keeps what it learns, which is the entire difference. Every pass adds observations to a memory that persists, so today's data arrives next to everything before it rather than alone.
+Waldo watches continuously and keeps what it learns. That is the entire difference. Each pass adds observations to a memory that persists, so today's data arrives beside what came before instead of arriving alone.
 
 When something crosses the confidence bar it becomes a Spot and you get told only if it is actually new. Then Waldo acts on the ones that have an action. Your sharp window is in the morning, so that block gets held for the hard problem and the standup goes somewhere else. It tells you it did that, and why, in one line.
 

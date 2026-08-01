@@ -3,17 +3,17 @@ type: article
 status: published
 title: What a CLI agent actually is, explained like you are five
 tags: [waldo, blog, agents]
-created: 2026-07-28
-published: 2026-08-01
-updated: 2026-08-01
+created: 2026-07-20
+published: 2026-07-20
+updated: 2026-07-20
 site_section: death-of-the-chatbox
 ---
 
 # What a CLI agent actually is, explained like you are five
 
-Most people think AI is a website where you type a question and get paragraphs back.
+Most people know AI as a website where you type a question and get a few paragraphs back.
 
-That is one kind of AI. It is the least interesting kind. It is also the only kind most people have ever touched, which is a bit like thinking cars are the thing you sit in at the DMV.
+That version is useful, but it is only one version. Thinking it is the whole story is a bit like thinking a car is the chair you sit in at the DMV.
 
 Here is the rest of it.
 
@@ -23,7 +23,7 @@ Before your computer had icons, it had a black rectangle with a blinking line. Y
 
 That rectangle is the command line. CLI stands for command line interface. That is the whole acronym. It is not a technology, it is a doorway.
 
-The doorway matters because on the other side of it sits your actual computer. Your files. Your projects. Your ability to install things, move things, run things, break things. A chat website sits outside that door and can only talk about what is behind it. A program in the terminal is inside the room.
+The doorway matters because your actual computer sits on the other side: your files, your projects, and the ability to install, move, run, or break things. A chat website stands outside and talks about the room. A program in the terminal is already inside it.
 
 ## Now the difference between a chatbot and an agent
 
@@ -31,7 +31,7 @@ A chatbot is a very well read person on the phone.
 
 You describe your problem. They describe a solution. You go do it. You come back and say it did not work. They describe another one. This can go on all afternoon and at the end of it, the well read person has done exactly zero things and you have done all of them.
 
-An agent is the same well read person, except you handed them your keys.
+An agent is the same well-read person, except you handed them the keys.
 
 They open the file themselves. They read it. They notice the error is somewhere else than you thought. They change it. They run the test. The test fails differently now, which is progress. They read the new error. They change something else. They run it again. It passes. They tell you what they did.
 
@@ -55,7 +55,7 @@ The gap is not intelligence. Same model underneath, often literally the same one
 
 This is the part nobody puts in the launch video.
 
-You install a runtime. Wrong version. You install a version manager to manage the version. You install the agent. It asks for an API key. You make an account, add a card, generate a key, and now the key is in your clipboard and you have to decide, with no guidance, whether pasting it into a file called `.env` is a normal thing to do.
+You install a runtime. Wrong version. So you install a version manager to manage the version, then install the agent. It asks for an API key. You make an account, add a card, generate the key, and now it is sitting in your clipboard while you decide, with no guidance, whether pasting it into a file called `.env` is a normal thing to do.
 
 Then you want it to see your calendar, so you learn what MCP is. Then you edit a JSON config file, and JSON does not forgive a trailing comma. Then you decide which actions it is allowed to take without asking, which is genuinely a security question, and you are answering it late at night based on vibes.
 
@@ -75,7 +75,7 @@ The capability is real. The doorway is stupid.
 
 ## Which is roughly what we are building
 
-Waldo is an agent that runs the loop without asking you to open anything. It is not in a terminal. There is no config file, no API key, no JSON. It connects to what you already use and then goes quiet.
+Waldo runs that same loop without asking you to live in a terminal. There is no config file, no API key, and no JSON to repair. It connects to the tools you already use, does the work it is allowed to do, and then goes quiet.
 
 What it does with that access is the part we care about. It reads your body through the wearable you already own, reads your day through the tools you already use, and acts on the gap between them. You slept badly and an important call is first thing. It moved what did not need to be there and left the preparation window clear. You find out afterwards.
 

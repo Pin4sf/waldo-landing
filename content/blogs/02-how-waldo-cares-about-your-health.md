@@ -3,9 +3,9 @@ type: article
 status: published
 title: Your health app is a mirror. Mirrors do not catch you.
 tags: [waldo, blog, health]
-created: 2026-07-28
-published: 2026-08-01
-updated: 2026-08-01
+created: 2026-07-23
+published: 2026-07-23
+updated: 2026-07-23
 site_section: what-is-waldo
 ---
 
@@ -15,13 +15,13 @@ You wore something on your wrist all night. It measured your heart, your breathi
 
 In the morning it gave you a number.
 
-You looked at the number. You felt briefly bad about the number. Then you went and did exactly what you were already going to do that day, because the calendar was packed and the number does not attend meetings.
+You looked at the number, felt briefly bad about it, and then did exactly what you were already going to do. The calendar was packed, and the number does not attend meetings.
 
 That is the whole industry. We built the most intimate measurement apparatus in human history and then handed people a score and walked away.
 
 ## Advice is not care
 
-Open almost any health app after a bad night and you will get some version of: go to bed earlier, drink water, try to reduce stress.
+Open almost any health app after a bad night and you will get some version of the same advice: go to bed earlier, drink water, try to reduce stress.
 
 Thank you. Genuinely. I had not considered sleeping.
 
@@ -33,7 +33,7 @@ The gap that matters is not between what you know and what you should do. Most p
 
 ## What noticing looks like
 
-There is a difference between measuring you and paying attention to you, and it comes down to whether anything is kept.
+There is a difference between measuring you and paying attention. It comes down to what gets remembered.
 
 Measuring is a reading. Paying attention is a reading compared against every other reading, over months, until shapes appear.
 
@@ -53,7 +53,7 @@ None of that is advice. It is just something true about you that was sitting in 
 
 Every serious athlete has a coach for one reason, and it is not motivation. It is that you are a bad judge of your own capacity in both directions.
 
-On the days you feel terrible you may have more in the tank than you think, because an early morning can feel rough before the day has even started. On the days you feel invincible you may already be running on the last of it. Your subjective read is noisy. Your physiology adds another signal.
+On a rough morning, you may have more in the tank than it feels like. On a day when you feel invincible, you may already be running on the last of it. Your own read is noisy. Your physiology adds another signal.
 
 This is why "listen to your body" is such useless advice on its own. Your body is not speaking English. It is emitting heart rate variability, resting heart rate, sleep architecture, and recovery slope, and those signals need interpretation before they can inform the day.
 
@@ -71,9 +71,9 @@ So the thing has to come to you. Not with a notification showing another score, 
 
 ## What we built
 
-Waldo reads your body through the wearable you already wear and your day through the tools you already use, and it acts on the distance between them.
+Waldo reads your body through the wearable on your wrist and your day through the tools you already use. Then it acts on the distance between them.
 
-In practice that looks like The Brief in the morning telling you what kind of day your body has prepared for, and what got adjusted. It looks like the harder meeting moved to the hour where you are actually sharp, and the one that could have been async made async. It looks like a message in the afternoon when your stress has been climbing, before you have consciously registered that you are wound up.
+In practice, The Brief tells you what kind of day your body has prepared for and what Waldo already adjusted. The harder meeting moves to an hour when you are actually sharp. The one that could have been async becomes async. If stress keeps climbing in the afternoon, Waldo says so before you have quite registered it yourself.
 
 Rough night, so it cleared the morning and pushed the first meeting later. That is the shape of it. It tells you the reason, it leaves you the undo, and then it stops talking. There is no streak. There is no encouragement. Waldo does not think you have got this. Waldo thinks there is a meeting you should not take today.
 

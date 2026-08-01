@@ -6,6 +6,7 @@ import type { ComponentPropsWithoutRef, ReactNode } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
+import { ArticleListenPlayer } from "@/components/blog/article-listen-player";
 import { CopyLinkButton } from "@/components/blog/copy-link-button";
 import {
   BLOG_POSTS,
@@ -180,6 +181,8 @@ export default async function BlogArticlePage({ params }: PageProps) {
           />
           <figcaption>{post.artCredit}</figcaption>
         </figure>
+
+        <ArticleListenPlayer src={post.audio} />
 
         <div className="blog-mobile-actions">
           <CopyLinkButton title={post.title} />

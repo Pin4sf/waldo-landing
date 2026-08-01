@@ -3,25 +3,25 @@ type: article
 status: published
 title: We put a Dalmatian on it, and we would like to explain ourselves
 tags: [waldo, blog, brand]
-created: 2026-07-28
-published: 2026-08-01
-updated: 2026-08-01
+created: 2026-07-25
+published: 2026-07-25
+updated: 2026-07-25
 site_section: brand
 ---
 
 # We put a Dalmatian on it, and we would like to explain ourselves
 
-Every AI product launching right now has the same logo. A gradient. Some kind of orb, sphere, or star. Purple to blue if they are feeling serious, orange to pink if they are feeling friendly. You could swap any two of them and nobody would file a complaint.
+Every AI product launching right now seems to have the same logo: a gradient, an orb, a sphere, perhaps a star. Purple to blue when it wants to feel serious. Orange to pink when it wants to feel friendly. You could swap any two and nobody would file a complaint.
 
 We have a dog.
 
-Not as a joke, though it is a little bit funny, and not because we ran out of gradients. Because the thing we are building sits closer to you than software normally gets, and software that sits that close needs a shape you can recognise.
+Not as a joke, though it is a little funny, and not because we ran out of gradients. We chose a dog because Waldo sits closer to you than software normally does, and something that close needs a shape you can recognise.
 
 ## The problem with an orb
 
 Waldo is going to move your meetings. It is going to read the signals your wearable collected overnight. It will occasionally tell you that today is not the day for the hard conversation.
 
-You have to have a relationship with something that does that. Not a friendship, nothing weird, but some working model in your head of what it is like. What it will and will not do. Whether it is going to nag you. Whether it is on your side.
+You need some kind of relationship with a thing that does that. Not a friendship, nothing weird. Just a working model in your head: what it will do, what it will not do, whether it will nag you, and whether it is on your side.
 
 An orb gives you nothing to hold. So people default to the only model they have, which is the chatbot, and the chatbot model is wrong in a specific and damaging way: it makes you think you have to ask. The entire point is that you do not have to ask.
 
@@ -35,7 +35,7 @@ A Golden Retriever would have been the easy call. Warm, universally liked, extre
 
 Also wrong. Golden Retrievers are lovely and famously not paying attention.
 
-Dalmatians are the ones that lived in firehouses. Not as decoration. They ran ahead of horse-drawn fire engines as living sirens, guarded the horses at the scene, and helped keep them calm in the noise. Alert, useful, and alongside the work. That is quite specifically the job.
+Dalmatians are the dogs that lived in firehouses, and not as decoration. They ran with horse-drawn fire engines, guarded the horses at the scene, and helped keep them calm in the noise. Alert, useful, and alongside the work. That is quite specifically the job.
 
 And then there are the spots.
 
@@ -77,7 +77,7 @@ That is the ambition, anyway. Physical Waldo is a sketch and a few conversations
 
 ## The short version
 
-We are asking people to let software act for them using data from inside their own bodies. That is a big ask, and it is not won with a feature list.
+We are asking people to let software act for them using signals from inside their own bodies. That is a big ask. A feature list will not earn it.
 
 Every other health brand talks to the version of you that is trying. The one with a plan, and a streak, and a fresh start on Monday. We are talking to the version of you that is tired of trying and would quite like something competent to take a few things off the pile.
 

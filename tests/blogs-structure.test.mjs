@@ -29,8 +29,18 @@ test("both navigation systems enable Blog and point to /blogs", () => {
 });
 
 test("the six published essays are local content with explicit metadata", () => {
-  const files = readdirSync("content/blogs").filter((file) => file.endsWith(".md"));
+  const files = readdirSync("content/blogs")
+    .filter((file) => file.endsWith(".md"))
+    .sort();
   assert.equal(files.length, 6);
+  const publicationDates = [
+    "2026-07-20",
+    "2026-07-23",
+    "2026-07-25",
+    "2026-07-28",
+    "2026-07-30",
+    "2026-08-01",
+  ];
 
   const data = read("lib/blog-posts.ts");
   assert.match(data, /export const BLOG_POSTS/);
@@ -39,12 +49,22 @@ test("the six published essays are local content with explicit metadata", () => 
   assert.match(data, /artCredit: "Waldo, made with OpenAI"/);
   assert.doesNotMatch(data, /Corben/i);
 
-  for (const file of files) {
+  for (const [index, file] of files.entries()) {
     const source = read(`content/blogs/${file}`);
     assert.match(source, /^---/);
     assert.match(source, /^title:/m);
     assert.match(source, /^status: published/m);
-    assert.match(source, /^published: 2026-08-01/m);
+    assert.match(source, new RegExp(`^created: ${publicationDates[index]}$`, "m"));
+    assert.match(source, new RegExp(`^published: ${publicationDates[index]}$`, "m"));
+    assert.match(source, new RegExp(`^updated: ${publicationDates[index]}$`, "m"));
+  }
+
+  for (let index = 1; index < publicationDates.length; index += 1) {
+    const gap =
+      (new Date(`${publicationDates[index]}T12:00:00Z`) -
+        new Date(`${publicationDates[index - 1]}T12:00:00Z`)) /
+      86_400_000;
+    assert.ok(gap === 2 || gap === 3, `expected a 2–3 day gap, received ${gap}`);
   }
 });
 
@@ -83,9 +103,39 @@ test("blog styling uses the current Mottle headline token and Every-inspired rea
   assert.equal(existsSync("app/blogs/rss.xml/route.ts"), true);
 });
 
+test("articles include an accessible New Yorker-inspired listen control", () => {
+  assert.equal(existsSync("components/blog/article-listen-player.tsx"), true);
+
+  const article = read("app/blogs/[slug]/page.tsx");
+  const player = read("components/blog/article-listen-player.tsx");
+  const globals = read("app/globals.css");
+
+  assert.match(article, /ArticleListenPlayer/);
+  assert.match(article, /src=\{post\.audio\}/);
+  assert.match(player, /<audio/);
+  assert.match(player, /preload="metadata"/);
+  assert.match(player, /onPlay/);
+  assert.match(player, /onPause/);
+  assert.match(player, /onError/);
+  assert.match(player, /Loading audio/);
+  assert.match(player, /Pause/);
+  assert.match(player, /Resume/);
+  assert.match(player, /aria-live="polite"/);
+  assert.match(player, /Article narration progress/);
+  assert.match(player, /Skip back 15 seconds/);
+  assert.match(player, /Skip forward 15 seconds/);
+  assert.match(player, /Playback speed/);
+  assert.match(player, /setPlaybackRate/);
+  assert.match(globals, /\.blog-listen-player/);
+
+  const audioFiles = readdirSync("public/assets/blogs/audio").filter((file) => file.endsWith(".m4a"));
+  assert.equal(audioFiles.length, 6);
+});
+
 test("draft gating is enforced before posts reach the index or feed", () => {
   const data = read("lib/blog-posts.ts");
   assert.match(data, /post\.status === "published"/);
+  assert.match(data, /b\.datePublished\.localeCompare\(a\.datePublished\)/);
 
   const feed = read("app/blogs/rss.xml/route.ts");
   assert.match(feed, /BLOG_POSTS\.map/);

@@ -3,9 +3,9 @@ type: article
 status: published
 title: Nobody wants to explain their job to a computer every morning
 tags: [waldo, blog, connectors, professions]
-created: 2026-07-28
-published: 2026-08-01
-updated: 2026-08-01
+created: 2026-07-30
+published: 2026-07-30
+updated: 2026-07-30
 site_section: connectors-and-profession-cards
 ---
 
@@ -13,17 +13,17 @@ site_section: connectors-and-profession-cards
 
 There is a specific kind of insult that fitness software has perfected.
 
-It is early. You are a nurse. You finished a long night shift not long ago, you have been on your feet since yesterday, and your watch buzzes to say you should push harder today because your readiness is looking good.
+It is early. You are a nurse, you have just finished a long night shift, and you have been on your feet since yesterday. Your watch buzzes to say you should push harder today because your readiness is looking good.
 
 Push harder. Sure. Let me find some more hours.
 
-The software is not being cruel, it is being ignorant, and the two feel identical from the receiving end. It has your heart rate. It does not have the faintest idea what your life looks like, and it has never occurred to it to find out.
+The software is not being cruel. It is being ignorant, and from the receiving end those can feel identical. It has your heart rate. It has no idea what your life looks like, and it has never occurred to it to find out.
 
 ## The tax nobody mentions
 
 The workaround is that you tell it. Every tool that wants to be useful about your day starts by asking you to describe your day.
 
-So you fill in the onboarding. You pick your goals. You set your schedule, your typical wake time, your work hours, your training days. A pile of forms later, you have taught it a version of your life that was accurate on the day you typed it and started decaying immediately, because the project shifted, the shift pattern rotated, the client moved the deadline, and you are not going back into settings to update a form about it.
+So you fill in the onboarding. You pick your goals and enter your schedule, wake time, work hours, and training days. A pile of forms later, you have taught it a version of your life that was accurate on the day you typed it and began decaying immediately. The project shifts. The rota changes. A client moves the deadline. You are not going back into settings to keep a form informed.
 
 The tools that ask less just guess more, which is worse. The tools that ask more get abandoned during setup.
 
@@ -45,7 +45,7 @@ That overlap is the product. Not "reads your health data." Not "manages your cal
 
 A connector is a permissioned connection to a tool you already use. Calendar, mail, GitHub, Linear, Drive. It can read the context you approve and, when you allow it, carry out a specific action. You choose the access and can change it.
 
-What it buys you is that less needs describing. It does not need to ask what kind of week you are having when several deadlines land together. It does not need to ask whether a meeting is important when the calendar metadata already shows who is on it and where it came from.
+What it buys you is less explaining. Waldo does not need to ask what kind of week you are having when several deadlines land together. It does not need to ask whether a meeting is important when the calendar metadata already shows who is on it and where it came from.
 
 The forms disappear. That is the pitch. There is no profile to maintain, because the profile is your actual working life, arriving live.
 
@@ -65,7 +65,7 @@ Same system underneath. The difference is which hour it protects and what it put
 
 ## The executive view, which is a pompous name for a short list
 
-What you actually want in the morning is not another screen. It is the answer to one question: what is mine to deal with today.
+What you actually want in the morning is not another screen. It is the answer to one question: what is mine to deal with today?
 
 Not everything that happened. Not a wall of notification badges. The few things that will matter by tonight, in the order your capacity can take them, with the context attached and the rest held back.
 
