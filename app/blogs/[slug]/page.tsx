@@ -6,6 +6,7 @@ import type { ComponentPropsWithoutRef, ReactNode } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
+import { ArticleContents } from "@/components/blog/article-contents";
 import { ArticleListenPlayer } from "@/components/blog/article-listen-player";
 import { CopyLinkButton } from "@/components/blog/copy-link-button";
 import {
@@ -189,7 +190,7 @@ export default async function BlogArticlePage({ params }: PageProps) {
         </div>
 
         <details className="blog-mobile-contents">
-          <summary>In this article</summary>
+          <summary>On this page</summary>
           <ol>
             {headings.map((heading) => (
               <li key={heading.id}>
@@ -200,17 +201,6 @@ export default async function BlogArticlePage({ params }: PageProps) {
         </details>
 
         <div className="blog-reading-grid">
-          <aside className="blog-contents" aria-label="Article contents">
-            <p>In this article</p>
-            <ol>
-              {headings.map((heading) => (
-                <li key={heading.id}>
-                  <a href={`#${heading.id}`}>{heading.label}</a>
-                </li>
-              ))}
-            </ol>
-          </aside>
-
           <div className="blog-prose">
             <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
               {content}
@@ -245,6 +235,8 @@ export default async function BlogArticlePage({ params }: PageProps) {
           <aside className="blog-actions-rail">
             <CopyLinkButton title={post.title} />
           </aside>
+
+          <ArticleContents headings={headings} />
         </div>
 
         <footer className="blog-related">
