@@ -90,6 +90,7 @@ test("every article has a generated hero asset and sitemap entry", () => {
 test("blog styling uses the current Mottle headline token and Every-inspired reading details", () => {
   const globals = read("app/globals.css");
   const article = read("app/blogs/[slug]/page.tsx");
+  const contents = read("components/blog/article-contents.tsx");
 
   assert.match(globals, /\.blog-display\s*\{[^}]*font-family:\s*var\(--font-headline\)/s);
   assert.match(globals, /\.blog-prose\s*\{[^}]*max-width:\s*680px/s);
@@ -98,6 +99,17 @@ test("blog styling uses the current Mottle headline token and Every-inspired rea
   assert.match(article, /dateModified/);
   assert.match(article, /Waldo team/);
   assert.match(article, /blog-heading-anchor/);
+  assert.match(article, /ArticleContents/);
+  assert.match(contents, /On this page/);
+  assert.match(contents, /aria-current/);
+  assert.match(contents, /requestAnimationFrame/);
+  assert.match(contents, /blog-contents-route/);
+  assert.match(contents, /getPointAtLength/);
+  assert.match(contents, /strokeDashoffset/);
+  assert.match(globals, /\.blog-contents-link\[aria-current="location"\]/);
+  assert.match(globals, /\.blog-contents-route/);
+  assert.match(globals, /\.blog-contents-route-progress/);
+  assert.doesNotMatch(globals, /--border-strong/);
   assert.match(article, /relatedPosts = \[1, 2\]/);
   assert.match(read("app/blogs/layout.tsx"), /Skip to article content/);
   assert.equal(existsSync("app/blogs/rss.xml/route.ts"), true);
