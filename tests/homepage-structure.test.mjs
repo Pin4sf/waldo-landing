@@ -223,10 +223,8 @@ test("new homepage nav uses the menu button and full nav option set", () => {
   const nav = read("components/home/new-home-nav.tsx");
   const desktopNav = read("components/navbar.tsx");
   assert.match(nav, /Menu/);
-  assert.match(nav, /\{ label: "Features", tooltip: "Explore the full tour of Waldo\." \}/);
-  assert.doesNotMatch(nav, /\{ label: "Features", href:/);
-  assert.match(desktopNav, /\{ label: "Features", tooltip: "Explore the full tour of Waldo\." \}/);
-  assert.doesNotMatch(desktopNav, /\{ label: "Features", href:/);
+  assert.match(nav, /\{ label: "Features", tooltip: "Explore the full tour of Waldo\.", href: "\/features" \}/);
+  assert.match(desktopNav, /\{ label: "Features", tooltip: "Explore the full tour of Waldo\.", href: "\/features" \}/);
   assert.match(nav, /Pricing/);
   assert.match(nav, /Blog/);
   assert.match(nav, /Sign In/);
@@ -1155,4 +1153,13 @@ test("new homepage includes the where beat and updated closing CTA copy", () => 
   assert.match(globals, /@media\s*\(max-width:\s*734px\)\s*\{[\s\S]*\.new-scene-close-copy\s*\{[^}]*font-size:\s*1\.125rem/);
   assert.doesNotMatch(globals, /\.new-scene-close-title\s*\{[^}]*8\.8rem/s);
   assert.doesNotMatch(globals, /\.new-scene-close-copy\s*\{[^}]*3rem/s);
+});
+
+test("landing footer links to Waldo's philosophy brief", () => {
+  const closeSection = read("components/sections/downstream-build-sections.tsx");
+
+  assert.match(closeSection, /Our philosophy/);
+  assert.match(closeSection, /https:\/\/waldo-technical-brief\.pages\.dev\/waldo-pitchdeck\.pdf/);
+  assert.match(closeSection, /target="_blank"/);
+  assert.match(closeSection, /rel="noreferrer"/);
 });

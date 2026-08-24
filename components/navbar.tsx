@@ -12,7 +12,7 @@ type HeaderLink = {
 };
 
 const links: HeaderLink[] = [
-  { label: "Features", tooltip: "Explore the full tour of Waldo." },
+  { label: "Features", tooltip: "Explore the full tour of Waldo.", href: "/features" },
   { label: "Pricing", tooltip: "free to find out. when we're ready." },
   { label: "Blog", tooltip: "waldo's been busy. so have we.", href: "/blogs" },
   { label: "Sign in", tooltip: "you're early. that's actually a good sign." },
