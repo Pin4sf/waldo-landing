@@ -331,6 +331,14 @@ export function SceneCloseSection() {
                 {label}
               </a>
             ))}
+            <a
+              href="https://waldo-technical-brief.pages.dev/waldo-pitchdeck.pdf"
+              target="_blank"
+              rel="noreferrer"
+              className="type-caption rounded-full border border-white/18 bg-[rgba(26,26,26,0.68)] px-3 py-2 text-white/76 backdrop-blur-[2px] transition-[background-color,border-color,color,transform] duration-200 ease-[var(--ease-premium)] hover:-translate-y-1 hover:border-white/34 hover:bg-[rgba(26,26,26,0.82)] hover:text-white"
+            >
+              Our philosophy
+            </a>
             <span className="type-caption rounded-full border border-white/12 bg-[rgba(26,26,26,0.48)] px-3 py-2 text-white/54 backdrop-blur-[2px]">(c) 2026</span>
           </div>
         </div>
