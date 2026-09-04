@@ -291,14 +291,29 @@ export default function WhyWaldoPage() {
           <p>Most software treats these as separate worlds.</p>
           <p className="font-medium text-[var(--ink)]">Waldo does not.</p>
           <p>
+            We believe a truly personal agent needs a continuing understanding of the person across these boundaries.
+          </p>
+          <ThesisCallout>
+            Being personal is not only about knowing who you are. It is also about understanding the state you are in.
+          </ThesisCallout>
+          <p>
+            Your priorities change. Your capacity changes. New commitments appear. Work becomes blocked. Plans move. Some days you have room to take on more; on others, protecting your attention matters more.
+          </p>
+          <p>
+            A personal agent should understand that changing state and adapt how it plans, prioritizes, delegates, interrupts, or leaves you alone.
+          </p>
+          <p>
             Waldo is designed as one continuing relationship across work and life, instead of a different assistant for every part of you.
           </p>
         </ThesisSection>
 
         <ThesisSection eyebrow="06" title="Health-aware by design">
-          <p>A truly personal agent should understand more than your inbox and calendar.</p>
+          <p>A truly personal agent should understand more than your inbox, calendar, and stored preferences.</p>
           <p>
-            With your permission, Waldo can use personal context such as sleep, recovery, stress, activity, and changing capacity to better understand how to help.
+            It should have some understanding of the human behind them and how that person&apos;s state is changing over time.
+          </p>
+          <p>
+            With your permission, Waldo can use signals such as sleep, recovery, stress, activity, and changing capacity as part of that understanding.
           </p>
           <div className="my-8 space-y-1 border-l-2 border-[var(--accent)] pl-5 text-[var(--ink)] sm:pl-6">
             <p>Not as another health dashboard.</p>
@@ -309,8 +324,12 @@ export default function WhyWaldoPage() {
             A low-recovery day may mean protecting focus, moving lower-priority work, delegating more, or reducing unnecessary interruptions.
           </p>
           <p>A high-capacity day may look different.</p>
+          <p className="font-medium text-[var(--ink)]">Health is one part of understanding your state.</p>
+          <p>
+            It gives Waldo context that most software does not have: not just what needs to happen, but something about the person who has to live through it.
+          </p>
           <p className="font-medium text-[var(--ink)]">
-            Health becomes part of understanding you, not another score for you to manage.
+            Health becomes context for agency, not another score for you to manage.
           </p>
         </ThesisSection>
 
@@ -408,9 +427,18 @@ export default function WhyWaldoPage() {
                 <p>Waldo keeps the difference visible.</p>
               </Principle>
 
-              <Principle title="Personal means more than memory">
-                <p>Remembering your favorite airline or writing style is useful.</p>
-                <p>But understanding your priorities, capacity, commitments, preferences, corrections, and changing circumstances is what makes an agent meaningfully personal.</p>
+              <Principle title="Personal means understanding the person">
+                <p>Memory is part of being personal, but it is not enough.</p>
+                <p>
+                  A truly personal agent should understand both <strong className="font-medium text-[var(--ink)]">who you are</strong> and <strong className="font-medium text-[var(--ink)]">the state you are in</strong>.
+                </p>
+                <p>
+                  Your priorities, commitments, relationships, preferences, corrections, capacity, unfinished work, and changing circumstances all shape what the right action is.
+                </p>
+                <p>The same request may deserve a different response on two different days.</p>
+                <p>
+                  Waldo should understand enough of that changing context to plan, prioritize, delegate, interrupt, or leave you alone appropriately.
+                </p>
               </Principle>
 
               <Principle title="More intelligence should create more human agency">
@@ -442,9 +470,9 @@ export default function WhyWaldoPage() {
 
         <section className="border-t border-black/[0.08] py-[clamp(6rem,10vw,10rem)]">
           <div className="mx-auto w-full max-w-[1180px] px-[clamp(1.25rem,3vw,3.5rem)]">
-            <div className="max-w-[1040px]">
+            <div className="max-w-[920px]">
               <p className="type-caption text-[var(--text-tertiary)]">The long-term idea</p>
-              <div className="mt-7 space-y-1 text-[clamp(2.1rem,1.45rem+2.7vw,4.15rem)] leading-[1.04] tracking-[-0.035em] text-[var(--ink)] sm:mt-8">
+              <div className="mt-7 space-y-1 text-[clamp(1.9rem,1.45rem+1.8vw,3.45rem)] leading-[1.08] tracking-[-0.03em] text-[var(--ink)] sm:mt-8">
                 <p>Models will keep getting better.</p>
                 <p>Specialist agents will keep multiplying.</p>
                 <p>Tools will change.</p>
@@ -455,17 +483,19 @@ export default function WhyWaldoPage() {
                 The part that should remain constant is the agent that works for you.
               </p>
 
-              <p
-                className="type-display mt-7 max-w-[980px] text-[var(--ink)] sm:mt-8"
+              <h2
+                className="type-display mt-8 max-w-[760px] text-[var(--ink)] sm:mt-10"
                 style={{
-                  fontSize: "clamp(2.2rem, 1.45rem + 3vw, 4.4rem)",
-                  lineHeight: 1.05,
+                  fontSize: "clamp(2.6rem, 2rem + 2.6vw, 4.6rem)",
+                  lineHeight: 1,
                   letterSpacing: "-0.025em",
                 }}
               >
-                <span className="block">One personal agent that understands you,</span>
-                <span className="block">coordinates the intelligence around you,</span>
-                <span className="block">and carries your outcomes to completion.</span>
+                One person. One Waldo.
+              </h2>
+
+              <p className="mt-6 max-w-[700px] text-[clamp(1.08rem,1rem+.3vw,1.32rem)] leading-[1.58] tracking-[-0.012em] text-[var(--text-secondary)]">
+                An agent that understands you, coordinates the intelligence around you, and carries your outcomes to completion.
               </p>
 
               <p className="mt-8 text-[clamp(1rem,.965rem+.18vw,1.125rem)] font-medium leading-[1.6] text-[var(--ink)]">
