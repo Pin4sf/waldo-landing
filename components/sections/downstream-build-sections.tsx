@@ -82,9 +82,9 @@ const footerLinks = [
   ["Pattern", "#constellation"],
 ] as const;
 
-const closeHeadlineCopy = "Your health isn’t going to fix itself.";
-const closePrimaryCopy = "Get Waldo. Free to start. Works with the device you own.";
-const closeSecondaryCopy = "And then you'll be the one they're looking out for.";
+const closeHeadlineCopy = "More intelligence. Less for you to carry.";
+const closePrimaryCopy = "One Waldo across work and life,";
+const closeSecondaryCopy = "coordinating the intelligence around you and carrying what matters forward.";
 
 function FooterScenePicture({
   className,
@@ -299,9 +299,9 @@ export function SceneCloseSection() {
         style={{ transform: `translate3d(0, ${contentShift}px, 0)`, willChange: "transform" }}
       >
         <h2 className="new-scene-close-title text-[var(--ink)]" data-animate="headline" aria-label={closeHeadlineCopy}>
-          Your health isn’t
+          More intelligence.
           <br />
-          going to fix itself.
+          Less for you to carry.
         </h2>
         <p className="new-scene-close-copy">
           {closePrimaryCopy}
@@ -319,7 +319,7 @@ export function SceneCloseSection() {
         >
           <div>
             <p className="type-label text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.42)]">Waldo</p>
-            <p className="type-caption mt-2 max-w-[28rem] text-white/76 drop-shadow-[0_1px_2px_rgba(0,0,0,0.48)]">Quietly reads the day, changes what can move, and leaves the important work intact.</p>
+            <p className="type-caption mt-2 max-w-[28rem] text-white/76 drop-shadow-[0_1px_2px_rgba(0,0,0,0.48)]">Understands the person, coordinates the agents, and carries the outcome forward.</p>
           </div>
           <div className="flex flex-wrap gap-2 sm:justify-end" aria-label="Footer navigation">
             {footerLinks.map(([label, href]) => (
