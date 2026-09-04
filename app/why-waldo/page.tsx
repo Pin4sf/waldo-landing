@@ -1,13 +1,28 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { NewHomeNav } from "@/components/home/new-home-nav";
+import { SceneCloseSection } from "@/components/sections/downstream-build-sections";
+import { ScrollAnimations } from "@/components/scroll-animations";
+import { SmoothScroll } from "@/components/smooth-scroll";
 import { OG_IMAGE_URL, SITE_URL } from "@/lib/site-metadata";
 
 const pageTitle = "Why Waldo — One personal agent for a world full of agents";
 const pageDescription =
   "Waldo is a personal agent across work and life that understands you, coordinates specialist AI agents and tools, and carries outcomes from intent to resolution.";
+
+const sectionHeadingStyle = {
+  fontSize: "clamp(2rem, 1.52rem + 1.8vw, 3.1rem)",
+  lineHeight: 1.05,
+};
+
+const calloutStyle = {
+  fontSize: "clamp(1.5rem, 1.2rem + 1vw, 2.15rem)",
+  lineHeight: 1.16,
+};
+
+const bodyClassName =
+  "max-w-[68ch] space-y-5 text-[clamp(1rem,.965rem+.18vw,1.125rem)] leading-[1.65] tracking-[-0.012em] text-[var(--text-secondary)]";
 
 export const metadata: Metadata = {
   title: { absolute: pageTitle },
@@ -34,33 +49,45 @@ function ThesisSection({
   children,
 }: {
   eyebrow?: string;
-  title: string;
+  title: ReactNode;
   children: ReactNode;
 }) {
   return (
-    <section className="border-t border-black/[0.08] py-20 sm:py-24 lg:py-28">
-      <div className="mx-auto grid w-full max-w-[1200px] gap-8 px-[clamp(1rem,.5rem+3vw,2.5rem)] lg:grid-cols-[minmax(0,280px)_minmax(0,720px)] lg:gap-20">
-        <div>
+    <section className="border-t border-black/[0.08] py-[clamp(4.75rem,7.5vw,8.5rem)]">
+      <div className="mx-auto grid w-full max-w-[1180px] gap-9 px-[clamp(1.25rem,3vw,3.5rem)] lg:grid-cols-[minmax(0,.72fr)_minmax(0,1.55fr)] lg:gap-20 xl:gap-24">
+        <div className="lg:pr-4">
           {eyebrow ? (
             <p className="type-caption text-[var(--text-tertiary)]">{eyebrow}</p>
           ) : null}
-          <h2 className="mt-3 font-[var(--font-headline)] text-[clamp(1.75rem,1.35rem+1.8vw,2.6rem)] font-normal leading-[1.12] tracking-[-0.02em] text-[var(--ink)]">
+          <h2 className="type-h1 mt-4 max-w-[16ch] text-[var(--ink)]" style={sectionHeadingStyle}>
             {title}
           </h2>
         </div>
-        <div className="space-y-5 type-body text-[var(--text-secondary)]">{children}</div>
+        <div className={bodyClassName}>{children}</div>
       </div>
     </section>
   );
 }
 
+function ThesisCallout({ children }: { children: ReactNode }) {
+  return (
+    <div className="my-8 border-l-2 border-[var(--accent)] pl-5 sm:pl-6">
+      <p className="type-h2 max-w-[26ch] text-[var(--ink)]" style={calloutStyle}>
+        {children}
+      </p>
+    </div>
+  );
+}
+
 function Principle({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <article className="border-t border-black/[0.08] pt-6">
-      <h3 className="font-[var(--font-body)] text-lg font-medium tracking-[-0.01em] text-[var(--ink)]">
+    <article className="border-t border-black/[0.08] pt-6 sm:pt-7">
+      <h3 className="font-[var(--font-body)] text-[clamp(1.12rem,1.03rem+.35vw,1.35rem)] font-medium leading-[1.3] tracking-[-0.015em] text-[var(--ink)]">
         {title}
       </h3>
-      <div className="mt-3 space-y-3 type-body text-[var(--text-secondary)]">{children}</div>
+      <div className="mt-4 max-w-[54ch] space-y-3 text-[clamp(.98rem,.95rem+.12vw,1.08rem)] leading-[1.62] tracking-[-0.01em] text-[var(--text-secondary)]">
+        {children}
+      </div>
     </article>
   );
 }
@@ -95,6 +122,8 @@ const carryLess = [
 export default function WhyWaldoPage() {
   return (
     <div className="new-home min-h-screen bg-[var(--surface-t3)] text-[var(--ink)]">
+      <SmoothScroll />
+      <ScrollAnimations />
       <a
         href="#why-waldo-main"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-[var(--ink)] focus:px-4 focus:py-2 focus:text-[var(--surface-t2)]"
@@ -104,24 +133,34 @@ export default function WhyWaldoPage() {
       <NewHomeNav />
 
       <main id="why-waldo-main">
-        <header className="mx-auto w-full max-w-[1200px] px-[clamp(1rem,.5rem+3vw,2.5rem)] pb-24 pt-28 sm:pb-28 sm:pt-36 lg:pb-36 lg:pt-44">
-          <div className="max-w-[900px]">
+        <header className="mx-auto w-full max-w-[1180px] px-[clamp(1.25rem,3vw,3.5rem)] pb-[clamp(6rem,10vw,10rem)] pt-[clamp(8rem,14vw,12rem)]">
+          <div className="max-w-[940px]">
             <p className="type-caption text-[var(--text-tertiary)]">Why Waldo</p>
-            <h1 className="type-display mt-5 max-w-[860px]">
+            <h1
+              className="type-display mt-6 max-w-[920px] text-[var(--ink)]"
+              style={{
+                fontSize: "clamp(3rem, 2rem + 4.4vw, 6rem)",
+                lineHeight: 0.98,
+                letterSpacing: "-0.03em",
+              }}
+            >
               <span className="block">One personal agent</span>
               <span className="block">for a world full of agents.</span>
             </h1>
-            <p className="mt-8 max-w-[660px] type-body text-[var(--text-secondary)]">
-              Tell Waldo what you want to get done.
-            </p>
-            <p className="mt-3 max-w-[720px] type-body text-[var(--text-secondary)]">
-              Waldo understands your context, coordinates the right AI agents and tools, brings you in when your judgment matters, and carries the work until the outcome is actually resolved.
-            </p>
-            <p className="mt-3 max-w-[720px] type-body text-[var(--text-secondary)]">
-              As AI becomes more capable, people should not have to become managers of AI.
-            </p>
-            <div className="mt-10 max-w-[720px] border-l-2 border-[var(--accent)] pl-5">
-              <p className="font-[var(--font-headline)] text-[clamp(1.4rem,1.15rem+1.2vw,2rem)] leading-[1.2] tracking-[-0.01em] text-[var(--ink)]">
+
+            <div className="mt-9 max-w-[760px] space-y-4 text-[clamp(1.06rem,1rem+.3vw,1.25rem)] leading-[1.58] tracking-[-0.012em] text-[var(--text-secondary)] sm:mt-10">
+              <p>Tell Waldo what you want to get done.</p>
+              <p>
+                Waldo understands your context, coordinates the right AI agents and tools, brings you in when your judgment matters, and carries the work until the outcome is actually resolved.
+              </p>
+              <p>As AI becomes more capable, people should not have to become managers of AI.</p>
+            </div>
+
+            <div className="mt-10 max-w-[760px] border-l-2 border-[var(--accent)] pl-5 sm:mt-12 sm:pl-6">
+              <p
+                className="type-h2 text-[var(--ink)]"
+                style={{ fontSize: "clamp(1.7rem,1.3rem+1.35vw,2.55rem)", lineHeight: 1.1 }}
+              >
                 Waldo turns intent into outcomes.
               </p>
             </div>
@@ -151,54 +190,65 @@ export default function WhyWaldoPage() {
           <p className="font-medium text-[var(--ink)]">
             But completing a task is not the same as delivering the outcome you wanted.
           </p>
-          <div className="my-7 rounded-[24px] border border-black/[0.08] bg-[var(--surface-t2)] p-6 sm:p-8">
+
+          <div className="my-8 space-y-4 rounded-[24px] border border-black/[0.08] bg-[var(--surface-t2)] p-6 text-[var(--ink)] sm:rounded-[28px] sm:p-8">
             <p>An agent can finish writing the code while the release is still blocked.</p>
-            <p className="mt-3">A research agent can return a report while the decision is still unresolved.</p>
-            <p className="mt-3">An email can be drafted while the commitment behind it is still open.</p>
+            <p>A research agent can return a report while the decision is still unresolved.</p>
+            <p>An email can be drafted while the commitment behind it is still open.</p>
           </div>
+
           <p>The person still has to:</p>
-          <ul className="grid gap-x-8 gap-y-2 pl-5 sm:grid-cols-2">
+          <ul className="grid gap-x-10 gap-y-2.5 pl-5 md:grid-cols-2">
             {coordinationBurden.map((item) => (
               <li key={item} className="list-disc marker:text-[var(--text-tertiary)]">
                 {item}
               </li>
             ))}
           </ul>
-          <div className="mt-8 border-l-2 border-[var(--accent)] pl-5">
-            <p className="font-medium text-[var(--ink)]">Agents execute tasks.</p>
-            <p className="font-medium text-[var(--ink)]">The person still carries the outcome.</p>
-          </div>
+
+          <ThesisCallout>
+            <span className="block">Agents execute tasks.</span>
+            <span className="block">The person still carries the outcome.</span>
+          </ThesisCallout>
           <p>Waldo is built to change that.</p>
         </ThesisSection>
 
         <ThesisSection eyebrow="03" title="How Waldo works">
           <p>You start with what you want to accomplish.</p>
-          <div className="my-7 space-y-2 rounded-[24px] border border-black/[0.08] bg-[var(--surface-t2)] p-6 sm:p-8">
-            <p className="font-medium text-[var(--ink)]">Ship this release by Friday.</p>
-            <p className="font-medium text-[var(--ink)]">Research these options and help me make the decision.</p>
-            <p className="font-medium text-[var(--ink)]">Plan my week around everything I need to finish.</p>
+
+          <div className="my-8 space-y-3 rounded-[24px] border border-black/[0.08] bg-[var(--surface-t2)] p-6 text-[var(--ink)] sm:rounded-[28px] sm:p-8">
+            <p className="font-medium">Ship this release by Friday.</p>
+            <p className="font-medium">Research these options and help me make the decision.</p>
+            <p className="font-medium">Plan my week around everything I need to finish.</p>
           </div>
+
           <p>Waldo keeps the larger outcome in view.</p>
           <p>
             It can break the work down, coordinate the right specialist agents and tools, follow what happens, and bring you back when a meaningful decision requires you.
           </p>
           <p>But Waldo does not treat an agent saying &quot;done&quot; as the end.</p>
           <p>It keeps track of:</p>
-          <ul className="grid gap-x-8 gap-y-2 pl-5 sm:grid-cols-2">
+          <ul className="grid gap-x-10 gap-y-2.5 pl-5 md:grid-cols-2">
             {outcomeState.map((item) => (
               <li key={item} className="list-disc marker:text-[var(--text-tertiary)]">
                 {item}
               </li>
             ))}
           </ul>
-          <p>
-            An outcome may be completed, reopened, deferred, transferred, or consciously dropped.
-          </p>
+          <p>An outcome may be completed, reopened, deferred, transferred, or consciously dropped.</p>
           <p>Either way, it does not silently disappear when an agent session ends.</p>
-          <p className="font-medium text-[var(--ink)]">Waldo stays with the outcome from intent to resolution.</p>
+          <ThesisCallout>Waldo stays with the outcome from intent to resolution.</ThesisCallout>
         </ThesisSection>
 
-        <ThesisSection eyebrow="04" title="Agents work on tasks. Waldo carries outcomes.">
+        <ThesisSection
+          eyebrow="04"
+          title={
+            <>
+              <span className="block">Agents work on tasks.</span>
+              <span className="block">Waldo carries outcomes.</span>
+            </>
+          }
+        >
           <p>A coding agent can write code.</p>
           <p>A research agent can gather information.</p>
           <p>A browser agent can complete an action.</p>
@@ -213,11 +263,27 @@ export default function WhyWaldoPage() {
           </p>
         </ThesisSection>
 
-        <ThesisSection eyebrow="05" title="One Waldo across work and life">
+        <ThesisSection
+          eyebrow="05"
+          title={
+            <>
+              <span className="block">One Waldo across</span>
+              <span className="block">work and life</span>
+            </>
+          }
+        >
           <p>The person using AI at work is the same person living the rest of their life.</p>
-          <div className="my-7 grid gap-3 sm:grid-cols-2">
-            {["Your meetings affect your focus.", "Your health affects your capacity.", "Your commitments affect your priorities.", "Your work affects your day."].map((line) => (
-              <p key={line} className="rounded-[20px] border border-black/[0.08] bg-[var(--surface-t2)] px-5 py-4 text-[var(--ink)]">
+          <div className="my-8 grid gap-3 sm:grid-cols-2">
+            {[
+              "Your meetings affect your focus.",
+              "Your health affects your capacity.",
+              "Your commitments affect your priorities.",
+              "Your work affects your day.",
+            ].map((line) => (
+              <p
+                key={line}
+                className="rounded-[18px] border border-black/[0.08] bg-[var(--surface-t2)] px-5 py-4 leading-[1.5] text-[var(--ink)] sm:rounded-[20px]"
+              >
                 {line}
               </p>
             ))}
@@ -234,7 +300,7 @@ export default function WhyWaldoPage() {
           <p>
             With your permission, Waldo can use personal context such as sleep, recovery, stress, activity, and changing capacity to better understand how to help.
           </p>
-          <div className="my-7 border-l-2 border-[var(--accent)] pl-5">
+          <div className="my-8 space-y-1 border-l-2 border-[var(--accent)] pl-5 text-[var(--ink)] sm:pl-6">
             <p>Not as another health dashboard.</p>
             <p>Not to make medical decisions for you.</p>
           </div>
@@ -248,21 +314,23 @@ export default function WhyWaldoPage() {
           </p>
         </ThesisSection>
 
-        <section className="border-t border-black/[0.08] py-20 sm:py-24 lg:py-28">
-          <div className="mx-auto w-full max-w-[1200px] px-[clamp(1rem,.5rem+3vw,2.5rem)]">
+        <section className="border-t border-black/[0.08] py-[clamp(4.75rem,7.5vw,8.5rem)]">
+          <div className="mx-auto w-full max-w-[1180px] px-[clamp(1.25rem,3vw,3.5rem)]">
             <p className="type-caption text-[var(--text-tertiary)]">07</p>
-            <h2 className="mt-3 max-w-[720px] font-[var(--font-headline)] text-[clamp(1.75rem,1.35rem+1.8vw,2.6rem)] font-normal leading-[1.12] tracking-[-0.02em]">
+            <h2 className="type-h1 mt-4 max-w-[18ch] text-[var(--ink)]" style={sectionHeadingStyle}>
               The Waldo ecosystem
             </h2>
-            <p className="mt-5 max-w-[720px] type-body text-[var(--text-secondary)]">
+            <p className="mt-6 max-w-[58ch] text-[clamp(1rem,.965rem+.18vw,1.125rem)] leading-[1.65] tracking-[-0.012em] text-[var(--text-secondary)]">
               There is one Waldo, expressed through different surfaces.
             </p>
 
-            <div className="mt-12 grid gap-5 lg:grid-cols-3">
+            <div className="mt-10 grid gap-4 lg:mt-12 lg:grid-cols-3 lg:gap-5">
               <article className="rounded-[24px] border border-black/[0.08] bg-[var(--surface-t2)] p-6 sm:p-8">
                 <p className="type-caption text-[var(--text-tertiary)]">Work</p>
-                <h3 className="mt-3 font-[var(--font-headline)] text-2xl font-normal tracking-[-0.01em]">Kennel</h3>
-                <div className="mt-5 space-y-4 type-body text-[var(--text-secondary)]">
+                <h3 className="type-h2 mt-3 text-[var(--ink)]" style={{ fontSize: "clamp(1.5rem,1.3rem+.7vw,2rem)" }}>
+                  Kennel
+                </h3>
+                <div className="mt-5 space-y-4 text-[clamp(.98rem,.95rem+.12vw,1.08rem)] leading-[1.62] tracking-[-0.01em] text-[var(--text-secondary)]">
                   <p>Kennel is Waldo&apos;s Mac work surface.</p>
                   <p>
                     It is where you can see the outcomes Waldo is carrying, the specialist agents working underneath them, what has changed, what needs your judgment, and what remains unfinished.
@@ -276,8 +344,10 @@ export default function WhyWaldoPage() {
 
               <article className="rounded-[24px] border border-black/[0.08] bg-[var(--surface-t2)] p-6 sm:p-8">
                 <p className="type-caption text-[var(--text-tertiary)]">Personal</p>
-                <h3 className="mt-3 font-[var(--font-headline)] text-2xl font-normal tracking-[-0.01em]">Mobile</h3>
-                <div className="mt-5 space-y-4 type-body text-[var(--text-secondary)]">
+                <h3 className="type-h2 mt-3 text-[var(--ink)]" style={{ fontSize: "clamp(1.5rem,1.3rem+.7vw,2rem)" }}>
+                  Mobile
+                </h3>
+                <div className="mt-5 space-y-4 text-[clamp(.98rem,.95rem+.12vw,1.08rem)] leading-[1.62] tracking-[-0.01em] text-[var(--text-secondary)]">
                   <p>Mobile becomes the personal side of Waldo.</p>
                   <p>
                     It is where your day, communication, health context, priorities, decisions, and ongoing commitments come together.
@@ -290,8 +360,10 @@ export default function WhyWaldoPage() {
 
               <article className="rounded-[24px] border border-black/[0.08] bg-[var(--surface-t2)] p-6 sm:p-8">
                 <p className="type-caption text-[var(--text-tertiary)]">Everywhere else</p>
-                <h3 className="mt-3 font-[var(--font-headline)] text-2xl font-normal tracking-[-0.01em]">Messaging and browser</h3>
-                <div className="mt-5 space-y-4 type-body text-[var(--text-secondary)]">
+                <h3 className="type-h2 mt-3 text-[var(--ink)]" style={{ fontSize: "clamp(1.5rem,1.3rem+.7vw,2rem)" }}>
+                  Messaging and browser
+                </h3>
+                <div className="mt-5 space-y-4 text-[clamp(.98rem,.95rem+.12vw,1.08rem)] leading-[1.62] tracking-[-0.01em] text-[var(--text-secondary)]">
                   <p>Waldo should also be reachable where you already work and communicate.</p>
                   <p>
                     Messaging and browser interfaces become lightweight ways to talk to the same Waldo rather than creating another separate assistant.
@@ -305,14 +377,14 @@ export default function WhyWaldoPage() {
           </div>
         </section>
 
-        <section className="border-t border-black/[0.08] py-20 sm:py-24 lg:py-28">
-          <div className="mx-auto w-full max-w-[1200px] px-[clamp(1rem,.5rem+3vw,2.5rem)]">
+        <section className="border-t border-black/[0.08] py-[clamp(4.75rem,7.5vw,8.5rem)]">
+          <div className="mx-auto w-full max-w-[1180px] px-[clamp(1.25rem,3vw,3.5rem)]">
             <p className="type-caption text-[var(--text-tertiary)]">08</p>
-            <h2 className="mt-3 max-w-[720px] font-[var(--font-headline)] text-[clamp(1.75rem,1.35rem+1.8vw,2.6rem)] font-normal leading-[1.12] tracking-[-0.02em]">
+            <h2 className="type-h1 mt-4 max-w-[18ch] text-[var(--ink)]" style={sectionHeadingStyle}>
               Our product philosophy
             </h2>
 
-            <div className="mt-12 grid gap-x-10 gap-y-12 md:grid-cols-2">
+            <div className="mt-10 grid gap-x-10 gap-y-11 md:grid-cols-2 lg:mt-12 lg:gap-x-14 lg:gap-y-14">
               <Principle title="One person, one Waldo">
                 <p>You should not have to recreate yourself inside every new AI product.</p>
                 <p>Waldo should remain the persistent relationship while models, tools, and specialist agents change underneath it.</p>
@@ -360,52 +432,51 @@ export default function WhyWaldoPage() {
             We are starting with people already living in the agentic future: founders and engineers using multiple AI agents in their daily work.
           </p>
           <p>Kennel gives Waldo a focused starting point where the problem is already visible.</p>
-          <div className="my-7 border-l-2 border-[var(--accent)] pl-5">
-            <p className="font-medium text-[var(--ink)]">
-              Can one personal agent help someone carry an outcome across multiple agents without forcing them to become the coordinator?
-            </p>
-          </div>
+          <ThesisCallout>
+            Can one personal agent carry an outcome across multiple agents without making you the coordinator?
+          </ThesisCallout>
           <p>
             From there, Waldo grows into the broader personal agent: one agent that understands the person, coordinates the intelligence around them, and stays with what matters across work and life.
           </p>
         </ThesisSection>
 
-        <section className="border-t border-black/[0.08] py-24 sm:py-32 lg:py-40">
-          <div className="mx-auto w-full max-w-[1200px] px-[clamp(1rem,.5rem+3vw,2.5rem)]">
-            <div className="max-w-[900px]">
+        <section className="border-t border-black/[0.08] py-[clamp(6rem,10vw,10rem)]">
+          <div className="mx-auto w-full max-w-[1180px] px-[clamp(1.25rem,3vw,3.5rem)]">
+            <div className="max-w-[1040px]">
               <p className="type-caption text-[var(--text-tertiary)]">The long-term idea</p>
-              <div className="mt-6 space-y-2 font-[var(--font-headline)] text-[clamp(1.75rem,1.3rem+2vw,3rem)] leading-[1.14] tracking-[-0.02em]">
+              <div className="mt-7 space-y-1 text-[clamp(2.1rem,1.45rem+2.7vw,4.15rem)] leading-[1.04] tracking-[-0.035em] text-[var(--ink)] sm:mt-8">
                 <p>Models will keep getting better.</p>
                 <p>Specialist agents will keep multiplying.</p>
                 <p>Tools will change.</p>
                 <p>Interfaces will change.</p>
               </div>
-              <p className="mt-10 max-w-[760px] type-body text-[var(--text-secondary)]">
+
+              <p className="mt-10 max-w-[64ch] text-[clamp(1rem,.965rem+.18vw,1.125rem)] leading-[1.65] tracking-[-0.012em] text-[var(--text-secondary)] sm:mt-12">
                 The part that should remain constant is the agent that works for you.
               </p>
-              <p className="mt-6 max-w-[860px] font-[var(--font-headline)] text-[clamp(1.5rem,1.1rem+1.7vw,2.6rem)] leading-[1.18] tracking-[-0.02em]">
-                One personal agent that understands you, represents your intent, coordinates the intelligence around you, and carries your outcomes from what you want to what actually becomes true.
-              </p>
-              <p className="mt-8 type-body font-medium text-[var(--ink)]">That is Waldo.</p>
 
-              <div className="mt-12 flex flex-wrap gap-3">
-                <Link
-                  href="/waitlist"
-                  className="focusable-ring type-label inline-flex h-12 items-center justify-center rounded-full bg-[var(--ink)] px-6 text-[var(--surface-t2)] transition-transform duration-300 hover:-translate-y-px active:scale-[0.98]"
-                >
-                  Let Waldo in →
-                </Link>
-                <Link
-                  href="/"
-                  className="focusable-ring type-label inline-flex h-12 items-center justify-center rounded-full border border-black/[0.08] bg-[var(--surface-t2)] px-6 text-[var(--ink)] transition-transform duration-300 hover:-translate-y-px active:scale-[0.98]"
-                >
-                  Back to Waldo
-                </Link>
-              </div>
+              <p
+                className="type-display mt-7 max-w-[980px] text-[var(--ink)] sm:mt-8"
+                style={{
+                  fontSize: "clamp(2.2rem, 1.45rem + 3vw, 4.4rem)",
+                  lineHeight: 1.05,
+                  letterSpacing: "-0.025em",
+                }}
+              >
+                <span className="block">One personal agent that understands you,</span>
+                <span className="block">coordinates the intelligence around you,</span>
+                <span className="block">and carries your outcomes to completion.</span>
+              </p>
+
+              <p className="mt-8 text-[clamp(1rem,.965rem+.18vw,1.125rem)] font-medium leading-[1.6] text-[var(--ink)]">
+                That is Waldo.
+              </p>
             </div>
           </div>
         </section>
       </main>
+
+      <SceneCloseSection />
     </div>
   );
 }
