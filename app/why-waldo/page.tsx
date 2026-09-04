@@ -356,7 +356,7 @@ export default function WhyWaldoPage() {
                   </p>
                   <p className="font-medium text-[var(--ink)]">What needs me, and what can Waldo keep handling?</p>
                   <p>
-                    We are starting here because founders and engineers already using multiple AI agents feel this coordination problem first.
+                    We are starting here because founders, engineers, and investors working across multiple AI agents already feel this coordination problem.
                   </p>
                 </div>
               </article>
@@ -457,7 +457,7 @@ export default function WhyWaldoPage() {
 
         <ThesisSection eyebrow="09" title="Where we are starting">
           <p>
-            We are starting with people already living in the agentic future: founders and engineers using multiple AI agents in their daily work.
+            We are starting with people already living in the agentic future: founders, engineers, and investors whose work already spans multiple AI agents, tools, and information streams.
           </p>
           <p>Kennel gives Waldo a focused starting point where the problem is already visible.</p>
           <ThesisCallout>
