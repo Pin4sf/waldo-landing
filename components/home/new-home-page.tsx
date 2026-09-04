@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { AccountsGraphSection } from "@/components/home/accounts-graph-section";
 import { DataAloneSection } from "@/components/home/data-alone-section";
 import { DeathOfChatboxSection } from "@/components/home/death-of-chatbox-section";
@@ -39,6 +41,12 @@ function HeroSection() {
         <p className="new-home-hero-copy type-body tone-secondary">
           While you’re deciding if you’re too tired to take the call, they’ve already rescheduled it and messaged the room - before they were even awake.
         </p>
+        <Link
+          href="/why-waldo"
+          className="focusable-ring type-label mt-2 inline-flex h-12 w-fit items-center justify-center rounded-full border border-[var(--border-default)] bg-[var(--surface-t2)] px-5 text-[var(--ink)] shadow-[var(--shadow-card)] transition-[transform,background-color,border-color] duration-300 ease-[var(--ease-premium)] hover:-translate-y-px hover:border-[var(--border-focus)] hover:bg-[var(--surface-t1)] active:scale-[0.98]"
+        >
+          Why Waldo →
+        </Link>
       </div>
     </section>
   );
