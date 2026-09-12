@@ -781,6 +781,9 @@ export default function BuildPage() {
         html {
           zoom: 0.9;
         }
+        .build-page .build-site-nav {
+          zoom: calc(1 / 0.9);
+        }
         .hero-cards-only .new-handled-cta-panel {
           display: none;
         }

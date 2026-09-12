@@ -36,7 +36,7 @@ function WaldoMark() {
 export function BuildSiteNav() {
   return (
     <>
-      <header className="build-site-nav relative z-30 flex h-9 items-center justify-center gap-8 border-b border-black/10 bg-[#F4F3F0] px-5 text-[13.5px] text-[#1A1A1A]">
+      <header className="build-site-nav relative z-30 flex h-[32.4px] items-center justify-center gap-[28.8px] border-b border-black/10 bg-[#F4F3F0] px-[18px] text-[12.15px] text-[#1A1A1A]">
         <Link href="/" aria-label="Waldo home" className="flex items-center">
           <WaldoMark />
         </Link>
@@ -59,7 +59,7 @@ export function BuildSiteNav() {
         <div className="flex items-center gap-4">
           <Link
             href="/waitlist"
-            className="rounded-full bg-[#1A1A1A] px-3 py-[6px] text-[11px] font-medium leading-normal text-[#FAFAF8] transition-opacity hover:opacity-90"
+            className="rounded-full bg-[#1A1A1A] px-[10.8px] py-[5.4px] text-[9.9px] font-medium leading-normal text-[#FAFAF8] transition-opacity hover:opacity-90"
             style={{ lineHeight: "1.2" }}
           >
             Early Access
@@ -74,13 +74,13 @@ export function BuildSiteNav() {
         .build-site-nav-tooltip {
           position: absolute;
           left: 50%;
-          top: calc(100% + 10px);
+          top: calc(100% + 9px);
           transform: translate3d(-50%, -4px, 0);
           background: #1a1a1a;
           color: #fafaf8;
-          border-radius: 10px;
-          padding: 7px 10px;
-          font-size: 12px;
+          border-radius: 9px;
+          padding: 6.3px 9px;
+          font-size: 10.8px;
           font-style: italic;
           font-weight: 430;
           line-height: 1.18;
