@@ -149,7 +149,7 @@ const KENNEL_GITHUB_URL = "https://github.com/Pin4sf/Waldo-Kennel";
 const navItems = [
   { label: "Features", href: "/features" },
   { label: "Pricing", href: "/pricing" },
-  { label: "Blog", href: "/blog" },
+  { label: "Blog", href: "/blogs" },
   { label: "Support", href: "/support" },
 ];
 
@@ -276,7 +276,7 @@ export default function BuildPage() {
             Early Access
           </Link>
           <Link
-            href="/blog"
+            href="/blogs"
             className="rounded-full border border-black/10 px-6 py-3 text-[13.5px] font-medium text-[#1A1A1A] transition-colors hover:bg-black/5"
           >
             Learn More
@@ -389,7 +389,7 @@ export default function BuildPage() {
 
           <div className="mt-8 flex items-center gap-3">
             <Link
-              href="/blog"
+              href="/blogs"
               className="rounded-full border border-black/10 px-6 py-3 text-[13.5px] font-medium text-[#1A1A1A] transition-colors hover:bg-black/5"
             >
               Learn More
@@ -549,7 +549,7 @@ export default function BuildPage() {
 
         <div className="flex items-center gap-3 pt-2">
           <Link
-            href="/blog"
+            href="/blogs"
             className="rounded-full border border-white/20 px-6 py-3 text-[13.5px] font-medium text-white transition-colors hover:bg-white/5"
           >
             Learn More
@@ -602,7 +602,7 @@ export default function BuildPage() {
           </p>
 
           <Link
-            href="/blog"
+            href="/blogs"
             className="rounded-full border border-white/20 px-6 py-3 text-[13.5px] font-medium text-white transition-colors hover:bg-white/5"
           >
             Learn More
@@ -653,7 +653,7 @@ export default function BuildPage() {
           </p>
 
           <Link
-            href="/blog"
+            href="/blogs"
             className="rounded-full border border-white/20 px-6 py-3 text-[13.5px] font-medium text-white transition-colors hover:bg-white/5"
           >
             Learn More
@@ -737,7 +737,7 @@ export default function BuildPage() {
         </div>
 
         <Link
-          href="/blog"
+          href="/blogs"
           className="rounded-full border border-black/10 bg-white px-6 py-3 text-[13.5px] font-medium text-[#1A1A1A] transition-colors hover:bg-black/5"
         >
           Learn More
