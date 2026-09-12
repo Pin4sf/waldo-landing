@@ -49,7 +49,7 @@ export const metadata: Metadata = {
         url: OG_IMAGE_URL,
         width: 1200,
         height: 630,
-        alt: "Happy Waldo beside the action layer for the human day",
+        alt: "Waldo",
         type: "image/png",
       },
     ],
@@ -62,7 +62,7 @@ export const metadata: Metadata = {
     images: [
       {
         url: OG_IMAGE_URL,
-        alt: "Happy Waldo beside the action layer for the human day",
+        alt: "Waldo",
       },
     ],
   },
