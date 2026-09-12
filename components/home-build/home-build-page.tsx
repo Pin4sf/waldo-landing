@@ -63,6 +63,7 @@ const quoteCards: QuoteCard[] = [
     quote: "The model can change, your context should compound.",
     name: "Garry Tan,",
     source: "Y Combinator.",
+    sourceHref: "https://www.youtube.com/watch?v=eRrc1pUY5oU",
     bg: "#2DB9FF",
     textColor: "#213453",
     x: -400,
@@ -73,6 +74,7 @@ const quoteCards: QuoteCard[] = [
     quote: "AI users want more; only if they can trust the AI.",
     name: "6,118 respondents",
     source: "Notion x Qualtrics",
+    sourceHref: "https://x.com/NotionHQ/status/2085089677535780922",
     bg: "#3E5035",
     textColor: "#B1E080",
     x: -196,
@@ -83,7 +85,8 @@ const quoteCards: QuoteCard[] = [
     quote: "Actions that create another review pile do not remove the person's responsibility.",
     name: "Andrew Chen",
     source: "LinkedIn, 2026.",
-    sourceHref: "#",
+    sourceHref:
+      "https://www.linkedin.com/posts/andrewchen_last-years-startup-trend-copilot-for-x-share-7488472791541985280-2t0X/",
     bg: "#3F345D",
     textColor: "#F6A6D2",
     x: 0,
@@ -94,7 +97,7 @@ const quoteCards: QuoteCard[] = [
     quote: "27% of people talking to AI are asking about their health.",
     name: "Societal Impact report",
     source: "Anthropic",
-    sourceHref: "#",
+    sourceHref: "https://www.anthropic.com/research/claude-personal-guidance",
     bg: "#FFD351",
     textColor: "#4E301F",
     x: 192,
@@ -105,7 +108,7 @@ const quoteCards: QuoteCard[] = [
     quote: "Using an AI agent requires skills similar to managing a junior employee.",
     name: "Josh Miller",
     source: "Via X",
-    sourceHref: "#",
+    sourceHref: "https://x.com/joshm/status/2084751187002458369",
     bg: "#FF4B4D",
     textColor: "#531421",
     x: 404,
@@ -677,7 +680,13 @@ export default function HomeBuildPage() {
               <div className="type-body" style={{ color: card.textColor, fontSize: "17.1px", lineHeight: "1.4" }}>
                 <p className="font-medium">{card.name}</p>
                 {card.sourceHref ? (
-                  <a href={card.sourceHref} className="underline opacity-80" style={{ color: card.textColor }}>
+                  <a
+                    href={card.sourceHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline opacity-80"
+                    style={{ color: card.textColor }}
+                  >
                     {card.source}
                   </a>
                 ) : (
