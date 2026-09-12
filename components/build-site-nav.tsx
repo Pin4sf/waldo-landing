@@ -43,16 +43,16 @@ export function BuildSiteNav() {
 
         <nav aria-label="Main navigation" className="flex items-center gap-8">
           {navItems.map((item) => (
-            <Link
+            <span
               key={item.label}
-              href={item.href}
-              className="build-site-nav-item text-[#1A1A1A]/70 transition-colors hover:text-[#1A1A1A]"
+              tabIndex={0}
+              className="build-site-nav-item cursor-default text-[#1A1A1A]/70 transition-colors hover:text-[#1A1A1A]"
             >
               {item.label}
               <span className="build-site-nav-tooltip" role="tooltip">
                 {item.tooltip}
               </span>
-            </Link>
+            </span>
           ))}
         </nav>
 
