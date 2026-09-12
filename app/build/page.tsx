@@ -144,6 +144,8 @@ function GithubMark() {
   );
 }
 
+const KENNEL_GITHUB_URL = "https://github.com/Pin4sf/Waldo-Kennel";
+
 const navItems = [
   { label: "Features", href: "/features" },
   { label: "Pricing", href: "/pricing" },
@@ -190,8 +192,12 @@ export default function BuildPage() {
         </nav>
 
         <div className="flex items-center gap-4">
-          <Link href="/waitlist" className="text-[#1A1A1A]/70 hover:text-[#1A1A1A]">
-            First Access
+          <Link
+            href="/waitlist"
+            className="rounded-full bg-[#1A1A1A] px-3 py-1 text-[11px] font-medium leading-normal text-[#FAFAF8] transition-opacity hover:opacity-90"
+            style={{ lineHeight: "1.2" }}
+          >
+            Early Access
           </Link>
         </div>
       </header>
@@ -267,10 +273,10 @@ export default function BuildPage() {
             href="/waitlist"
             className="rounded-full bg-[#1A1A1A] px-6 py-3 text-[13.5px] font-medium text-[#FAFAF8] transition-opacity hover:opacity-90"
           >
-            Try now
+            Early Access
           </Link>
           <Link
-            href="/features"
+            href="/blog"
             className="rounded-full border border-black/10 px-6 py-3 text-[13.5px] font-medium text-[#1A1A1A] transition-colors hover:bg-black/5"
           >
             Learn More
@@ -283,56 +289,78 @@ export default function BuildPage() {
       </section>
 
       <section className="grid grid-cols-1 gap-[10px] px-[10px] pb-0 pt-10 md:grid-cols-3">
-        {productCards.map((card) => (
-          <div
-            key={card.lead}
-            className="product-card flex flex-col items-center gap-6 bg-[#FFFFFF] px-8 py-10 text-center"
-          >
-            <div className="flex h-[109px] w-full items-center justify-center">
-              <Image
-                src={card.icon}
-                alt=""
-                width={160}
-                height={106}
-                unoptimized
-                className="w-auto"
-                style={{ height: `${card.iconHeight}px` }}
-              />
-            </div>
+        {productCards.map((card) => {
+          const content = (
+            <>
+              <div className="flex h-[109px] w-full items-center justify-center">
+                <Image
+                  src={card.icon}
+                  alt=""
+                  width={160}
+                  height={106}
+                  unoptimized
+                  className="w-auto"
+                  style={{ height: `${card.iconHeight}px` }}
+                />
+              </div>
 
-            <p
-              className="type-body whitespace-nowrap"
-              style={{ fontSize: "17.1px", lineHeight: "1.4" }}
-            >
-              <span className="font-medium text-[#1A1A1A]">{card.lead}</span>
-              <span className="font-normal text-[#6B6B68]">{card.line1Rest}</span>
-              <br />
-              <span className="font-normal text-[#6B6B68]">{card.line2}</span>
-              <br />
-              <span className="font-normal text-[#6B6B68]">{card.line3}</span>
-            </p>
+              <p
+                className="type-body whitespace-nowrap"
+                style={{ fontSize: "17.1px", lineHeight: "1.4" }}
+              >
+                <span className="font-medium text-[#1A1A1A]">{card.lead}</span>
+                <span className="font-normal text-[#6B6B68]">{card.line1Rest}</span>
+                <br />
+                <span className="font-normal text-[#6B6B68]">{card.line2}</span>
+                <br />
+                <span className="font-normal text-[#6B6B68]">{card.line3}</span>
+              </p>
 
-            <div className="mt-6">
-              {card.cta === "try-now" ? (
-                <div className="flex items-center gap-3">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#1A1A1A] text-white">
-                    <GithubMark />
+              <div className="mt-6">
+                {card.cta === "try-now" ? (
+                  <div className="flex items-center gap-3">
+                    <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#1A1A1A] text-white">
+                      <GithubMark />
+                    </span>
+                    <span className="rounded-full border border-black/10 px-6 py-3 text-[13.5px] font-medium text-[#1A1A1A] transition-colors group-hover:bg-black/5">
+                      Learn more
+                    </span>
+                  </div>
+                ) : (
+                  <span className="rounded-full border border-black/10 px-6 py-3 text-[13.5px] font-medium text-[#1A1A1A]">
+                    Coming Soon
                   </span>
-                  <Link
-                    href="/waitlist"
-                    className="rounded-full border border-black/10 px-6 py-3 text-[13.5px] font-medium text-[#1A1A1A] transition-colors hover:bg-black/5"
-                  >
-                    Learn more
-                  </Link>
-                </div>
-              ) : (
-                <span className="rounded-full border border-black/10 px-6 py-3 text-[13.5px] font-medium text-[#1A1A1A]">
-                  Coming Soon
+                )}
+              </div>
+            </>
+          );
+
+          if (card.cta === "try-now") {
+            return (
+              <a
+                key={card.lead}
+                href={KENNEL_GITHUB_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="product-card group relative flex flex-col items-center gap-6 bg-[#FFFFFF] px-8 py-10 text-center"
+              >
+                <span className="pointer-events-none absolute left-1/2 top-4 -translate-x-1/2 -translate-y-2 whitespace-nowrap rounded-full bg-[#1A1A1A] px-3 py-1.5 text-[11.7px] font-medium text-[#FAFAF8] opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100">
+                  Opensourced on GitHub
                 </span>
-              )}
+                {content}
+              </a>
+            );
+          }
+
+          return (
+            <div
+              key={card.lead}
+              className="product-card flex flex-col items-center gap-6 bg-[#FFFFFF] px-8 py-10 text-center"
+            >
+              {content}
             </div>
-          </div>
-        ))}
+          );
+        })}
       </section>
 
       <section className="px-[10px] py-[10px]">
@@ -361,13 +389,7 @@ export default function BuildPage() {
 
           <div className="mt-8 flex items-center gap-3">
             <Link
-              href="/waitlist"
-              className="rounded-full bg-[#1A1A1A] px-6 py-3 text-[13.5px] font-medium text-[#FAFAF8] transition-opacity hover:opacity-90"
-            >
-              Try now
-            </Link>
-            <Link
-              href="/features"
+              href="/blog"
               className="rounded-full border border-black/10 px-6 py-3 text-[13.5px] font-medium text-[#1A1A1A] transition-colors hover:bg-black/5"
             >
               Learn More
@@ -527,13 +549,7 @@ export default function BuildPage() {
 
         <div className="flex items-center gap-3 pt-2">
           <Link
-            href="/waitlist"
-            className="rounded-full bg-white px-6 py-3 text-[13.5px] font-medium text-[#1A1A1A] transition-opacity hover:opacity-90"
-          >
-            Try now
-          </Link>
-          <Link
-            href="/features"
+            href="/blog"
             className="rounded-full border border-white/20 px-6 py-3 text-[13.5px] font-medium text-white transition-colors hover:bg-white/5"
           >
             Learn More
@@ -586,10 +602,10 @@ export default function BuildPage() {
           </p>
 
           <Link
-            href="/features"
+            href="/blog"
             className="rounded-full border border-white/20 px-6 py-3 text-[13.5px] font-medium text-white transition-colors hover:bg-white/5"
           >
-            See all applications
+            Learn More
           </Link>
 
           <div className="relative -mx-[22px] mt-12 flex w-[calc(100%+44px)] flex-1 flex-col justify-end">
@@ -637,10 +653,10 @@ export default function BuildPage() {
           </p>
 
           <Link
-            href="/features"
+            href="/blog"
             className="rounded-full border border-white/20 px-6 py-3 text-[13.5px] font-medium text-white transition-colors hover:bg-white/5"
           >
-            See all applications
+            Learn More
           </Link>
 
           <div className="relative -mx-[22px] mt-12 flex w-[calc(100%+44px)] flex-1 flex-col justify-end">
@@ -721,14 +737,10 @@ export default function BuildPage() {
         </div>
 
         <Link
-          href="/features"
-          className="flex items-center gap-2 rounded-full border border-black/10 bg-white px-6 py-3 text-[13.5px] font-medium text-[#1A1A1A] transition-colors hover:bg-black/5"
+          href="/blog"
+          className="rounded-full border border-black/10 bg-white px-6 py-3 text-[13.5px] font-medium text-[#1A1A1A] transition-colors hover:bg-black/5"
         >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-            <path d="M4 5.5C4 4.67 4.67 4 5.5 4H11a2 2 0 0 1 2 2v14a1.5 1.5 0 0 0-1.5-1.5H4V5.5Z" />
-            <path d="M20 5.5C20 4.67 19.33 4 18.5 4H13a2 2 0 0 0-2 2v14a1.5 1.5 0 0 1 1.5-1.5H20V5.5Z" />
-          </svg>
-          More sources
+          Learn More
         </Link>
       </div>
       </section>
@@ -799,8 +811,14 @@ export default function BuildPage() {
             <br />
             around you and carrying what matters.
           </p>
-          <div className="new-scene-close-actions" style={{ marginTop: "28px" }}>
+          <div className="new-scene-close-actions flex items-center gap-3" style={{ marginTop: "28px" }}>
             <Link href="/waitlist" className="waldo-cta focusable-ring">
+              Early Access
+            </Link>
+            <Link
+              href="/waitlist"
+              className="rounded-full border border-black/10 px-6 py-3 text-[13.5px] font-medium text-[#1A1A1A] transition-colors hover:bg-black/5"
+            >
               Start with Kennel
             </Link>
           </div>
