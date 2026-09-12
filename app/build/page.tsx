@@ -194,7 +194,7 @@ export default function BuildPage() {
         <div className="flex items-center gap-4">
           <Link
             href="/waitlist"
-            className="rounded-full bg-[#1A1A1A] px-3 py-1 text-[11px] font-medium leading-normal text-[#FAFAF8] transition-opacity hover:opacity-90"
+            className="rounded-full bg-[#1A1A1A] px-3 py-[6px] text-[11px] font-medium leading-normal text-[#FAFAF8] transition-opacity hover:opacity-90"
             style={{ lineHeight: "1.2" }}
           >
             Early Access
