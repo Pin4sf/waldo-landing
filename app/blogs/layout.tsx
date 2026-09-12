@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 import { BlogFooter } from "@/components/blog/blog-footer";
-import { NewHomeNav } from "@/components/home/new-home-nav";
+import { BuildSiteNav } from "@/components/build-site-nav";
 
 export default function BlogsLayout({ children }: { children: ReactNode }) {
   return (
@@ -9,7 +9,7 @@ export default function BlogsLayout({ children }: { children: ReactNode }) {
       <a className="blog-skip-link" href="#blog-main">
         Skip to article content
       </a>
-      <NewHomeNav />
+      <BuildSiteNav />
       {children}
       <BlogFooter />
     </div>
