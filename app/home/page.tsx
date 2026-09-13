@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState, type CSSProperties } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import { HandledCardsSection } from "@/components/home/handled-cards-section";
 import { BuildSiteNav } from "@/components/build-site-nav";
 
@@ -147,8 +147,29 @@ function GithubMark() {
 
 const KENNEL_GITHUB_URL = "https://github.com/Pin4sf/Waldo-Kennel";
 
+function revealDelay(index: number): CSSProperties {
+  return { "--reveal-delay": `${index * 90}ms` } as CSSProperties;
+}
+
 export default function BuildPage() {
   const [bannerOpen, setBannerOpen] = useState(true);
+
+  useEffect(() => {
+    const els = document.querySelectorAll<HTMLElement>(".reveal, .reveal-fade");
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("reveal-in");
+            io.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -8% 0px" },
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
 
   return (
     <main className="build-page min-h-screen" style={{ backgroundColor: "#F4F3F0" }}>
@@ -157,7 +178,7 @@ export default function BuildPage() {
       {bannerOpen && (
         <div
           className="relative flex h-[calc(25vh/0.9)] w-full flex-col items-center justify-center gap-[19px] px-6"
-          style={{ backgroundColor: "#FFD351" }}
+          style={{ backgroundColor: "#FFD351", animation: "bannerIn 0.5s cubic-bezier(.22,1,.36,1) both" }}
         >
           <button
             type="button"
@@ -205,15 +226,15 @@ export default function BuildPage() {
         style={{ minHeight: "calc(75vh / 0.9 - 2.25rem)" }}
       >
         <h1
-          className="type-h1 w-fit text-center text-[#1A1A1A]"
+          className="type-h1 reveal reveal-in w-fit text-center text-[#1A1A1A]"
           style={{ lineHeight: "1.3", letterSpacing: "-0.02em" }}
         >
           Life happens. Waldo handles it.
         </h1>
 
         <p
-          className="type-body mx-auto w-fit text-center text-[#6B6B68]"
-          style={{ fontSize: "17.1px", lineHeight: "1.4" }}
+          className="type-body reveal reveal-in mx-auto w-fit text-center text-[#6B6B68]"
+          style={{ fontSize: "17.1px", lineHeight: "1.4", ...revealDelay(1) }}
         >
           Waldo is the one assistant that plans like Sherlock, thinks like Einstein
           <br />
@@ -241,7 +262,7 @@ export default function BuildPage() {
       </section>
 
       <section className="grid grid-cols-1 gap-[10px] px-[10px] pb-0 pt-10 md:grid-cols-3">
-        {productCards.map((card) => {
+        {productCards.map((card, index) => {
           const content = (
             <>
               <div className="flex h-[109px] w-full items-center justify-center">
@@ -294,7 +315,8 @@ export default function BuildPage() {
                 href={KENNEL_GITHUB_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="product-card group relative flex flex-col items-center gap-6 bg-[#FFFFFF] px-8 py-10 text-center"
+                className="product-card reveal group relative flex flex-col items-center gap-6 bg-[#FFFFFF] px-8 py-10 text-center"
+                style={revealDelay(index)}
               >
                 <span className="pointer-events-none absolute left-1/2 top-4 -translate-x-1/2 -translate-y-2 whitespace-nowrap rounded-full bg-[#1A1A1A] px-3 py-1.5 text-[11.7px] font-medium text-[#FAFAF8] opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100">
                   Opensourced on GitHub
@@ -307,7 +329,8 @@ export default function BuildPage() {
           return (
             <div
               key={card.lead}
-              className="product-card flex flex-col items-center gap-6 bg-[#FFFFFF] px-8 py-10 text-center"
+              className="product-card reveal flex flex-col items-center gap-6 bg-[#FFFFFF] px-8 py-10 text-center"
+              style={revealDelay(index)}
             >
               {content}
             </div>
@@ -316,7 +339,7 @@ export default function BuildPage() {
       </section>
 
       <section className="px-[10px] py-[10px]">
-        <div className="product-card relative flex min-h-[calc(90vh/0.9)] flex-col items-center overflow-hidden bg-[#FFFFFF] px-8 pb-0 pt-16">
+        <div className="product-card reveal relative flex min-h-[calc(90vh/0.9)] flex-col items-center overflow-hidden bg-[#FFFFFF] px-8 pb-0 pt-16">
           <h2
             className="w-fit text-center text-[#1A1A1A]"
             style={{
@@ -378,7 +401,7 @@ export default function BuildPage() {
       </section>
 
       <section className="grid grid-cols-1 gap-[10px] px-[10px] pb-[10px] md:grid-cols-2">
-        <div className="product-card flex flex-col items-center gap-14 bg-[#FFFFFF] px-8 pb-20 pt-20">
+        <div className="product-card reveal flex flex-col items-center gap-14 bg-[#FFFFFF] px-8 pb-20 pt-20" style={revealDelay(0)}>
           <div className="flex h-[330px] w-full items-center justify-center">
             <Image
               src="/build/understands-illustration.svg"
@@ -403,7 +426,7 @@ export default function BuildPage() {
           </p>
         </div>
 
-        <div className="product-card flex flex-col items-center gap-14 bg-[#FFFFFF] px-8 pb-20 pt-20">
+        <div className="product-card reveal flex flex-col items-center gap-14 bg-[#FFFFFF] px-8 pb-20 pt-20" style={revealDelay(1)}>
           <div className="flex h-[330px] w-full items-center justify-center">
             <Image
               src="/build/coordinates-illustration.svg"
@@ -431,7 +454,7 @@ export default function BuildPage() {
 
       <div className="bg-[#161616]">
       <section className="grid grid-cols-1 gap-[10px] px-[10px] pb-[10px] md:grid-cols-2">
-        <div className="product-card flex flex-col items-center gap-14 bg-[#1A1A1A] px-8 pb-20 pt-20">
+        <div className="product-card reveal flex flex-col items-center gap-14 bg-[#1A1A1A] px-8 pb-20 pt-20" style={revealDelay(0)}>
           <div className="flex h-[523px] w-full items-center justify-center">
             <Image
               src="/build/verifies-illustration.svg"
@@ -456,7 +479,7 @@ export default function BuildPage() {
           </p>
         </div>
 
-        <div className="product-card flex flex-col items-center gap-14 bg-[#1A1A1A] px-8 pb-20 pt-20">
+        <div className="product-card reveal flex flex-col items-center gap-14 bg-[#1A1A1A] px-8 pb-20 pt-20" style={revealDelay(1)}>
           <div className="flex h-[523px] w-full items-center justify-center">
             <Image
               src="/build/returns-illustration.svg"
@@ -482,7 +505,7 @@ export default function BuildPage() {
         </div>
       </section>
 
-      <section className="product-card mx-[10px] mb-[10px] flex min-h-[calc(90vh/0.9)] flex-col items-center gap-6 overflow-hidden bg-[#1A1A1A] px-6 pb-0 pt-20 text-center">
+      <section className="product-card reveal mx-[10px] mb-[10px] flex min-h-[calc(90vh/0.9)] flex-col items-center gap-6 overflow-hidden bg-[#1A1A1A] px-6 pb-0 pt-20 text-center">
         <h2
           className="type-h1 w-fit text-white"
           style={{ lineHeight: "1.3", letterSpacing: "-0.02em" }}
@@ -537,7 +560,7 @@ export default function BuildPage() {
       </section>
 
       <section className="grid grid-cols-1 gap-[10px] px-[10px] pb-[10px] md:grid-cols-2">
-        <div className="product-card relative flex flex-col items-center gap-6 overflow-hidden bg-[#1A1A1A] px-8 pb-0 pt-20 text-center">
+        <div className="product-card reveal relative flex flex-col items-center gap-6 overflow-hidden bg-[#1A1A1A] px-8 pb-0 pt-20 text-center" style={revealDelay(0)}>
           <h2
             className="type-h1 w-fit text-white"
             style={{ lineHeight: "1.3", letterSpacing: "-0.02em" }}
@@ -588,7 +611,7 @@ export default function BuildPage() {
           />
         </div>
 
-        <div className="product-card relative flex flex-col items-center gap-6 overflow-hidden bg-[#1A1A1A] px-8 pb-0 pt-20 text-center">
+        <div className="product-card reveal relative flex flex-col items-center gap-6 overflow-hidden bg-[#1A1A1A] px-8 pb-0 pt-20 text-center" style={revealDelay(1)}>
           <h2
             className="type-h1 w-fit text-white"
             style={{ lineHeight: "1.3", letterSpacing: "-0.02em" }}
@@ -654,12 +677,17 @@ export default function BuildPage() {
           {quoteCards.map((card, index) => (
             <div
               key={card.name}
-              className="absolute left-1/2 top-1/2 flex h-[340px] w-[260px] flex-col justify-between rounded-[20px] px-7 py-9 text-left"
-              style={{
-                backgroundColor: card.bg,
-                transform: `translate(-50%, -50%) translate(${card.x}px, ${card.y}px) rotate(${card.rotate}deg)`,
-                zIndex: index + 1,
-              }}
+              className="quote-card reveal-fade absolute left-1/2 top-1/2 flex h-[340px] w-[260px] flex-col justify-between rounded-[20px] px-7 py-9 text-left"
+              style={
+                {
+                  backgroundColor: card.bg,
+                  "--qx": `${card.x}px`,
+                  "--qy": `${card.y}px`,
+                  "--qr": `${card.rotate}deg`,
+                  "--reveal-delay": `${index * 90}ms`,
+                  zIndex: index + 1,
+                } as CSSProperties
+              }
             >
               <p
                 style={{
@@ -697,7 +725,7 @@ export default function BuildPage() {
       </div>
       </section>
 
-      <section className="product-card relative mx-[10px] mb-[40px] flex h-[calc(75vh/0.9)] flex-col items-center overflow-hidden bg-[#FFFFFF] px-[10px] pb-0 pt-[10px] text-center">
+      <section className="product-card reveal relative mx-[10px] mb-[40px] flex h-[calc(75vh/0.9)] flex-col items-center overflow-hidden bg-[#FFFFFF] px-[10px] pb-0 pt-[10px] text-center">
         <div className="flex flex-1 flex-col items-center justify-center gap-6">
           <h2
             className="type-h1 w-fit text-[#1A1A1A]"
@@ -814,6 +842,88 @@ export default function BuildPage() {
         .product-card {
           border-radius: 20px;
           corner-shape: superellipse(4);
+          transition: transform 0.3s cubic-bezier(.22,1,.36,1), box-shadow 0.3s ease;
+        }
+        .product-card:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 16px 32px rgba(0,0,0,0.08);
+        }
+        .product-card img {
+          transition: transform 0.35s ease;
+        }
+        .product-card:hover img {
+          transform: scale(1.05);
+        }
+
+        @keyframes bannerIn {
+          from { opacity: 0; transform: translateY(-16px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .build-page button[aria-label="Close announcement"] svg {
+          transition: transform 0.2s ease;
+        }
+        .build-page button[aria-label="Close announcement"]:hover svg {
+          transform: rotate(90deg);
+        }
+
+        .reveal {
+          opacity: 0;
+          transform: translateY(28px);
+          transition: opacity 0.7s cubic-bezier(.22,1,.36,1), transform 0.7s cubic-bezier(.22,1,.36,1);
+          transition-delay: var(--reveal-delay, 0ms);
+        }
+        .reveal.reveal-in {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        .quote-card {
+          transform: translate(-50%, -50%) translate(var(--qx), var(--qy)) rotate(var(--qr));
+          transition: transform 0.35s cubic-bezier(.22,1,.36,1), box-shadow 0.35s ease;
+        }
+        .quote-card.reveal-fade {
+          opacity: 0;
+          transform: translate(-50%, -50%) translate(var(--qx), var(--qy)) rotate(var(--qr)) scale(0.85);
+          transition: opacity 0.6s ease, transform 0.6s cubic-bezier(.22,1,.36,1);
+          transition-delay: var(--reveal-delay, 0ms);
+        }
+        .quote-card.reveal-fade.reveal-in {
+          opacity: 1;
+          transform: translate(-50%, -50%) translate(var(--qx), var(--qy)) rotate(var(--qr)) scale(1);
+        }
+        .quote-card:hover {
+          transform: translate(-50%, -50%) translate(var(--qx), var(--qy)) rotate(var(--qr)) scale(1.06) !important;
+          box-shadow: 0 20px 45px rgba(0,0,0,0.2);
+          z-index: 50 !important;
+        }
+
+        .build-page a[class*="rounded-full"],
+        .build-page .waldo-cta {
+          transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+        .build-page a[class*="rounded-full"]:hover,
+        .build-page .waldo-cta:hover {
+          transform: translateY(-2px);
+        }
+        .build-page a[class*="rounded-full"]:active,
+        .build-page .waldo-cta:active {
+          transform: translateY(0) scale(0.96);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .reveal {
+            transition: none !important;
+            opacity: 1 !important;
+            transform: none !important;
+          }
+          .quote-card.reveal-fade {
+            transition: none !important;
+            opacity: 1 !important;
+            transform: translate(-50%, -50%) translate(var(--qx), var(--qy)) rotate(var(--qr)) !important;
+          }
+          .product-card, .product-card img, .quote-card, a[class*="rounded-full"], .waldo-cta {
+            transition: none !important;
+          }
         }
       `}</style>
     </main>
