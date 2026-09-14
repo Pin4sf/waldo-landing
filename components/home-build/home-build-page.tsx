@@ -210,7 +210,7 @@ export default function HomeBuildPage() {
           </p>
 
           <Link
-            href="/waitlist"
+            href="/kennel"
             className="rounded-full bg-[#1A1A1A] px-6 py-3 text-[13.5px] font-medium text-[#FAFAF8] transition-opacity hover:opacity-90"
           >
             Try now
@@ -670,18 +670,17 @@ export default function HomeBuildPage() {
           AI is smart, but not accountable.
         </h2>
 
-        <div className="relative h-[420px] w-full max-w-[1200px]">
+        <div className="quote-cluster reveal-fade relative h-[420px] w-full max-w-[1200px]">
           {quoteCards.map((card, index) => (
             <div
               key={card.name}
-              className="quote-card reveal-fade absolute left-1/2 top-1/2 flex h-[340px] w-[260px] flex-col justify-between rounded-[20px] px-7 py-9 text-left"
+              className="quote-card absolute left-1/2 top-1/2 flex h-[340px] w-[260px] flex-col justify-between rounded-[20px] px-7 py-9 text-left"
               style={
                 {
                   backgroundColor: card.bg,
                   "--qx": `${card.x}px`,
                   "--qy": `${card.y}px`,
                   "--qr": `${card.rotate}deg`,
-                  "--reveal-delay": `${index * 90}ms`,
                   zIndex: index + 1,
                 } as CSSProperties
               }
@@ -741,7 +740,7 @@ export default function HomeBuildPage() {
           </p>
 
           <Link
-            href="/waitlist"
+            href="/kennel"
             className="rounded-full bg-[#1A1A1A] px-6 py-3 text-[13.5px] font-medium text-[#FAFAF8] transition-opacity hover:opacity-90"
           >
             Try now
@@ -792,7 +791,7 @@ export default function HomeBuildPage() {
               Early Access
             </Link>
             <Link
-              href="/waitlist"
+              href="/kennel"
               className="rounded-full border border-black/10 px-6 py-3 text-[13.5px] font-medium text-[#1A1A1A] transition-colors hover:bg-black/5"
             >
               Start with Kennel
@@ -880,17 +879,25 @@ export default function HomeBuildPage() {
           transform: translate(-50%, -50%) translate(var(--qx), var(--qy)) rotate(var(--qr));
           transition: transform 0.35s cubic-bezier(.22,1,.36,1), box-shadow 0.35s ease;
         }
-        .quote-card.reveal-fade {
+        .quote-cluster {
+          filter: blur(8px);
           opacity: 0;
-          filter: blur(7px);
-          transform: translate(-50%, -50%) translate(calc(var(--qx) * 0.2), calc(var(--qy) * 0.2 + 60px)) rotate(0deg) scale(0.82);
-          transition: opacity 0.6s ease, filter 0.6s ease, transform 720ms linear(0 0%, 0.05763 4.17%, 0.19188 8.33%, 0.35748 12.5%, 0.52417 16.67%, 0.67382 20.83%, 0.79746 25%, 0.89251 29.17%, 0.96046 33.33%, 1.00508 37.5%, 1.0311 41.67%, 1.04327 45.83%, 1.04593 50%, 1.04264 54.17%, 1.03615 58.33%, 1.02846 62.5%, 1.02087 66.67%, 1.01413 70.83%, 1.00863 75%, 1.00444 79.17%, 1.00147 83.33%, 0.99955 87.5%, 0.99846 91.67%, 1 95.83%, 1 100%);
-          transition-delay: var(--reveal-delay, 0ms);
+          transform: translate3d(0, 88px, 0) scale(0.86);
         }
-        .quote-card.reveal-fade.reveal-in {
-          opacity: 1;
-          filter: blur(0);
-          transform: translate(-50%, -50%) translate(var(--qx), var(--qy)) rotate(var(--qr)) scale(1);
+        .quote-cluster.reveal-in {
+          animation: quote-cluster-enter 640ms cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+        @keyframes quote-cluster-enter {
+          from {
+            filter: blur(8px);
+            opacity: 0;
+            transform: translate3d(0, 88px, 0) scale(0.86);
+          }
+          to {
+            filter: blur(0);
+            opacity: 1;
+            transform: translate3d(0, 0, 0) scale(1);
+          }
         }
         .quote-card:hover {
           transform: translate(-50%, -50%) translate(var(--qx), var(--qy)) rotate(var(--qr)) scale(1.06) !important;
@@ -917,10 +924,11 @@ export default function HomeBuildPage() {
             opacity: 1 !important;
             transform: none !important;
           }
-          .quote-card.reveal-fade {
-            transition: none !important;
+          .quote-cluster {
+            animation: none !important;
+            filter: none !important;
             opacity: 1 !important;
-            transform: translate(-50%, -50%) translate(var(--qx), var(--qy)) rotate(var(--qr)) !important;
+            transform: none !important;
           }
           .quote-card, a[class*="rounded-full"], .waldo-cta {
             transition: none !important;
