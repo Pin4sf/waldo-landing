@@ -125,7 +125,7 @@ function FooterScenePicture({
       <source media="(max-width: 639px) and (orientation: portrait)" srcSet="/assets/footer-bg-mobile.svg" />
       <source media="(orientation: landscape) and (max-height: 600px)" srcSet="/assets/footer-bg-mobile-landscape.svg" />
       <source media="(min-width: 640px) and (max-width: 1024px) and (orientation: portrait)" srcSet="/assets/footer-bg-tablet.svg" />
-      <img src="/assets/footer-bg.svg" alt="" aria-hidden="true" className={imageClassName} />
+      <img src="/build/footer-scene.svg" alt="" aria-hidden="true" className={imageClassName} />
     </picture>
   );
 }
@@ -826,6 +826,9 @@ export default function BuildPage() {
         }
         .build-page .new-scene-close-title {
           font-size: clamp(2.25rem, 1.98rem + 0.81vw, 2.8125rem);
+        }
+        .build-page .new-scene-close-section {
+          aspect-ratio: 1440 / 1060;
         }
         .build-page .new-scene-close-copy-zone {
           padding-top: clamp(90px, 14svh, 180px);
