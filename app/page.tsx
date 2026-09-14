@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { NewHomePage } from "@/components/home/new-home-page";
+import HomeBuildPage from "@/components/home-build/home-build-page";
 import { OG_DESCRIPTION, OG_IMAGE_URL, SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from "@/lib/site-metadata";
 
 export const metadata: Metadata = {
@@ -21,5 +21,5 @@ export const metadata: Metadata = {
 };
 
 export default function Home() {
-  return <NewHomePage />;
+  return <HomeBuildPage />;
 }
