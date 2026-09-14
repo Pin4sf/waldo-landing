@@ -828,6 +828,9 @@ export default function BuildPage() {
         .build-page .new-scene-close-title {
           font-size: clamp(2.25rem, 1.98rem + 0.81vw, 2.8125rem);
         }
+        .build-page .new-scene-close-copy-zone {
+          padding-top: clamp(90px, 14svh, 180px);
+        }
         .build-page .new-scene-close-copy {
           font-size: 17.1px;
         }
@@ -880,12 +883,14 @@ export default function BuildPage() {
         }
         .quote-card.reveal-fade {
           opacity: 0;
-          transform: translate(-50%, -50%) translate(var(--qx), var(--qy)) rotate(var(--qr)) scale(0.85);
-          transition: opacity 0.6s ease, transform 0.6s cubic-bezier(.22,1,.36,1);
+          filter: blur(7px);
+          transform: translate(-50%, -50%) translate(calc(var(--qx) * 0.2), calc(var(--qy) * 0.2 + 60px)) rotate(0deg) scale(0.82);
+          transition: opacity 0.6s ease, filter 0.6s ease, transform 720ms linear(0 0%, 0.05763 4.17%, 0.19188 8.33%, 0.35748 12.5%, 0.52417 16.67%, 0.67382 20.83%, 0.79746 25%, 0.89251 29.17%, 0.96046 33.33%, 1.00508 37.5%, 1.0311 41.67%, 1.04327 45.83%, 1.04593 50%, 1.04264 54.17%, 1.03615 58.33%, 1.02846 62.5%, 1.02087 66.67%, 1.01413 70.83%, 1.00863 75%, 1.00444 79.17%, 1.00147 83.33%, 0.99955 87.5%, 0.99846 91.67%, 1 95.83%, 1 100%);
           transition-delay: var(--reveal-delay, 0ms);
         }
         .quote-card.reveal-fade.reveal-in {
           opacity: 1;
+          filter: blur(0);
           transform: translate(-50%, -50%) translate(var(--qx), var(--qy)) rotate(var(--qr)) scale(1);
         }
         .quote-card:hover {
