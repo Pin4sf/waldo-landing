@@ -557,7 +557,7 @@ export default function BuildPage() {
       </section>
 
       <section className="grid grid-cols-1 gap-[10px] px-[10px] pb-[10px] md:grid-cols-2">
-        <div className="product-card reveal relative flex flex-col items-center gap-6 overflow-hidden bg-[#1A1A1A] px-8 pb-0 pt-20 text-center" style={revealDelay(0)}>
+        <div className="product-card no-hover reveal relative flex flex-col items-center gap-6 overflow-hidden bg-[#1A1A1A] px-8 pb-0 pt-20 text-center" style={revealDelay(0)}>
           <h2
             className="type-h1 w-fit text-white"
             style={{ lineHeight: "1.3", letterSpacing: "-0.02em" }}
@@ -608,7 +608,7 @@ export default function BuildPage() {
           />
         </div>
 
-        <div className="product-card reveal relative flex flex-col items-center gap-6 overflow-hidden bg-[#1A1A1A] px-8 pb-0 pt-20 text-center" style={revealDelay(1)}>
+        <div className="product-card no-hover reveal relative flex flex-col items-center gap-6 overflow-hidden bg-[#1A1A1A] px-8 pb-0 pt-20 text-center" style={revealDelay(1)}>
           <h2
             className="type-h1 w-fit text-white"
             style={{ lineHeight: "1.3", letterSpacing: "-0.02em" }}
@@ -841,14 +841,14 @@ export default function BuildPage() {
           corner-shape: superellipse(4);
           transition: transform 0.3s cubic-bezier(.22,1,.36,1), box-shadow 0.3s ease;
         }
-        .product-card:hover {
+        .product-card:not(.no-hover):hover {
           transform: translateY(-4px);
           box-shadow: 0 16px 32px rgba(0,0,0,0.08);
         }
         .product-card img {
           transition: transform 0.35s ease;
         }
-        .product-card:hover img {
+        .product-card:not(.no-hover):hover img {
           transform: scale(1.05);
         }
 
