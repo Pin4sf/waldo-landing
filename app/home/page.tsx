@@ -18,7 +18,7 @@ type ProductCard = {
 
 const productCards: ProductCard[] = [
   {
-    icon: "/build/plugins-icon.svg",
+    icon: "/build/kennel-icon.svg",
     iconHeight: 73,
     lead: "Kennel for Mac.",
     line1Rest: "",
@@ -27,10 +27,10 @@ const productCards: ProductCard[] = [
     cta: "try-now",
   },
   {
-    icon: "/build/kennel-icon.svg",
+    icon: "/build/plugins-icon.svg",
     iconHeight: 57,
     lead: "Plugins.",
-    line1Rest: " For Whatsapp, Slack,",
+    line1Rest: " For WhatsApp, Slack,",
     line2: "Linear, Claude, Codex, or",
     line3: "wherever you already are",
     cta: "coming-soon",
@@ -61,8 +61,8 @@ type QuoteCard = {
 const quoteCards: QuoteCard[] = [
   {
     quote: "The model can change, your context should compound.",
-    name: "Garry Tan,",
-    source: "Y Combinator.",
+    name: "Garry Tan",
+    source: "Y Combinator",
     bg: "#2DB9FF",
     textColor: "#213453",
     x: -400,
@@ -70,7 +70,7 @@ const quoteCards: QuoteCard[] = [
     rotate: -8,
   },
   {
-    quote: "AI users want more; only if they can trust the AI.",
+    quote: "AI users want more — but only if they can trust it.",
     name: "6,118 respondents",
     source: "Notion x Qualtrics",
     bg: "#3E5035",
@@ -80,10 +80,9 @@ const quoteCards: QuoteCard[] = [
     rotate: 4,
   },
   {
-    quote: "Actions that create another review pile do not remove the person's responsibility.",
+    quote: "Creating another review pile doesn't remove the person's responsibility.",
     name: "Andrew Chen",
-    source: "LinkedIn, 2026.",
-    sourceHref: "#",
+    source: "LinkedIn, 2026",
     bg: "#3F345D",
     textColor: "#F6A6D2",
     x: 0,
@@ -94,7 +93,6 @@ const quoteCards: QuoteCard[] = [
     quote: "27% of people talking to AI are asking about their health.",
     name: "Societal Impact report",
     source: "Anthropic",
-    sourceHref: "#",
     bg: "#FFD351",
     textColor: "#4E301F",
     x: 192,
@@ -105,7 +103,6 @@ const quoteCards: QuoteCard[] = [
     quote: "Using an AI agent requires skills similar to managing a junior employee.",
     name: "Josh Miller",
     source: "Via X",
-    sourceHref: "#",
     bg: "#FF4B4D",
     textColor: "#531421",
     x: 404,
@@ -207,7 +204,7 @@ export default function BuildPage() {
             style={{ fontSize: "17.1px", lineHeight: "1.4" }}
           >
             <span className="font-medium text-[#1A1A1A]">Introducing Kennel.</span>
-            <span className="font-normal text-[#1A1A1A]/60"> Waldo&apos;s first surface; for</span>
+            <span className="font-normal text-[#1A1A1A]/60"> Waldo&apos;s first surface, for</span>
             <br />
             <span className="font-normal text-[#1A1A1A]/60">managing multiple sessions and their outcomes.</span>
           </p>
@@ -238,7 +235,7 @@ export default function BuildPage() {
         >
           Waldo is the one assistant that plans like Sherlock, thinks like Einstein
           <br />
-          and moves like the Flash; all in the body of a friendly dalmatian.
+          and moves like the Flash — all in the body of a friendly dalmatian.
         </p>
 
         <div className="flex items-center gap-3 pt-2">
@@ -296,7 +293,7 @@ export default function BuildPage() {
                       <GithubMark />
                     </span>
                     <span className="rounded-full border border-black/10 px-6 py-3 text-[13.5px] font-medium text-[#1A1A1A] transition-colors group-hover:bg-black/5">
-                      Learn more
+                      Learn More
                     </span>
                   </div>
                 ) : (
@@ -319,7 +316,7 @@ export default function BuildPage() {
                 style={revealDelay(index)}
               >
                 <span className="pointer-events-none absolute left-1/2 top-4 -translate-x-1/2 -translate-y-2 whitespace-nowrap rounded-full bg-[#1A1A1A] px-3 py-1.5 text-[11.7px] font-medium text-[#FAFAF8] opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100">
-                  Opensourced on GitHub
+                  Open source on GitHub
                 </span>
                 {content}
               </a>
@@ -442,7 +439,7 @@ export default function BuildPage() {
             className="type-body whitespace-nowrap text-center"
             style={{ fontSize: "17.1px", lineHeight: "1.4" }}
           >
-            <span className="font-medium text-[#1A1A1A]">Co-ordinates</span>
+            <span className="font-medium text-[#1A1A1A]">Coordinates</span>
             <span className="font-normal text-[#6B6B68]"> the work across the</span>
             <br />
             <span className="font-normal text-[#6B6B68]">agents, tools and apps you already use,</span>
@@ -623,8 +620,8 @@ export default function BuildPage() {
             className="type-body mx-auto w-fit max-w-[420px] text-center"
             style={{ fontSize: "17.1px", lineHeight: "1.4" }}
           >
-            <span className="font-medium text-white">Waldo works with every profession.</span>
-            <span className="font-normal text-white/60"> With the tools and playbooks already tuned for how you work.</span>
+            <span className="font-medium text-white">Waldo reads your sleep, HRV and load.</span>
+            <span className="font-normal text-white/60"> Then plans the day your body can actually carry.</span>
           </p>
 
           <Link
@@ -738,9 +735,9 @@ export default function BuildPage() {
             className="type-body mx-auto w-fit max-w-[480px] text-center text-[#6B6B68]"
             style={{ fontSize: "17.1px", lineHeight: "1.4" }}
           >
-            Waldo&apos;s first surface; free to use. Open Source. for
+            Waldo&apos;s first surface. Free and open source, for
             <br />
-            managing multiple session outcomes.
+            managing multiple sessions and their outcomes.
           </p>
 
           <Link

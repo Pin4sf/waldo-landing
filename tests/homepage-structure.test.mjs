@@ -623,13 +623,13 @@ test("handled cards use the Interface Craft selectable deck interaction", () => 
   assert.match(section, /new-handled-card-title/);
   assert.match(section, /Plans your\\nday\. In detail\./);
   assert.match(section, /Reads your night, then rebuilds\\nthe day around it/);
-  assert.match(section, /Writes what\\nyou.d rather not\./);
-  assert.match(section, /The follow-up you've dodged since Tuesday, written in your voice\. Sent, or waiting for your nod\./);
+  assert.match(section, /Never makes you\\nexplain twice\./);
+  assert.match(section, /Remembers the people, the\\ncontext, the way you like it done\./);
   assert.match(section, /Reads you\\nlike a clinician\./);
   assert.match(section, /Goes through your numbers the way a careful clinician would - and finds what you'd never catch alone\./);
   assert.doesNotMatch(section, /Goes through your numbers like a\\ncareful clinician would - then finds/);
-  assert.match(section, /Catches\\nwhat.s shifting\./);
-  assert.match(section, /quietly drift, then flags it\\nwhile it.s still easy to fix/);
+  assert.match(section, /Works with all\\nmodels \/ agents\./);
+  assert.match(section, /Waldo runs them all and\\nhands you back one outcome/);
   assert.match(section, /Shows how\\nfar you.ve come\./);
   assert.match(section, /months, years, so progress\\nstops being a guess/);
   assert.match(section, /new-handled-cta-panel/);
