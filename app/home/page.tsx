@@ -620,8 +620,8 @@ export default function BuildPage() {
             className="type-body mx-auto w-fit max-w-[420px] text-center"
             style={{ fontSize: "17.1px", lineHeight: "1.4" }}
           >
-            <span className="font-medium text-white">Waldo reads your sleep, HRV and load.</span>
-            <span className="font-normal text-white/60"> Then plans the day your body can actually carry.</span>
+            <span className="font-medium text-white">Watches how you're actually doing.</span>
+            <span className="font-normal text-white/60"> Then shapes the day around what your body can actually handle.</span>
           </p>
 
           <Link
