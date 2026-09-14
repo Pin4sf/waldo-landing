@@ -762,7 +762,6 @@ export default function BuildPage() {
 
       <section
         className="new-scene-close-section relative w-[calc(100vw/0.9)] self-start overflow-hidden bg-[#f4f3f0] text-[var(--ink)] [margin-left:calc(50%-50vw/0.9)] [margin-right:calc(50%-50vw/0.9)]"
-        style={{ height: "calc(100vh / 0.9)", minHeight: "calc(100vh / 0.9)", maxHeight: "calc(100vh / 0.9)", aspectRatio: "auto" }}
       >
         <div
           aria-hidden
@@ -830,6 +829,14 @@ export default function BuildPage() {
         }
         .build-page .new-scene-close-copy-zone {
           padding-top: clamp(90px, 14svh, 180px);
+        }
+        /* Desktop / landscape: show the whole illustration edge to edge,
+           anchored to the bottom, instead of cover-cropping it. */
+        @media (min-width: 1025px), (orientation: landscape) {
+          .build-page .new-scene-close-art img {
+            object-fit: contain;
+            object-position: center bottom;
+          }
         }
         .build-page .new-scene-close-copy {
           font-size: 17.1px;
