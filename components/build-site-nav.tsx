@@ -1,4 +1,11 @@
+"use client";
+
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { BackToTopButton } from "@/components/back-to-top-button";
+import { CookieBanner } from "@/components/cookie-banner";
+import { FloatingContactButton } from "@/components/floating-contact-button";
+import { captureUtmParams } from "@/lib/utm";
 
 type NavItem = {
   label: string;
@@ -13,7 +20,7 @@ const navItems: NavItem[] = [
   { label: "Support", href: "/support", tooltip: "here if you need us." },
 ];
 
-function WaldoMark() {
+function WaldoMark({ dark }: { dark?: boolean }) {
   const spots = [
     "M12.0455 8.19435C8.5546 8.63273 6.68628 1.37044 10.4049 0.0167778C14.1721 -0.400611 15.7586 7.09811 12.0455 8.19435Z",
     "M8.3092 10.5135C6.58923 13.9893 -0.949651 11.5404 0.0997341 7.32816C2.00498 3.60923 9.58249 6.4543 8.3092 10.5135Z",
@@ -27,26 +34,43 @@ function WaldoMark() {
   return (
     <svg width="18" height="16" viewBox="0 0 23 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       {spots.map((d) => (
-        <path key={d} d={d} fill="#1A1A1A" />
+        <path key={d} d={d} fill={dark ? "#FAFAF8" : "#1A1A1A"} />
       ))}
     </svg>
   );
 }
 
-export function BuildSiteNav() {
+export function BuildSiteNav({ variant = "light" }: { variant?: "light" | "dark" }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const dark = variant === "dark";
+
+  useEffect(() => {
+    captureUtmParams();
+  }, []);
+
   return (
     <>
-      <header className="build-site-nav relative z-30 flex h-[32.4px] items-center justify-center gap-[28.8px] border-b border-black/10 bg-[#F4F3F0] px-[18px] text-[12.15px] text-[#1A1A1A]">
+      <a className="site-skip-link" href="#main-content">
+        Skip to main content
+      </a>
+
+      <header
+        className={`build-site-nav relative z-30 flex h-[32.4px] items-center justify-center gap-[28.8px] px-[18px] text-[12.15px] ${
+          dark ? "build-site-nav--dark border-b border-white/10 text-[#FAFAF8]" : "border-b border-black/10 text-[#1A1A1A]"
+        }`}
+      >
         <Link href="/" aria-label="Waldo home" className="flex items-center">
-          <WaldoMark />
+          <WaldoMark dark={dark} />
         </Link>
 
-        <nav aria-label="Main navigation" className="flex items-center gap-8">
+        <nav aria-label="Main navigation" className="build-site-nav-desktop-items flex items-center gap-8">
           {navItems.map((item) => (
             <span
               key={item.label}
               tabIndex={0}
-              className="build-site-nav-item cursor-default text-[#1A1A1A]/70 transition-colors hover:text-[#1A1A1A]"
+              className={`build-site-nav-item cursor-default transition-colors ${
+                dark ? "text-white/70 hover:text-white" : "text-[#1A1A1A]/70 hover:text-[#1A1A1A]"
+              }`}
             >
               {item.label}
               <span className="build-site-nav-tooltip" role="tooltip">
@@ -56,16 +80,55 @@ export function BuildSiteNav() {
           ))}
         </nav>
 
+        <button
+          type="button"
+          className={`build-site-nav-menu-toggle${dark ? " build-site-nav-menu-toggle--dark" : ""}`}
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={menuOpen}
+          onClick={() => setMenuOpen((open) => !open)}
+        >
+          <span />
+          <span />
+          <span />
+        </button>
+
         <div className="flex items-center gap-4">
           <Link
             href="/waitlist"
-            className="rounded-full bg-[#1A1A1A] px-[10.8px] py-[5.4px] text-[9.9px] font-medium leading-normal text-[#FAFAF8] transition-opacity hover:opacity-90"
+            className={`rounded-full px-[10.8px] py-[5.4px] text-[9.9px] font-medium leading-normal transition-opacity hover:opacity-90 ${
+              dark ? "bg-[#FAFAF8] text-[#1A1A1A]" : "bg-[#1A1A1A] text-[#FAFAF8]"
+            }`}
             style={{ lineHeight: "1.2" }}
           >
             Early Access
           </Link>
         </div>
       </header>
+
+      {menuOpen ? (
+        <div className={`build-site-nav-mobile-panel${dark ? " build-site-nav-mobile-panel--dark" : ""}`}>
+          {navItems.map((item) =>
+            item.href ? (
+              <Link
+                key={item.label}
+                href={item.href}
+                onClick={() => setMenuOpen(false)}
+                className={`build-site-nav-mobile-item${dark ? " build-site-nav-mobile-item--dark" : ""}`}
+              >
+                {item.label}
+              </Link>
+            ) : (
+              <span key={item.label} className={`build-site-nav-mobile-item${dark ? " build-site-nav-mobile-item--dark" : ""}`}>
+                {item.label}
+              </span>
+            ),
+          )}
+        </div>
+      ) : null}
+
+      <BackToTopButton />
+      <FloatingContactButton />
+      <CookieBanner />
 
       <style>{`
         .build-site-nav-item {

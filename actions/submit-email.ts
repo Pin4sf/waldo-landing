@@ -61,26 +61,38 @@ async function loopsContactExists(email: string) {
   return Array.isArray(contactList) && contactList.length > 0;
 }
 
-async function upsertLoopsContact(email: string): Promise<void> {
+async function upsertLoopsContact(email: string, utm: Record<string, string>): Promise<void> {
   await loopsRequest("/contacts/update", {
     method: "PUT",
     body: {
       email,
-      source:    "heywaldo.in",
+      source:    utm.utm_source ?? "heywaldo.in",
       userGroup: "waitlist",
+      ...utm,
     },
   });
 }
 
-async function sendLoopsWaitlistEvent(email: string): Promise<void> {
+async function sendLoopsWaitlistEvent(email: string, utm: Record<string, string>): Promise<void> {
   await loopsRequest("/events/send", {
     method: "POST",
     body: {
       email,
       eventName:       "waitlist_signup",
-      eventProperties: { source: "heywaldo.in" },
+      eventProperties: { source: "heywaldo.in", ...utm },
     },
   });
+}
+
+const UTM_FIELDS = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"] as const;
+
+function readUtmFields(formData: FormData): Record<string, string> {
+  const utm: Record<string, string> = {};
+  for (const field of UTM_FIELDS) {
+    const value = formData.get(field);
+    if (typeof value === "string" && value.trim()) utm[field] = value.trim().slice(0, 128);
+  }
+  return utm;
 }
 
 export async function submitEmail(formData: FormData): Promise<Result> {
@@ -105,12 +117,14 @@ export async function submitEmail(formData: FormData): Promise<Result> {
     return { success: false, error: "invalid_email" };
   }
 
+  const utm = readUtmFields(formData);
+
   try {
     // Duplicate — already on waitlist, silent success.
     if (await loopsContactExists(email)) return { success: true };
 
-    await upsertLoopsContact(email);
-    await sendLoopsWaitlistEvent(email);
+    await upsertLoopsContact(email, utm);
+    await sendLoopsWaitlistEvent(email, utm);
   } catch (error) {
     console.error("[waitlist] loops submission failed", error instanceof Error ? error.message : "unknown_error");
     return { success: false, error: "server_error" };

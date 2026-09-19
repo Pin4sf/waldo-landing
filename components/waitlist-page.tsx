@@ -411,7 +411,7 @@ export function WaitlistPage() {
     <>
       {showTime && <TimeScreen period={timePeriod} onDismiss={handleDismiss} />}
 
-      <main className="flex min-h-[calc(100vh-72px)] items-center justify-center px-4 py-8">
+      <main id="main-content" className="flex min-h-[calc(100vh-72px)] items-center justify-center px-4 py-8">
         <div
           className="w-full max-w-[440px] rounded-3xl bg-white px-8 py-10 flex flex-col items-center gap-5 text-center border border-[var(--border-default)]"
           style={cardStyle}

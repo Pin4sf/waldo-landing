@@ -169,7 +169,7 @@ export default function HomeBuildPage() {
   }, []);
 
   return (
-    <main className="build-page min-h-screen" style={{ backgroundColor: "#F4F3F0" }}>
+    <main id="main-content" className="build-page min-h-screen" style={{ backgroundColor: "#F4F3F0" }}>
       <BuildSiteNav />
 
       {bannerOpen && (
@@ -374,7 +374,6 @@ export default function HomeBuildPage() {
               alt=""
               width={628}
               height={1236}
-              unoptimized
               className="mx-auto h-auto w-full"
             />
 

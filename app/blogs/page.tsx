@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { BlogCard } from "@/components/blog/blog-card";
+import { BlogSearch } from "@/components/blog/blog-search";
 import { BLOG_POSTS, formatBlogDate, readBlogMarkdown } from "@/lib/blog-posts";
 import { SITE_URL } from "@/lib/site-metadata";
 
@@ -29,6 +30,14 @@ export default function BlogsPage() {
   const secondaryPosts = remainingPosts.slice(0, 2);
   const archivePosts = remainingPosts.slice(2);
 
+  const searchablePosts = BLOG_POSTS.map((post) => ({
+    slug: post.slug,
+    title: post.title,
+    dek: post.dek,
+    category: post.category,
+    readingTime: readBlogMarkdown(post).readingTime,
+  }));
+
   return (
     <main id="blog-main" className="blog-index">
       <header className="blog-index-hero">
@@ -43,37 +52,39 @@ export default function BlogsPage() {
         <p className="blog-wit-aside">a quiet place for the things Waldo noticed.</p>
       </header>
 
-      <section className="blog-featured" aria-label="Featured article">
-        <BlogCard post={featured} featured />
-      </section>
+      <BlogSearch posts={searchablePosts}>
+        <section className="blog-featured" aria-label="Featured article">
+          <BlogCard post={featured} featured />
+        </section>
 
-      <section className="blog-index-grid" aria-label="All articles">
-        {secondaryPosts.map((post) => (
-          <BlogCard key={post.slug} post={post} />
-        ))}
-      </section>
+        <section className="blog-index-grid" aria-label="All articles">
+          {secondaryPosts.map((post) => (
+            <BlogCard key={post.slug} post={post} />
+          ))}
+        </section>
 
-      <section className="blog-archive" aria-labelledby="blog-archive-title">
-        <h2 id="blog-archive-title">More from Waldo</h2>
-        <div className="blog-archive-list">
-          {archivePosts.map((post) => {
-            const { readingTime } = readBlogMarkdown(post);
-            return (
-              <article key={post.slug} className="blog-archive-row">
-                <div className="blog-archive-meta">
-                  <span>{post.category}</span>
-                  <time dateTime={post.datePublished}>{formatBlogDate(post.datePublished)}</time>
-                  <span>{readingTime} min read</span>
-                </div>
-                <h3>
-                  <Link href={`/blogs/${post.slug}`}>{post.title}</Link>
-                </h3>
-                <p>{post.dek}</p>
-              </article>
-            );
-          })}
-        </div>
-      </section>
+        <section className="blog-archive" aria-labelledby="blog-archive-title">
+          <h2 id="blog-archive-title">More from Waldo</h2>
+          <div className="blog-archive-list">
+            {archivePosts.map((post) => {
+              const { readingTime } = readBlogMarkdown(post);
+              return (
+                <article key={post.slug} className="blog-archive-row">
+                  <div className="blog-archive-meta">
+                    <span>{post.category}</span>
+                    <time dateTime={post.datePublished}>{formatBlogDate(post.datePublished)}</time>
+                    <span>{readingTime} min read</span>
+                  </div>
+                  <h3>
+                    <Link href={`/blogs/${post.slug}`}>{post.title}</Link>
+                  </h3>
+                  <p>{post.dek}</p>
+                </article>
+              );
+            })}
+          </div>
+        </section>
+      </BlogSearch>
     </main>
   );
 }
