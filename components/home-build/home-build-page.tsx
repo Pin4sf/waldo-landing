@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState, type CSSProperties } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import { HandledCardsSection } from "@/components/home/handled-cards-section";
 import { BuildSiteNav } from "@/components/build-site-nav";
 
@@ -18,7 +18,7 @@ type ProductCard = {
 
 const productCards: ProductCard[] = [
   {
-    icon: "/build/plugins-icon.svg",
+    icon: "/build/kennel-icon.svg",
     iconHeight: 73,
     lead: "Kennel for Mac.",
     line1Rest: "",
@@ -27,10 +27,10 @@ const productCards: ProductCard[] = [
     cta: "try-now",
   },
   {
-    icon: "/build/kennel-icon.svg",
+    icon: "/build/plugins-icon.svg",
     iconHeight: 57,
     lead: "Plugins.",
-    line1Rest: " For Whatsapp, Slack,",
+    line1Rest: " For WhatsApp, Slack,",
     line2: "Linear, Claude, Codex, or",
     line3: "wherever you already are",
     cta: "coming-soon",
@@ -61,9 +61,8 @@ type QuoteCard = {
 const quoteCards: QuoteCard[] = [
   {
     quote: "The model can change, your context should compound.",
-    name: "Garry Tan,",
-    source: "Y Combinator.",
-    sourceHref: "https://www.youtube.com/watch?v=eRrc1pUY5oU",
+    name: "Garry Tan",
+    source: "Y Combinator",
     bg: "#2DB9FF",
     textColor: "#213453",
     x: -400,
@@ -71,7 +70,7 @@ const quoteCards: QuoteCard[] = [
     rotate: -8,
   },
   {
-    quote: "AI users want more; only if they can trust the AI.",
+    quote: "AI users want more — but only if they can trust it.",
     name: "6,118 respondents",
     source: "Notion x Qualtrics",
     sourceHref: "https://x.com/NotionHQ/status/2085089677535780922",
@@ -82,11 +81,9 @@ const quoteCards: QuoteCard[] = [
     rotate: 4,
   },
   {
-    quote: "Actions that create another review pile do not remove the person's responsibility.",
+    quote: "Creating another review pile doesn't remove the person's responsibility.",
     name: "Andrew Chen",
-    source: "LinkedIn, 2026.",
-    sourceHref:
-      "https://www.linkedin.com/posts/andrewchen_last-years-startup-trend-copilot-for-x-share-7488472791541985280-2t0X/",
+    source: "LinkedIn, 2026",
     bg: "#3F345D",
     textColor: "#F6A6D2",
     x: 0,
@@ -97,7 +94,6 @@ const quoteCards: QuoteCard[] = [
     quote: "27% of people talking to AI are asking about their health.",
     name: "Societal Impact report",
     source: "Anthropic",
-    sourceHref: "https://www.anthropic.com/research/claude-personal-guidance",
     bg: "#FFD351",
     textColor: "#4E301F",
     x: 192,
@@ -108,7 +104,6 @@ const quoteCards: QuoteCard[] = [
     quote: "Using an AI agent requires skills similar to managing a junior employee.",
     name: "Josh Miller",
     source: "Via X",
-    sourceHref: "https://x.com/joshm/status/2084751187002458369",
     bg: "#FF4B4D",
     textColor: "#531421",
     x: 404,
@@ -131,7 +126,7 @@ function FooterScenePicture({
       <source media="(max-width: 639px) and (orientation: portrait)" srcSet="/assets/footer-bg-mobile.svg" />
       <source media="(orientation: landscape) and (max-height: 600px)" srcSet="/assets/footer-bg-mobile-landscape.svg" />
       <source media="(min-width: 640px) and (max-width: 1024px) and (orientation: portrait)" srcSet="/assets/footer-bg-tablet.svg" />
-      <img src="/assets/footer-bg.svg" alt="" aria-hidden="true" className={imageClassName} />
+      <img src="/build/footer-scene.svg" alt="" aria-hidden="true" className={imageClassName} />
     </picture>
   );
 }
@@ -150,17 +145,38 @@ function GithubMark() {
 
 const KENNEL_GITHUB_URL = "https://github.com/Pin4sf/Waldo-Kennel";
 
+function revealDelay(index: number): CSSProperties {
+  return { "--reveal-delay": `${index * 90}ms` } as CSSProperties;
+}
+
 export default function HomeBuildPage() {
   const [bannerOpen, setBannerOpen] = useState(true);
 
+  useEffect(() => {
+    const els = document.querySelectorAll<HTMLElement>(".reveal, .reveal-fade");
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("reveal-in");
+            io.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -8% 0px" },
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
   return (
-    <main className="build-page min-h-screen" style={{ backgroundColor: "#F4F3F0" }}>
+    <main id="main-content" className="build-page min-h-screen" style={{ backgroundColor: "#F4F3F0" }}>
       <BuildSiteNav />
 
       {bannerOpen && (
         <div
           className="relative flex h-[calc(25vh/0.9)] w-full flex-col items-center justify-center gap-[19px] px-6"
-          style={{ backgroundColor: "#FFD351" }}
+          style={{ backgroundColor: "#FFD351", animation: "bannerIn 0.5s cubic-bezier(.22,1,.36,1) both" }}
         >
           <button
             type="button"
@@ -189,13 +205,13 @@ export default function HomeBuildPage() {
             style={{ fontSize: "17.1px", lineHeight: "1.4" }}
           >
             <span className="font-medium text-[#1A1A1A]">Introducing Kennel.</span>
-            <span className="font-normal text-[#1A1A1A]/60"> Waldo&apos;s first surface; for</span>
+            <span className="font-normal text-[#1A1A1A]/60"> Waldo&apos;s first surface, for</span>
             <br />
             <span className="font-normal text-[#1A1A1A]/60">managing multiple sessions and their outcomes.</span>
           </p>
 
           <Link
-            href="/waitlist"
+            href="/kennel"
             className="rounded-full bg-[#1A1A1A] px-6 py-3 text-[13.5px] font-medium text-[#FAFAF8] transition-opacity hover:opacity-90"
           >
             Try now
@@ -208,19 +224,19 @@ export default function HomeBuildPage() {
         style={{ minHeight: "calc(75vh / 0.9 - 2.25rem)" }}
       >
         <h1
-          className="type-h1 w-fit text-center text-[#1A1A1A]"
+          className="type-h1 reveal reveal-in w-fit text-center text-[#1A1A1A]"
           style={{ lineHeight: "1.3", letterSpacing: "-0.02em" }}
         >
           Life happens. Waldo handles it.
         </h1>
 
         <p
-          className="type-body mx-auto w-fit text-center text-[#6B6B68]"
-          style={{ fontSize: "17.1px", lineHeight: "1.4" }}
+          className="type-body reveal reveal-in mx-auto w-fit text-center text-[#6B6B68]"
+          style={{ fontSize: "17.1px", lineHeight: "1.4", ...revealDelay(1) }}
         >
           Waldo is the one assistant that plans like Sherlock, thinks like Einstein
           <br />
-          and moves like the Flash; all in the body of a friendly dalmatian.
+          and moves like the Flash — all in the body of a friendly dalmatian.
         </p>
 
         <div className="flex items-center gap-3 pt-2">
@@ -244,7 +260,7 @@ export default function HomeBuildPage() {
       </section>
 
       <section className="grid grid-cols-1 gap-[10px] px-[10px] pb-0 pt-10 md:grid-cols-3">
-        {productCards.map((card) => {
+        {productCards.map((card, index) => {
           const content = (
             <>
               <div className="flex h-[109px] w-full items-center justify-center">
@@ -278,7 +294,7 @@ export default function HomeBuildPage() {
                       <GithubMark />
                     </span>
                     <span className="rounded-full border border-black/10 px-6 py-3 text-[13.5px] font-medium text-[#1A1A1A] transition-colors group-hover:bg-black/5">
-                      Learn more
+                      Learn More
                     </span>
                   </div>
                 ) : (
@@ -297,10 +313,11 @@ export default function HomeBuildPage() {
                 href={KENNEL_GITHUB_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="product-card group relative flex flex-col items-center gap-6 bg-[#FFFFFF] px-8 py-10 text-center"
+                className="product-card reveal group relative flex flex-col items-center gap-6 bg-[#FFFFFF] px-8 py-10 text-center"
+                style={revealDelay(index)}
               >
                 <span className="pointer-events-none absolute left-1/2 top-4 -translate-x-1/2 -translate-y-2 whitespace-nowrap rounded-full bg-[#1A1A1A] px-3 py-1.5 text-[11.7px] font-medium text-[#FAFAF8] opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100">
-                  Opensourced on GitHub
+                  Open source on GitHub
                 </span>
                 {content}
               </a>
@@ -310,7 +327,8 @@ export default function HomeBuildPage() {
           return (
             <div
               key={card.lead}
-              className="product-card flex flex-col items-center gap-6 bg-[#FFFFFF] px-8 py-10 text-center"
+              className="product-card reveal flex flex-col items-center gap-6 bg-[#FFFFFF] px-8 py-10 text-center"
+              style={revealDelay(index)}
             >
               {content}
             </div>
@@ -319,7 +337,7 @@ export default function HomeBuildPage() {
       </section>
 
       <section className="px-[10px] py-[10px]">
-        <div className="product-card relative flex min-h-[calc(90vh/0.9)] flex-col items-center overflow-hidden bg-[#FFFFFF] px-8 pb-0 pt-16">
+        <div className="product-card reveal relative flex min-h-[calc(90vh/0.9)] flex-col items-center overflow-hidden bg-[#FFFFFF] px-8 pb-0 pt-16">
           <h2
             className="w-fit text-center text-[#1A1A1A]"
             style={{
@@ -357,7 +375,6 @@ export default function HomeBuildPage() {
               alt=""
               width={628}
               height={1236}
-              unoptimized
               className="mx-auto h-auto w-full"
             />
 
@@ -381,7 +398,7 @@ export default function HomeBuildPage() {
       </section>
 
       <section className="grid grid-cols-1 gap-[10px] px-[10px] pb-[10px] md:grid-cols-2">
-        <div className="product-card flex flex-col items-center gap-14 bg-[#FFFFFF] px-8 pb-20 pt-20">
+        <div className="product-card reveal flex flex-col items-center gap-14 bg-[#FFFFFF] px-8 pb-20 pt-20" style={revealDelay(0)}>
           <div className="flex h-[330px] w-full items-center justify-center">
             <Image
               src="/build/understands-illustration.svg"
@@ -406,7 +423,7 @@ export default function HomeBuildPage() {
           </p>
         </div>
 
-        <div className="product-card flex flex-col items-center gap-14 bg-[#FFFFFF] px-8 pb-20 pt-20">
+        <div className="product-card reveal flex flex-col items-center gap-14 bg-[#FFFFFF] px-8 pb-20 pt-20" style={revealDelay(1)}>
           <div className="flex h-[330px] w-full items-center justify-center">
             <Image
               src="/build/coordinates-illustration.svg"
@@ -422,7 +439,7 @@ export default function HomeBuildPage() {
             className="type-body whitespace-nowrap text-center"
             style={{ fontSize: "17.1px", lineHeight: "1.4" }}
           >
-            <span className="font-medium text-[#1A1A1A]">Co-ordinates</span>
+            <span className="font-medium text-[#1A1A1A]">Coordinates</span>
             <span className="font-normal text-[#6B6B68]"> the work across the</span>
             <br />
             <span className="font-normal text-[#6B6B68]">agents, tools and apps you already use,</span>
@@ -434,7 +451,7 @@ export default function HomeBuildPage() {
 
       <div className="bg-[#161616]">
       <section className="grid grid-cols-1 gap-[10px] px-[10px] pb-[10px] md:grid-cols-2">
-        <div className="product-card flex flex-col items-center gap-14 bg-[#1A1A1A] px-8 pb-20 pt-20">
+        <div className="product-card reveal flex flex-col items-center gap-14 bg-[#1A1A1A] px-8 pb-20 pt-20" style={revealDelay(0)}>
           <div className="flex h-[523px] w-full items-center justify-center">
             <Image
               src="/build/verifies-illustration.svg"
@@ -459,7 +476,7 @@ export default function HomeBuildPage() {
           </p>
         </div>
 
-        <div className="product-card flex flex-col items-center gap-14 bg-[#1A1A1A] px-8 pb-20 pt-20">
+        <div className="product-card reveal flex flex-col items-center gap-14 bg-[#1A1A1A] px-8 pb-20 pt-20" style={revealDelay(1)}>
           <div className="flex h-[523px] w-full items-center justify-center">
             <Image
               src="/build/returns-illustration.svg"
@@ -485,7 +502,7 @@ export default function HomeBuildPage() {
         </div>
       </section>
 
-      <section className="product-card mx-[10px] mb-[10px] flex min-h-[calc(90vh/0.9)] flex-col items-center gap-6 overflow-hidden bg-[#1A1A1A] px-6 pb-0 pt-20 text-center">
+      <section className="product-card reveal mx-[10px] mb-[10px] flex min-h-[calc(90vh/0.9)] flex-col items-center gap-6 overflow-hidden bg-[#1A1A1A] px-6 pb-0 pt-20 text-center">
         <h2
           className="type-h1 w-fit text-white"
           style={{ lineHeight: "1.3", letterSpacing: "-0.02em" }}
@@ -540,7 +557,7 @@ export default function HomeBuildPage() {
       </section>
 
       <section className="grid grid-cols-1 gap-[10px] px-[10px] pb-[10px] md:grid-cols-2">
-        <div className="product-card relative flex flex-col items-center gap-6 overflow-hidden bg-[#1A1A1A] px-8 pb-0 pt-20 text-center">
+        <div className="product-card reveal relative flex flex-col items-center gap-6 overflow-hidden bg-[#1A1A1A] px-8 pb-0 pt-20 text-center" style={revealDelay(0)}>
           <h2
             className="type-h1 w-fit text-white"
             style={{ lineHeight: "1.3", letterSpacing: "-0.02em" }}
@@ -591,7 +608,7 @@ export default function HomeBuildPage() {
           />
         </div>
 
-        <div className="product-card relative flex flex-col items-center gap-6 overflow-hidden bg-[#1A1A1A] px-8 pb-0 pt-20 text-center">
+        <div className="product-card reveal relative flex flex-col items-center gap-6 overflow-hidden bg-[#1A1A1A] px-8 pb-0 pt-20 text-center" style={revealDelay(1)}>
           <h2
             className="type-h1 w-fit text-white"
             style={{ lineHeight: "1.3", letterSpacing: "-0.02em" }}
@@ -603,8 +620,8 @@ export default function HomeBuildPage() {
             className="type-body mx-auto w-fit max-w-[420px] text-center"
             style={{ fontSize: "17.1px", lineHeight: "1.4" }}
           >
-            <span className="font-medium text-white">Waldo works with every profession.</span>
-            <span className="font-normal text-white/60"> With the tools and playbooks already tuned for how you work.</span>
+            <span className="font-medium text-white">Watches how you're actually doing.</span>
+            <span className="font-normal text-white/60"> Then shapes the day around what your body can actually handle.</span>
           </p>
 
           <Link
@@ -653,16 +670,20 @@ export default function HomeBuildPage() {
           AI is smart, but not accountable.
         </h2>
 
-        <div className="relative h-[420px] w-full max-w-[1200px]">
+        <div className="quote-cluster reveal-fade relative h-[420px] w-full max-w-[1200px]">
           {quoteCards.map((card, index) => (
             <div
               key={card.name}
-              className="absolute left-1/2 top-1/2 flex h-[340px] w-[260px] flex-col justify-between rounded-[20px] px-7 py-9 text-left"
-              style={{
-                backgroundColor: card.bg,
-                transform: `translate(-50%, -50%) translate(${card.x}px, ${card.y}px) rotate(${card.rotate}deg)`,
-                zIndex: index + 1,
-              }}
+              className="quote-card absolute left-1/2 top-1/2 flex h-[340px] w-[260px] flex-col justify-between rounded-[20px] px-7 py-9 text-left"
+              style={
+                {
+                  backgroundColor: card.bg,
+                  "--qx": `${card.x}px`,
+                  "--qy": `${card.y}px`,
+                  "--qr": `${card.rotate}deg`,
+                  zIndex: index + 1,
+                } as CSSProperties
+              }
             >
               <p
                 style={{
@@ -706,7 +727,7 @@ export default function HomeBuildPage() {
       </div>
       </section>
 
-      <section className="product-card relative mx-[10px] mb-[40px] flex h-[calc(75vh/0.9)] flex-col items-center overflow-hidden bg-[#FFFFFF] px-[10px] pb-0 pt-[10px] text-center">
+      <section className="product-card reveal relative mx-[10px] mb-[40px] flex h-[calc(75vh/0.9)] flex-col items-center overflow-hidden bg-[#FFFFFF] px-[10px] pb-0 pt-[10px] text-center">
         <div className="flex flex-1 flex-col items-center justify-center gap-6">
           <h2
             className="type-h1 w-fit text-[#1A1A1A]"
@@ -719,13 +740,13 @@ export default function HomeBuildPage() {
             className="type-body mx-auto w-fit max-w-[480px] text-center text-[#6B6B68]"
             style={{ fontSize: "17.1px", lineHeight: "1.4" }}
           >
-            Waldo&apos;s first surface; free to use. Open Source. for
+            Waldo&apos;s first surface. Free and open source, for
             <br />
-            managing multiple session outcomes.
+            managing multiple sessions and their outcomes.
           </p>
 
           <Link
-            href="/waitlist"
+            href="/kennel"
             className="rounded-full bg-[#1A1A1A] px-6 py-3 text-[13.5px] font-medium text-[#FAFAF8] transition-opacity hover:opacity-90"
           >
             Try now
@@ -746,7 +767,6 @@ export default function HomeBuildPage() {
 
       <section
         className="new-scene-close-section relative w-[calc(100vw/0.9)] self-start overflow-hidden bg-[#f4f3f0] text-[var(--ink)] [margin-left:calc(50%-50vw/0.9)] [margin-right:calc(50%-50vw/0.9)]"
-        style={{ height: "calc(100vh / 0.9)", minHeight: "calc(100vh / 0.9)", maxHeight: "calc(100vh / 0.9)", aspectRatio: "auto" }}
       >
         <div
           aria-hidden
@@ -777,7 +797,7 @@ export default function HomeBuildPage() {
               Early Access
             </Link>
             <Link
-              href="/waitlist"
+              href="/kennel"
               className="rounded-full border border-black/10 px-6 py-3 text-[13.5px] font-medium text-[#1A1A1A] transition-colors hover:bg-black/5"
             >
               Start with Kennel
@@ -812,6 +832,20 @@ export default function HomeBuildPage() {
         .build-page .new-scene-close-title {
           font-size: clamp(2.25rem, 1.98rem + 0.81vw, 2.8125rem);
         }
+        .build-page .new-scene-close-section {
+          aspect-ratio: 1440 / 1060;
+        }
+        .build-page .new-scene-close-copy-zone {
+          padding-top: clamp(90px, 14svh, 180px);
+        }
+        /* Desktop / landscape: show the whole illustration edge to edge,
+           anchored to the bottom, instead of cover-cropping it. */
+        @media (min-width: 1025px), (orientation: landscape) {
+          .build-page .new-scene-close-art img {
+            object-fit: contain;
+            object-position: center bottom;
+          }
+        }
         .build-page .new-scene-close-copy {
           font-size: 17.1px;
         }
@@ -823,6 +857,88 @@ export default function HomeBuildPage() {
         .product-card {
           border-radius: 20px;
           corner-shape: superellipse(4);
+        }
+
+        @keyframes bannerIn {
+          from { opacity: 0; transform: translateY(-16px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .build-page button[aria-label="Close announcement"] svg {
+          transition: transform 0.2s ease;
+        }
+        .build-page button[aria-label="Close announcement"]:hover svg {
+          transform: rotate(90deg);
+        }
+
+        .reveal {
+          opacity: 0;
+          transform: translateY(28px);
+          transition: opacity 0.7s cubic-bezier(.22,1,.36,1), transform 0.7s cubic-bezier(.22,1,.36,1);
+          transition-delay: var(--reveal-delay, 0ms);
+        }
+        .reveal.reveal-in {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        .quote-card {
+          transform: translate(-50%, -50%) translate(var(--qx), var(--qy)) rotate(var(--qr));
+          transition: transform 0.35s cubic-bezier(.22,1,.36,1), box-shadow 0.35s ease;
+        }
+        .quote-cluster {
+          filter: blur(8px);
+          opacity: 0;
+          transform: translate3d(0, 88px, 0) scale(0.86);
+        }
+        .quote-cluster.reveal-in {
+          animation: quote-cluster-enter 640ms cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+        @keyframes quote-cluster-enter {
+          from {
+            filter: blur(8px);
+            opacity: 0;
+            transform: translate3d(0, 88px, 0) scale(0.86);
+          }
+          to {
+            filter: blur(0);
+            opacity: 1;
+            transform: translate3d(0, 0, 0) scale(1);
+          }
+        }
+        .quote-card:hover {
+          transform: translate(-50%, -50%) translate(var(--qx), var(--qy)) rotate(var(--qr)) scale(1.06) !important;
+          box-shadow: 0 20px 45px rgba(0,0,0,0.2);
+          z-index: 50 !important;
+        }
+
+        .build-page a[class*="rounded-full"],
+        .build-page .waldo-cta {
+          transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+        .build-page a[class*="rounded-full"]:hover,
+        .build-page .waldo-cta:hover {
+          transform: translateY(-2px);
+        }
+        .build-page a[class*="rounded-full"]:active,
+        .build-page .waldo-cta:active {
+          transform: translateY(0) scale(0.96);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .reveal {
+            transition: none !important;
+            opacity: 1 !important;
+            transform: none !important;
+          }
+          .quote-cluster {
+            animation: none !important;
+            filter: none !important;
+            opacity: 1 !important;
+            transform: none !important;
+          }
+          .quote-card, a[class*="rounded-full"], .waldo-cta {
+            transition: none !important;
+          }
         }
       `}</style>
     </main>

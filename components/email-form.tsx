@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { isValidEmail } from "@/lib/validate-email";
+import { readUtmParams } from "@/lib/utm";
 import { submitEmail } from "@/actions/submit-email";
 
 type PageState = "default" | "error" | "success";
@@ -25,6 +26,11 @@ export function EmailForm({
     if (!val || !isValidEmail(val)) {
       onStateChange("error");
       return;
+    }
+
+    const utm = readUtmParams();
+    for (const [key, value] of Object.entries(utm)) {
+      if (value) fd.set(key, value);
     }
 
     setPending(true);
