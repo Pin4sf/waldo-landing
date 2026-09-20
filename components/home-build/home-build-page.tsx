@@ -73,6 +73,7 @@ const quoteCards: QuoteCard[] = [
     quote: "AI users want more — but only if they can trust it.",
     name: "6,118 respondents",
     source: "Notion x Qualtrics",
+    sourceHref: "https://x.com/NotionHQ/status/2085089677535780922",
     bg: "#3E5035",
     textColor: "#B1E080",
     x: -196,
@@ -700,7 +701,13 @@ export default function HomeBuildPage() {
               <div className="type-body" style={{ color: card.textColor, fontSize: "17.1px", lineHeight: "1.4" }}>
                 <p className="font-medium">{card.name}</p>
                 {card.sourceHref ? (
-                  <a href={card.sourceHref} className="underline opacity-80" style={{ color: card.textColor }}>
+                  <a
+                    href={card.sourceHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline opacity-80"
+                    style={{ color: card.textColor }}
+                  >
                     {card.source}
                   </a>
                 ) : (
