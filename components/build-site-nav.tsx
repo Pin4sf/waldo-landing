@@ -17,7 +17,7 @@ const navItems: NavItem[] = [
   { label: "Features", href: "/features", tooltip: "Explore the full tour of Waldo." },
   { label: "Pricing", href: "/pricing", tooltip: "free to find out. when we're ready." },
   { label: "Blog", href: "/blogs", tooltip: "waldo's been busy. so have we." },
-  { label: "Support", href: "/support", tooltip: "here if you need us." },
+  { label: "Support", href: "mailto:woof@heywaldo.com", tooltip: "here if you need us." },
 ];
 
 function WaldoMark({ dark }: { dark?: boolean }) {
@@ -65,10 +65,10 @@ export function BuildSiteNav({ variant = "light" }: { variant?: "light" | "dark"
 
         <nav aria-label="Main navigation" className="build-site-nav-desktop-items flex items-center gap-8">
           {navItems.map((item) => (
-            <span
+            <Link
               key={item.label}
-              tabIndex={0}
-              className={`build-site-nav-item cursor-default transition-colors ${
+              href={item.href}
+              className={`build-site-nav-item transition-colors ${
                 dark ? "text-white/70 hover:text-white" : "text-[#1A1A1A]/70 hover:text-[#1A1A1A]"
               }`}
             >
@@ -76,7 +76,7 @@ export function BuildSiteNav({ variant = "light" }: { variant?: "light" | "dark"
               <span className="build-site-nav-tooltip" role="tooltip">
                 {item.tooltip}
               </span>
-            </span>
+            </Link>
           ))}
         </nav>
 
