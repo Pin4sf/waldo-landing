@@ -9,13 +9,13 @@ import { captureUtmParams } from "@/lib/utm";
 
 type NavItem = {
   label: string;
-  href: string;
+  href?: string;
   tooltip: string;
 };
 
 const navItems: NavItem[] = [
   { label: "Features", href: "/features", tooltip: "Explore the full tour of Waldo." },
-  { label: "Pricing", href: "/pricing", tooltip: "free to find out. when we're ready." },
+  { label: "Pricing", tooltip: "free to find out. when we're ready." },
   { label: "Blog", href: "/blogs", tooltip: "waldo's been busy. so have we." },
   { label: "Support", href: "mailto:woof@heywaldo.com", tooltip: "here if you need us." },
 ];
@@ -64,20 +64,29 @@ export function BuildSiteNav({ variant = "light" }: { variant?: "light" | "dark"
         </Link>
 
         <nav aria-label="Main navigation" className="build-site-nav-desktop-items flex items-center gap-8">
-          {navItems.map((item) => (
-            <Link
-              key={item.label}
-              href={item.href}
-              className={`build-site-nav-item transition-colors ${
-                dark ? "text-white/70 hover:text-white" : "text-[#1A1A1A]/70 hover:text-[#1A1A1A]"
-              }`}
-            >
-              {item.label}
-              <span className="build-site-nav-tooltip" role="tooltip">
-                {item.tooltip}
+          {navItems.map((item) => {
+            const className = `build-site-nav-item transition-colors ${
+              dark ? "text-white/70 hover:text-white" : "text-[#1A1A1A]/70 hover:text-[#1A1A1A]"
+            }`;
+            const content = (
+              <>
+                {item.label}
+                <span className="build-site-nav-tooltip" role="tooltip">
+                  {item.tooltip}
+                </span>
+              </>
+            );
+
+            return item.href ? (
+              <Link key={item.label} href={item.href} className={className}>
+                {content}
+              </Link>
+            ) : (
+              <span key={item.label} tabIndex={0} className={`${className} cursor-default`}>
+                {content}
               </span>
-            </Link>
-          ))}
+            );
+          })}
         </nav>
 
         <button
