@@ -1,12 +1,25 @@
 ---
-type: article
 status: published
-title: Your health app is a mirror. Mirrors do not catch you.
+slug: health-apps-are-mirrors
+title: Your health app is a mirror. / Mirrors do not catch you.
+dek: Your wearable already knows when the day is too heavy. The missing part is an agent willing to act.
+excerpt: Health software is good at recording yesterday. Waldo is built around what should happen next.
+aside: mirrors, with a little follow-through.
+category: Health data
+author: team-health
+type: article
 tags: [waldo, blog, health]
 created: 2026-07-23
 published: 2026-07-23
 updated: 2026-07-23
 site_section: what-is-waldo
+image: /assets/blogs/health-app-mirror.webp
+imageAlt: A spotted orange trail crossing from a mirror into a protected day
+audio: /assets/blogs/audio/health-apps-are-mirrors.m4a
+artCredit: Waldo, made with OpenAI
+sources:
+  - Adjust mobile app retention benchmarks for 2023 | https://www.adjust.com/blog/get-the-mobile-app-retention-benchmarks-for-2023/
+  - Waldo product architecture, May 2026 | /features
 ---
 
 # Your health app is a mirror. Mirrors do not catch you.

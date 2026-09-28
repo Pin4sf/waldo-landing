@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { BLOG_POSTS } from "@/lib/blog-posts";
+import { getBlogPosts } from "@/lib/blog-posts";
 
 export function BlogFooter() {
   return (
@@ -20,7 +20,7 @@ export function BlogFooter() {
           <Link href="/waitlist">Let Waldo in →</Link>
         </nav>
       </div>
-      <p className="blog-footer-count">{BLOG_POSTS.length} essays, with more being noticed.</p>
+      <p className="blog-footer-count">{getBlogPosts().length} essays, with more being noticed.</p>
     </footer>
   );
 }

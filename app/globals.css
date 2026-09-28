@@ -19,8 +19,9 @@
   --dark-t3: #1C1B1A;
   --dark-t4: #171616;
   --ink: #1A1A1A;
-  --text-secondary: #6B6B68;
-  --text-tertiary: #9A9A96;
+  /* Light greys darkened 2026-09-28 so all small text passes 4.5:1 on the page (was 4.8:1 and 2.5:1). */
+  --text-secondary: #5E5E5B;
+  --text-tertiary: #6F6E69;
   --text-disabled: #C4C3BF;
   --accent: #FB943F;
   --accent-subtle: rgba(251, 148, 63, 0.1);
@@ -111,18 +112,24 @@ html {
   overflow: hidden;
 }
 
-html[data-theme="dark"] {
-  --surface-t1: #272725;
-  --surface-t2: #1D1D1B;
-  --surface-t3: #1C1B1A;
-  --surface-t4: #171616;
+/*
+  Dark colours: the Kennel page's (heywaldo.in/kennel, 2026-09-28). Used only by the Kennel page, which is
+  always dark (<SiteShell theme="dark">). Every other page is always light. See docs/website/dark-mode.md.
+  Page #111111, panels #161616, raised #1A1A1A. Text is off-white at full, 60% and 50% strength
+  (written out as solid colours). Lines are white at 8%.
+*/
+[data-theme="dark"] {
+  --surface-t1: #1A1A1A;
+  --surface-t2: #161616;
+  --surface-t3: #111111;
+  --surface-t4: #232323;
   --ink: #FAFAF8;
-  --text-secondary: #9A9A96;
-  --text-tertiary: #6B6B68;
-  --text-disabled: #444441;
+  --text-secondary: #9D9D9C;
+  --text-tertiary: #868685;
+  --text-disabled: #575756;
   --accent-subtle: rgba(251, 148, 63, 0.16);
-  --border-default: rgba(250, 250, 248, 0.08);
-  --border-focus: rgba(250, 250, 248, 0.16);
+  --border-default: rgba(255, 255, 255, 0.08);
+  --border-focus: rgba(255, 255, 255, 0.16);
   --shadow-card: 0 1px 2px rgba(0,0,0,.28), 0 10px 28px rgba(0,0,0,.24);
   --shadow-elevated: 0 2px 4px rgba(0,0,0,.32), 0 18px 44px rgba(0,0,0,.3);
   --shadow-floating: 0 20px 48px rgba(0,0,0,.34), 0 2px 8px rgba(0,0,0,.22);
@@ -949,7 +956,7 @@ body {
 }
 
 .blog-contents-link[aria-current="location"] {
-  color: var(--accent);
+  color: var(--ink);
   transform: translateX(3px);
 }
 
@@ -1018,16 +1025,17 @@ body {
   opacity: 1;
 }
 
+/* Links read in ink with an orange underline: orange text is too faint on the light page (2:1). */
 .blog-prose a {
-  color: var(--accent);
-  text-decoration-color: #fdbf8c;
+  color: var(--ink);
+  text-decoration-color: var(--accent);
   text-decoration-skip-ink: auto;
   text-decoration-thickness: 0.07em;
   text-underline-offset: 0.13em;
 }
 
 html[data-theme="dark"] .blog-prose a {
-  text-decoration-color: #b0682c;
+  text-decoration-color: var(--accent);
 }
 
 .blog-prose strong {
@@ -9779,8 +9787,8 @@ html[data-theme="dark"] .blog-prose a {
 
   .new-handled-deck-stage[data-deck-mode="mobile"] .new-handled-card-copy {
     bottom: 22px;
-    left: 18px;
-    right: 18px;
+    left: 32px;
+    right: 32px;
     top: auto;
   }
 

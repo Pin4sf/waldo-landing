@@ -1,12 +1,25 @@
 ---
-type: article
 status: published
-title: What we actually do with your data, explained to your grandmother
+slug: what-we-do-with-your-data
+title: What we actually do with your data, / explained to your grandmother
+dek: A plain-language account of what Waldo may access, what stays private, and what you control.
+excerpt: You choose the connections. Waldo should explain what it touched and keep the boundaries visible.
+aside: the boundary is part of the product.
+category: Privacy
+author: team-privacy
+type: article
 tags: [waldo, blog, privacy, security]
 created: 2026-08-01
 published: 2026-08-01
 updated: 2026-08-01
 site_section: privacy
+image: /assets/blogs/your-data.webp
+imageAlt: A small protected archive translating private signals into a simple note
+audio: /assets/blogs/audio/what-we-do-with-your-data.m4a
+artCredit: Waldo, made with OpenAI
+sources:
+  - European Commission guide to individual data rights | https://commission.europa.eu/law/law-topic/data-protection/information-individuals_en
+  - Waldo data and autonomy commitments, May 2026 | /features
 ---
 
 # What we actually do with your data, explained to your grandmother

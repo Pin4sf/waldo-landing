@@ -1,12 +1,24 @@
 ---
-type: article
 status: published
-title: You are stuck in a loop and your AI cannot tell
+slug: patterns-your-ai-cannot-see
+title: You are stuck in a loop / and your AI cannot tell
+dek: A single Tuesday looks ordinary. A run of them can tell you exactly what keeps going wrong.
+excerpt: The useful pattern is rarely one dramatic event. It is the ordinary thing that keeps happening together.
+aside: Tuesday has been trying to tell you.
+category: Patterns
+author: team-continuity
+type: article
 tags: [waldo, blog, patterns, memory]
 created: 2026-07-28
 published: 2026-07-28
 updated: 2026-07-28
 site_section: constellation
+image: /assets/blogs/patterns.webp
+imageAlt: A run of calendar pages connected by a quiet constellation of spots
+audio: /assets/blogs/audio/patterns-your-ai-cannot-see.m4a
+artCredit: Waldo, made with OpenAI
+sources:
+  - Waldo pattern architecture, May 2026 | /features
 ---
 
 # You are stuck in a loop and your AI cannot tell

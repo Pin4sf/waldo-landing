@@ -33,14 +33,14 @@ type HandledCard = {
 const handledCards: HandledCard[] = [
   {
     title: "Plans your\nday. In detail.",
-    body: "Reads your night, then rebuilds\nthe day around it. Hard meeting\nmoves. Done before you're up.",
+    body: "Reads your night, then rebuilds the day around it. Hard meeting moves. Done before you're up.",
     tone: "blue",
     fan: { offsetX: -306, offsetY: -10, rotation: -8 },
     dock: { offsetX: 49, offsetY: 48, rotation: -4 },
   },
   {
     title: "Never makes you\nexplain twice.",
-    body: "Remembers the people, the\ncontext, the way you like it done.\nSay it once. It sticks.",
+    body: "Remembers the people, the context, the way you like it done. Say it once. It sticks.",
     tone: "green",
     fan: { offsetX: -151, offsetY: 20, rotation: 4 },
     dock: { offsetX: 31, offsetY: 49, rotation: -2 },
@@ -54,14 +54,14 @@ const handledCards: HandledCard[] = [
   },
   {
     title: "Works with all\nmodels / agents.",
-    body: "Claude, Codex, or whatever ships\nnext. Waldo runs them all and\nhands you back one outcome.",
+    body: "Claude, Codex, or whatever ships next. Waldo runs them all and hands you back one outcome.",
     tone: "yellow",
     fan: { offsetX: 147, offsetY: 16, rotation: 1 },
     dock: { offsetX: -10, offsetY: 53, rotation: 2 },
   },
   {
     title: "Shows how\nfar you’ve come.",
-    body: "Keeps the honest record: days,\nmonths, years, so progress\nstops being a guess.",
+    body: "Keeps the honest record: days, months, years, so progress stops being a guess.",
     tone: "red",
     fan: { offsetX: 310, offsetY: -19, rotation: 5 },
     dock: { offsetX: -33, offsetY: 57, rotation: 3 },

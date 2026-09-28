@@ -6,7 +6,7 @@ import { isValidEmail } from "@/lib/validate-email";
 
 type Result =
   | { success: true }
-  | { success: false; error: "invalid_email" | "server_error" };
+  | { success: false; error: "invalid_email" | "disposable_email" | "server_error" };
 
 type LoopsJson = Array<unknown> | { success?: boolean; id?: string; message?: string };
 
@@ -108,7 +108,7 @@ export async function submitEmail(formData: FormData): Promise<Result> {
 
   // 2. Disposable email check (~4,000 known throwaway domains)
   if (disposableDomains.includes(domain)) {
-    return { success: false, error: "invalid_email" };
+    return { success: false, error: "disposable_email" };
   }
 
   // 3. DNS MX check — domain must be able to receive mail

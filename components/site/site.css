@@ -1,0 +1,960 @@
+/*
+  Site scaffold: one layout system for every page.
+  Every page is built from these pieces so text placement, spacing and grids stay identical.
+  Measurements come from the 1280px Figma frame: content edge at 12.75% of the width,
+  headline ~43px, body 17.1px, three equal columns across the content width.
+*/
+
+.site {
+  --site-edge: clamp(20px, 12.75vw, 184px);
+  --site-max: 1440px;
+  --site-line: color-mix(in srgb, var(--ink) 10%, transparent);
+  --site-hover: color-mix(in srgb, var(--ink) 8%, transparent);
+  --site-col-gap: clamp(24px, 3.6vw, 56px);
+  --site-row-gap: clamp(48px, 6vw, 88px);
+  --site-body: 17.1px;
+  --site-small: 15px;
+  --site-tiny: 13.5px;
+  /*
+    Type: three levels, used on every page (see docs/website/type.md).
+    Label    13.5px, grey              eyebrows, categories, dates, table heads, small print
+    Title    Mottle, ~43px             page and section headlines
+    Body     20px on desktop (17px on phones), 130% line height, grey
+             Emphasis inside body text (names, first lines, questions) is ink and medium weight.
+  */
+  --type-title: clamp(2rem, 3.35vw, 2.9rem);
+  --type-label: 13.5px;
+  --type-body: clamp(1.0625rem, 0.98rem + 0.337vw, 1.25rem); /* 17px on a phone, 20px from about 1280px */
+  --body-leading: 1.3;
+  --site-button-bg: var(--ink);
+  --site-button-hover: color-mix(in srgb, var(--ink) 78%, #000);
+
+  /*
+    Motion. Every timing and curve below is copied from linear.app's own CSS and animations
+    (captured 2026-09-28). The Linear name is in the comment so the source stays traceable.
+  */
+  --ease-out-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94);   /* --ease-out-quad */
+  --ease-in-quad: cubic-bezier(0.55, 0.085, 0.68, 0.53);   /* --ease-in-quad */
+  --ease-in-out-quad: cubic-bezier(0.455, 0.03, 0.515, 0.955); /* --ease-in-out-quad */
+  --ease-reveal: cubic-bezier(0.25, 0.1, 0.25, 1);         /* hero headline reveal */
+  /* Spring used for chat messages appearing in Linear's product demo */
+  --ease-spring: linear(0, 0.0411 3.45%, 0.1342 6.9%, 0.2478 10.34%, 0.3638 13.79%, 0.4725 17.24%, 0.5692 20.69%, 0.6524 24.14%, 0.7222 27.59%, 0.7798 31.03%, 0.8267 34.48%, 0.8644 37.93%, 0.8944 41.38%, 0.9181 44.83%, 0.9367 48.28%, 0.9513 51.72%, 0.9626 55.17%, 0.9714 58.62%, 0.9782 62.07%, 0.9834 65.52%, 0.9874 68.97%, 0.9904 72.41%, 0.9927 75.86%, 0.9945 79.31%, 0.9959 82.76%, 0.9969 86.21%, 0.9976 89.66%, 0.9982 93.1%, 0.9987 96.55%, 1);
+  --motion-quick: 0.1s;      /* --speed-quickTransition: menu links, header */
+  --motion-chevron: 0.12s;   /* accordion chevron, tooltips */
+  --motion-button: 0.16s;    /* buttons, underlines */
+  --motion-popup: 0.18s;     /* dropdown menu, mobile menu */
+  --motion-toast: 0.175s;    /* small floating panels */
+  --motion-regular: 0.25s;   /* --speed-regularTransition */
+  --motion-appear: 0.3s;     /* message appear */
+  --motion-reveal: 1s;       /* headline reveal */
+  --motion-dot: 0.42s;       /* dot pop-in */
+  --motion-sheet: 0.5s;      /* side panel ("Features +" sheet) */
+  /* Carousel card spring, from tutundzhian.com (stiffness 380, damping 28), as a CSS curve */
+  --motion-card-spring: 0.564s;
+  --ease-card-spring: linear(0, 0.0338, 0.1159, 0.2269, 0.3485, 0.472, 0.5881, 0.6907, 0.78, 0.853, 0.9119, 0.957, 0.9896, 1.0125, 1.027, 1.0352, 1.0385, 1.0383, 1.0358, 1.0319, 1.0273, 1.0225, 1.0179, 1.0136, 1.0099, 1.0068, 1.0043, 1.0024, 1.0009, 0.9999, 0.9992, 0.9987, 0.9985, 0.9985, 0.9986, 0.9987, 0.9989, 0.999, 0.9992, 0.9994, 1);
+  --ease-sheet: cubic-bezier(0.32, 0.72, 0, 1); /* side panel slide and backdrop */
+
+  min-height: 100svh;
+  background: var(--surface-t3);
+  color: var(--ink);
+  font-family: var(--font-body);
+}
+
+/* Phones: a 24px edge (like Linear) instead of the proportional one, so titles and text get the room */
+@media (max-width: 640px) {
+  .site { --site-edge: 24px; }
+}
+
+.site-container {
+  width: 100%;
+  max-width: var(--site-max);
+  margin-inline: auto;
+  padding-inline: var(--site-edge);
+}
+
+/* ── Announcement strip ─────────────────────────────── */
+/* Centred on one line. When it doesn't fit, the first sentence takes the top line and the rest
+   (with the link) goes underneath. */
+.site-announcement {
+  background: #FFD351;
+  color: #1A1A1A;
+  font-size: var(--type-label);
+  line-height: 1.4;
+}
+.site-announcement .site-container { padding-block: 12px; text-align: center; }
+.site-announcement p { margin: 0; }
+.site-announcement p > strong,
+.site-announcement p > span { display: inline-block; }
+.site-announcement strong { font-weight: 500; }
+.site-announcement a { margin-left: 0.25em; color: #1A1A1A; font-weight: 500; }
+
+/* ── Menu ───────────────────────────────────────────── */
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background-color: transparent;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  transition: background-color var(--motion-quick) var(--ease-out-quad);
+}
+html[data-scrolled] .site-nav,
+.site-nav:has(.site-nav-mobile-panel) { background-color: color-mix(in srgb, var(--surface-t3) 80%, transparent); }
+.site-nav-inner {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  height: 56px;
+}
+.site-nav-logo { display: inline-flex; align-items: center; gap: 8px; color: var(--ink); font-weight: 500; font-size: var(--site-small); }
+.site-nav-links { display: flex; align-items: center; gap: 4px; margin-left: auto; }
+/* Menu links are soft pills: colour and fill change on hover (Linear's nav anchor). */
+.site-nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 32px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  font: inherit;
+  font-size: var(--site-tiny);
+  color: color-mix(in srgb, var(--ink) 70%, transparent);
+  cursor: pointer;
+  transition: color var(--motion-quick) var(--ease-out-quad), background-color var(--motion-quick) var(--ease-out-quad);
+}
+.site-nav-link:hover,
+.site-nav-link[aria-expanded="true"] { color: var(--ink); background-color: var(--site-hover); }
+.site-nav-link[aria-current="page"] { color: var(--ink); }
+.site-nav-chevron { transition: transform var(--motion-chevron) var(--ease-out-quad); }
+.site-nav-link[aria-expanded="true"] .site-nav-chevron { transform: rotate(180deg); }
+.site-nav-group { position: relative; }
+/* Invisible bridge so the pointer can travel from the button to the menu without closing it. */
+.site-nav-group[data-open]::after { content: ""; position: absolute; top: 100%; left: -16px; right: -16px; height: 16px; }
+.site-nav-menu {
+  position: absolute;
+  top: calc(100% + 12px);
+  left: -4px;
+  min-width: 240px;
+  display: grid;
+  gap: 2px;
+  padding: 6px;
+  border: 1px solid color-mix(in srgb, var(--ink) 8%, transparent);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--surface-t1) 90%, transparent);
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+  box-shadow: 0 8px 32px rgba(8, 9, 10, 0.05);
+  transform-origin: top;
+}
+.site-nav-menu > a,
+.site-nav-menu > span { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 10px; font-size: var(--site-tiny); }
+.site-nav-menu img { width: 36px; height: 28px; object-fit: contain; flex: none; }
+.site-nav-menu-soon img { opacity: 0.55; }
+.site-nav-menu a { color: var(--ink); transition: background-color var(--motion-quick) var(--ease-out-quad); }
+.site-nav-menu a:hover { background-color: var(--site-hover); }
+.site-nav-menu-soon { color: var(--text-tertiary); }
+.site-nav-menu small { display: block; color: var(--text-secondary); font-size: 12px; margin-top: 2px; }
+.site-nav-cta { margin-left: 12px; }
+.site-nav-toggle { display: none; }
+
+@media (max-width: 860px) {
+  .site-nav-links { display: none; }
+  .site-nav-mobile { margin-left: auto; }
+  .site-nav-toggle { display: inline-flex; margin-right: -12px; color: var(--ink); }
+  .site-nav-mobile-panel {
+    display: grid;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 56px;
+    gap: 4px;
+    padding: 12px var(--site-edge) 32px;
+    background: var(--surface-t3);
+  }
+  .site-nav-mobile-panel a,
+  .site-nav-mobile-panel span { padding: 10px 0; font-size: var(--site-small); color: var(--ink); transition: color var(--motion-quick) var(--ease-out-quad); }
+  .site-nav-mobile-panel a:hover { color: var(--text-tertiary); }
+  .site-nav-mobile-panel span { color: var(--text-tertiary); }
+}
+@media (min-width: 861px) {
+  .site-nav-mobile { display: none; }
+}
+
+/* ── Buttons ────────────────────────────────────────── */
+.site-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.site-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 12px 24px;
+  border-radius: 999px;
+  font-size: var(--site-tiny);
+  font-weight: 500;
+  line-height: 1.2;
+  transition-property: border-color, background-color, color, box-shadow, opacity, filter, transform;
+  transition-duration: var(--motion-button);
+  transition-timing-function: var(--ease-out-quad);
+  white-space: nowrap;
+}
+.site-button--primary { background: var(--site-button-bg); color: var(--surface-t2); }
+.site-button--primary:hover { background: var(--site-button-hover); }
+.site-button--secondary { border: 1px solid var(--site-line); color: var(--ink); }
+.site-button--secondary:hover { background-color: color-mix(in srgb, var(--ink) 5%, transparent); }
+.site-button:not(:disabled):active { transform: scale(0.97); }
+.site-button--small { min-height: 34px; padding: 8px 16px; }
+/* The arrow in "Let Waldo in →" leans forward on hover. */
+.site-arrow { display: inline-block; margin-left: 0.3em; transition: transform var(--motion-button) var(--ease-out-quad); }
+a:hover > .site-arrow,
+button:not(:disabled):hover > .site-arrow { transform: translateX(2px); }
+.site-link {
+  color: var(--ink);
+  font-weight: 500;
+  font-size: var(--type-body);
+  text-decoration: underline;
+  text-decoration-color: var(--site-line);
+  text-underline-offset: 4px;
+  transition: text-decoration-color var(--motion-button), text-underline-offset var(--motion-button);
+}
+.site-link:hover { text-decoration-color: var(--ink); text-underline-offset: 6px; }
+
+/* ── Sections ───────────────────────────────────────── */
+.site-section { padding-block: clamp(88px, 15vh, 160px); }
+.site-section--frame { min-height: 100svh; }
+.site-section--tight { padding-block: clamp(64px, 9vh, 104px); }
+
+/* Label */
+.site-label {
+  margin: 0 0 20px;
+  font-size: var(--type-label);
+  line-height: 1.4;
+  color: var(--text-tertiary);
+}
+
+/* Title. Never more than two lines: each line stays on one line, and the size comes down just
+   enough for the longest line to fit. --title-em (the longest line's width, in ems) is set on
+   each title by titleFit() in lib/title-fit.ts. 100cqi is the width the title has to work with. */
+.site-header-block,
+.site-letter,
+.site .blog-article-header { container-type: inline-size; }
+.site-heading {
+  margin: 0;
+  font-family: var(--font-headline);
+  font-weight: var(--mottle-display-weight);
+  font-size: min(var(--type-title), 100cqi / var(--title-em, 0.01));
+  line-height: 1.22;
+  letter-spacing: -0.02em;
+}
+.site-heading span { display: block; white-space: nowrap; }
+
+/* Body text. Emphasis inside it is ink and medium weight. */
+.site-text {
+  margin: 32px 0 0;
+  max-width: 40rem;
+  font-size: var(--type-body);
+  line-height: var(--body-leading);
+  color: var(--text-secondary);
+}
+.site-text + .site-text { margin-top: 12px; }
+.site :is(.site-text, .site-item-text, .site-list, .site-faq, .site-table, .site-placeholder) strong { color: var(--ink); font-weight: 500; }
+.site-section > .site-container > .site-actions,
+.site-header-block > .site-actions { margin-top: 40px; }
+/* Small print (form consent, counts) is label-sized, in the body grey so it stays readable */
+.site-note {
+  margin: 20px 0 0;
+  max-width: 37rem;
+  font-size: var(--type-label);
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+.site-note a,
+.site-announcement a {
+  text-decoration: underline;
+  text-decoration-color: var(--site-line);
+  text-underline-offset: 3px;
+  transition: text-decoration-color var(--motion-button), text-underline-offset var(--motion-button);
+}
+.site-note a:hover,
+.site-announcement a:hover { text-decoration-color: currentColor; text-underline-offset: 5px; }
+
+/* Space between the section header and whatever follows it (grid, table, list) */
+.site-body { margin-top: var(--site-row-gap); }
+.site-body + .site-body { margin-top: clamp(40px, 5vw, 64px); }
+
+/* ── Grid ───────────────────────────────────────────── */
+.site-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr));
+  column-gap: var(--site-col-gap);
+  row-gap: clamp(40px, 5vw, 64px);
+}
+@media (max-width: 960px) {
+  .site-grid { grid-template-columns: repeat(min(var(--cols, 3), 2), minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
+  .site-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+.site-item { display: flex; flex-direction: column; min-width: 0; }
+/* Items: label → name (body, ink, medium) → first line (body, ink, medium) → body */
+.site-item-meta { margin: 0 0 10px; }
+.site-item-title {
+  margin: 0;
+  font-size: var(--type-body);
+  font-weight: 500;
+  line-height: var(--body-leading);
+  color: var(--ink);
+}
+.site-item-title a {
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 4px;
+  transition: text-decoration-color var(--motion-button), text-underline-offset var(--motion-button);
+}
+.site-item-title a:hover { text-decoration-color: currentColor; text-underline-offset: 6px; }
+/* Empty space reserved for the visual that comes later. Kept blank on purpose. */
+.site-visual { height: clamp(96px, 14vw, 200px); }
+.site-visual--wide { height: clamp(160px, 26vw, 380px); }
+/* A real picture: a soft frame one step lighter than the page, the picture contained inside it */
+.site-visual--image {
+  position: relative;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  margin-top: 20px;
+  border-radius: 14px;
+  background: var(--surface-t2);
+  overflow: hidden;
+}
+.site-visual--image.site-visual--wide { aspect-ratio: 16 / 9; margin-top: 0; }
+.site-visual--image img { object-fit: contain; padding: 7%; }
+.site-visual--cover img { object-fit: cover; padding: 0; }
+.site-visual--natural { aspect-ratio: auto; padding: clamp(16px, 3vw, 40px); }
+.site-visual--natural img { display: block; width: 100%; height: auto; padding: 0; }
+.site-visual--image + .site-item-text { margin-top: 20px; }
+.site-item-title + .site-item-text { margin-top: 4px; }
+/* Connector directory: the tool's logo sits before its name */
+.site-tool-name { display: flex; align-items: center; gap: 10px; }
+.site-tool-name img { width: 24px; height: 24px; object-fit: contain; flex: none; }
+.site-tool-mark {
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  flex: none;
+  border-radius: 7px;
+  background: var(--surface-t4);
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 500;
+}
+.site-item-text { font-size: var(--type-body); line-height: var(--body-leading); color: var(--text-secondary); }
+.site-item-text p { margin: 0; }
+.site-item-text p + p { margin-top: 10px; }
+.site-item-text strong { display: block; color: var(--ink); font-weight: 500; }
+.site-item-text ul { margin: 0; padding-left: 18px; }
+.site-item-text li + li { margin-top: 4px; }
+.site-item .site-actions,
+.site-item > .site-link { margin-top: 18px; }
+
+/* ── Carousel: three-card rows scroll sideways (after tutundzhian.com) ──
+   Sizes are theirs: cards 420px wide with a 460px picture (360/420 on tablets, about 300/360 on
+   phones), 20px apart (16px on phones), 26px corners. The first card lines up with the page text,
+   and the row runs to the window edges. */
+.site-carousel {
+  --carousel-gap: 20px;
+  --card-width: 480px;
+  --card-image-height: 520px;
+  --carousel-pad: calc(max(0px, (100vw - var(--site-max)) / 2) + var(--site-edge));
+  display: flex;
+  gap: var(--carousel-gap);
+  margin-inline: calc(50% - 50vw);
+  padding: 0 var(--carousel-pad) 16px;
+  scroll-padding-left: var(--carousel-pad);
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  cursor: grab;
+}
+.site-carousel::-webkit-scrollbar { display: none; }
+.site-carousel[data-dragging] { cursor: grabbing; user-select: none; scroll-snap-type: none; }
+.site-carousel:focus-visible { outline-offset: -2px; }
+.site-carousel-card { flex: none; width: clamp(280px, var(--card-width), 480px); scroll-snap-align: start; }
+@media (max-width: 1199px) { .site-carousel { --card-width: 400px; --card-image-height: 460px; } }
+@media (max-width: 767px) { .site-carousel { --card-width: min(86vw, 340px); --card-image-height: 400px; --carousel-gap: 16px; } }
+
+/* The picture frame leads the card, then the words under it */
+.site-carousel .site-visual {
+  order: -1;
+  position: relative;
+  height: clamp(300px, var(--card-image-height), 520px);
+  aspect-ratio: auto;
+  margin: 0 0 16px;
+  border-radius: 26px;
+  background: var(--surface-t2);
+  overflow: hidden;
+  transition: transform var(--motion-card-spring) var(--ease-card-spring);
+}
+.site-carousel .site-visual:hover { transform: scale(1.01); }
+.site-carousel .site-visual:active { transform: scale(0.97); }
+.site-carousel .site-visual img { transition: transform 0.4s ease; -webkit-user-drag: none; user-select: none; }
+.site-carousel .site-visual:hover img,
+.site-carousel .site-item:focus-within .site-visual img { transform: scale(1.04); }
+/* The light that follows the cursor (position and strength set by carousel.tsx) */
+.site-carousel .site-visual::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(circle at var(--light-x, 50%) var(--light-y, 50%), rgba(255, 255, 255, 0.22) 0%, transparent 60%);
+  opacity: var(--light-o, 0);
+}
+.site-carousel .site-visual + .site-item-text { margin-top: 4px; }
+.site-carousel .site-item > .site-visual:first-child + .site-item-text { margin-top: 0; }
+
+/* ── Smaller features: a "+" row that opens a side panel (after Linear) ── */
+.site-features {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  column-gap: var(--site-col-gap);
+  align-items: start;
+}
+.site-features > .site-label { margin: 6px 0 0; }
+.site-features-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: var(--site-col-gap);
+  row-gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.site-feature-button {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 6px 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: var(--type-body);
+  line-height: var(--body-leading);
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+}
+.site-feature-plus { color: var(--text-tertiary); transition: color var(--motion-button) var(--ease-out-quad); }
+.site-feature-button:hover .site-feature-plus,
+.site-feature-button:focus-visible .site-feature-plus { color: var(--ink); }
+@media (max-width: 860px) {
+  .site-features { grid-template-columns: minmax(0, 1fr); row-gap: 12px; }
+}
+@media (max-width: 420px) {
+  .site-features-list { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* The panel: pinned to the right, inset from the window edges, scrolls on its own */
+.site-sheet {
+  position: fixed;
+  inset: 16px 16px 16px auto;
+  width: min(560px, calc(100vw - 32px));
+  max-width: none;
+  height: auto;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 16px;
+  background: var(--surface-t1);
+  color: var(--ink);
+  box-shadow: 0 0 0 1px var(--border-default), 0 24px 64px rgba(0, 0, 0, 0.16);
+  overflow: hidden;
+}
+.site-sheet::backdrop { background: color-mix(in srgb, var(--ink) 28%, transparent); }
+.site[data-theme="dark"] .site-sheet { box-shadow: 0 0 0 1px var(--border-default), 0 0 32px rgba(0, 0, 0, 0.4); }
+.site[data-theme="dark"] .site-sheet::backdrop { background: rgba(8, 9, 10, 0.8); }
+html:has(.site-sheet[open]) { overflow: hidden; }
+.site-sheet-inner { display: flex; flex-direction: column; height: 100%; }
+.site-sheet-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: none;
+  padding: 16px 16px 0 32px;
+}
+.site-sheet-header .site-label { margin: 0; }
+.site-sheet-close {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background-color var(--motion-quick) var(--ease-out-quad), color var(--motion-quick) var(--ease-out-quad);
+}
+.site-sheet-close:hover { background: var(--site-hover); color: var(--ink); }
+.site-sheet-body { flex: 1; overflow-y: auto; padding: 40px 32px 40px; }
+.site-sheet-body .site-heading + .site-text { margin-top: 24px; }
+.site-sheet-status { margin: 24px 0 0; }
+.site-sheet-body .site-visual { margin-top: 32px; }
+@media (max-width: 640px) {
+  .site-sheet { inset: 8px 8px 8px auto; width: calc(100vw - 16px); }
+  .site-sheet-header { padding-left: 24px; }
+  .site-sheet-body { padding: 32px 24px; }
+}
+
+/* ── Table rows ─────────────────────────────────────── */
+.site-table { width: 100%; border-collapse: collapse; font-size: var(--type-body); line-height: var(--body-leading); }
+.site-table th {
+  padding: 0 24px 14px 0;
+  text-align: left;
+  font-weight: 400;
+  font-size: var(--type-label);
+  color: var(--text-tertiary);
+}
+.site-table td {
+  padding: 14px 24px 14px 0;
+  vertical-align: top;
+  color: var(--text-secondary);
+}
+.site-table td:first-child { color: var(--ink); font-weight: 500; width: 24%; }
+.site-table td:last-child,
+.site-table th:last-child { padding-right: 0; }
+@media (max-width: 720px) {
+  .site-table thead { display: none; }
+  .site-table tr { display: block; padding: 14px 0; }
+  .site-table td { display: block; padding: 2px 0; width: auto !important; }
+}
+
+/* ── Plain list: space between items, no rules ─────── */
+.site-list { display: grid; gap: 16px; margin: 0; padding: 0; list-style: none; max-width: 48rem; }
+.site-list li {
+  font-size: var(--type-body);
+  line-height: var(--body-leading);
+  color: var(--text-secondary);
+}
+.site-list strong { color: var(--ink); font-weight: 500; }
+
+/* ── Questions (accordion) ──────────────────────────── */
+.site-faq { max-width: 48rem; }
+.site-faq-group + .site-faq-group { margin-top: clamp(48px, 6vw, 80px); }
+.site-faq-group-title { margin: 0 0 8px; font-size: var(--type-label); color: var(--text-tertiary); font-weight: 400; }
+.site-faq summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 14px 0;
+  font-size: var(--type-body);
+  font-weight: 500;
+  line-height: var(--body-leading);
+  cursor: pointer;
+  list-style: none;
+  transition: color var(--motion-quick) var(--ease-out-quad);
+}
+.site-faq summary::-webkit-details-marker { display: none; }
+.site-faq summary:hover { color: color-mix(in srgb, var(--ink) 70%, transparent); }
+.site-faq-chevron {
+  flex: none;
+  height: 1.4em;
+  color: var(--text-tertiary);
+  transition: transform var(--motion-chevron);
+}
+.site-faq details[open] .site-faq-chevron { transform: rotate(90deg); }
+.site-faq details > div {
+  padding: 2px 0 20px;
+  max-width: 40rem;
+  font-size: var(--type-body);
+  line-height: var(--body-leading);
+  color: var(--text-secondary);
+}
+.site-faq details > div p { margin: 0; }
+.site-faq details > div p + p { margin-top: 10px; }
+
+/* ── Letter (Why Waldo) ─────────────────────────────── */
+.site-letter { max-width: 40rem; }
+.site-letter-byline {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 40px;
+  font-size: var(--type-label);
+  line-height: 1.4;
+  color: var(--text-tertiary);
+}
+.site-letter-byline strong { display: block; color: var(--ink); font-weight: 500; }
+.site-letter-avatar { width: 44px; height: 44px; border-radius: 999px; background: var(--surface-t4); flex: none; }
+/* A letter is read, not scanned: body size, in ink */
+.site-letter-body { margin-top: var(--site-row-gap); font-size: var(--type-body); line-height: var(--body-leading); color: var(--ink); }
+.site-letter-body p { margin: 0; }
+.site-letter-body p + p { margin-top: 1.1em; }
+.site-letter-body h2 {
+  margin: 2.4em 0 0.6em;
+  font-size: var(--type-body);
+  font-weight: 500;
+  line-height: var(--body-leading);
+}
+.site-letter-body ul { margin: 1em 0 0; padding-left: 20px; }
+.site-letter-body li + li { margin-top: 0.5em; }
+.site-quote {
+  margin: 1.6em 0;
+  padding-left: 20px;
+  border-left: 2px solid var(--accent);
+  font-size: var(--type-body);
+  font-weight: 500;
+  line-height: var(--body-leading);
+}
+.site-placeholder {
+  margin: 1em 0;
+  padding: 16px 18px;
+  border: 1px dashed color-mix(in srgb, var(--ink) 25%, transparent);
+  border-radius: 12px;
+  font-size: var(--type-body);
+  line-height: var(--body-leading);
+  color: var(--text-secondary);
+}
+.site-placeholder strong { color: var(--ink); font-weight: 500; }
+
+/* ── Draft banner (legal pages) ─────────────────────── */
+.site-draft {
+  margin-top: 32px;
+  max-width: 37rem;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--ink) 4%, transparent);
+  font-size: var(--type-label);
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+/* ── Forms ──────────────────────────────────────────── */
+.site-form { display: flex; flex-wrap: wrap; gap: 12px; max-width: 34rem; }
+.site-form--stack { flex-direction: column; flex-wrap: nowrap; }
+.site-input {
+  flex: 1 1 240px;
+  min-height: 44px;
+  padding: 12px 18px;
+  border: 1px solid var(--site-line);
+  border-radius: 999px;
+  background: var(--surface-t1);
+  color: var(--ink);
+  font: inherit;
+  font-size: var(--site-small);
+  outline: none;
+  transition: border-color var(--motion-button) var(--ease-out-quad), opacity var(--motion-button) var(--ease-out-quad);
+}
+.site-input:hover:not(:focus):not(:disabled) { border-color: color-mix(in srgb, var(--ink) 18%, transparent); }
+.site-input:disabled { opacity: 0.6; }
+.site-form--stack .site-input { flex: none; border-radius: 14px; }
+.site-input:focus { border-color: color-mix(in srgb, var(--ink) 35%, transparent); }
+.site-input::placeholder { color: var(--text-tertiary); }
+.site-form .site-button { flex: none; cursor: pointer; border: 0; }
+.site-form .site-button:disabled { opacity: 0.5; cursor: not-allowed; }
+.site-form-error { width: 100%; margin: 4px 0 0; font-size: var(--site-tiny); color: var(--ink); animation: site-appear var(--motion-appear) var(--ease-spring) both; }
+
+/* ── Chips / filters ────────────────────────────────── */
+.site-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.site-chip {
+  min-height: 34px;
+  padding: 7px 14px;
+  border: 1px solid var(--site-line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: var(--site-tiny);
+  cursor: pointer;
+  transition-property: border-color, background-color, color, transform;
+  transition-duration: var(--motion-button);
+  transition-timing-function: var(--ease-out-quad);
+}
+.site-chip:hover { background-color: var(--site-hover); border-color: transparent; }
+.site-chip:active { transform: scale(0.97); }
+.site-chip[aria-pressed="true"] { background: var(--ink); color: var(--surface-t2); border-color: var(--ink); }
+.site-status { display: inline-flex; align-items: center; gap: 6px; font-size: var(--site-tiny); color: var(--text-secondary); }
+.site-status::before { content: ""; width: 7px; height: 7px; border-radius: 999px; background: var(--dot, var(--text-disabled)); }
+.site-status--today { --dot: #22C55E; }
+.site-status--next { --dot: #F59E0B; }
+
+/* ── Footer ─────────────────────────────────────────── */
+.site-footer { margin-top: clamp(24px, 4vw, 64px); }
+.site-mascot { display: block; width: 96px; height: 72px; margin-bottom: 28px; object-fit: contain; object-position: left center; }
+.site-footer-scene {
+  display: block;
+  height: clamp(260px, 36vw, 520px);
+  overflow: hidden;
+  /* The sky fades into the page, so the scene has no hard top edge */
+  mask-image: linear-gradient(to bottom, transparent, #000 28%);
+}
+.site-footer-scene img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 88%; }
+.site-footer-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) repeat(4, minmax(0, 1fr));
+  gap: var(--site-col-gap);
+  padding-block: clamp(48px, 6vw, 80px);
+}
+.site-footer-brand p { margin: 12px 0 0; max-width: 18rem; font-size: var(--type-label); line-height: 1.5; color: var(--text-secondary); }
+.site-footer h2 { margin: 0 0 14px; font-size: var(--type-label); font-weight: 400; color: var(--text-tertiary); }
+.site-footer ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+.site-footer li { font-size: var(--type-label); }
+.site-footer li a { color: var(--text-secondary); transition: color var(--motion-quick) var(--ease-out-quad); }
+.site-footer li a:hover,
+.site-footer-base a:hover { color: var(--ink); }
+.site-footer-base a { transition: color var(--motion-quick) var(--ease-out-quad); }
+.site-footer-base {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px;
+  padding-block: 20px 32px;
+  font-size: var(--site-tiny);
+  color: var(--text-tertiary);
+}
+@media (max-width: 860px) {
+  .site-footer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .site-footer-brand { grid-column: 1 / -1; }
+}
+
+/* ── Blog articles: sit on the same edge as every other page ── */
+.site .blog-article-page {
+  max-width: var(--site-max);
+  padding-inline: var(--site-edge);
+}
+.site .blog-article-header {
+  margin-inline: 0;
+  max-width: 48rem;
+}
+.site .blog-byline-block,
+.site .blog-sources,
+.site .blog-related { border-top: 0; }
+.site .blog-related { margin-top: var(--site-row-gap); }
+.site .blog-prose hr { border: 0; margin: 2.5em 0; }
+
+/* Blog articles use the same four levels (their base styles live in app/globals.css) */
+.site :is(.blog-kicker, .blog-back-link, .blog-publish-meta, .blog-article-hero figcaption, .blog-contents > p, .blog-byline-block p) {
+  font-size: var(--type-label);
+}
+.site .blog-display > span { white-space: nowrap; }
+.site .blog-display {
+  font-size: min(var(--type-title), 100cqi / var(--title-em, 0.01));
+  line-height: 1.22;
+  letter-spacing: -0.02em;
+}
+.site .blog-article-dek {
+  font-size: var(--type-body);
+  font-weight: 400;
+  line-height: var(--body-leading);
+  letter-spacing: 0;
+  color: var(--text-secondary);
+}
+.site .blog-prose { font-size: var(--type-body); line-height: var(--body-leading); }
+.site .blog-prose > p:first-child { font-size: var(--type-body); }
+.site .blog-byline-block > div:nth-child(2) p:is(:first-child, :last-child),
+.site :is(.blog-heading-anchor, .blog-related-heading a, .blog-related article > p) { font-size: var(--type-label); }
+.site .blog-byline-block > div:nth-child(2) p:first-child { color: var(--ink); font-weight: 500; }
+.site .blog-mobile-contents :is(summary, a) { font-size: var(--type-body); }
+.site :is(.blog-prose h2, .blog-sources h2, .blog-related h3) {
+  font-family: var(--font-body);
+  font-size: var(--type-body);
+  font-weight: 500;
+  line-height: var(--body-leading);
+  letter-spacing: 0;
+  color: var(--ink);
+}
+.site .blog-prose h3,
+.site .blog-author-note h2 { font-size: var(--type-body); font-weight: 500; }
+.site :is(.blog-prose blockquote, .blog-author-note p) { font-size: var(--type-body); }
+.site .blog-related-heading h2 {
+  font-size: var(--type-title);
+  line-height: 1.22;
+  letter-spacing: -0.02em;
+}
+
+.site-skip {
+  position: absolute;
+  left: -9999px;
+  top: 8px;
+  z-index: 60;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--surface-t2);
+  font-size: var(--site-tiny);
+}
+.site-skip:focus { left: 8px; }
+
+/* ── Dark pages (the Kennel page only) ──────────────────
+   Kennel is always dark; every other page is always light. SiteShell theme="dark" sets data-theme on
+   the .site wrapper, and the Kennel colour tokens live in app/globals.css under [data-theme="dark"].
+   Main buttons go off-white and brighten on hover, like the live Kennel page. */
+.site[data-theme="dark"] {
+  --site-button-bg: #E6E6E4;
+  --site-button-hover: var(--ink);
+}
+/* The page behind the site (seen when a Mac trackpad bounces past the top or bottom) goes dark too */
+html:has(.site[data-theme="dark"]) { background: #111111; color-scheme: dark; }
+.site[data-theme="dark"] .site-nav-menu { box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5); }
+/* The cookie notice is a black card on light pages. On a dark page it becomes a raised card, not a white one. */
+.site[data-theme="dark"] .cookie-banner {
+  background: var(--surface-t1);
+  color: var(--ink);
+  box-shadow: 0 0 0 1px var(--border-default), 0 20px 48px rgba(0, 0, 0, 0.5);
+}
+.site[data-theme="dark"] .cookie-banner-dismiss { background: var(--site-button-bg); color: var(--surface-t2); }
+
+/* Keyboard focus: one clear ring everywhere (Linear: 2px accent outline, 2px offset). */
+.site :is(a, button, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+.site :is(.site-button, .site-chip, .site-nav-link):focus-visible { border-radius: 999px; }
+
+/* ── Motion ─────────────────────────────────────────────
+   Keyframes copied from linear.app. Everything moves only when the visitor
+   hasn't asked their device to reduce motion.
+
+   data-reveal="load"  headline block on the first screen: lines rise out of a blur, 100ms apart
+   data-reveal="view"  same, when the block scrolls into view
+   data-reveal="now"   same, straight away (used when a form swaps state)
+   data-appear="self"  a block fades in from a slight blur when it scrolls into view
+   data-appear="stagger" the children of a grid do that, one after another
+*/
+@keyframes site-rise {
+  from { opacity: 0; filter: blur(10px); transform: translateY(20%); }
+  to { opacity: 1; filter: blur(0); transform: translateY(0); }
+}
+@keyframes site-appear {
+  from { opacity: 0; filter: blur(2px); }
+  to { opacity: 1; filter: blur(0); }
+}
+@keyframes site-pop-in {
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes site-pop-out {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(0.98); }
+}
+@keyframes site-fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes site-fade-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes site-dot-in {
+  from { opacity: 0; transform: scale(0.4); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes site-toast-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes site-toast-out {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(0.96); }
+}
+/* Linear's "nudge" when something refuses input */
+@keyframes site-bounce { 50% { transform: scale(0.98); } }
+
+[data-appear="stagger"] > :nth-child(2) { --i: 1; }
+[data-appear="stagger"] > :nth-child(3) { --i: 2; }
+[data-appear="stagger"] > :nth-child(4) { --i: 3; }
+[data-appear="stagger"] > :nth-child(5) { --i: 4; }
+[data-appear="stagger"] > :nth-child(6) { --i: 5; }
+[data-appear="stagger"] > :nth-child(7) { --i: 6; }
+[data-appear="stagger"] > :nth-child(8) { --i: 7; }
+[data-appear="stagger"] > :nth-child(9) { --i: 8; }
+[data-appear="stagger"] > :nth-child(n + 10) { --i: 9; }
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Carousel cards rise 20px and fade in as they come into view, 80ms apart (tutundzhian.com) */
+  html[data-motion] .site-carousel-card {
+    transition:
+      opacity 0.65s var(--ease-out-quad) var(--card-delay, 0ms),
+      transform 0.65s var(--ease-out-quad) var(--card-delay, 0ms);
+  }
+  html[data-motion] .site-carousel-card:not([data-shown]) { opacity: 0; transform: translateY(20px); }
+
+  /* Side panel: slides in from the right while the page behind dims (Linear's sheet: 0.5s, same
+     curve for both). Closing plays it backwards; allow-discrete keeps it on screen until done. */
+  .site-sheet,
+  .site-sheet::backdrop {
+    transition:
+      transform var(--motion-sheet) var(--ease-sheet),
+      opacity var(--motion-sheet) var(--ease-sheet),
+      overlay var(--motion-sheet) allow-discrete,
+      display var(--motion-sheet) allow-discrete;
+  }
+  .site-sheet:not([open]) { transform: translateX(calc(100% + 24px)); }
+  .site-sheet:not([open])::backdrop { opacity: 0; }
+  @starting-style {
+    .site-sheet[open] { transform: translateX(calc(100% + 24px)); }
+    .site-sheet[open]::backdrop { opacity: 0; }
+  }
+
+  /* Headlines */
+  .site [data-reveal="load"] .site-rv {
+    animation: site-rise var(--motion-reveal) var(--ease-reveal) both;
+    animation-delay: var(--rv-delay, 400ms);
+  }
+  .site [data-reveal="now"] .site-rv,
+  html[data-motion] .site [data-reveal="view"][data-inview] .site-rv {
+    animation: site-rise var(--motion-reveal) var(--ease-reveal) both;
+    animation-delay: calc(var(--rv-delay, 400ms) - 400ms);
+  }
+  html[data-motion] .site [data-reveal="view"]:not([data-inview]) .site-rv { opacity: 0; }
+
+  /* Blocks and grids */
+  html[data-motion] .site [data-appear="self"]:not([data-inview]),
+  html[data-motion] .site [data-appear="stagger"]:not([data-inview]) > * { opacity: 0; }
+  html[data-motion] .site [data-appear="self"][data-inview] {
+    animation: site-appear var(--motion-appear) var(--ease-spring) both;
+  }
+  html[data-motion] .site [data-appear="stagger"][data-inview] > * {
+    animation: site-appear var(--motion-appear) var(--ease-spring) both;
+    animation-delay: calc(var(--i, 0) * 33ms);
+  }
+  html[data-motion] .site [data-appear="stagger"][data-inview] .site-status::before {
+    animation: site-dot-in var(--motion-dot) var(--ease-out-quad) both;
+    animation-delay: calc(var(--i, 0) * 33ms + 120ms);
+  }
+
+  /* If the page script never starts, show everything after 3 seconds anyway. */
+  html[data-motion]:not([data-motion-ready]) .site [data-reveal="view"] .site-rv,
+  html[data-motion]:not([data-motion-ready]) .site [data-appear="self"],
+  html[data-motion]:not([data-motion-ready]) .site [data-appear="stagger"] > * {
+    animation: site-fade-in 1ms 3s both;
+  }
+
+  /* Menus */
+  .site-nav-menu { animation: site-pop-in var(--motion-popup) both; }
+  .site-nav-menu[data-ending] { animation: site-pop-out var(--motion-popup) both; }
+  .site-nav-mobile-panel { animation: site-fade-in var(--motion-popup) both; }
+  .site-nav-mobile-panel[data-ending] { animation: site-fade-out var(--motion-popup) both; }
+
+  /* Questions: the answer fades in as the row opens */
+  .site-faq details[open] > div { animation: site-appear var(--motion-appear) var(--ease-spring) both; }
+  @supports (interpolate-size: allow-keywords) {
+    .site-faq { interpolate-size: allow-keywords; }
+    .site-faq details::details-content {
+      block-size: 0;
+      overflow: clip;
+      transition: block-size var(--motion-regular) var(--ease-out-quad), content-visibility var(--motion-regular) allow-discrete;
+    }
+    .site-faq details[open]::details-content { block-size: auto; }
+  }
+
+  /* Forms and states */
+  .site-form[data-bounce] { animation: site-bounce 0.15s; }
+  .site-state { animation: site-appear var(--motion-appear) var(--ease-spring) both; }
+
+  /* Connector results: tools that come back into the list fade in */
+  .site-directory-grid > * { animation: site-appear var(--motion-appear) var(--ease-spring) both; }
+
+  /* Cookie notice */
+  .site .cookie-banner { animation: site-toast-in var(--motion-toast) var(--ease-out-quad) both; transform-origin: bottom left; }
+  .site .cookie-banner[data-ending] { animation: site-toast-out var(--motion-toast) var(--ease-out-quad) both; }
+}

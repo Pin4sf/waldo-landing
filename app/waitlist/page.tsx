@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 
-import { PageLayout } from "@/components/waitlist-layout";
+import { Section } from "@/components/site/blocks";
+import { SiteShell } from "@/components/site/site-shell";
+import { WaitlistPanel } from "@/components/site/waitlist-panel";
 import { OG_IMAGE_URL, SITE_URL } from "@/lib/site-metadata";
 
 const WAITLIST_URL = `${SITE_URL}/waitlist`;
-const WAITLIST_DESCRIPTION =
-  "Join Waldo and be first in line for the action layer that reads body signals, context, and memory to protect the human day.";
+const WAITLIST_DESCRIPTION = "Join the Waldo waitlist. First access to Waldo for iPhone and the Kennel Mac app.";
 
 export const metadata: Metadata = {
   title: "Let Waldo in",
@@ -24,6 +25,19 @@ export const metadata: Metadata = {
   },
 };
 
-export default function WaitlistRoute() {
-  return <PageLayout />;
+export default async function WaitlistRoute({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const params = await searchParams;
+  const variant = params.utm_source === "kennel" ? "kennel" : "default";
+
+  return (
+    <SiteShell>
+      <Section>
+        <WaitlistPanel variant={variant} />
+      </Section>
+    </SiteShell>
+  );
 }

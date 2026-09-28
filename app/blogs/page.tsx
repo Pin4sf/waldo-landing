@@ -1,90 +1,111 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 
-import { BlogCard } from "@/components/blog/blog-card";
-import { BlogSearch } from "@/components/blog/blog-search";
-import { BLOG_POSTS, formatBlogDate, readBlogMarkdown } from "@/lib/blog-posts";
+import { Body, Grid, Header, Item } from "@/components/site/blocks";
+import { Carousel } from "@/components/site/carousel";
+import { formatBlogDate, getBlogPosts, type BlogPost } from "@/lib/blog-posts";
 import { SITE_URL } from "@/lib/site-metadata";
 
-const title = "Latest writing";
+// Structure: docs/website/pages/blog.md (v2): latest two big, then one uniform grid.
+// Category chips + search come back once there are 10+ posts.
+
+const title = "Waldo notes: agents, your body and your day";
 const description =
-  "Plain-language essays about agents, body signals, patterns, privacy, and what Waldo is building.";
+  "Plain-language notes about agents, your body, and the patterns hiding inside an ordinary day.";
 
 export const metadata: Metadata = {
-  title,
+  title: { absolute: title },
   description,
   alternates: {
     canonical: "/blogs",
     types: { "application/rss+xml": `${SITE_URL}/blogs/rss.xml` },
   },
   openGraph: {
-    title: `${title} | Waldo`,
+    title,
     description,
     url: `${SITE_URL}/blogs`,
     type: "website",
   },
 };
 
-export default function BlogsPage() {
-  const [featured, ...remainingPosts] = BLOG_POSTS;
-  const secondaryPosts = remainingPosts.slice(0, 2);
-  const archivePosts = remainingPosts.slice(2);
+function PostItem({ post, eager = false }: { post: BlogPost; eager?: boolean }) {
+  // Label: category and date, stacked (like Apple Newsroom). Title, then the dek as body.
+  return (
+    <Item
+      meta={
+        <>
+          {post.category}
+          <br />
+          {formatBlogDate(post.datePublished)}
+        </>
+      }
+      title={post.title}
+      href={`/blogs/${post.slug}`}
+      visual={post.imageAlt}
+      image={post.image}
+      cover
+      eager={eager}
+    >
+      {post.dek}
+    </Item>
+  );
+}
 
-  const searchablePosts = BLOG_POSTS.map((post) => ({
-    slug: post.slug,
-    title: post.title,
-    dek: post.dek,
-    category: post.category,
-    readingTime: readBlogMarkdown(post).readingTime,
-  }));
+export default function BlogsPage() {
+  const posts = getBlogPosts();
+  const latest = posts.slice(0, 2);
+  const rest = posts.slice(2);
 
   return (
-    <main id="blog-main" className="blog-index">
-      <header className="blog-index-hero">
-        <p className="blog-kicker">Latest writing</p>
-        <h1 className="blog-display">
-          <span>Things worth</span>
-          <span>noticing.</span>
-        </h1>
-        <p className="blog-index-intro">
-          Plain-language notes about agents, your data, and the patterns hiding inside an ordinary day.
-        </p>
-        <p className="blog-wit-aside">a quiet place for the things Waldo noticed.</p>
-      </header>
+    <main id="blog-main">
+      <section className="site-section site-section--frame">
+        <div className="site-container">
+          <Header
+            as="h1"
+            label="Waldo notes"
+            lines={["Things worth", "noticing."]}
+            subtitle="Plain-language notes about agents, your body, and the patterns hiding inside an ordinary day."
+            body="A quiet place for the things Waldo noticed."
+          />
+          <Body>
+            <p className="site-label">Latest</p>
+            <Grid cols={2}>
+              {latest.map((post) => (
+                <PostItem key={post.slug} post={post} eager />
+              ))}
+            </Grid>
+          </Body>
+        </div>
+      </section>
 
-      <BlogSearch posts={searchablePosts}>
-        <section className="blog-featured" aria-label="Featured article">
-          <BlogCard post={featured} featured />
-        </section>
-
-        <section className="blog-index-grid" aria-label="All articles">
-          {secondaryPosts.map((post) => (
-            <BlogCard key={post.slug} post={post} />
-          ))}
-        </section>
-
-        <section className="blog-archive" aria-labelledby="blog-archive-title">
-          <h2 id="blog-archive-title">More from Waldo</h2>
-          <div className="blog-archive-list">
-            {archivePosts.map((post) => {
-              const { readingTime } = readBlogMarkdown(post);
-              return (
-                <article key={post.slug} className="blog-archive-row">
-                  <div className="blog-archive-meta">
-                    <span>{post.category}</span>
-                    <time dateTime={post.datePublished}>{formatBlogDate(post.datePublished)}</time>
-                    <span>{readingTime} min read</span>
-                  </div>
-                  <h3>
-                    <Link href={`/blogs/${post.slug}`}>{post.title}</Link>
-                  </h3>
-                  <p>{post.dek}</p>
-                </article>
-              );
-            })}
+      {rest.length > 0 ? (
+        <section className="site-section">
+          <div className="site-container">
+            <Header lines={["All", "notes."]} subtitle={`Every note so far, newest first. ${posts.length} in all.`} />
+            <Body>
+              <Carousel label="All notes">
+                {rest.map((post) => (
+                  <PostItem key={post.slug} post={post} />
+                ))}
+              </Carousel>
+            </Body>
           </div>
         </section>
-      </BlogSearch>
+      ) : null}
+
+      <section className="site-section site-section--tight">
+        <div className="site-container">
+          <Header
+            lines={["Waldo reads how you’re doing,", "then handles your day."]}
+            subtitle="See everything it does, one part at a time."
+            body={
+              <>
+                New notes arrive every two weeks. Follow them by <a className="site-link" href="/blogs/rss.xml">RSS</a>.
+              </>
+            }
+            actions={{ primary: { label: "See how Waldo works →", href: "/how-it-works" } }}
+          />
+        </div>
+      </section>
     </main>
   );
 }

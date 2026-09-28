@@ -1,12 +1,27 @@
 ---
-type: article
 status: published
-title: What a CLI agent actually is, explained like you are five
+slug: what-is-a-cli-agent
+title: What a CLI agent actually is, / explained like you are five
+dek: The difference between a chatbot that talks and an agent that can actually do the work.
+excerpt: A plain-language tour of command lines, agent loops, and why useful software needs more than a mouth.
+aside: the mouth was never the point.
+category: Agents
+author: team
+type: article
 tags: [waldo, blog, agents]
 created: 2026-07-20
 published: 2026-07-20
 updated: 2026-07-20
 site_section: death-of-the-chatbox
+image: /assets/blogs/cli-agent.webp
+imageAlt: A warm editorial illustration of a command line becoming an open doorway
+audio: /assets/blogs/audio/what-is-a-cli-agent.m4a
+artCredit: Waldo, made with OpenAI
+sources:
+  - Apple Terminal User Guide, current documentation | https://support.apple.com/guide/terminal/open-or-quit-terminal-apd5265185d-f365-44cb-8b09-71a064a42125/mac
+  - Microsoft Learn: What is a command shell?, updated July 2025 | https://learn.microsoft.com/en-us/powershell/scripting/what-is-a-command-shell?view=powershell-7.6
+  - OpenAI Codex CLI overview, current documentation | https://help.openai.com/en/articles/11096431
+  - Waldo product architecture, May 2026 | /features
 ---
 
 # What a CLI agent actually is, explained like you are five

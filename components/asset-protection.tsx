@@ -29,17 +29,6 @@ function findProtectedAsset(target: EventTarget | null) {
   return null;
 }
 
-function markImage(image: HTMLImageElement) {
-  image.draggable = false;
-  image.setAttribute("draggable", "false");
-}
-
-function markImages(root: ParentNode) {
-  root.querySelectorAll("img").forEach((image) => {
-    if (image instanceof HTMLImageElement) markImage(image);
-  });
-}
-
 function selectionContainsProtectedAsset() {
   const selection = window.getSelection();
   if (!selection || selection.rangeCount === 0) return false;
@@ -54,20 +43,6 @@ function selectionContainsProtectedAsset() {
 
 export function AssetProtection() {
   useEffect(() => {
-    markImages(document);
-
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        mutation.addedNodes.forEach((node) => {
-          if (!(node instanceof Element)) return;
-          if (node instanceof HTMLImageElement) markImage(node);
-          markImages(node);
-        });
-      });
-    });
-
-    observer.observe(document.body, { childList: true, subtree: true });
-
     const protectAssetEvent = (event: Event) => {
       if (findProtectedAsset(event.target)) event.preventDefault();
     };
@@ -85,7 +60,6 @@ export function AssetProtection() {
     document.addEventListener("copy", protectAssetCopy, { capture: true });
 
     return () => {
-      observer.disconnect();
       document.removeEventListener("contextmenu", protectAssetEvent, { capture: true });
       document.removeEventListener("dragstart", protectAssetEvent, { capture: true });
       document.removeEventListener("copy", protectAssetCopy, { capture: true });
