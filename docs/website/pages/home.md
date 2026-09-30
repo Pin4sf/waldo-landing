@@ -21,7 +21,7 @@ How to read it (the three text levels are in [../type.md](../type.md)):
 Announcement (yellow bar under the menu, centred): **Kennel for Mac is in open beta.** Run all your coding agents toward one finished result. [See Kennel →](/kennel)
 
 ### Life happens. / Waldo handles it.
-Body: One personal agent across your work and your life. It knows how you're doing, brings in the right tools and agents, and stays on it until it's actually done. You'll hear from it when it matters.
+Body: He's a personal agent; manages you, across work & life. Reads what's coming, does what's needed, & only interrupts when it matters.
 Buttons: "Let Waldo in →", "See how it works"
 
 ---

@@ -29,9 +29,11 @@ export function SiteShell({
           Skip to content
         </a>
       )}
+      {/* Announcements sit above the menu bar and scroll away, the menu then sticks */}
+      {announcement ? (
+        <div className="site-announcement">{announcement}</div>
+      ) : null}
       <SiteNav />
-      {/* Announcements sit under the menu bar */}
-      {announcement ? <div className="site-announcement">{announcement}</div> : null}
       {ownMain ? children : <main id="main-content">{children}</main>}
       <SiteFooter />
       <CookieBanner />

@@ -56,13 +56,15 @@ export function Section({
   children,
 }: {
   id?: string;
-  size?: "frame" | "auto" | "tight";
+  /** "screen" is the home hero: one viewport tall, with what follows starting at the fold. */
+  size?: "frame" | "auto" | "tight" | "screen";
   children: ReactNode;
 }) {
   const classes = [
     "site-section",
     size === "frame" ? "site-section--frame" : "",
     size === "tight" ? "site-section--tight" : "",
+    size === "screen" ? "site-section--screen" : "",
   ]
     .filter(Boolean)
     .join(" ");

@@ -1,10 +1,25 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { Body, Grid, Header, Item, List, Questions, Section } from "@/components/site/blocks";
+import {
+  Body,
+  Grid,
+  Header,
+  Item,
+  List,
+  Questions,
+  Section,
+} from "@/components/site/blocks";
 import { Carousel } from "@/components/site/carousel";
 import { SiteShell } from "@/components/site/site-shell";
-import { OG_DESCRIPTION, OG_IMAGE_URL, SITE_DESCRIPTION, SITE_TITLE, SITE_URL } from "@/lib/site-metadata";
+import { WaldoLoop } from "@/components/site/waldo-loop";
+import {
+  OG_DESCRIPTION,
+  OG_IMAGE_URL,
+  SITE_DESCRIPTION,
+  SITE_TITLE,
+  SITE_URL,
+} from "@/lib/site-metadata";
 
 // Copy: docs/website/pages/home.md ("Live copy" at the top)
 
@@ -28,9 +43,10 @@ export const metadata: Metadata = {
 const announcement = (
   <div className="site-container">
     <p>
-      <strong>Kennel for Mac is in open beta.</strong>{" "}
+      <strong>Kennel for Mac is now open source.</strong>{" "}
       <span>
-        Run all your coding agents toward one finished result. <Link href="/kennel">See Kennel →</Link>
+        It understands your build, and takes your agent outputs to the intended
+        outcome. <Link href="/kennel">Get now →</Link>
       </span>
     </p>
   </div>
@@ -39,19 +55,21 @@ const announcement = (
 export default function Home() {
   return (
     <SiteShell announcement={announcement}>
-      {/* 2 · Hero */}
-      <Section>
-        <Header
-          as="h1"
-          lines={["Life happens.", "Waldo handles it."]}
-          subtitle="One personal agent across your work and your life. It knows how you're doing, brings in the right tools and agents, and stays on it until it's actually done."
-          body="You'll hear from it when it matters."
+      {/* 2 · Hero. A white sheet holding one screen: the brief cards are what you find below it. */}
+      <div className="site-hero-frame">
+        <Section size="screen">
+          <Header
+            as="h1"
+            lines={["Life happens.", "Waldo handles it."]}
+            subtitle="He's a personal agent; manages you, across work & life. Reads what's coming, does what's needed, & only interrupts when it matters."
           actions={{
-            primary: { label: "Let Waldo in →", href: "/waitlist" },
-            secondary: { label: "See how it works", href: "/how-it-works" },
-          }}
-        />
-      </Section>
+              primary: { label: "Let Waldo in →", href: "/waitlist" },
+              secondary: { label: "See how it works", href: "/how-it-works" },
+            }}
+          />
+          <WaldoLoop />
+        </Section>
+      </div>
 
       {/* 3 · The problem */}
       <Section>
@@ -66,14 +84,16 @@ export default function Home() {
               image="/assets/home/too-much-data.svg"
               strong="Your watch knows. Nothing acts."
             >
-              It knows you slept five hours and your stress is up. Your calendar still has four meetings before noon.
+              It knows you slept five hours and your stress is up. Your calendar
+              still has four meetings before noon.
             </Item>
             <Item
               visual="You, spread across accounts, apps and agents"
               image="/waldo-web-assets/agent-features/apps-accounts-agents.webp"
               strong="Every new tool wants your life story."
             >
-              A better tool shows up, and you spend an hour teaching it who you are. Then the next one shows up.
+              A better tool shows up, and you spend an hour teaching it who you
+              are. Then the next one shows up.
             </Item>
             <Item
               visual="An agent's finished work, waiting on you to review it"
@@ -81,8 +101,9 @@ export default function Home() {
               strong="Every agent reports to you."
               link={{ label: "This is where Kennel starts →", href: "/kennel" }}
             >
-              Agents finish tasks, but you hold the why. Every re-brief, every review and every &ldquo;what did you
-              mean?&rdquo; runs through you.
+              Agents finish tasks, but you hold the why. Every re-brief, every
+              review and every &ldquo;what did you mean?&rdquo; runs through
+              you.
             </Item>
           </Carousel>
         </Body>
@@ -102,21 +123,24 @@ export default function Home() {
               visual="Your accounts, health and work, held as one context"
               image="/build/understands-illustration.svg"
             >
-              Remembers the people, the context and how you like it done. Say it once. It sticks.
+              Remembers the people, the context and how you like it done. Say it
+              once. It sticks.
             </Item>
             <Item
               title="Works with every agent."
               visual="Waldo at the centre, the agents it works with around it"
               image="/build/coordinates-illustration.svg"
             >
-              Claude, Codex, or whatever ships next. Waldo runs them and hands you back one result.
+              Claude, Codex, or whatever ships next. Waldo runs them and hands
+              you back one result.
             </Item>
             <Item
               title="Knows what kind of day it is."
               visual="The same weekly sync, handled differently as your Form changes week to week"
               image="/build/returns-illustration.svg"
             >
-              The same request gets a different plan on a rough day. Waldo can tell which day you&apos;re having.
+              The same request gets a different plan on a rough day. Waldo can
+              tell which day you&apos;re having.
             </Item>
           </Carousel>
         </Body>
@@ -131,14 +155,16 @@ export default function Home() {
         <Body>
           <Grid cols={3}>
             <Item title="Founders">
-              Three calls back to back, then the co-founder sync. Waldo puts ten minutes of air before it, so the snappy
-              reply never happens.
+              Three calls back to back, then the co-founder sync. Waldo puts ten
+              minutes of air before it, so the snappy reply never happens.
             </Item>
             <Item title="Engineers">
-              Waldo finds the hour you&apos;re sharpest and gives it to the hard problem. Standup moves somewhere else.
+              Waldo finds the hour you&apos;re sharpest and gives it to the hard
+              problem. Standup moves somewhere else.
             </Item>
             <Item title="Investors">
-              Pitches spaced to what you can actually give. The founder at pitch five gets your pitch-one attention.
+              Pitches spaced to what you can actually give. The founder at pitch
+              five gets your pitch-one attention.
             </Item>
           </Grid>
         </Body>
@@ -153,13 +179,25 @@ export default function Home() {
         />
         <Body>
           <Carousel label="How far Waldo goes">
-            <Item title="Tell me" visual="Waldo saying what it would move, and asking first" image="/assets/home/data-alone/data-alone-map.svg">
+            <Item
+              title="Tell me"
+              visual="Waldo saying what it would move, and asking first"
+              image="/assets/home/data-alone/data-alone-map.svg"
+            >
               Waldo says what it would do.
             </Item>
-            <Item title="Ask me" visual="Drafts ready to go, waiting for your approval" image="/assets/home/agent-approval.svg">
+            <Item
+              title="Ask me"
+              visual="Drafts ready to go, waiting for your approval"
+              image="/assets/home/agent-approval.svg"
+            >
               Waldo suggests, you approve.
             </Item>
-            <Item title="Just do it" visual="The log of what Waldo did overnight" image="/assets/home/agent-patrol.svg">
+            <Item
+              title="Just do it"
+              visual="The log of what Waldo did overnight"
+              image="/assets/home/agent-patrol.svg"
+            >
               Waldo acts, and you can undo anything in one tap.
             </Item>
           </Carousel>
@@ -192,12 +230,23 @@ export default function Home() {
               image="/build/menubar-illustration.svg"
               link={{ label: "See Kennel →", href: "/kennel" }}
             >
-              Lives in the notch. Shows what Waldo is working on, and what needs you.
+              Lives in the notch. Shows what Waldo is working on, and what needs
+              you.
             </Item>
-            <Item meta="Coming soon" title="Waldo for iPhone" visual="Waldo's overview on iPhone" image="/build/phone-mockup.png">
+            <Item
+              meta="Coming soon"
+              title="Waldo for iPhone"
+              visual="Waldo's overview on iPhone"
+              image="/build/phone-mockup.png"
+            >
               Where Waldo gets to know the person behind the work.
             </Item>
-            <Item meta="Coming soon" title="Messaging & browser" visual="Asking Waldo in a chat thread" image="/assets/home/agent-ask-thread.svg">
+            <Item
+              meta="Coming soon"
+              title="Messaging & browser"
+              visual="Asking Waldo in a chat thread"
+              image="/assets/home/agent-ask-thread.svg"
+            >
               Talk to the same Waldo in WhatsApp, Slack or your browser.
             </Item>
           </Carousel>

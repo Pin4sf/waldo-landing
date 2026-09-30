@@ -193,10 +193,13 @@ export function SiteNav() {
               {item.label}
             </Link>
           ))}
+        </nav>
+
+        <div className="site-nav-end">
           <Link href="/waitlist" className="site-button site-button--primary site-button--small site-nav-cta">
             <ArrowLabel label="Let Waldo in →" />
           </Link>
-        </nav>
+        </div>
 
         <div className="site-nav-mobile">
           <button
