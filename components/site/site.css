@@ -12,20 +12,25 @@
   --site-hover: color-mix(in srgb, var(--ink) 8%, transparent);
   --site-col-gap: clamp(24px, 3.6vw, 56px);
   --site-row-gap: clamp(48px, 6vw, 88px);
-  --site-body: 17.1px;
-  --site-small: 15px;
-  --site-tiny: 13.5px;
+  --site-body: 16px;
+  --site-small: 16px;
+  --site-tiny: 14.4px;
   /*
     Type: three levels, used on every page (see docs/website/type.md).
-    Label    13.5px, grey              eyebrows, categories, dates, table heads, small print
-    Title    Mottle, ~43px             page and section headlines
-    Body     20px on desktop (17px on phones), 130% line height, grey
+    Label    12.8px, grey              eyebrows, categories, dates, table heads, small print
+    Title    Mottle, 29 to 36px           page and section headlines
+    Body     16px, 140% line height, +0.02em, grey (#6B6B68)
              Emphasis inside body text (names, first lines, questions) is ink and medium weight.
   */
-  --type-title: clamp(2rem, 3.35vw, 2.9rem);
-  --type-label: 13.5px;
-  --type-body: clamp(1.0625rem, 0.98rem + 0.337vw, 1.25rem); /* 17px on a phone, 20px from about 1280px */
-  --body-leading: 1.3;
+  --type-title: clamp(1.8rem, 1.485rem + 0.81vw, 2.25rem); /* 28.8px to 36px, same as the hero */
+  --type-label: 12.8px;
+  --type-body: 16px; /* same as the hero */
+  --body-leading: 1.4;
+  /* Every white box: 30px radius, 60% corner smoothing (a squircle between round and full), 10px padding */
+  --box-radius: 30px;
+  --box-inner-radius: 20px;
+  --box-pad: 10px;
+  --box-corner: superellipse(1.6);
   --site-button-bg: var(--ink);
   --site-button-hover: color-mix(in srgb, var(--ink) 78%, #000);
 
@@ -232,16 +237,13 @@ button:not(:disabled):hover > .site-arrow { transform: translateX(2px); }
 .site-section { padding-block: clamp(88px, 15vh, 160px); }
 .site-section--frame { min-height: 100svh; }
 .site-section--tight { padding-block: clamp(64px, 9vh, 104px); }
-/* The home hero: a white sheet inset from the page, holding one screen of content. Everything but
-   the bottom half of the brief deck fits inside it, and the section after starts far enough down
-   to clear what hangs below. */
-.site-hero-frame {
+/* The home hero: one screen of content on the page itself. The phone under it hangs below the
+   fold, so the box reaches far enough down to hold it and the section after starts clear of it. */
+.site-hero {
   margin: 10px;
-  /* 10px all round, and enough at the foot for the part of the front card that hangs below the
-     fold (waldo-loop.tsx measures it) */
-  padding: 10px 10px calc(var(--loop-hang, 220px) + 10px);
-  background: var(--surface-t1);
-  border-radius: 24px;
+  /* 10px all round, and enough at the foot for the part of the phone that hangs below the fold
+     (waldo-loop.tsx measures it) */
+  padding: 10px 10px var(--loop-hang, 220px);
 }
 .site-section--screen { padding-block: clamp(32px, 6vh, 72px) 0; }
 .site-section--screen > .site-container {
@@ -253,7 +255,7 @@ button:not(:disabled):hover > .site-arrow { transform: translateX(2px); }
 }
 /* Centred, at the live build's sizes (measured on heywaldo.in at 390, 1024 and 1420px wide): the
    live page draws .type-h1 and .type-body at 0.9 of their stated size, so the hero title is
-   Mottle 28.8px to 36px (1.3 leading, -0.02em) and the text is 17.1px with 1.4 leading and
+   Mottle 28.8px to 36px (1.3 leading, -0.02em) and the text is 16px with 1.4 leading and
    +0.02em, 18px under the title. */
 .site-section--screen .site-heading {
   /* Still capped by the width it has to fit, so the two lines never run off a phone. */
@@ -266,7 +268,7 @@ button:not(:disabled):hover > .site-arrow { transform: translateX(2px); }
   max-width: 40rem;
   text-wrap: balance;
   margin-top: 18px;
-  font-size: 17.1px;
+  font-size: var(--type-body);
   line-height: 1.4;
   letter-spacing: 0.02em;
   color: #6B6B68;
@@ -294,7 +296,7 @@ button:not(:disabled):hover > .site-arrow { transform: translateX(2px); }
   font-family: var(--font-headline);
   font-weight: var(--mottle-display-weight);
   font-size: min(var(--type-title), 100cqi / var(--title-em, 0.01));
-  line-height: 1.22;
+  line-height: 1.3;
   letter-spacing: -0.02em;
 }
 .site-heading span { display: block; white-space: nowrap; }
@@ -305,7 +307,8 @@ button:not(:disabled):hover > .site-arrow { transform: translateX(2px); }
   max-width: 40rem;
   font-size: var(--type-body);
   line-height: var(--body-leading);
-  color: var(--text-secondary);
+  letter-spacing: 0.02em;
+  color: #6B6B68;
 }
 .site-text + .site-text { margin-top: 12px; }
 .site :is(.site-text, .site-item-text, .site-list, .site-faq, .site-table, .site-placeholder) strong { color: var(--ink); font-weight: 500; }
@@ -399,7 +402,7 @@ button:not(:disabled):hover > .site-arrow { transform: translateX(2px); }
   font-size: 12px;
   font-weight: 500;
 }
-.site-item-text { font-size: var(--type-body); line-height: var(--body-leading); color: var(--text-secondary); }
+.site-item-text { font-size: var(--type-body); line-height: var(--body-leading); letter-spacing: 0.02em; color: #6B6B68; }
 .site-item-text p { margin: 0; }
 .site-item-text p + p { margin-top: 10px; }
 .site-item-text strong { display: block; color: var(--ink); font-weight: 500; }
@@ -408,18 +411,27 @@ button:not(:disabled):hover > .site-arrow { transform: translateX(2px); }
 .site-item .site-actions,
 .site-item > .site-link { margin-top: 18px; }
 
-/* ── The loop: tools drifting past, what they carry falling into Waldo, his briefs stacking ──
-   Sizes come from Suyash's 1420px frame: 56px tool marks, a 76px Waldo, a 440px card. The whole
-   thing is one screen: the tools and Waldo sit above the fold and the front card is cut in half by
-   it. Nothing here carries a shadow — surfaces are told apart by a hairline, not by depth.
+/* ── The loop: tools drifting past, what they carry falling into Waldo, his Overview card filling in ──
+   Sizes come from Suyash's 1420px frame: 56px tool marks and a 76px Waldo; the phone is about a
+   third of the screen wide. The whole thing is one screen: the tools and Waldo sit above the fold,
+   and the top of the white shelf the phone stands in shows over it. Nothing here carries a shadow —
+   surfaces are told apart by a hairline, not by depth.
    See docs/website/hero-loop.md and waldo-loop.tsx. */
 .site-loop {
   --loop-wave: clamp(150px, 31vh, 330px);   /* the band the tools drift through; the script refines it */
   --loop-mark: clamp(46px, 6vh, 56px);
   --loop-dog: clamp(60px, 8.4vh, 78px);
-  --loop-gap: clamp(22px, 3.6vh, 46px);     /* Waldo to the top of his brief */
-  --loop-card: 440px;
-  --loop-peek: 84px;  /* how much of the front card shows above the fold (PEEK in waldo-loop.tsx) */
+  --loop-gap: clamp(22px, 3.6vh, 46px);     /* the base of both gaps below */
+  --loop-air: 20px;                        /* added to it: Waldo to the shelf is gap + air */
+  --loop-lead: calc(var(--loop-gap) + var(--loop-air)); /* Waldo to the top edge of the shelf */
+  --loop-shelf: calc(var(--loop-lead) * 1.56); /* the shelf's top edge to the phone: 30% more than that, then 20% more again */
+  --loop-shelf-radius: clamp(40px, 7vw, 100px);
+  --loop-card: clamp(360px, 35.3vw, 520px); /* the phone's width */
+  --loop-strip: 54px;                      /* the page below the white container, where the dots sit */
+  /* How far the phone is above the fold. It is what keeps Waldo where he has always been: his old
+     distance from the phone was gap + 28 and the phone stood 56 up, so his bottom was 84 + gap above
+     the bottom of the screen area; the phone now sits lead + shelf below him. */
+  --loop-peek: calc(84px + var(--loop-gap) - var(--loop-lead) - var(--loop-shelf));
   --loop-edge: color-mix(in srgb, var(--ink) 8%, transparent);
   position: relative;
   display: flex;
@@ -452,7 +464,7 @@ button:not(:disabled):hover > .site-arrow { transform: translateX(2px); }
   width: var(--loop-mark);
   height: var(--loop-mark);
   border-radius: calc(var(--loop-mark) * 0.26);
-  background: var(--surface-t2);
+  background: var(--surface-t1);
   border: 0.6px solid var(--loop-edge);
   opacity: 0;
   will-change: transform;
@@ -461,9 +473,9 @@ button:not(:disabled):hover > .site-arrow { transform: translateX(2px); }
 .site-loop-wave[data-ready] .site-loop-mark { opacity: 1; }
 .site-loop-mark img { width: 52%; height: 52%; object-fit: contain; }
 
-/* Waldo and his briefs travel together: pinned to the bottom of the screen, then moved down until
-   only a peek of the front card shows (--loop-peek), whatever it says. The cards behind it show
-   as slivers above its top edge. */
+/* Waldo and the phone travel together: pinned to the bottom of the screen, then moved down by
+   --loop-peek. The phone stands on a white shelf as wide as the page, with rounded top corners; the
+   shelf's top edge is what shows above the fold, and it runs down to the bottom of the phone. */
 .site-loop-stage {
   position: absolute;
   left: 50%;
@@ -472,16 +484,33 @@ button:not(:disabled):hover > .site-arrow { transform: translateX(2px); }
   width: min(var(--loop-card), 100%);
   transform: translate(-50%, calc(100% - var(--loop-peek)));
 }
+.site-loop-stage::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: calc(var(--loop-shelf) * -1);
+  bottom: var(--loop-strip);
+  left: 50%;
+  width: 100vw;
+  transform: translateX(-50%);
+  border-radius: var(--loop-shelf-radius) var(--loop-shelf-radius) 0 0;
+  background: var(--surface-t1);
+  pointer-events: none;
+}
 .site-loop-dog {
   position: absolute;
   left: 50%;
-  bottom: calc(100% + var(--loop-gap));
+  bottom: calc(100% + var(--loop-shelf) + var(--loop-lead));
   transform: translateX(-50%);
 }
 .site-loop-dog img { display: block; width: var(--loop-dog); height: auto; }
 
 /* What a tool is handing over: a pill that starts as a dot (waldo-loop.tsx drives its width, its
-   position and what shows inside). Height is fixed so the dot is a true circle. */
+   height, its position and what shows inside). The words are one line at 14px. The pill is as wide
+   as they are, up to the screen less a safe margin on each side; the body's width is fixed by the
+   script once the pill is measured, and inside it the text is the part that shrinks, clipped with
+   an ellipsis only where it really is too long. The icon, the padding and the rounded ends never
+   clip. */
 .site-loop-card {
   position: absolute;
   left: 0;
@@ -491,19 +520,24 @@ button:not(:disabled):hover > .site-arrow { transform: translateX(2px); }
   display: flex;
   align-items: center;
   box-sizing: border-box;
-  height: 34px;
-  padding: 0 14px 0 8px;
-  border-radius: 999px;
+  max-width: min(372px, calc(100vw - 24px));
+  border-radius: 17px;
   overflow: hidden;
-  background: var(--surface-t2);
+  background: var(--surface-t1);
   border: 0.6px solid var(--loop-edge);
   font-size: 14px;
-  line-height: 1;
-  white-space: nowrap;
-  will-change: transform, width;
+  line-height: 18px;
+  will-change: transform, width, height;
   pointer-events: none;
 }
-.site-loop-card--out { background: var(--ink); color: var(--surface-t1); border-color: transparent; padding-left: 8px; }
+.site-loop-card--out { background: var(--ink); color: var(--surface-t1); border-color: transparent; }
+.site-loop-body {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 7.4px 14px 7.4px 8px;
+}
+.site-loop-text { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 .site-loop-slot {
   position: relative;
   flex: none;
@@ -516,33 +550,99 @@ button:not(:disabled):hover > .site-arrow { transform: translateX(2px); }
 .site-loop-slot .spin { animation: site-loop-spin 0.8s linear infinite; }
 @keyframes site-loop-spin { to { transform: rotate(360deg); } }
 .site-loop-word { display: inline-block; font-weight: 500; opacity: 0; }
-.site-loop-word + .site-loop-word { margin-left: 0.32em; }
 .site-loop-word--soft { font-weight: 400; color: var(--text-secondary); }
 
-/* The briefs, stacked: the newest in front, the ones before it behind and a little above */
-.site-loop-deck { position: relative; }
-.site-loop-brief {
-  padding: 26px 30px 28px;
-  border-radius: 22px;
-  background: var(--surface-t2);
-  border: 0.6px solid var(--loop-edge);
-  font-size: 15.5px;
-  line-height: 1.45;
+/* The phone: the Figma mockup in three layers. The back holds the screen, the Overview card sits
+   on it, and the front holds the header, the status bar and the bezel over the card's edges. Every
+   size below is in the mockup's own units (--u is 1/517 of the phone's width), so the card scales
+   with the phone. The phone is cut off at the bottom, like the mockup.
+   The card is written out whole, so the phone is as tall as its longest state needs: the card is in
+   the flow and the phone takes its height from it, never less than the mockup's 545. Its two layers
+   are the mockup's own art, drawn at full size down to 520 and stretched from there: below that the
+   bezel and the screen are plain vertical bands, so a longer phone is the same phone. */
+.site-loop-stage { container-type: inline-size; }
+.site-loop-phone {
+  --u: calc(100cqw / 517);
+  position: relative;
+  width: 100%;
+  min-height: calc(545 * var(--u));
+  overflow: hidden;
   text-align: left;
 }
-.site-loop-brief[data-depth="0"] { position: relative; z-index: 2; }
-.site-loop-brief:not([data-depth="0"]) {
+.site-loop-phone-layer {
   position: absolute;
   inset: 0;
-  z-index: 1;
-  transform-origin: 50% 0;
+  z-index: 0;
+  box-sizing: border-box;
+  border-style: solid;
+  border-color: transparent;
+  border-width: calc(520 * var(--u)) 0 0;
+  border-image-slice: 520 0 0 fill;
+  border-image-repeat: stretch;
+  pointer-events: none;
+  user-select: none;
 }
-.site-loop-brief[data-depth="1"] { transform: translateY(-14px) scale(0.955); opacity: 0.55; }
-.site-loop-brief[data-depth="2"] { transform: translateY(-26px) scale(0.912); opacity: 0.28; }
+.site-loop-phone-layer--back { border-image-source: url(/assets/home/phone/phone-back.svg); }
+.site-loop-phone-layer--front { z-index: 3; border-image-source: url(/assets/home/phone/phone-front.svg); }
+.site-loop-screen {
+  position: relative;
+  z-index: 1;
+  margin: calc(19 * var(--u)) 0 0 calc(23 * var(--u));
+  width: calc(470.6 * var(--u));
+  min-height: calc(526 * var(--u));
+  overflow: hidden;
+  border-radius: calc(37.5 * var(--u)) calc(37.5 * var(--u)) 0 0;
+}
+/* The cards behind the front one, showing as slivers above it */
+.site-loop-behind i {
+  transform-origin: 50% 0;
+  position: absolute;
+  height: calc(700 * var(--u));
+  border-radius: calc(27.9 * var(--u));
+  background: var(--surface-t2);
+  border: 0.6px solid var(--loop-edge);
+  box-sizing: border-box;
+}
+.site-loop-behind i:nth-child(1) { left: calc(45.6 * var(--u)); top: calc(116.8 * var(--u)); width: calc(379.3 * var(--u)); }
+.site-loop-behind i:nth-child(2) { left: calc(35.7 * var(--u)); top: calc(127.9 * var(--u)); width: calc(399.3 * var(--u)); }
+.site-loop-behind i:nth-child(3) { left: calc(25.1 * var(--u)); top: calc(138.9 * var(--u)); width: calc(420.3 * var(--u)); }
+/* The card runs on past the bottom of the screen (its last 40 units are cut off, rounded corners and
+   all), and the words end 20 units short of the bottom edge. */
+.site-loop-overview {
+  position: relative;
+  z-index: 1;
+  margin: calc(150.7 * var(--u)) 0 calc(-40 * var(--u)) calc(14.1 * var(--u));
+  width: calc(442.4 * var(--u));
+  box-sizing: border-box;
+  padding: calc(136 * var(--u)) calc(37.5 * var(--u)) calc(60 * var(--u));
+  border-radius: calc(29.3 * var(--u));
+  background: var(--surface-t2);
+  border: 0.6px solid var(--loop-edge);
+}
+/* The card that was in front, left behind as the next one lands (pushCard in waldo-loop.tsx): a copy
+   of it, set exactly over it, that shrinks back into the stack. It is a picture, so nothing in it
+   moves on its own. */
+.site-loop-ghost {
+  position: absolute;
+  z-index: 0;
+  margin: 0;
+  transform-origin: 50% 0;
+  pointer-events: none;
+}
+.site-loop-ghost, .site-loop-ghost * { animation: none !important; transition: none !important; }
+/* Waldo, top left of the card, drawn the mockup's way: no keyline, the card's own colour in him */
+.site-loop-overview > img {
+  position: absolute;
+  left: calc(36.4 * var(--u));
+  top: calc(47.6 * var(--u));
+  display: block;
+  width: calc(62.7 * var(--u));
+  height: auto;
+}
 .site-loop-reading {
   position: absolute;
-  left: 30px;
-  top: 28px;
+  left: calc(37.5 * var(--u));
+  top: calc(142 * var(--u));
   display: flex;
   gap: 5px;
   opacity: 0;
@@ -555,50 +655,109 @@ button:not(:disabled):hover > .site-arrow { transform: translateX(2px); }
   border-radius: 50%;
   background: color-mix(in srgb, var(--ink) 30%, transparent);
 }
-.site-loop-brief p { margin: 0 0 10px; }
-.site-loop-brief .site-loop-ask { margin: 20px 0 10px; font-weight: 500; }
-.site-loop-items { margin: 0; padding: 0; list-style: none; display: grid; gap: 7px; }
-.site-loop-items li {
-  position: relative;
-  padding-left: 17px;
-  color: var(--text-secondary);
+
+/* Every state of the card sits in one grid cell, so the cell is as tall as the longest of them and
+   the card never changes height; only the state that is showing is visible. The words are set at
+   the size the mockup sets them, but never smaller than can be read. */
+.site-loop-sheets {
+  display: grid;
+  font-size: max(14px, calc(16.5 * var(--u)));
+  line-height: 1.28;
+  color: var(--ink);
 }
-.site-loop-items li::before {
+.site-loop-sheet { grid-area: 1 / 1; visibility: hidden; opacity: 0; }
+.site-loop-sheet[data-on] { visibility: visible; opacity: 1; }
+.site-loop-sheet p { margin: 0 0 max(10px, calc(12 * var(--u))); }
+.site-loop-sheet .site-loop-lead { margin-top: max(14px, calc(16 * var(--u))); margin-bottom: max(6px, calc(8 * var(--u))); font-weight: 500; }
+/* What still needs the reader: each one is a question with a ring in front of it, not yet ticked */
+.site-loop-asks { list-style: none; margin: 0; padding: 0; display: grid; gap: max(6px, calc(8 * var(--u))); }
+.site-loop-asks li { position: relative; padding-left: 1.5em; }
+.site-loop-asks li::before {
   content: "";
   position: absolute;
-  left: 4px;
-  top: 0.62em;
-  width: 3.5px;
-  height: 3.5px;
+  left: 0.12em;
+  top: 0.26em;
+  width: 0.72em;
+  height: 0.72em;
+  box-sizing: border-box;
   border-radius: 50%;
-  background: currentColor;
+  border: 1.5px solid color-mix(in srgb, var(--ink) 38%, transparent);
 }
-.site-loop-items u { text-decoration-color: var(--site-line); text-underline-offset: 3px; }
-/* The quiet line at the end: the feeling, not the news */
-.site-loop-brief .site-loop-aside {
-  margin: 20px 0 0;
-  font-size: 13.5px;
-  font-style: italic;
-  color: color-mix(in srgb, var(--text-secondary) 72%, transparent);
-}
-
+/* Something the sentence is about, set inline as a small chip: a thing, never an app's logo */
 .site-loop-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  vertical-align: -0.22em;
-  margin: 0 1px;
-  padding: 2px 9px 2px 6px;
+  padding: 0.08em 0.5em;
   border-radius: 999px;
   background: var(--surface-t1);
   border: 0.6px solid var(--loop-edge);
-  font-size: 13.5px;
+  font-size: max(12px, 0.84em);
   font-weight: 500;
-  line-height: 1.35;
-  color: var(--ink);
   white-space: nowrap;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
 }
-.site-loop-chip :is(img, svg) { display: block; flex: none; width: 15px; height: 15px; object-fit: contain; }
+/* Without motion nothing arrives, so the card stands at its fifth state until a dot is used */
+@media (prefers-reduced-motion: reduce) {
+  .site-loop-sheets:not(:has([data-on])) .site-loop-sheet:nth-child(5) { visibility: visible; opacity: 1; }
+  .site-loop-reading { display: none; }
+}
+
+/* The dots under the phone, after the carousel control on apple.com/in (phone-dots.tsx). */
+.site-loop-bar { display: flex; align-items: center; justify-content: center; height: var(--loop-strip); }
+.site-loop-dots {
+  /* the recording's sizes (7px, 13px, 26px), 15% smaller */
+  --dot: 5.95px;
+  --dot-gap: 11.05px;
+  --dot-pill: 22.1px;
+  --dot-idle: color-mix(in srgb, var(--ink) 52%, var(--surface-t3));
+}
+/* Seven at a time: six dots and the pill, side by side */
+.site-loop-dots-window { width: calc(6 * (var(--dot) + var(--dot-gap)) + var(--dot-pill)); overflow: hidden; }
+.site-loop-dots-track { display: flex; align-items: center; gap: var(--dot-gap); }
+.site-loop-dot {
+  position: relative;
+  flex: none;
+  width: var(--dot);
+  height: 20.4px;
+  padding: 0;
+  border: 0;
+  background: none;
+  display: grid;
+  align-items: center;
+  cursor: pointer;
+}
+.site-loop-dot[data-active] { width: var(--dot-pill); cursor: default; }
+/* A bigger target than the dot itself */
+.site-loop-dot::before { content: ""; position: absolute; inset: 0 calc(var(--dot-gap) / -2); }
+.site-loop-dot:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; border-radius: 999px; }
+.site-loop-dot-shape {
+  position: relative;
+  display: block;
+  height: var(--dot);
+  border-radius: 999px;
+  background: var(--dot-idle);
+  overflow: hidden;
+}
+.site-loop-dot:not([data-active]):hover .site-loop-dot-shape { background: var(--ink); }
+/* The fill that crosses the pill while the card waits on this step */
+.site-loop-dot-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0;
+  border-radius: inherit;
+  background: var(--ink);
+}
+.site-loop-dot-fill[data-done] { width: 100%; }
+@media (prefers-reduced-motion: no-preference) {
+  .site-loop-dots-track { transition: transform 0.5s var(--ease-sheet); }
+  .site-loop-dot { transition: width 0.4s var(--ease-sheet); }
+  .site-loop-dot-shape { transition: transform 0.4s var(--ease-sheet), background-color 0.2s var(--ease-out-quad); }
+  .site-loop-dot-fill:not([data-done]) {
+    animation: site-loop-dot-fill var(--dots-ms, 7000ms) linear forwards;
+    animation-play-state: paused;
+  }
+  .site-loop-dots[data-live] .site-loop-dot-fill:not([data-done]) { animation-play-state: running; }
+  @keyframes site-loop-dot-fill { to { width: 100%; } }
+}
 
 /* Short screens: the band, Waldo and the gaps all come down so nothing is squeezed out */
 @media (max-height: 860px) {
@@ -626,31 +785,30 @@ button:not(:disabled):hover > .site-arrow { transform: translateX(2px); }
    hero flows instead. Waldo sits above his card and the card is shown whole. */
 @media (max-width: 640px) {
   .site-section--screen > .site-container { height: auto; }
-  .site-hero-frame { padding-bottom: 10px; }
+  .site-hero { padding-bottom: 0; }
   .site-loop { flex: none; margin-top: 32px; --loop-wave: 150px; }
   .site-loop-stage {
     position: relative;
     left: auto;
     bottom: auto;
     width: 100%;
-    margin-top: calc(var(--loop-dog) + var(--loop-gap) + 48px);
+    max-width: 420px;
+    margin: calc(var(--loop-dog) + var(--loop-shelf) + var(--loop-lead) + 48px) auto 0;
     transform: none;
   }
 }
 
 @media (max-width: 860px) {
-  .site-loop { --loop-card: 100%; --loop-gap: 18px; }
-  .site-loop-brief { padding: 22px 20px 24px; border-radius: 20px; font-size: 15px; }
+  .site-loop { --loop-card: min(100%, 420px); --loop-gap: 18px; }
 }
 
 /* ── Carousel: three-card rows scroll sideways (after tutundzhian.com) ──
-   Sizes are theirs: cards 420px wide with a 460px picture (360/420 on tablets, about 300/360 on
-   phones), 20px apart (16px on phones), 26px corners. The first card lines up with the page text,
-   and the row runs to the window edges. */
+   Cards 20px apart (16px on phones), 26px corners. The first card lines up with the page text, and
+   the row runs to the window edges. The card sizes are set in steps, just below. */
 .site-carousel {
   --carousel-gap: 20px;
-  --card-width: 480px;
-  --card-image-height: 520px;
+  --card-width: 560px;
+  --card-image-height: 543px;
   --carousel-pad: calc(max(0px, (100vw - var(--site-max)) / 2) + var(--site-edge));
   display: flex;
   gap: var(--carousel-gap);
@@ -665,17 +823,25 @@ button:not(:disabled):hover > .site-arrow { transform: translateX(2px); }
 .site-carousel::-webkit-scrollbar { display: none; }
 .site-carousel[data-dragging] { cursor: grabbing; user-select: none; scroll-snap-type: none; }
 .site-carousel:focus-visible { outline-offset: -2px; }
-.site-carousel-card { flex: none; width: clamp(280px, var(--card-width), 480px); scroll-snap-align: start; }
-@media (max-width: 1199px) { .site-carousel { --card-width: 400px; --card-image-height: 460px; } }
-@media (max-width: 767px) { .site-carousel { --card-width: min(86vw, 340px); --card-image-height: 400px; --carousel-gap: 16px; } }
+.site-carousel-card { flex: none; width: clamp(280px, var(--card-width), 640px); scroll-snap-align: start; }
+/* The cards keep one size across a whole range of window widths and change it in a few steps, as on
+   tutundzhian.com (420px, 360px and 300px there), so resizing the window shows more or fewer cards
+   instead of making the cards bigger or smaller. The steps sit so that near the bottom of each range
+   two cards and a little of a third show (one and a little of a second on a phone). A picture is
+   about as tall as it is wide. */
+@media (max-width: 1439px) { .site-carousel { --card-width: 480px; --card-image-height: 466px; } }
+@media (max-width: 1199px) { .site-carousel { --card-width: 400px; --card-image-height: 388px; } }
+@media (max-width: 1023px) { .site-carousel { --card-image-height: 460px; } }
+@media (max-width: 767px) { .site-carousel { --card-width: 440px; --card-image-height: 427px; --carousel-gap: 16px; } }
+@media (max-width: 519px) { .site-carousel { --card-width: 300px; --card-image-height: 300px; } }
 
 /* The picture frame leads the card, then the words under it */
 .site-carousel .site-visual {
   order: -1;
   position: relative;
-  height: clamp(300px, var(--card-image-height), 520px);
+  height: clamp(300px, var(--card-image-height), 640px);
   aspect-ratio: auto;
-  margin: 0 0 16px;
+  margin: 0 0 22px;
   border-radius: 26px;
   background: var(--surface-t2);
   overflow: hidden;
@@ -697,8 +863,729 @@ button:not(:disabled):hover > .site-arrow { transform: translateX(2px); }
   background: radial-gradient(circle at var(--light-x, 50%) var(--light-y, 50%), rgba(255, 255, 255, 0.22) 0%, transparent 60%);
   opacity: var(--light-o, 0);
 }
+/* Pictures drawn as their own card: white frame, picture edge to edge */
+.site-carousel .site-visual--plain { background: #fff; }
+.site-visual--plain img { padding: 0; }
 .site-carousel .site-visual + .site-item-text { margin-top: 4px; }
 .site-carousel .site-item > .site-visual:first-child + .site-item-text { margin-top: 0; }
+/* The words under a card sit inside the picture's edges, not flush with its corner: a little in from
+   the left (8px), and a narrower line (9% of the card, and the 8px, in from the right) */
+.site-carousel .site-item > :not(.site-visual) { padding-inline: clamp(5px, 2vw, 8px) calc(9% + clamp(5px, 2vw, 8px)); }
+
+/* ── A text thread with Waldo, set the way iMessage sets one (agents-chat.tsx) ──────────────────────
+   The picture for "Works with every agent.", kept to bubbles and a bare field. Sizes are in units of 1/480 of the frame's width (--u),
+   so it scales with the card. iMessage's own colours: sent is blue, received is grey, on white. */
+.site-visual--scene { container-type: inline-size; }
+.site-chat {
+  --u: calc(100cqw / 480);
+  --chat-blue: #0a84ff;
+  --chat-grey: #e9e9eb;
+  --chat-line: #d1d1d6;
+  --chat-mute: #8e8e93;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #fff;
+  color: var(--ink);
+  font-size: max(13px, calc(16 * var(--u)));
+  line-height: 1.3;
+  text-align: left;
+  user-select: none;
+}
+/* The thread sits on the bottom edge of its space, and its older messages fade away at the top */
+.site-chat-thread {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(180deg, transparent 2%, #000 34%);
+  mask-image: linear-gradient(180deg, transparent 2%, #000 34%);
+}
+.site-chat-flow {
+  position: absolute;
+  inset: auto calc(20 * var(--u)) calc(14 * var(--u));
+  display: flex;
+  flex-direction: column;
+  gap: calc(9 * var(--u));
+  transition: transform 0.5s var(--ease-sheet);
+}
+.site-chat-msg {
+  display: flex;
+  flex-direction: column;
+  max-width: 82%;
+  transition: opacity 0.5s var(--ease-out-quad), filter 0.5s var(--ease-out-quad);
+}
+.site-chat-msg[data-side="you"] { align-self: flex-end; align-items: flex-end; }
+.site-chat-msg[data-side="waldo"] { align-self: flex-start; align-items: flex-start; }
+/* A message that has been reacted to leaves room above it for the badge */
+.site-chat-msg:has([data-reacted]) { margin-top: calc(12 * var(--u)); }
+.site-chat-msg[data-age="2"] { opacity: 0.55; filter: blur(0.6px); }
+.site-chat-msg[data-age="3"] { opacity: 0.3; filter: blur(1.4px); }
+.site-chat-msg[data-age="4"] { opacity: 0; filter: blur(2px); }
+.site-chat-bubble {
+  position: relative;
+  margin: 0;
+  padding: calc(9 * var(--u)) calc(14 * var(--u));
+  border-radius: calc(19 * var(--u));
+  background: var(--chat-grey);
+  color: var(--ink);
+}
+.site-chat-msg[data-side="you"] .site-chat-bubble { background: var(--chat-blue); color: #fff; }
+/* The tail, drawn the way iMessage draws it: a second rounded corner, cut out in the page's white */
+.site-chat-bubble::before,
+.site-chat-bubble::after { content: ""; position: absolute; bottom: 0; height: calc(18 * var(--u)); }
+.site-chat-bubble::before { width: calc(20 * var(--u)); background: inherit; }
+.site-chat-bubble::after { width: calc(26 * var(--u)); background: #fff; }
+.site-chat-msg[data-side="you"] .site-chat-bubble::before { right: calc(-7 * var(--u)); border-bottom-left-radius: calc(16 * var(--u)); }
+.site-chat-msg[data-side="you"] .site-chat-bubble::after { right: calc(-26 * var(--u)); border-bottom-left-radius: calc(10 * var(--u)); }
+.site-chat-msg[data-side="waldo"] .site-chat-bubble::before { left: calc(-7 * var(--u)); border-bottom-right-radius: calc(16 * var(--u)); }
+.site-chat-msg[data-side="waldo"] .site-chat-bubble::after { left: calc(-26 * var(--u)); border-bottom-right-radius: calc(10 * var(--u)); }
+/* The tapback, as iMessage draws one: a grey round on the top corner of the bubble, with a white ring
+   cut round it and two small circles trailing toward the bubble. A thumb or a laugh is dark grey, a
+   heart is red. */
+.site-chat-tapback {
+  position: absolute;
+  top: calc(-23 * var(--u));
+  left: calc(-23 * var(--u));
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: calc(32 * var(--u));
+  height: calc(32 * var(--u));
+  box-sizing: border-box;
+  border: calc(2.5 * var(--u)) solid #fff;
+  border-radius: 50%;
+  background: var(--chat-grey);
+  color: #3c3c43;
+  transform-origin: 85% 85%;
+}
+.site-chat-tapback[data-kind="heart"] { color: #ff2d55; }
+.site-chat-tapback::before,
+.site-chat-tapback::after { content: ""; position: absolute; box-sizing: border-box; border: calc(1.5 * var(--u)) solid #fff; border-radius: 50%; background: var(--chat-grey); }
+.site-chat-tapback::before { width: calc(10 * var(--u)); height: calc(10 * var(--u)); right: calc(-5 * var(--u)); bottom: calc(-6 * var(--u)); }
+.site-chat-tapback::after { width: calc(6 * var(--u)); height: calc(6 * var(--u)); right: calc(-11 * var(--u)); bottom: calc(-12 * var(--u)); }
+.site-chat-tapback-mark { display: grid; place-items: center; width: 100%; height: 100%; }
+.site-chat-tapback svg { width: 56%; height: 56%; fill: currentColor; }
+.site-chat-tapback b { font-size: calc(7.6 * var(--u)); line-height: 1; font-weight: 800; letter-spacing: -0.03em; text-align: center; }
+/* Three dots in a grey bubble, with the two small circles iMessage trails behind it */
+.site-chat-dots { display: flex; gap: calc(5 * var(--u)); padding: calc(14 * var(--u)) calc(17 * var(--u)); }
+.site-chat-dots i { width: calc(8.5 * var(--u)); height: calc(8.5 * var(--u)); border-radius: 50%; background: #9d9da3; }
+.site-chat-msg[data-side="waldo"] .site-chat-bubble.site-chat-dots::before { left: calc(-3 * var(--u)); right: auto; bottom: calc(-2 * var(--u)); width: calc(11 * var(--u)); height: calc(11 * var(--u)); border-radius: 50%; background: var(--chat-grey); }
+.site-chat-msg[data-side="waldo"] .site-chat-bubble.site-chat-dots::after { left: calc(-9 * var(--u)); right: auto; bottom: calc(-8 * var(--u)); width: calc(6 * var(--u)); height: calc(6 * var(--u)); border-radius: 50%; background: var(--chat-grey); }
+/* An agent handed a piece of the work: its name, in bold, as plain text */
+.site-chat-agent { font-weight: 600; }
+/* The bar at the foot: the plus, and the field the message is written in (it grows upward) */
+.site-chat-bar {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  gap: calc(10 * var(--u));
+  height: calc(88 * var(--u));
+  padding: 0 calc(16 * var(--u)) calc(18 * var(--u));
+  box-sizing: border-box;
+}
+.site-chat-plus { flex: none; display: grid; place-items: center; width: calc(36 * var(--u)); height: calc(36 * var(--u)); border-radius: 50%; background: var(--chat-grey); }
+.site-chat-plus svg { width: 46%; height: 46%; fill: none; stroke: #6b6b70; stroke-width: 1.7; stroke-linecap: round; }
+.site-chat-field {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  min-height: calc(36 * var(--u));
+  box-sizing: border-box;
+  padding: calc(6 * var(--u)) calc(44 * var(--u)) calc(6 * var(--u)) calc(14 * var(--u));
+  border: 1px solid var(--chat-line);
+  border-radius: calc(19 * var(--u));
+  background: #fff;
+}
+.site-chat-draft { margin: 0; line-height: 1.5; }
+.site-chat-placeholder { color: #b3b3b8; }
+.site-chat-caret { display: inline-block; width: 1.5px; height: 1.05em; margin-left: 1px; background: var(--chat-blue); vertical-align: text-bottom; }
+.site-chat-mic,
+.site-chat-send {
+  position: absolute;
+  right: calc(4 * var(--u));
+  bottom: calc(4 * var(--u));
+  display: grid;
+  place-items: center;
+  width: calc(26 * var(--u));
+  height: calc(26 * var(--u));
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(0.5);
+}
+.site-chat-send { background: var(--chat-blue); }
+.site-chat-mic[data-on],
+.site-chat-send[data-on] { opacity: 1; transform: scale(1); }
+.site-chat-mic svg { width: 62%; height: 62%; fill: none; stroke: #a1a1a6; stroke-width: 1.4; stroke-linecap: round; }
+.site-chat-send svg { width: 58%; height: 58%; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+@media (prefers-reduced-motion: no-preference) {
+  /* The mic and the send arrow swap with a little spring, the way the button does */
+  .site-chat-mic,
+  .site-chat-send { transition: opacity 0.18s var(--ease-out-quad), transform 0.34s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  .site-chat-caret { animation: site-chat-blink 1s steps(1) infinite; }
+  /* What you send leaves the field and rises into the thread on a spring, from where it was typed */
+  .site-chat-msg[data-fresh][data-side="you"] { transform-origin: 100% 100%; animation: site-chat-launch 0.7s var(--ease-card-spring) both; }
+  /* What he says grows out of the corner it comes from, past its size and back */
+  .site-chat-msg[data-fresh][data-side="waldo"] { transform-origin: 0 100%; animation: site-chat-grow 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+  /* The dots rise and fall one after another */
+  .site-chat-dots i { animation: site-chat-wave 1.2s ease-in-out infinite; }
+  .site-chat-dots i:nth-child(2) { animation-delay: 0.2s; }
+  .site-chat-dots i:nth-child(3) { animation-delay: 0.4s; }
+  /* A tapback lands with a bounce, its mark moves on its own, and the bubble gives a little */
+  .site-chat-msg[data-fresh] .site-chat-tapback { animation: site-chat-pop 0.5s cubic-bezier(0.34, 1.7, 0.64, 1) both; }
+  .site-chat-msg[data-fresh] .site-chat-tapback[data-kind="up"] .site-chat-tapback-mark { animation: site-chat-thumb 0.7s 0.1s ease-out both; }
+  .site-chat-msg[data-fresh] .site-chat-tapback[data-kind="heart"] .site-chat-tapback-mark { animation: site-chat-beat 0.8s 0.1s ease-out both; }
+  .site-chat-msg[data-fresh] .site-chat-tapback[data-kind="haha"] .site-chat-tapback-mark { animation: site-chat-shake 0.8s 0.1s ease-out both; }
+  .site-chat-msg[data-fresh][data-side="you"] .site-chat-bubble[data-reacted] { transform-origin: 0 0; animation: site-chat-give 0.55s ease-out both; }
+  @keyframes site-chat-blink { 50% { opacity: 0; } }
+  @keyframes site-chat-launch { from { transform: translateY(var(--fly-y, 0px)) scale(0.88); } }
+  @keyframes site-chat-grow { from { opacity: 0; transform: scale(0.3); } }
+  @keyframes site-chat-wave { 0%, 60%, 100% { opacity: 0.35; transform: scale(0.85); } 30% { opacity: 1; transform: scale(1.1); } }
+  @keyframes site-chat-pop { from { opacity: 0; transform: scale(0); } }
+  @keyframes site-chat-thumb { 0% { transform: rotate(-40deg) scale(0.5); } 55% { transform: rotate(14deg) scale(1.25); } 100% { transform: none; } }
+  @keyframes site-chat-beat { 0% { transform: scale(0.4); } 35% { transform: scale(1.4); } 55% { transform: scale(0.95); } 75% { transform: scale(1.18); } 100% { transform: none; } }
+  @keyframes site-chat-shake { 0% { transform: rotate(-16deg); } 20% { transform: rotate(14deg); } 40% { transform: rotate(-11deg); } 60% { transform: rotate(8deg); } 80% { transform: rotate(-4deg); } 100% { transform: none; } }
+  @keyframes site-chat-give { 0% { transform: none; } 25% { transform: scale(0.95) rotate(-1deg); } 60% { transform: scale(1.025); } 100% { transform: none; } }
+}
+
+/* ── Mac notifications (mac-notifications.tsx) ────────────────────────────────────────────────────
+   The picture for "Tell me": one line from Waldo, as a banner on a quiet Mac desktop, in the same
+   frame and the same units (--u, 1/480 of the frame's width) as the pictures around it. He sends one
+   thing, once, and then nothing: the banner arrives, stays long enough to read, leaves, and the
+   desktop is empty for the rest of a 16 second loop. It plays only while it is the picture to watch
+   (use-live.ts, data-live); otherwise, and without motion, the banner just sits there. */
+.mac {
+  --u: calc(100cqw / 480);
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  text-align: left;
+  user-select: none;
+  font-size: max(12px, calc(16 * var(--u)));
+  line-height: 1.3;
+  background:
+    radial-gradient(120% 70% at 85% -5%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 62%),
+    linear-gradient(165deg, var(--surface-t3), var(--surface-t4));
+}
+.mac-bar {
+  display: flex;
+  align-items: center;
+  height: calc(32 * var(--u));
+  padding: 0 calc(18 * var(--u));
+  font-size: max(11px, calc(14.5 * var(--u)));
+  background: color-mix(in srgb, var(--surface-t1) 50%, transparent);
+  border-bottom: 0.6px solid color-mix(in srgb, var(--ink) 8%, transparent);
+}
+.mac-bar time { margin-left: auto; }
+.mac-note {
+  position: absolute;
+  top: calc(52 * var(--u));
+  left: calc(22 * var(--u));
+  right: calc(22 * var(--u));
+  display: flex;
+  align-items: flex-start;
+  gap: calc(14 * var(--u));
+  box-sizing: border-box;
+  min-height: max(calc(100 * var(--u)), 76px);
+  padding: calc(16 * var(--u)) calc(18 * var(--u));
+  border-radius: calc(22 * var(--u));
+  background: var(--surface-t1);
+  border: 0.6px solid color-mix(in srgb, var(--ink) 9%, transparent);
+}
+.mac-icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: calc(46 * var(--u));
+  height: calc(46 * var(--u));
+  border-radius: calc(11 * var(--u));
+  background: var(--ink);
+}
+.mac-icon img { display: block; width: calc(25 * var(--u)); height: auto; }
+.mac-text { min-width: 0; flex: 1; }
+.mac-text p { margin: 0; }
+.mac-head { display: flex; align-items: baseline; justify-content: space-between; font-size: max(12.5px, calc(15.5 * var(--u))); }
+.mac-head b { font-weight: 600; }
+.mac-head span { font-size: max(11px, calc(13.5 * var(--u))); color: var(--text-tertiary); }
+.mac-body { margin-top: calc(2 * var(--u)); color: color-mix(in srgb, var(--ink) 82%, transparent); }
+@media (prefers-reduced-motion: no-preference) {
+  .mac[data-live] .mac-note {
+    animation: mac-arrive 16s cubic-bezier(0.32, 0.72, 0, 1) infinite;
+  }
+  @keyframes mac-arrive {
+    0%, 6% { transform: translateX(110%); opacity: 0; }
+    12%, 58% { transform: translateX(0); opacity: 1; }
+    64%, 100% { transform: translateX(110%); opacity: 0; }
+  }
+}
+
+/* ── Same Waldo, different hats (hats-scenes.tsx) ─────────────────────────────────────────────────
+   Three pictures in the same frame as the thread above: WhatsApp, a light terminal, an
+   Apple Watch. Sizes are in units of 1/480 of the frame's width (--u), so each scales with its card;
+   inside the watch's screen 1 unit is 1 watch point (the screen is 198 wide). They borrow the thread's
+   keyframes (site-chat-launch, -grow, -wave, -blink), defined in the block above. */
+.hats {
+  --u: calc(100cqw / 480);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  font-size: max(13px, calc(16 * var(--u)));
+  line-height: 1.3;
+  text-align: left;
+  user-select: none;
+}
+.hats-thread {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(180deg, transparent 2%, #000 30%);
+  mask-image: linear-gradient(180deg, transparent 2%, #000 30%);
+}
+.hats-flow {
+  position: absolute;
+  inset: auto calc(14 * var(--u)) calc(12 * var(--u));
+  display: flex;
+  flex-direction: column;
+  gap: calc(8 * var(--u));
+  transition: transform 0.5s var(--ease-sheet);
+}
+.hats-msg {
+  display: flex;
+  flex-direction: column;
+  max-width: 84%;
+  transition: opacity 0.5s var(--ease-out-quad), filter 0.5s var(--ease-out-quad);
+}
+.hats-msg[data-side="you"] { align-self: flex-end; align-items: flex-end; }
+.hats-msg[data-side="waldo"] { align-self: flex-start; align-items: flex-start; }
+.hats-msg[data-age="2"],
+.hats-cli-line[data-age="2"] { opacity: 0.55; filter: blur(0.6px); }
+.hats-msg[data-age="3"],
+.hats-cli-line[data-age="3"] { opacity: 0.25; filter: blur(1.4px); }
+.hats-agent { font-weight: 600; }
+
+/* Shared media: a photo or a clip (a thumbnail, a play button and its length), and a voice note */
+.hats-pic { display: block; width: 100%; height: auto; }
+.hats .hats-pic--photo { object-fit: cover; padding: 0; }
+.hats-still { position: relative; display: block; overflow: hidden; border-radius: calc(8 * var(--u)); }
+.hats-still-play { position: absolute; inset: 0; margin: auto; display: grid; place-items: center; width: calc(38 * var(--u)); height: calc(38 * var(--u)); border-radius: 50%; background: rgba(0, 0, 0, 0.45); }
+.hats-still-play svg { width: 36%; height: auto; margin-left: 8%; fill: #fff; }
+.hats-still small { position: absolute; left: calc(7 * var(--u)); bottom: calc(5 * var(--u)); font-size: max(10px, calc(11 * var(--u))); font-weight: 500; color: #fff; text-shadow: 0 0 4px rgba(0, 0, 0, 0.5); }
+.hats-voice { display: flex; align-items: center; gap: calc(8 * var(--u)); }
+.hats-voice > svg { flex: none; width: calc(11 * var(--u)); height: calc(13 * var(--u)); fill: currentColor; }
+.hats-voice-bars { display: flex; align-items: center; flex: 1; gap: calc(2.5 * var(--u)); height: calc(22 * var(--u)); }
+.hats-voice-bars i { flex: 1; min-width: 1.5px; border-radius: 2px; background: currentColor; opacity: 0.8; }
+.hats-voice small { font-size: max(10px, calc(12 * var(--u))); font-variant-numeric: tabular-nums; opacity: 0.85; }
+
+/* 1 · WhatsApp (iOS), edge to edge: its header, the doodle wallpaper, a "Today" chip, white and pale-green
+   bubbles with a tail at the top corner, ticks that turn blue, a voice note with the sender's face and a
+   photo with its time laid over it, and the bar at the foot: plus, a field with a sticker, camera, mic */
+.hats-wa {
+  color: #111b21;
+  font-size: max(13px, calc(16.5 * var(--u)));
+  background-color: #efeae2;
+}
+/* The header floats over the chat: the contact's face and name, and a round "···" button */
+.hats-wa-head { position: absolute; inset: 0 0 auto; z-index: 2; display: flex; align-items: center; gap: calc(12 * var(--u)); padding: calc(14 * var(--u)) calc(16 * var(--u)) calc(22 * var(--u)); background: linear-gradient(180deg, rgba(239, 234, 226, 0.97) 55%, rgba(239, 234, 226, 0)); }
+.hats-wa-avatar { display: grid; place-items: center; width: calc(46 * var(--u)); height: calc(46 * var(--u)); overflow: hidden; border-radius: 50%; background: #fff;  }
+.hats-wa-avatar img { width: 68%; height: auto; }
+.hats-wa-who { display: flex; flex: 1; flex-direction: column; line-height: 1.2; }
+.hats-wa-who b { font-weight: 600; font-size: calc(19 * var(--u)); }
+.hats-wa-who small { font-size: calc(13 * var(--u)); color: #00a884; }
+.hats-wa-more { display: flex; align-items: center; justify-content: center; gap: calc(3.500 * var(--u)); width: calc(46 * var(--u)); height: calc(46 * var(--u)); border-radius: 50%; background: #fff;  }
+.hats-wa-more i { width: calc(4.500 * var(--u)); height: calc(4.500 * var(--u)); border-radius: 50%; background: #111b21; }
+.hats-wa .hats-flow { inset-inline: calc(12 * var(--u)); }
+.hats-wa-day { align-self: center; margin-bottom: calc(4 * var(--u)); padding: calc(4 * var(--u)) calc(11 * var(--u)); border-radius: calc(8 * var(--u)); background: rgba(255, 255, 255, 0.92);  font-size: calc(12.5 * var(--u)); color: #54656f; }
+.hats-wa .hats-msg { max-width: 82%; }
+.hats-wa-bubble {
+  position: relative;
+  margin: 0;
+  padding: calc(9 * var(--u)) calc(13 * var(--u)) calc(8 * var(--u));
+  border-radius: calc(19 * var(--u));
+  background: #fff;
+  
+  line-height: 1.32;
+}
+.hats-wa-bubble::after { content: ""; display: table; clear: both; }
+/* The tail sits at the bottom corner, the way the new WhatsApp draws it */
+.hats-wa-bubble::before { content: ""; position: absolute; bottom: 0; width: calc(12 * var(--u)); height: calc(14 * var(--u)); background: inherit; }
+.hats-msg[data-side="you"] .hats-wa-bubble { background: #d9fdd3; border-bottom-right-radius: calc(4 * var(--u)); }
+.hats-msg[data-side="you"] .hats-wa-bubble::before { right: calc(-6 * var(--u)); clip-path: path("M0 0 C0 8 4 12 12 14 L0 14 Z"); }
+.hats-msg[data-side="waldo"] .hats-wa-bubble { border-bottom-left-radius: calc(4 * var(--u)); }
+.hats-msg[data-side="waldo"] .hats-wa-bubble::before { left: calc(-6 * var(--u)); clip-path: path("M12 0 C12 8 8 12 0 14 L12 14 Z"); }
+.hats-wa-meta { float: right; display: inline-flex; align-items: center; gap: calc(3 * var(--u)); margin: calc(9 * var(--u)) 0 calc(-3 * var(--u)) calc(12 * var(--u)); font-size: calc(11 * var(--u)); color: #667781; }
+.hats-wa-ticks svg { display: block; width: calc(16 * var(--u)); height: auto; fill: none; stroke: #8696a0; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; transition: stroke 0.3s var(--ease-out-quad); }
+.hats-wa-ticks[data-read] svg { stroke: #53bdeb; }
+/* A photo or a clip: the picture fills the bubble, and its time sits on the picture */
+.hats-wa-bubble[data-media] { width: calc(232 * var(--u)); padding: calc(3 * var(--u)); }
+.hats-wa-bubble[data-media] .hats-still { border-radius: calc(7 * var(--u)); }
+.hats-wa-bubble[data-media] .hats-wa-meta { position: absolute; right: calc(9 * var(--u)); bottom: calc(6 * var(--u)); margin: 0; color: #fff;  }
+.hats-wa-bubble[data-media] .hats-wa-ticks svg { stroke: #fff;  }
+.hats-wa-bubble[data-media] .hats-wa-ticks[data-read] svg { stroke: #53bdeb; }
+.hats-wa-bubble[data-media] .hats-still small { display: none; }
+.hats-wa-bubble[data-media] .hats-still-play + small { display: block; }
+.hats-wa-bubble[data-media] .hats-still small { left: calc(8 * var(--u)); bottom: calc(6 * var(--u)); }
+/* A voice note: a round play button, the shape of what was said with the playhead dot, and the sender's
+   face with a mic badge. The length sits under the shape, the time and ticks under the face */
+.hats-wa-bubble[data-voice] { width: calc(312 * var(--u)); padding: calc(9 * var(--u)) calc(11 * var(--u)) calc(6 * var(--u)); }
+.hats-wa-voice { display: flex; align-items: center; gap: calc(10 * var(--u)); }
+.hats-wa-play { flex: none; display: grid; place-items: center; width: calc(30 * var(--u)); height: calc(30 * var(--u)); }
+.hats-wa-play svg { width: calc(17 * var(--u)); height: calc(20 * var(--u)); margin-left: calc(2 * var(--u)); fill: #667781; }
+.hats-wa-wave { position: relative; display: flex; align-items: center; flex: 1; gap: calc(2.500 * var(--u)); height: calc(34 * var(--u)); }
+.hats-wa-wave u { flex: none; width: calc(12 * var(--u)); height: calc(12 * var(--u)); margin-right: calc(1 * var(--u)); border-radius: 50%; background: #53bdeb; }
+.hats-wa-wave i { flex: 1; min-width: 2px; border-radius: 2px; background: #a8b3b9; }
+.hats-wa-vav { position: relative; flex: none; width: calc(46 * var(--u)); height: calc(46 * var(--u)); overflow: visible; border-radius: 50%; background: #d1d7db; }
+.hats-wa-who-icon { position: absolute; inset: 0; width: 100%; height: 100%; padding: 0; border-radius: 50%; fill: #fff; overflow: hidden; }
+.hats-wa-vmic { position: absolute; right: calc(-5 * var(--u)); bottom: calc(-3 * var(--u)); box-sizing: content-box; width: calc(12 * var(--u)); height: calc(12 * var(--u)); padding: calc(3 * var(--u)); border-radius: 50%; background: #53bdeb; fill: none; stroke: #fff; stroke-width: 1.700; stroke-linecap: round; border: calc(2 * var(--u)) solid #d9fdd3; }
+.hats-wa-vdur { float: left; margin: calc(1 * var(--u)) 0 0 calc(40 * var(--u)); font-size: calc(12 * var(--u)); color: #667781; font-variant-numeric: tabular-nums; }
+/* The bar at the foot: the plus, and the field the message is written in (it grows upward) */
+.hats-wa-bar { position: relative; z-index: 1; flex: none; display: flex; align-items: flex-end; gap: calc(10 * var(--u)); height: calc(82 * var(--u)); padding: 0 calc(14 * var(--u)) calc(16 * var(--u)); box-sizing: border-box; }
+.hats-wa-plus,
+.hats-wa-send { flex: none; display: grid; place-items: center; width: calc(46 * var(--u)); height: calc(46 * var(--u)); }
+.hats-wa-plus { width: calc(34 * var(--u)); }
+.hats-wa-plus svg { width: 68%; height: 68%; fill: none; stroke: #111b21; stroke-width: 1.6; stroke-linecap: round; }
+.hats-wa-field { position: relative; flex: 1; min-width: 0; min-height: calc(46 * var(--u)); box-sizing: border-box; padding: calc(11 * var(--u)) calc(50 * var(--u)) calc(11 * var(--u)) calc(18 * var(--u)); border-radius: calc(23 * var(--u)); background: rgba(255, 255, 255, 0.92); }
+.hats-wa-field p { margin: 0; line-height: 1.3; }
+.hats-wa-smile { position: absolute; right: calc(14 * var(--u)); bottom: calc(12 * var(--u)); width: calc(22 * var(--u)); height: calc(22 * var(--u)); fill: none; stroke: #111b21; stroke-width: 1.5; stroke-linecap: round; }
+.hats-wa-placeholder { color: #8696a0; }
+.hats-wa-send { position: relative; border-radius: 50%; background: #25d366; transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.hats-wa-send svg { position: absolute; inset: 0; margin: auto; width: 50%; height: 50%; }
+.hats-wa-mic { fill: none; stroke: #fff; stroke-width: 1.5; stroke-linecap: round; }
+.hats-wa-go { fill: #fff; opacity: 0; }
+.hats-wa-send[data-rec] { transform: scale(1.25); }
+.hats-wa-send[data-on] .hats-wa-mic { opacity: 0; }
+.hats-wa-send[data-on] .hats-wa-go { opacity: 1; }
+.hats-wa-rec { display: flex; align-items: center; gap: calc(9 * var(--u)); }
+.hats-wa-rec i { flex: none; width: calc(10 * var(--u)); height: calc(10 * var(--u)); border-radius: 50%; background: #ff3b30; }
+.hats-wa-rec time { font-variant-numeric: tabular-nums; }
+.hats-wa-rec span { margin-left: auto; padding-right: calc(10 * var(--u)); color: #8696a0; font-size: 0.92em; }
+.hats-wa-picked { display: flex; align-items: center; gap: calc(10 * var(--u)); color: #667781; }
+.hats-wa-picked span { flex: none; width: calc(54 * var(--u)); overflow: hidden; border-radius: calc(5 * var(--u)); }
+
+/* 2 · The terminal, in light: off-white, mono, a prompt at the foot. His answer is the plain line with a dot */
+.hats-cli { background: #fbfbf9; color: #1a1a1a; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: max(11px, calc(14 * var(--u))); line-height: 1.5; box-shadow: inset 0 0 0 1px rgba(26, 26, 26, 0.08); }
+.hats-cli-head { display: flex; align-items: center; gap: calc(7 * var(--u)); padding: calc(14 * var(--u)) calc(16 * var(--u)); background: #f1f0ec; border-bottom: 1px solid rgba(26, 26, 26, 0.08); }
+.hats-cli-head i { width: calc(11 * var(--u)); height: calc(11 * var(--u)); border-radius: 50%; background: #ff5f57; }
+.hats-cli-head i:nth-child(2) { background: #febc2e; }
+.hats-cli-head i:nth-child(3) { background: #28c840; }
+.hats-cli-head span { flex: 1; margin-right: calc(40 * var(--u)); text-align: center; font-size: calc(12 * var(--u)); color: #8a8a86; }
+.hats-cli .hats-flow { gap: calc(12 * var(--u)); inset-inline: calc(18 * var(--u)); }
+.hats-cli-line { display: flex; gap: calc(10 * var(--u)); margin: 0; color: #1a1a1a; transition: opacity 0.5s var(--ease-out-quad), filter 0.5s var(--ease-out-quad); }
+.hats-cli-line[data-kind="you"],
+.hats-cli-line[data-kind="work"] { color: #6f6f6b; }
+.hats-cli-line[data-kind="work"] { align-items: center; }
+.hats-cli-prompt { flex: none; color: #8a8a86; }
+.hats-cli-dot { flex: none; color: #1a1a1a; }
+.hats-cli-cmd { color: #1a1a1a; font-weight: 600; }
+.hats-cli .hats-agent { color: #1a1a1a; }
+.hats-cli-chip { display: inline-flex; align-items: center; gap: calc(6 * var(--u)); margin-left: calc(8 * var(--u)); padding: 0 calc(8 * var(--u)); border-radius: calc(5 * var(--u)); background: #ecebe6; color: #4a4a47; font-size: 0.9em; vertical-align: baseline; white-space: nowrap; }
+.hats-cli-chip svg { width: calc(11 * var(--u)); height: calc(11 * var(--u)); fill: currentColor; stroke: none; }
+.hats-cli-chip svg rect { fill: none; stroke: currentColor; stroke-width: 1; }
+.hats-cli-chip svg path { fill: none; stroke: currentColor; stroke-width: 1; stroke-linejoin: round; }
+.hats-cli-chip svg[viewBox="0 0 10 12"] path { fill: currentColor; stroke: none; }
+.hats-cli-spin { flex: none; width: calc(11 * var(--u)); height: calc(11 * var(--u)); box-sizing: border-box; border: 1.5px solid #d4d3ce; border-top-color: #1a1a1a; border-radius: 50%; }
+.hats-cli-bar { display: flex; align-items: flex-start; gap: calc(10 * var(--u)); min-height: calc(84 * var(--u)); box-sizing: border-box; padding: calc(14 * var(--u)) calc(18 * var(--u)) calc(18 * var(--u)); border-top: 1px solid rgba(26, 26, 26, 0.08); }
+.hats-cli-bar p { flex: 1; min-width: 0; margin: 0; }
+.hats-cli-caret { display: inline-block; width: 0.55em; height: 1.15em; margin-left: 1px; background: #1a1a1a; vertical-align: text-bottom; }
+
+/* 3 · An Apple Watch: the photo from "Your watch knows" (its screen is cut out of the picture), with the
+   conversation playing on the screen under it, drawn after watchOS Messages: the round back button, the
+   time with the contact's name in blue under it, the contact's face, bubbles with tails, and a "+" and an
+   "iMessage" field at the foot. A voice note goes through the "+" menu (Audio) to the recording screen
+   (orange mic, the live waveform, the arrow that sends). 1 unit is 1 watch point: the screen is 184 wide. */
+.hats-watch { align-items: center; justify-content: center; background: #fff; }
+.hats-watch-rig { position: relative; flex: none; height: 84%; aspect-ratio: 560 / 880; }
+.hats-watch-photo { position: absolute; inset: 0; z-index: 2; width: 100%; height: 100%; pointer-events: none; }
+.hats-watch-screen {
+  --u: calc(100cqw / 184);
+  position: absolute;
+  z-index: 1;
+  left: 11.8%;
+  top: 21.8%;
+  width: 75.9%;
+  height: 56.4%;
+  container-type: size;
+  overflow: hidden;
+  border-radius: 14.1% / 12%;
+  background: #000;
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+  font-size: calc(14 * var(--u));
+  line-height: 1.2;
+}
+.hats-watch-layer { isolation: isolate; position: absolute; inset: 0; display: flex; flex-direction: column; background: #000; opacity: 0; pointer-events: none; transition: opacity 0.1s linear; }
+/* One screen at a time: the one going away is out before the next is fully in, so they never show through each other */
+.hats-watch-screen[data-view="thread"] .hats-watch-thread,
+.hats-watch-screen[data-view="menu"] .hats-watch-menu,
+.hats-watch-screen[data-view="rec"] .hats-watch-rec { opacity: 1; transition: opacity 0.18s var(--ease-out-quad) 0.09s; }
+.hats-watch-top { position: relative; z-index: 1; flex: none; display: flex; align-items: flex-start; justify-content: space-between; padding: calc(11 * var(--u)) calc(11 * var(--u)) 0; }
+.hats-watch-btn { flex: none; display: grid; place-items: center; width: calc(34 * var(--u)); height: calc(34 * var(--u)); box-sizing: border-box; border-radius: 50%; background: #1d1d1f; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1); transition: transform 0.2s var(--ease-out-quad), background 0.2s var(--ease-out-quad); }
+.hats-watch-btn[data-press] { transform: scale(0.88); background: #3a3a3c; }
+.hats-watch-btn svg { width: 40%; height: 40%; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.hats-watch-title { display: flex; flex-direction: column; align-items: center; margin-top: calc(1 * var(--u)); line-height: 1.12; }
+.hats-watch-title time,
+.hats-watch-top > time { font-size: calc(17 * var(--u)); font-weight: 600; font-variant-numeric: tabular-nums; }
+.hats-watch-title b { font-size: calc(11.5 * var(--u)); font-weight: 600; color: #0a84ff; }
+.hats-watch-contact { display: grid; place-items: center; width: calc(34 * var(--u)); height: calc(34 * var(--u)); overflow: hidden; border-radius: 50%; background: #fff; }
+.hats-watch-contact img { width: 68%; height: auto; }
+.hats-watch-thread .hats-thread { -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 18%); mask-image: linear-gradient(180deg, transparent 0, #000 18%); }
+.hats-watch .hats-flow { inset: auto calc(10 * var(--u)) calc(4 * var(--u)); gap: calc(5 * var(--u)); }
+.hats-watch .hats-msg { max-width: 100%; }
+.hats-watch-note { align-self: center; margin: 0; text-align: center; font-size: calc(9.500 * var(--u)); line-height: 1.25; color: #8e8e93; }
+.hats-watch-note span { display: flex; align-items: center; justify-content: center; gap: calc(3 * var(--u)); }
+.hats-watch-note svg { width: calc(7 * var(--u)); height: auto; fill: currentColor; }
+.hats-watch-day { align-self: center; margin: calc(5 * var(--u)) 0 calc(3 * var(--u)); font-size: calc(9 * var(--u)); font-weight: 600; letter-spacing: 0.02em; color: #8e8e93; }
+.hats-watch-bubble { position: relative; margin: 0; padding: calc(7 * var(--u)) calc(11 * var(--u)); border-radius: calc(17 * var(--u)); background: #26262a; font-size: calc(14 * var(--u)); line-height: 1.2; }
+/* A tail at the bottom corner, cut out of the black the way iMessage draws it */
+.hats-watch-bubble::before,
+.hats-watch-bubble::after { content: ""; position: absolute; bottom: 0; height: calc(14 * var(--u)); }
+.hats-watch-bubble::before { left: calc(-4 * var(--u)); width: calc(10 * var(--u)); background: inherit; border-bottom-right-radius: calc(12 * var(--u)); }
+.hats-watch-bubble::after { left: calc(-12 * var(--u)); width: calc(12 * var(--u)); background: #000; border-bottom-right-radius: calc(8 * var(--u)); }
+.hats-watch-voice::before { left: auto; right: calc(-4 * var(--u)); border-radius: 0 0 0 calc(12 * var(--u)); }
+.hats-watch-voice::after { left: auto; right: calc(-12 * var(--u)); border-radius: 0 0 0 calc(8 * var(--u)); }
+.hats-watch-pic::before,
+.hats-watch-pic::after,
+.hats-watch-dots::before,
+.hats-watch-dots::after { display: none; }
+.hats-watch-voice { background: #0a84ff; }
+.hats-watch-voice .hats-voice { width: calc(112 * var(--u)); color: #fff; }
+.hats-watch-voice .hats-voice-bars { height: calc(16 * var(--u)); }
+.hats-watch-status { margin: calc(2 * var(--u)) calc(6 * var(--u)) 0 0; font-size: calc(9 * var(--u)); font-weight: 500; color: #8e8e93; }
+.hats-watch .hats-msg[data-fresh][data-side="you"] { --fly-y: calc(44 * var(--u)); }
+.hats-watch-pic { width: calc(104 * var(--u)); padding: 0; overflow: hidden; border-radius: calc(13 * var(--u)); background: none; }
+.hats-watch-dots { display: flex; gap: calc(4 * var(--u)); padding: calc(10 * var(--u)) calc(13 * var(--u)); }
+.hats-watch-dots i { width: calc(6.500 * var(--u)); height: calc(6.500 * var(--u)); border-radius: 50%; background: #8e8e93; }
+.hats-watch-compose { flex: none; display: flex; align-items: center; gap: calc(6 * var(--u)); padding: calc(4 * var(--u)) calc(10 * var(--u)) calc(9 * var(--u)); }
+.hats-watch-field { flex: 1; display: flex; align-items: center; height: calc(34 * var(--u)); box-sizing: border-box; padding: 0 calc(14 * var(--u)); border-radius: 999px; background: #0c0c0d; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14); color: #8e8e93; font-size: calc(15 * var(--u)); }
+/* The "+" menu */
+.hats-watch-menu .hats-watch-top { padding-right: calc(14 * var(--u)); }
+.hats-watch-menu ul { flex: 1; min-height: 0; margin: calc(8 * var(--u)) 0 0; padding: 0 calc(11 * var(--u)); list-style: none; overflow: hidden; }
+.hats-watch-menu li { display: flex; align-items: center; gap: calc(12 * var(--u)); height: calc(34 * var(--u)); margin-bottom: calc(10 * var(--u)); font-size: calc(15 * var(--u)); font-weight: 500; transition: transform 0.2s var(--ease-out-quad), opacity 0.2s var(--ease-out-quad); transform-origin: 0 50%; }
+.hats-watch-menu li[data-press] { transform: scale(0.94); opacity: 0.7; }
+.hats-watch-ico { flex: none; position: relative; display: grid; place-items: center; width: calc(34 * var(--u)); height: calc(34 * var(--u)); border-radius: 50%; }
+.hats-watch-ico[data-kind="audio"] { background: linear-gradient(180deg, #f58d6f, #e8684f); }
+.hats-watch-ico[data-kind="audio"] svg { width: 56%; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; }
+.hats-watch-ico[data-kind="stickers"] { background: linear-gradient(135deg, #c9a7f5, #6fa8f5 60%, #7fd0f5); }
+.hats-watch-ico[data-kind="stickers"]::after { content: ""; position: absolute; right: 5%; bottom: 5%; width: 42%; height: 42%; border-radius: 0 0 70% 0; background: rgba(255, 255, 255, 0.55); }
+.hats-watch-ico[data-kind="location"] { background: linear-gradient(180deg, #8de08a, #3fc878); }
+.hats-watch-ico[data-kind="location"] i { width: 36%; height: 36%; border-radius: 50%; background: #0a84ff; box-shadow: 0 0 0 calc(3.500 * var(--u)) #fff; }
+.hats-watch-ico[data-kind="images"] { background: #b8414a; opacity: 0.85; }
+.hats-watch-ico[data-kind="images"]::before { content: ""; width: 42%; height: 42%; box-sizing: border-box; margin: -8% 0 0 -8%; border: calc(2 * var(--u)) solid rgba(255, 255, 255, 0.75); border-radius: 50%; }
+.hats-watch-ico[data-kind="images"]::after { content: ""; position: absolute; width: calc(2 * var(--u)); height: 15%; left: 54%; top: 58%; border-radius: 2px; background: rgba(255, 255, 255, 0.75); transform: rotate(-45deg); transform-origin: 50% 0; }
+/* Recording: the orange mic by the time, a soft wash where the thread shows through, and the waveform */
+.hats-watch-clock { display: flex; align-items: center; gap: calc(3 * var(--u)); margin-top: calc(6 * var(--u)); font-size: calc(17 * var(--u)); font-weight: 600; font-variant-numeric: tabular-nums; }
+.hats-watch-clock svg { width: calc(8 * var(--u)); height: calc(11 * var(--u)); fill: #ff9f0a; }
+.hats-watch-glow { position: absolute; inset: calc(40 * var(--u)) 0 calc(40 * var(--u)); background: radial-gradient(circle at 12% 18%, rgba(230, 110, 70, 0.34), transparent 24%), radial-gradient(circle at 10% 50%, rgba(80, 80, 210, 0.3), transparent 26%), radial-gradient(circle at 12% 82%, rgba(70, 170, 120, 0.3), transparent 26%); filter: blur(calc(8 * var(--u))); }
+.hats-watch-wave { position: absolute; left: calc(5 * var(--u)); right: calc(5 * var(--u)); bottom: calc(26 * var(--u)); display: flex; align-items: center; justify-content: space-between; height: calc(36 * var(--u)); }
+.hats-watch-wave i { width: calc(2 * var(--u)); height: calc(2 * var(--u)); border-radius: 50%; background: #fff; opacity: 0.85; }
+.hats-watch-wave b { width: calc(2 * var(--u)); height: 100%; border-radius: 2px; background: #fff; transform: scaleY(var(--h, 0.4)); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .hats-msg[data-fresh][data-side="you"] { transform-origin: 100% 100%; animation: site-chat-launch 0.7s var(--ease-card-spring) both; }
+  .hats-msg[data-fresh][data-side="waldo"] { transform-origin: 0 100%; animation: site-chat-grow 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+  .hats-cli-line[data-fresh] { animation: hats-rise 0.45s var(--ease-sheet) both; }
+  .hats-cli-caret { animation: site-chat-blink 1s steps(1) infinite; }
+  .hats-cli-spin { animation: hats-spin 0.8s linear infinite; }
+  .hats-watch-dots i { animation: site-chat-wave 1.2s ease-in-out infinite; }
+  .hats-watch-dots i:nth-child(2) { animation-delay: 0.2s; }
+  .hats-watch-dots i:nth-child(3) { animation-delay: 0.4s; }
+  .hats-watch-wave b { animation: hats-live 0.9s ease-in-out infinite alternate; }
+  .hats-wa-rec i { animation: site-chat-blink 1s steps(1) infinite; }
+  @keyframes hats-rise { from { opacity: 0; transform: translateY(calc(8 * var(--u))); } }
+  @keyframes hats-spin { to { transform: rotate(360deg); } }
+  @keyframes hats-level { to { transform: scaleY(1); } }
+  @keyframes hats-live { from { transform: scaleY(calc(var(--h, 0.4) * 0.35)); } to { transform: scaleY(var(--h, 0.4)); } }
+}
+
+/* ── Three weeks of learning you, inside Apple Calendar's day view (learning-weeks.tsx) ──────────────
+   The picture for "Knows what kind of day it is.". Sizes are in units of 1/480 of the frame's width.
+   The resting state is the end of Week 3 (the meeting on Thursday), so with less motion that is what
+   shows; the animations below only play the earlier states into it. Calendar's own colours: red for
+   today and the month, a blue calendar, grey hairlines. */
+.site-cal {
+  --u: calc(100cqw / 480);
+  --cal-red: #ff3b30;
+  --cal-blue: #0a84ff;
+  --cal-line: #e5e5ea;
+  --cal-mute: #8e8e93;
+  --hour: calc(42 * var(--u));
+  --col: calc(62.29 * var(--u));
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: calc(10 * var(--u));
+  height: 100%;
+  box-sizing: border-box;
+  padding: calc(20 * var(--u)) calc(22 * var(--u)) calc(20 * var(--u));
+  background: #fff;
+  color: #000;
+  font-size: max(12px, calc(14 * var(--u)));
+  line-height: 1.25;
+  text-align: left;
+  user-select: none;
+}
+.site-cal-top { display: flex; align-items: center; justify-content: space-between; }
+.site-cal-month { display: inline-flex; align-items: center; gap: calc(6 * var(--u)); color: var(--cal-red); font-size: 1.3em; font-weight: 600; letter-spacing: -0.01em; }
+.site-cal-month svg { width: calc(9 * var(--u)); height: calc(15 * var(--u)); fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+/* Week 1, 2, 3: the segmented control, with its thumb sliding to the week that is playing */
+.site-cal-weeks { position: relative; display: grid; grid-template-columns: repeat(3, 1fr); padding: calc(2 * var(--u)); border-radius: calc(9 * var(--u)); background: color-mix(in srgb, #767680 12%, #fff); font-size: 0.84em; }
+.site-cal-week { position: relative; z-index: 1; padding: calc(5 * var(--u)) calc(11 * var(--u)); border: 0; background: none; color: #000; font: inherit; font-weight: 500; white-space: nowrap; cursor: pointer; }
+.site-cal-week:focus-visible { outline: 2px solid #000; outline-offset: 1px; border-radius: calc(7 * var(--u)); }
+.site-cal-thumb { position: absolute; top: calc(2 * var(--u)); bottom: calc(2 * var(--u)); left: calc(2 * var(--u)); width: calc((100% - 4 * var(--u)) / 3); border-radius: calc(7 * var(--u)); background: #fff; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.14), 0 0 0 0.5px rgba(0, 0, 0, 0.04); transform: translateX(calc(var(--on, 2) * 100%)); }
+.site-cal-weeks[data-on="0"] { --on: 0; }
+.site-cal-weeks[data-on="1"] { --on: 1; }
+.site-cal-weeks[data-on="2"] { --on: 2; }
+.site-cal-stage { display: flex; flex: 1; flex-direction: column; gap: calc(10 * var(--u)); min-height: 0; }
+/* The week strip: the day that is selected is a filled circle that moves from Tuesday to Thursday */
+.site-cal-strip { position: relative; display: grid; grid-template-columns: repeat(7, 1fr); padding-bottom: calc(8 * var(--u)); border-bottom: 1px solid var(--cal-line); }
+.site-cal-daycell { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: calc(6 * var(--u)); }
+.site-cal-daycell small { color: var(--cal-mute); font-size: 0.78em; font-weight: 500; }
+.site-cal-daycell b { display: grid; place-items: center; width: calc(34 * var(--u)); height: calc(34 * var(--u)); font-size: 1.28em; font-weight: 400; }
+.site-cal-daycell[data-day="4"] b { color: #fff; }
+.site-cal-select {
+  position: absolute;
+  top: calc(20 * var(--u));
+  left: calc(14.1 * var(--u) + 2 * var(--col));
+  width: calc(34 * var(--u));
+  height: calc(34 * var(--u));
+  border-radius: 50%;
+  background: #000;
+  transform: translateX(calc(2 * var(--col)));
+}
+/* Two days side by side, sliding: the view is on Tuesday, then it is on Thursday */
+.site-cal-window { flex: 1; min-height: 0; overflow: hidden; }
+.site-cal-days { display: flex; width: 200%; height: 100%; transform: translateX(-50%); }
+.site-cal-day { width: 50%; padding-right: calc(4 * var(--u)); box-sizing: border-box; }
+.site-cal-allday {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin: 0 0 calc(6 * var(--u));
+  padding: calc(4 * var(--u)) calc(10 * var(--u));
+  border-radius: calc(6 * var(--u));
+  background: color-mix(in srgb, #f97316 14%, #fff);
+  color: #b64f08;
+  font-weight: 500;
+}
+.site-cal-allday i { width: 0.5em; height: 0.5em; border-radius: 50%; background: #f97316; }
+.site-cal-allday b { font-weight: 600; }
+.site-cal-allday--quiet { background: none; color: var(--cal-mute); font-weight: 400; padding-left: calc(46 * var(--u)); }
+.site-cal-grid { position: relative; }
+.site-cal-hour { position: relative; height: var(--hour); border-top: 1px solid var(--cal-line); }
+.site-cal-hour span { position: absolute; top: -0.65em; left: 0; width: calc(40 * var(--u)); background: #fff; color: var(--cal-mute); font-size: 0.78em; }
+/* An event, as Calendar draws one: a tinted block with a bar down its left edge, in its calendar's colour */
+.site-cal-event {
+  --tone: #0a84ff;
+  position: absolute;
+  left: calc(46 * var(--u));
+  right: 0;
+  box-sizing: border-box;
+  padding: calc(3 * var(--u)) calc(9 * var(--u));
+  border-radius: calc(6 * var(--u));
+  border-left: calc(3.5 * var(--u)) solid var(--tone);
+  background: color-mix(in srgb, var(--tone) 15%, #fff);
+  color: color-mix(in srgb, var(--tone) 72%, #000);
+  overflow: hidden;
+  line-height: 1.2;
+}
+.site-cal-event[data-tone="green"] { --tone: #34c759; }
+.site-cal-event[data-tone="purple"] { --tone: #af52de; }
+.site-cal-event[data-tone="orange"] { --tone: #ff9500; }
+.site-cal-event b { display: flex; align-items: baseline; justify-content: space-between; gap: 0.6em; font-weight: 600; font-size: 0.94em; white-space: nowrap; }
+.site-cal-event span { display: block; opacity: 0.75; font-size: 0.8em; }
+.site-cal-event em { font-size: 0.82em; font-style: normal; font-weight: 500; opacity: 0.75; }
+/* What Waldo says, under the calendar: the only thing in the picture that is not Calendar's own */
+.site-cal-waldo { display: flex; gap: calc(10 * var(--u)); align-items: center; padding: calc(10 * var(--u)) calc(14 * var(--u)); border: 0.6px solid var(--cal-line); border-radius: calc(16 * var(--u)); background: #fff; }
+.site-cal-face { flex: none; display: block; width: calc(32 * var(--u)); height: auto; }
+.site-cal-says { flex: 1; min-width: 0; }
+.site-cal-says p { margin: 0; font-weight: 500; }
+.site-cal-actions { display: flex; align-items: center; gap: calc(8 * var(--u)); min-height: calc(30 * var(--u)); margin-top: calc(6 * var(--u)); }
+.site-cal-button { padding: calc(5 * var(--u)) calc(16 * var(--u)); border-radius: 999px; background: color-mix(in srgb, #000 6%, #fff); font-weight: 500; font-size: 0.92em; }
+.site-cal-ticked { width: calc(22 * var(--u)); height: calc(22 * var(--u)); fill: none; stroke: #000; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  .site-cal-thumb { transition: transform 0.45s var(--ease-sheet); }
+  .site-cal-strip, .site-cal-allday { animation: site-fade-in 0.4s both; }
+  .site-cal-allday { animation-delay: 0.15s; }
+  /* The meeting is on Tuesday at four (unless he has already moved it), then the view moves to Thursday */
+  .site-cal-day:first-child .site-cal-event { animation: site-cal-drop 0.5s 0.3s var(--ease-out-quad) both; }
+  .site-cal-days { animation: site-cal-slide 0.6s var(--ease-sheet) both; animation-delay: var(--move, 2.9s); }
+  .site-cal-select { animation: site-cal-select 0.55s var(--ease-sheet) both; animation-delay: var(--move, 2.9s); }
+  .site-cal-daycell[data-day="2"] b { animation: site-cal-today 0.4s both; animation-delay: var(--move, 2.9s); }
+  .site-cal-daycell[data-day="4"] b { animation: site-cal-thu 0.4s both; animation-delay: var(--move, 2.9s); }
+  .site-cal-event--moved { animation: site-cal-drop 0.5s var(--ease-out-quad) both; animation-delay: calc(var(--move, 2.9s) + 0.35s); }
+  /* Waldo speaks, and the buttons are what is left to do about it: two, then one, then none */
+  .site-cal-waldo { animation: site-cal-drop 0.5s var(--ease-out-quad) both; animation-delay: var(--say, 1s); }
+  .site-cal-actions { animation: site-fade-in 0.4s both; animation-delay: calc(var(--say, 1s) + 0.35s); }
+  .site-cal-ticked path { animation: site-cal-draw 0.5s both; animation-delay: calc(var(--say, 1s) + 0.5s); }
+  .site-cal-button[data-pressed] { animation: site-cal-press 0.6s 2.2s ease-out both; }
+  .site-cal[data-week="1"] { --say: 1s; --move: 2.9s; }
+  .site-cal[data-week="2"] { --say: 0.7s; --move: 1.6s; }
+  .site-cal[data-week="3"] { --say: 1.9s; --move: 1.3s; }
+  @keyframes site-cal-drop { from { opacity: 0; transform: translateY(-8px); } }
+  @keyframes site-cal-slide { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @keyframes site-cal-select { from { transform: none; background: var(--cal-red); } to { transform: translateX(calc(2 * var(--col))); background: #000; } }
+  @keyframes site-cal-today { from { color: #fff; } to { color: #000; } }
+  @keyframes site-cal-thu { from { color: #000; } to { color: #fff; } }
+  @keyframes site-cal-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+  @keyframes site-cal-press { 0% { transform: none; background: color-mix(in srgb, #000 6%, #fff); color: #000; } 35% { transform: scale(0.92); } 100% { transform: none; background: #000; color: #fff; } }
+}
+
+/* ── Connector rows (connector-rows.tsx) ───────────────────────────────────────────────────────────────
+   Four rows of tiles drifting, left to right, then right to left, then left to right, then right to
+   left. Sizes are in units of 1/480 of the frame's width. A tile and the gap after it are one pitch, so
+   a row laid out twice slides by exactly half of its track and the loop has no seam. The edges and the
+   top and bottom fade out. */
+.site-tiles {
+  --u: calc(100cqw / 480);
+  --tile: calc(84 * var(--u));
+  --pitch: calc(93.5 * var(--u));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: calc(9.5 * var(--u));
+  height: 100%;
+  overflow: hidden;
+  background: #fff;
+  /* Faded the way the original picture is: out to nothing at the left and right edges, and the top
+     and bottom rows only half there, the middle two rows in full */
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 13%, #000 82%, transparent 100%), linear-gradient(180deg, transparent 12%, rgba(0, 0, 0, 0.55) 27%, #000 42%, #000 62%, rgba(0, 0, 0, 0.5) 79%, transparent 94%);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(90deg, transparent 0%, #000 13%, #000 82%, transparent 100%), linear-gradient(180deg, transparent 12%, rgba(0, 0, 0, 0.55) 27%, #000 42%, #000 62%, rgba(0, 0, 0, 0.5) 79%, transparent 94%);
+  mask-composite: intersect;
+}
+.site-tiles-row { flex: none; overflow: visible; }
+.site-tiles-track { display: flex; width: max-content; will-change: transform; }
+.site-tile {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: var(--tile);
+  height: var(--tile);
+  margin-right: calc(var(--pitch) - var(--tile));
+  border-radius: calc(var(--tile) * 0.26);
+  border: 0.6px solid color-mix(in srgb, var(--ink) 8%, transparent);
+  background: #fafaf8;
+}
+.site-tile img { width: 54%; height: 54%; object-fit: contain; }
+/* Each row starts part way along, so the four rows are never in step */
+.site-tiles-row[style*="--row: 0"] .site-tiles-track { margin-left: calc(-30 * var(--u)); }
+.site-tiles-row[style*="--row: 1"] .site-tiles-track { margin-left: calc(-76 * var(--u)); }
+.site-tiles-row[style*="--row: 2"] .site-tiles-track { margin-left: calc(-8 * var(--u)); }
+.site-tiles-row[style*="--row: 3"] .site-tiles-track { margin-left: calc(-58 * var(--u)); }
+@media (prefers-reduced-motion: no-preference) {
+  .site-tiles-track { animation: site-tiles-left var(--tiles-ms, 140s) linear infinite; }
+  .site-tiles-row[data-dir="right"] .site-tiles-track { animation-name: site-tiles-right; }
+  .site-tiles-row[style*="--row: 0"] { --tiles-ms: 130s; }
+  .site-tiles-row[style*="--row: 1"] { --tiles-ms: 150s; }
+  .site-tiles-row[style*="--row: 2"] { --tiles-ms: 140s; }
+  .site-tiles-row[style*="--row: 3"] { --tiles-ms: 160s; }
+  @keyframes site-tiles-left { to { transform: translateX(-50%); } }
+  @keyframes site-tiles-right { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+}
 
 /* ── Smaller features: a "+" row that opens a side panel (after Linear) ── */
 .site-features {
@@ -1082,6 +1969,12 @@ html:has(.site-sheet[open]) { overflow: hidden; }
   --site-button-bg: #E6E6E4;
   --site-button-hover: var(--ink);
 }
+/* The homepage's page is #FAFAF8 (the site's is #F4F3F0). Anything that used #FAFAF8 to stand out from
+   the page, the picture frames under the hero, gets the hairline instead. */
+.site[data-home] { --surface-t3: var(--surface-t2); }
+html:has(.site[data-home]),
+html:has(.site[data-home]) body { background: var(--surface-t2); }
+.site[data-home] .site-visual--image { border: 0.6px solid color-mix(in srgb, var(--ink) 8%, transparent); }
 /* The page behind the site (seen when a Mac trackpad bounces past the top or bottom) goes dark too */
 html:has(.site[data-theme="dark"]) { background: #111111; color-scheme: dark; }
 .site[data-theme="dark"] .site-nav-menu { box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5); }
@@ -1155,21 +2048,18 @@ html:has(.site[data-theme="dark"]) { background: #111111; color-scheme: dark; }
 [data-appear="stagger"] > :nth-child(n + 10) { --i: 9; }
 
 @media (prefers-reduced-motion: no-preference) {
-  /* A new brief lands on the front of the deck and pushes the ones before it back and up (Linear's
-     stacked cards). It starts empty, with three dots pulsing while Waldo reads, and each line
-     arrives as the thing it came from lands in him. */
-  .site-loop-brief {
-    transition:
-      transform var(--motion-sheet) var(--ease-sheet),
-      opacity var(--motion-sheet) var(--ease-sheet);
+  /* The card is replaced as the thing it came from lands in Waldo: the old state fades, then the
+     new one's paragraphs, its question and its bullets rise in one after another, so a longer state
+     can be read in the order it is written. While nothing has landed, three dots pulse. */
+  .site-loop-sheet { transition: opacity 0.26s var(--ease-out-quad), visibility 0s linear 0.26s; }
+  .site-loop-sheet[data-on] { transition: opacity 0.3s var(--ease-out-quad) 0.14s, visibility 0s; }
+  .site-loop-sheet[data-on] > * {
+    animation: site-loop-line 0.6s var(--ease-out-quad) both;
+    animation-delay: calc(0.14s + var(--n, 0) * 80ms);
   }
-  .site-loop-brief[data-depth="0"] { animation: site-loop-land var(--motion-sheet) var(--ease-sheet) both; }
-  .site-loop-brief [data-unit] {
-    transition:
-      opacity 0.6s var(--ease-out-quad),
-      transform 0.6s var(--ease-out-quad);
-  }
-  .site-loop-brief [data-unit]:not([data-on]) { opacity: 0; transform: translateY(8px); }
+  .site-loop-sheet > :nth-child(2) { --n: 1; }
+  .site-loop-sheet > :nth-child(3) { --n: 2; }
+  .site-loop-sheet > :nth-child(4) { --n: 3; }
   .site-loop-reading i { animation: site-loop-dots 1.1s var(--ease-in-out-quad) infinite; }
   .site-loop-reading i:nth-child(2) { animation-delay: 0.14s; }
   .site-loop-reading i:nth-child(3) { animation-delay: 0.28s; }
@@ -1177,9 +2067,9 @@ html:has(.site[data-theme="dark"]) { background: #111111; color-scheme: dark; }
     0%, 100% { transform: translateY(0); opacity: 0.45; }
     40% { transform: translateY(-4px); opacity: 1; }
   }
-  @keyframes site-loop-land {
-    from { transform: translateY(26px) scale(0.97); opacity: 0; }
-    to { transform: translateY(0) scale(1); opacity: 1; }
+  @keyframes site-loop-line {
+    from { transform: translateY(10px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
   }
 
   /* Carousel cards rise 20px and fade in as they come into view, 80ms apart (tutundzhian.com) */
@@ -1270,3 +2160,86 @@ html:has(.site[data-theme="dark"]) { background: #111111; color-scheme: dark; }
   .site .cookie-banner { animation: site-toast-in var(--motion-toast) var(--ease-out-quad) both; transform-origin: bottom left; }
   .site .cookie-banner[data-ending] { animation: site-toast-out var(--motion-toast) var(--ease-out-quad) both; }
 }
+
+/* ── Console tour (console-tour.tsx) ──────────────────────────────────────────────────────────────
+   "You see what it stores": a small Mac window with a sidebar and one plain list per screen. Real
+   pixels; below ~620px the sidebar becomes a row of tabs. */
+.console {
+  width: 100%;
+  container-type: inline-size;
+  overflow: hidden;
+  border-radius: var(--box-inner-radius);
+  corner-shape: var(--box-corner);
+  background: var(--surface-t2);
+  text-align: left;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--ink);
+}
+.console { position: relative; }
+.console-lights { position: absolute; z-index: 1; top: 14px; left: 16px; display: flex; gap: 8px; }
+.console-lights i { width: 12px; height: 12px; border-radius: 50%; background: #FF5F57; }
+.console-lights i:nth-child(2) { background: #FEBC2E; }
+.console-lights i:nth-child(3) { background: #28C840; }
+.console-split { display: grid; grid-template-columns: 220px minmax(0, 1fr); height: 460px; }
+.console-nav { display: flex; flex-direction: column; gap: 2px; padding: 56px 12px 12px; background: var(--surface-t3); }
+.console-tab {
+  padding: 8px 12px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-secondary);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--motion-quick) var(--ease-out-quad), color var(--motion-quick) var(--ease-out-quad);
+}
+.console-tab:hover { background: color-mix(in srgb, var(--ink) 6%, transparent); color: var(--ink); }
+.console-tab[aria-selected="true"] { background: color-mix(in srgb, var(--ink) 10%, transparent); color: var(--ink); }
+.console-tab:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.console-page { padding: 52px clamp(24px, 5cqw, 48px) 24px; }
+.console-page h4 { margin: 0; font-family: var(--font-headline); font-weight: 400; font-size: 36px; line-height: 1.1; letter-spacing: -0.02em; }
+.console-page > p { margin: 8px 0 0; color: var(--text-secondary); }
+.console-list { list-style: none; margin: 28px 0 0; padding: 0; }
+.console-list li { display: flex; justify-content: space-between; gap: 24px; padding: 14px 0; border-top: 0.6px solid color-mix(in srgb, var(--ink) 10%, transparent); }
+.console-list b { flex: none; font-weight: 500; white-space: nowrap; }
+.console-list span { color: var(--text-secondary); text-align: right; }
+@media (prefers-reduced-motion: no-preference) {
+  .console-page { animation: console-in var(--motion-appear) var(--ease-spring) both; }
+  @keyframes console-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+}
+@container (max-width: 520px) {
+  .console-split { grid-template-columns: 1fr; grid-template-rows: auto 1fr; height: 460px; }
+  .console-lights { display: none; }
+  .console-nav { flex-direction: row; padding: 10px 12px; overflow-x: auto; scrollbar-width: none; }
+  .console-tab { flex: none; }
+  .console-page { padding-top: 24px; }
+  .console-page h4 { font-size: 30px; }
+  .console-list li { flex-direction: column; gap: 2px; }
+  .console-list span { text-align: left; }
+}
+
+/* Title on the left, a few lines on the right (after Linear's section heads) */
+.site-lead { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: var(--site-col-gap); align-items: start; }
+.site-lead .site-text { margin-top: 6px; }
+@media (max-width: 860px) { .site-lead { grid-template-columns: minmax(0, 1fr); row-gap: 20px; } }
+
+/* ── White boxes ──────────────────────────────────────────────────────────────────────────────────
+   Every #ffffff container shares one shape: --box-radius (30px) with --box-corner smoothing, and
+   --box-pad (10px) between its edge and what it holds. What it holds is rounded one step less. */
+.site-box,
+.site-carousel .site-visual--plain,
+.site-sheet {
+  box-sizing: border-box;
+  padding: var(--box-pad);
+  border-radius: var(--box-radius);
+  corner-shape: var(--box-corner);
+  background: #fff;
+}
+.site-carousel .site-visual--plain > :not(img, span, svg) { border-radius: var(--box-inner-radius); corner-shape: var(--box-corner); overflow: hidden; }
+.site-sheet { overflow: hidden; }
+.site-box > .site-box-head { padding: clamp(40px, 7vw, 80px) clamp(20px, 5vw, 64px) clamp(32px, 5vw, 56px); text-align: center; }
+.site-box .site-header-block { align-items: center; }
+.site-box .site-heading { line-height: 1.3; }
+.site-box .site-header-block .site-text { max-width: 40rem; margin: 18px auto 0; text-wrap: balance; }
+.site-box > .site-box-foot { padding: clamp(32px, 5vw, 56px) clamp(16px, 4vw, 48px) clamp(32px, 5vw, 48px); }

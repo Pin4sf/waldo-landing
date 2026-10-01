@@ -70,3 +70,26 @@ Every timing and curve was copied from linear.app's live site (its CSS files and
 - Headlines: use the `Header` block. It animates on its own (`as="h1"` plays on load, anything else plays on scroll). `reveal="none"` turns it off.
 - Grids, tables, lists, questions: use the blocks. They already fade in.
 - Anything custom: add `data-appear="self"` to fade a block in on scroll. For headline-style pieces, give the wrapper `data-reveal="view"` and each piece the class `site-rv` with `style={revealDelay(n)}`.
+
+## Card carousels: size (2026-10-01)
+
+The cards in every sideways row keep one size across a whole range of window widths and change it in a few steps, as on tutundzhian.com (measured: 420x520 on a wide screen, 360x480 from about 1100px down to tablets, 300x420 on a phone). Making the cards grow and shrink with the window (first tried here, so that two cards and a peek always showed) was dropped: resizing the window now shows more or fewer cards instead.
+
+| Window width | Card | Picture height | What shows near the bottom of the range |
+|---|---|---|---|
+| 1440px and up | 560px | 543px | two cards and 17% of a third at 1440px |
+| 1200 to 1439px | 480px | 466px | two cards and 10% of a third at 1200px |
+| 1024 to 1199px | 400px | 388px | two cards and 13% of a third at 1024px |
+| 768 to 1023px | 400px | 460px | one card and most of the next |
+| 520 to 767px | 440px | 427px | one card and 9% of the next at 520px |
+| under 520px | 300px | 300px | one card and 17% of the next at 390px |
+
+The gap is 20px (16px under 768px). It is `.site-carousel` in `site.css` and applies to every row that uses the carousel: the home page, Kennel, How it works and the blog.
+
+## Card pictures: one moves at a time (2026-10-01)
+
+Every moving picture in a card (the text thread, the three "hats" scenes, the weeks, the Mac notification) asks `useLive` (`components/site/use-live.ts`) whether it should be playing, instead of each deciding for itself. Of the pictures that show at least a third of themselves, the one nearest the middle of the window plays and the rest rest on their last frame; the one that is playing keeps its place unless another is at least 80px nearer the middle, so they do not swap back and forth while you scroll. Scrolling the page or a row of cards, resizing, or putting the tab behind another all re-decide. With reduced motion nothing plays. The hero's loop is separate (it is at the top of the page, a long way from any card).
+
+## Card text sits inside the picture (2026-10-01)
+
+In a sideways row, the words under a picture (the label, the title, the text, the link) are indented 8px from the left (5px on a narrow phone) and stop 9% of the card plus 8px short of the right edge, so a 400px card still has a 348px line, the area Suyash boxed on the 890px-wide screen, set a little further left than first built (it was 16px in). The gap between the picture and its words is 22px (it was 16px).

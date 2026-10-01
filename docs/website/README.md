@@ -25,7 +25,7 @@ This folder is where the whole website gets planned before it gets built. Each p
 | [copy-review.md](copy-review.md) | Copy review of every page against the older Codex copy, with options per block (★ = recommended) | **Applied — the ★ picks are live** |
 | [type.md](type.md) | The three text levels on every page (label, title, body, with ink-and-medium emphasis), 20px body text, titles always two lines | **Live — in use** |
 | [motion.md](motion.md) | Space instead of lines, and every animation on the site (values copied from Linear) | **Live — in use** |
-| [hero-loop.md](hero-loop.md) | The moving picture under the homepage hero: tools in a wave, what they carry dropping into Waldo, his brief underneath | **Built — four rounds live** |
+| [hero-loop.md](hero-loop.md) | The moving picture under the homepage hero: tools in a wave, what they carry dropping into Waldo, his Overview card (in a phone) filling in underneath | **Built — one stream, card states waiting on matching copy** |
 | [sessions/](sessions/) | One log per working session: what was decided, what's open | Ongoing |
 
 ## Build status

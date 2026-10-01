@@ -1,0 +1,227 @@
+@font-face { font-family: SFR; src: url("/fonts/SF-Pro-Rounded-Regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: SFR; src: url("/fonts/SF-Pro-Rounded-Medium.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+@font-face { font-family: SFR; src: url("/fonts/SF-Pro-Rounded-Semibold.woff2") format("woff2"); font-weight: 600; font-display: swap; }
+
+:root {
+  --paper: #FAFAF8;
+  --ink: #1A1A1A;
+  --ink-2: #6F6F68;
+  --ink-3: #A3A39B;
+  --line: rgba(26, 26, 26, 0.09);
+  --card: #FFFFFF;
+  --orange: #F97316;
+  /* Two-part shadows: a tight contact edge, then a wide ambient one. */
+  --lift-1: 0 1px 1px rgba(26, 26, 26, 0.04), 0 4px 10px rgba(26, 26, 26, 0.045);
+  --lift-2: 0 1px 2px rgba(26, 26, 26, 0.05), 0 10px 22px rgba(26, 26, 26, 0.07);
+  --lift-3: 0 1px 2px rgba(26, 26, 26, 0.05), 0 4px 10px rgba(26, 26, 26, 0.05), 0 22px 56px rgba(26, 26, 26, 0.10);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 400 17px/1.3 SFR, -apple-system, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap { max-width: 1120px; margin: 0 auto; padding: 72px 32px 120px; }
+.intro { max-width: 620px; margin-bottom: 8px; }
+.kicker { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 18px; }
+
+h1 { font-size: 46px; font-weight: 500; line-height: 1.06; letter-spacing: -0.028em; margin: 0 0 18px; }
+h1 span { display: block; }
+
+.intro p { margin: 0; color: var(--ink-2); font-size: 20px; line-height: 1.3; }
+.foot { max-width: 620px; margin-top: 8px; color: var(--ink-2); font-size: 20px; line-height: 1.3; }
+.intro p strong, .foot strong { color: var(--ink); font-weight: 500; }
+
+.stage { position: relative; height: 860px; margin: 0 -32px; }
+
+/* Everything that belongs to the fan lives in here, so the edges can fade instead of being cut. */
+.sky {
+  position: absolute;
+  inset: 0;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%);
+}
+
+.web { position: absolute; inset: 0; pointer-events: none; }
+.web line { fill: none; stroke: rgba(26, 26, 26, 0.13); transition: stroke 0.5s ease-out; }
+.web line[data-live] { stroke: rgba(26, 26, 26, 0.34); }
+
+.tile {
+  position: absolute;
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  width: 104px;
+  z-index: 2;
+}
+
+.mark {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 0.5px solid var(--line);
+  display: grid;
+  place-items: center;
+  box-shadow: var(--lift-1);
+  transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1), box-shadow 0.5s, border-color 0.5s;
+}
+.mark img { width: 24px; height: 24px; object-fit: contain; }
+
+.tile[data-hit] .mark {
+  transform: scale(1.09);
+  border-color: rgba(249, 115, 22, 0.4);
+  box-shadow: 0 1px 2px rgba(249, 115, 22, 0.1), 0 8px 20px rgba(249, 115, 22, 0.16);
+}
+
+.cap { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+
+.said {
+  font-size: 12.5px;
+  line-height: 1.25;
+  color: var(--ink);
+  text-align: center;
+  font-weight: 500;
+  margin-top: -3px;
+  opacity: 0;
+  transform: translateY(-3px);
+  transition: opacity 0.5s, transform 0.5s;
+}
+.tile[data-hit] .said { opacity: 1; transform: translateY(0); }
+
+/* No frame. He sits on the paper, on the top edge of his own message. */
+.core { position: absolute; z-index: 7; transform: translate(-50%, -50%); }
+.core img { display: block; width: 168px; height: auto; }
+
+.meter {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  font-size: 13px;
+  color: var(--ink-3);
+  z-index: 5;
+}
+.meter b { font-weight: 500; color: var(--ink-2); }
+.meter i { font-style: normal; opacity: 0.45; }
+
+/* The one thing that is actually yours. Sits in front of the fan, overlapping it. */
+.brief {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(600px, calc(100% - 56px));
+  background: var(--card);
+  border: 0.5px solid var(--line);
+  border-radius: 26px;
+  padding: 88px 34px 30px;
+  box-shadow: var(--lift-3);
+  z-index: 6;
+}
+
+.brief p { margin: 0 0 14px; font-size: 19px; line-height: 1.45; color: var(--ink); }
+.brief p:last-of-type { margin-bottom: 0; }
+.brief .ask { margin: 22px 0 10px; font-weight: 500; }
+.brief ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.brief li {
+  position: relative;
+  padding-left: 18px;
+  font-size: 17px;
+  line-height: 1.35;
+  color: var(--ink-2);
+}
+.brief li::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 10px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--ink-3);
+}
+.brief li u { text-decoration-color: var(--ink-3); text-underline-offset: 3px; }
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  vertical-align: baseline;
+  margin: 0 1px;
+  padding: 3px 11px 3px 8px;
+  border: 0.5px solid var(--line);
+  border-radius: 999px;
+  background: var(--card);
+  box-shadow: var(--lift-1);
+  font-size: 0.86em;
+  font-weight: 500;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+.chip img { width: 15px; height: 15px; object-fit: contain; }
+.chip[data-dot]::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--orange);
+}
+
+.reveal { opacity: 0; }
+
+.fly {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.note {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  background: var(--card);
+  border: 0.5px solid var(--line);
+  border-radius: 14px;
+  padding: 9px 14px 9px 11px;
+  box-shadow: var(--lift-2);
+}
+.note img { width: 15px; height: 15px; object-fit: contain; flex: none; }
+.note b { display: block; font-weight: 500; font-size: 13.5px; white-space: nowrap; }
+.note span { display: block; font-size: 12px; color: var(--ink-3); white-space: nowrap; margin-top: 1px; }
+
+.pill {
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: 999px;
+  padding: 8px 15px;
+  font-size: 13.5px;
+  font-weight: 500;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(26, 26, 26, 0.12), 0 10px 24px rgba(26, 26, 26, 0.16);
+}
+
+@media (max-width: 860px) {
+  .wrap { padding: 44px 24px 80px; }
+  h1 { font-size: 34px; }
+  .intro p, .foot { font-size: 18px; }
+  .stage { height: 820px; margin: 0 -24px; }
+  .core img { width: 116px; }
+  .tile { width: 76px; gap: 6px; }
+  .mark { width: 42px; height: 42px; }
+  .mark img { width: 19px; height: 19px; }
+  .said { font-size: 11px; }
+  .meter { font-size: 12px; }
+  .brief { width: calc(100% - 32px); padding: 64px 22px 26px; border-radius: 22px; }
+  .brief p { font-size: 17px; }
+  .brief li { font-size: 15.5px; }
+}

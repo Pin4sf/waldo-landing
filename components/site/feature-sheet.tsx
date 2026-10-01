@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useRef, useState } from "react";
+import { type ReactNode, useId, useRef, useState } from "react";
 
 import { titleFit } from "@/lib/title-fit";
 
@@ -18,7 +18,7 @@ export type Feature = {
   /** The one line that says what it is. Shown first in the panel, in dark medium text. */
   line: string;
   /** A few sentences of detail. One paragraph each. */
-  detail: string[];
+  detail: ReactNode[];
   status?: "today" | "next" | "planned";
   image?: string;
 };
@@ -89,8 +89,8 @@ export function FeatureList({ label = "Also", section, features }: { label?: str
             <p className="site-text">
               <strong>{feature.line}</strong>
             </p>
-            {feature.detail.map((paragraph) => (
-              <p key={paragraph} className="site-text">
+            {feature.detail.map((paragraph, index) => (
+              <p key={index} className="site-text">
                 {paragraph}
               </p>
             ))}

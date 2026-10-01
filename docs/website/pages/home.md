@@ -26,12 +26,13 @@ Buttons: "Let Waldo in →", "See how it works"
 
 ---
 
-### You were promised assistants. / You got a second job.
+### Co-ordinating your data with AI / shouldn’t be your job.
 Body: More apps, more agents, more data about you. All of it still waits on you to read it, brief it, check it and decide.
 
 - *Your watch knows. Nothing acts.* It knows you slept five hours and your stress is up. Your calendar still has four meetings before noon.
   - _Picture: Health data piling up across apps, and nothing acting on it (`/assets/home/too-much-data.svg`)_
 - *Every new tool wants your life story.* A better tool shows up, and you spend an hour teaching it who you are. Then the next one shows up.
+  - _Picture (2026-10-01): four rows of connector tiles drifting, row 1 left to right, row 2 right to left, row 3 left to right, row 4 right to left, with the edges faded (`components/site/connector-rows.tsx`). It holds every connector that has a mark in `public/assets/connectors` (all 45); a new tool joins by adding its mark and a name to a row. CSS only, and still with reduced motion._
   - _Picture: You, spread across accounts, apps and agents (`/waldo-web-assets/agent-features/apps-accounts-agents.webp`)_
 - *Every agent reports to you.* Agents finish tasks, but you hold the why. Every re-brief, every review and every “what did you mean?” runs through you. [This is where Kennel starts →](/kennel)
   - _Picture: An agent's finished work, waiting on you to review it (`/build/work-unit-agent-illustration.svg`)_
@@ -53,24 +54,29 @@ Buttons: "Let Waldo in →"
 Body: Starting with founders, engineers and investors, the people already running several agents at once.
 
 - **Founders** — Three calls back to back, then the co-founder sync. Waldo puts ten minutes of air before it, so the snappy reply never happens.
+  - _Picture: a founder travelling, texting Waldo in WhatsApp (iOS look, edge to edge, no phone frame). Sends a photo of the departures board, a voice note and a clip of a hotel room (`components/site/hats-scenes.tsx`, FounderWhatsApp). Photos are from Unsplash (free licence, no credit needed): the departures board by Zulfugar Karimov, the hotel room by Wes Hicks (`/assets/home/hats/`)_
 - **Engineers** — Waldo finds the hour you're sharpest and gives it to the hard problem. Standup moves somewhere else.
+  - _Picture: an engineer asking Waldo from a light-mode terminal. Attaches a screenshot of a red build and a screen recording (EngineerCli)_
 - **Investors** — Pitches spaced to what you can actually give. The founder at pitch five gets your pitch-one attention.
+  - _Picture: an investor on the Apple Watch photo from "Your watch knows" (`/assets/home/hats/apple-watch.png`), screen animated in code. Records a voice note, then sends a slide (InvestorWatch)_
 
 ---
 
-### It does as much / as you let it.
-Body: You choose how far Waldo goes, and you can change it anytime. On a leash you hold.
+### Waldo does as much as you let it. / Then shows its work.
+_2026-10-01: the whole section sits in one white box (30px radius, 60% corner smoothing, 10px padding). Title and text are centred, like the hero. Then the console, then one "Your controls +" row whose names open a side panel (`FeatureList`). The three autonomy cards became one item, "Autonomy". Not claimed: editing or deleting what is stored, which is still marked "confirm" in the console._
 
-- **Tell me** — Waldo says what it would do.
-  - _Picture: Waldo saying what it would move, and asking first (`/assets/home/data-alone/data-alone-map.svg`)_
-- **Ask me** — Waldo suggests, you approve.
-  - _Picture: Drafts ready to go, waiting for your approval (`/assets/home/agent-approval.svg`)_
-- **Just do it** — Waldo acts, and you can undo anything in one tap.
-  - _Picture: The log of what Waldo did overnight (`/assets/home/agent-patrol.svg`)_
-- Only what you connect. Only what you allow.
-- Reads message metadata (volume, timing, urgency), never what your messages say.
-- Health is context for planning your day. Never medical decisions.
-- Never sells your data. Never trains on it.
+Body: Start with Waldo only telling you what it would do. Hand over more when you’re ready. Everything it remembers, and everything it does, sits in your console in plain sight. On a leash you hold.
+
+- _Picture: a small Mac window with a sidebar (Today, Waiting, Patrol, Memory, Connections) and one plain list per screen. Tours itself until you touch it. Sample rows, drawn in code (`components/site/console-tour.tsx`). Check the rows against the real console before launch._
+
+**Your controls** (side panels)
+- **Autonomy** — Three stages. Pick one, and move it anytime. **Tell me.** Waldo says what it would do, and waits. Nothing changes until you say so. **Ask me.** Waldo drafts the move, you approve it. Skip one and nothing is sent. **Just do it.** Waldo acts, logs what it did, and you can undo anything in one tap.
+- **Only what you connect** — Waldo reaches the tools you allow, and nothing else. Every connection is listed in the console, with what Waldo can reach through it.
+- **Metadata, not messages** — Volume, timing and urgency. Never what your messages say. Waldo uses how many, how often and how urgent to plan your day. The words in your messages stay private.
+- **Health is context** — It shapes your day. It never makes medical decisions. Sleep and stress help Waldo decide what to move and what to protect. They feed a plan for your day, not a diagnosis, and Waldo gives no medical advice.
+- **Never sold, never trained on** — Your data stays yours. Waldo does not sell your data, train on it or share it with third parties. It is encrypted at rest and in transit.
+
+_Unused since this change: the "Tell me" Mac notification picture (`mac-notifications.tsx`) and the Ask me / Just do it pictures (`agent-approval.svg`, `agent-patrol.svg`)._
 
 ---
 
@@ -238,6 +244,10 @@ outcomes.
 
 **Visual:** Waldo in the centre, with specialist tools around it (Claude, Codex, Cursor, Linear, Calendar, Slack, a watch), all joined to one outcome card:
 > **Release shipped.** Codex wrote it, Linear's updated, the team knows. One thing still needs you: sign-off on the changelog.
+
+**Built (2026-10-01), replacing the picture above for "Works with every agent.":** a text thread with Waldo, set and moved the way iMessage does it (`components/site/agents-chat.tsx`, `Item`'s `scene` prop). You tell him a problem in plain words, with no tags ("pr 184 is green but nobody's read it. also i'm double booked at 3"). He reacts with a tapback, then answers in one dry line that hands each piece to the agent that should have it (Claude, Codex, Cursor: names in bold, no logo or pill) and keeps what he handles himself, in the first person (the calendar, the chasing, your sleep and training): "Cursor reads the PR. The 3pm is mine: the review moves to Thursday." Four problems, looping; plays only on screen.
+
+Motion, after iMessage: the message is typed into the field (the mic becomes the blue send arrow with a small spring); on send, the bubble leaves the field and rises into the thread on a spring while older bubbles lift out of the way; the grey three-dot bubble pops in at its corner with two trailing circles, the dots rising one after another; his reply grows out of that corner; a tapback lands on the top corner of your bubble with a bounce, its mark moves (the thumb tips, the heart beats, the laugh shakes) and the bubble gives a little. Older messages blur away at the top. With reduced motion it stands as the first exchange. Colours are iMessage's own. The story is the homepage's (Priya, Maya, PR #184); nothing is sent or merged by itself.
 
 **Three short beats** under the visual, one line each:
 

@@ -191,6 +191,8 @@ export function Item({
   visual,
   image,
   cover,
+  plain,
+  scene,
   eager,
   strong,
   children,
@@ -202,6 +204,9 @@ export function Item({
   visual?: string;
   image?: string;
   cover?: boolean;
+  plain?: boolean;
+  /** The picture is drawn in code (a moving scene) instead of being an image file */
+  scene?: ReactNode;
   eager?: boolean;
   strong?: ReactNode;
   children?: ReactNode;
@@ -213,7 +218,13 @@ export function Item({
       {title ? (
         <h3 className="site-item-title">{href ? <SiteAnchor href={href}>{title}</SiteAnchor> : title}</h3>
       ) : null}
-      {visual ? <Visual label={visual} src={image} cover={cover} eager={eager} /> : null}
+      {visual && scene ? (
+        <div className="site-visual site-visual--image site-visual--plain site-visual--scene" data-visual={visual} aria-hidden="true">
+          {scene}
+        </div>
+      ) : visual ? (
+        <Visual label={visual} src={image} cover={cover} plain={plain} eager={eager} />
+      ) : null}
       {strong || children ? (
         <div className="site-item-text">
           {strong ? <strong>{strong}</strong> : null}
@@ -239,12 +250,15 @@ export function Visual({
   src,
   wide = false,
   cover = false,
+  plain = false,
   eager = false,
 }: {
   label: string;
   src?: string;
   wide?: boolean;
   cover?: boolean;
+  /** The picture is its own card: a plain white frame, no margin around it */
+  plain?: boolean;
   /** Load straight away: for a picture near the top of the page */
   eager?: boolean;
 }) {
@@ -267,7 +281,7 @@ export function Visual({
     );
   }
   return (
-    <div className={`${size} site-visual--image${cover ? " site-visual--cover" : ""}`} data-visual={label} aria-hidden="true">
+    <div className={`${size} site-visual--image${cover ? " site-visual--cover" : ""}${plain ? " site-visual--plain" : ""}`} data-visual={label} aria-hidden="true">
       <Image
         src={src}
         alt=""

@@ -11,19 +11,26 @@ import { SiteNav } from "./site-nav";
 // Every page is wrapped in this: the same menu, footer and page background everywhere.
 // Pages that render their own <main> (the blog articles) pass `ownMain`.
 // Every page is light. The Kennel page passes theme="dark" and is always dark (Kennel's own colours).
+// The homepage passes `home`: its page is #FAFAF8 instead of the site's #F4F3F0.
 export function SiteShell({
   children,
   announcement,
   ownMain = false,
   theme = "light",
+  home = false,
 }: {
   children: ReactNode;
   announcement?: ReactNode;
   ownMain?: boolean;
   theme?: "light" | "dark";
+  home?: boolean;
 }) {
   return (
-    <div className="site" data-theme={theme === "dark" ? "dark" : undefined}>
+    <div
+      className="site"
+      data-theme={theme === "dark" ? "dark" : undefined}
+      data-home={home ? "" : undefined}
+    >
       {ownMain ? null : (
         <a className="site-skip" href="#main-content">
           Skip to content

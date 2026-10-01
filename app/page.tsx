@@ -1,9 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Fragment } from "react";
 
+import { AgentsChat } from "@/components/site/agents-chat";
+import { ConnectorRows } from "@/components/site/connector-rows";
+import {
+  EngineerCli,
+  FounderWhatsApp,
+  InvestorWatch,
+} from "@/components/site/hats-scenes";
+import { LearningWeeks } from "@/components/site/learning-weeks";
 import {
   Body,
-  Grid,
   Header,
   Item,
   List,
@@ -11,6 +19,8 @@ import {
   Section,
 } from "@/components/site/blocks";
 import { Carousel } from "@/components/site/carousel";
+import { ConsoleTour } from "@/components/site/console-tour";
+import { type Feature, FeatureList } from "@/components/site/feature-sheet";
 import { SiteShell } from "@/components/site/site-shell";
 import { WaldoLoop } from "@/components/site/waldo-loop";
 import {
@@ -40,6 +50,48 @@ export const metadata: Metadata = {
   },
 };
 
+const CONTROLS: Feature[] = [
+  {
+    name: "Autonomy",
+    line: "Three stages. Pick one, and move it anytime.",
+    detail: [
+      <Fragment key="tell">
+        <strong>Tell me.</strong> Waldo says what it would do, and waits. Nothing changes until you say so.
+      </Fragment>,
+      <Fragment key="ask">
+        <strong>Ask me.</strong> Waldo drafts the move, you approve it. Skip one and nothing is sent.
+      </Fragment>,
+      <Fragment key="do">
+        <strong>Just do it.</strong> Waldo acts, logs what it did, and you can undo anything in one tap.
+      </Fragment>,
+    ],
+  },
+  {
+    name: "Only what you connect",
+    line: "Waldo reaches the tools you allow, and nothing else.",
+    detail: ["Every connection is listed in the console, with what Waldo can reach through it."],
+  },
+  {
+    name: "Metadata, not messages",
+    line: "Volume, timing and urgency. Never what your messages say.",
+    detail: ["Waldo uses how many, how often and how urgent to plan your day. The words in your messages stay private."],
+  },
+  {
+    name: "Health is context",
+    line: "It shapes your day. It never makes medical decisions.",
+    detail: [
+      "Sleep and stress help Waldo decide what to move and what to protect. They feed a plan for your day, not a diagnosis, and Waldo gives no medical advice.",
+    ],
+  },
+  {
+    name: "Never sold, never trained on",
+    line: "Your data stays yours.",
+    detail: [
+      "Waldo does not sell your data, train on it or share it with third parties. It is encrypted at rest and in transit.",
+    ],
+  },
+];
+
 const announcement = (
   <div className="site-container">
     <p>
@@ -54,15 +106,15 @@ const announcement = (
 
 export default function Home() {
   return (
-    <SiteShell announcement={announcement}>
-      {/* 2 · Hero. A white sheet holding one screen: the brief cards are what you find below it. */}
-      <div className="site-hero-frame">
+    <SiteShell home announcement={announcement}>
+      {/* 2 · Hero. One screen: the phone with the Overview card is what you find below it. */}
+      <div className="site-hero">
         <Section size="screen">
           <Header
             as="h1"
             lines={["Life happens.", "Waldo handles it."]}
             subtitle="He's a personal agent; manages you, across work & life. Reads what's coming, does what's needed, & only interrupts when it matters."
-          actions={{
+            actions={{
               primary: { label: "Let Waldo in →", href: "/waitlist" },
               secondary: { label: "See how it works", href: "/how-it-works" },
             }}
@@ -74,14 +126,15 @@ export default function Home() {
       {/* 3 · The problem */}
       <Section>
         <Header
-          lines={["You were promised assistants.", "You got a second job."]}
+          lines={["Co-ordinating your data with AI", "shouldn’t be your job."]}
           subtitle="More apps, more agents, more data about you. All of it still waits on you to read it, brief it, check it and decide."
         />
         <Body>
           <Carousel label="What you're carrying">
             <Item
               visual="Health data piling up across apps, and nothing acting on it"
-              image="/assets/home/too-much-data.svg"
+              image="/assets/home/problem/watch-recovery.svg"
+              plain
               strong="Your watch knows. Nothing acts."
             >
               It knows you slept five hours and your stress is up. Your calendar
@@ -89,7 +142,7 @@ export default function Home() {
             </Item>
             <Item
               visual="You, spread across accounts, apps and agents"
-              image="/waldo-web-assets/agent-features/apps-accounts-agents.webp"
+              scene={<ConnectorRows />}
               strong="Every new tool wants your life story."
             >
               A better tool shows up, and you spend an hour teaching it who you
@@ -97,7 +150,8 @@ export default function Home() {
             </Item>
             <Item
               visual="An agent's finished work, waiting on you to review it"
-              image="/build/work-unit-agent-illustration.svg"
+              image="/assets/home/problem/agent-diffs.svg"
+              plain
               strong="Every agent reports to you."
               link={{ label: "This is where Kennel starts →", href: "/kennel" }}
             >
@@ -121,23 +175,24 @@ export default function Home() {
             <Item
               title="Never makes you explain twice."
               visual="Your accounts, health and work, held as one context"
-              image="/build/understands-illustration.svg"
+              image="/assets/home/never-explain-twice.svg"
+              plain
             >
               Remembers the people, the context and how you like it done. Say it
               once. It sticks.
             </Item>
             <Item
               title="Works with every agent."
-              visual="Waldo at the centre, the agents it works with around it"
-              image="/build/coordinates-illustration.svg"
+              visual="A text thread with Waldo: you name the agents in the message, he answers in one line"
+              scene={<AgentsChat />}
             >
               Claude, Codex, or whatever ships next. Waldo runs them and hands
               you back one result.
             </Item>
             <Item
               title="Knows what kind of day it is."
-              visual="The same weekly sync, handled differently as your Form changes week to week"
-              image="/build/returns-illustration.svg"
+              visual="The same Tuesday over three weeks: Waldo asks, then suggests, then just does it, as he learns you"
+              scene={<LearningWeeks />}
             >
               The same request gets a different plan on a rough day. Waldo can
               tell which day you&apos;re having.
@@ -153,65 +208,49 @@ export default function Home() {
           subtitle="Starting with founders, engineers and investors, the people already running several agents at once."
         />
         <Body>
-          <Grid cols={3}>
-            <Item title="Founders">
+          <Carousel label="Who Waldo works for">
+            <Item
+              title="Founders"
+              visual="A founder travelling, sending Waldo a photo, a voice note and a clip in WhatsApp"
+              scene={<FounderWhatsApp />}
+            >
               Three calls back to back, then the co-founder sync. Waldo puts ten
               minutes of air before it, so the snappy reply never happens.
             </Item>
-            <Item title="Engineers">
+            <Item
+              title="Engineers"
+              visual="An engineer asking Waldo from the terminal, with a screenshot and a screen recording"
+              scene={<EngineerCli />}
+            >
               Waldo finds the hour you&apos;re sharpest and gives it to the hard
               problem. Standup moves somewhere else.
             </Item>
-            <Item title="Investors">
+            <Item
+              title="Investors"
+              visual="An investor sending Waldo a voice note and a slide from an Apple Watch"
+              scene={<InvestorWatch />}
+            >
               Pitches spaced to what you can actually give. The founder at pitch
               five gets your pitch-one attention.
             </Item>
-          </Grid>
+          </Carousel>
         </Body>
       </Section>
 
-      {/* 6 · Trust */}
+      {/* 6 · Trust: one white box. Centred title and text, the console, then the controls */}
       <Section>
-        <Header
-          lines={["It does as much", "as you let it."]}
-          subtitle="You choose how far Waldo goes, and you can change it anytime."
-          body="On a leash you hold."
-        />
-        <Body>
-          <Carousel label="How far Waldo goes">
-            <Item
-              title="Tell me"
-              visual="Waldo saying what it would move, and asking first"
-              image="/assets/home/data-alone/data-alone-map.svg"
-            >
-              Waldo says what it would do.
-            </Item>
-            <Item
-              title="Ask me"
-              visual="Drafts ready to go, waiting for your approval"
-              image="/assets/home/agent-approval.svg"
-            >
-              Waldo suggests, you approve.
-            </Item>
-            <Item
-              title="Just do it"
-              visual="The log of what Waldo did overnight"
-              image="/assets/home/agent-patrol.svg"
-            >
-              Waldo acts, and you can undo anything in one tap.
-            </Item>
-          </Carousel>
-        </Body>
-        <Body>
-          <List
-            items={[
-              "Only what you connect. Only what you allow.",
-              "Reads message metadata (volume, timing, urgency), never what your messages say.",
-              "Health is context for planning your day. Never medical decisions.",
-              "Never sells your data. Never trains on it.",
-            ]}
-          />
-        </Body>
+        <div className="site-box">
+          <div className="site-box-head">
+            <Header
+              lines={["Waldo does as much as you let it.", "Then shows its work."]}
+              subtitle="Start with Waldo only telling you what it would do. Hand over more when you’re ready. Everything it remembers, and everything it does, sits in your console in plain sight. On a leash you hold."
+            />
+          </div>
+          <ConsoleTour />
+          <div className="site-box-foot">
+            <FeatureList label="Your controls" section="Your controls" features={CONTROLS} />
+          </div>
+        </div>
       </Section>
 
       {/* 7 · Where Waldo lives */}
