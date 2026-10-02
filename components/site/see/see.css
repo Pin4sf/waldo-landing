@@ -1,0 +1,711 @@
+/* "What you see of it": the five-card strip and the five phone screens (see-section.tsx, screens.tsx,
+   docs/website/what-you-see-plan.md). Sizes inside a phone are in the mockup's units (--u is 1/517 of
+   the phone's width), as in the hero; the strip, its cards and its controls are in px. */
+
+.see {
+  --see-gap: 12px;
+  /* How much of each neighbour shows: about 16px on a phone, growing smoothly to 160px, so the card's
+     width changes continuously with the window and never jumps at a breakpoint */
+  --see-peek: clamp(16px, 10vw - 20px, 160px);
+  --see-w: min(1120px, calc(100vw - 2 * (var(--see-peek) + var(--see-gap))));
+  --see-edge: color-mix(in srgb, var(--ink) 8%, transparent);
+  position: relative;
+  margin-inline: calc(50% - 50vw);
+}
+.see-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* The strip: native sideways scroll, snapping to the middle; the padding lets the first and last
+   card reach the middle too */
+.see-track {
+  display: flex;
+  gap: var(--see-gap);
+  padding-inline: calc((100% - var(--see-w)) / 2);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  outline: none;
+}
+.see-track::-webkit-scrollbar { display: none; }
+.see-track[data-dragging] { scroll-snap-type: none; cursor: grabbing; user-select: none; }
+.see-track:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; border-radius: 30px; }
+
+/* Each card is a container: what is inside it is laid out for the card's own width (below), not the
+   window's, so the words and the phone are recomposed, never scaled down as one picture */
+.see-card-slide {
+  container: see-card / inline-size;
+  position: relative;
+  flex: none;
+  box-sizing: border-box;
+  width: var(--see-w);
+  overflow: hidden;
+  scroll-snap-align: center;
+  border-radius: var(--box-radius);
+  corner-shape: var(--box-corner);
+  background: var(--surface-t1);
+  box-shadow: inset 0 0 0 0.6px var(--see-edge);
+  opacity: 0.6;
+  transition: opacity 0.5s var(--ease-sheet);
+}
+.see-card-slide[data-active] { opacity: 1; }
+
+/* Wide cards: a real column for the words beside the phone. The column is a fixed range (240 to
+   320px), so the same words keep the same shape on every wide card; the phone takes the rest. The
+   card keeps a steady height instead of following its width, so the phone never gets squeezed. */
+.see-inner {
+  /* the words column, the gap, the phone (and on the chat card the follow-up beside it) */
+  --col: clamp(220px, 26cqi, 300px);
+  --gap: clamp(40px, 7cqi, 88px);
+  --ph: min(440px, 46cqi);
+  --extra: 0px;
+  display: grid;
+  grid-template-columns: var(--col) auto;
+  column-gap: var(--gap);
+  /* The group sits left of centre: half the space that centring would leave on its left */
+  padding-left: calc((100cqi - var(--col) - var(--gap) - var(--ph) - var(--extra)) / 4);
+  height: clamp(580px, 56cqi, 640px);
+}
+
+/* The words, as plain body text (see docs/website/type.md): the headline in ink and medium weight,
+   the line after it in body grey, both the site's 16px. Each card can set how wide its words run
+   (--copy-ch, from see-fixture.ts) so every headline breaks well without forced line breaks. */
+.see-copy {
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  gap: 2px;
+  padding: 0;
+  text-align: left;
+}
+.see-copy h3, .see-copy p { max-width: var(--copy-ch, 26ch); text-wrap: balance; }
+.see-copy h3 {
+  display: block;
+  margin: 0;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: var(--type-body);
+  line-height: var(--body-leading);
+  letter-spacing: 0.02em;
+  color: var(--ink);
+}
+.see-copy p {
+  margin: 0;
+  font-size: var(--type-body);
+  line-height: var(--body-leading);
+  letter-spacing: 0.02em;
+  color: #6b6b68;
+}
+
+/* The picture side: the phone, cropped by the card's bottom edge, and on card 2 the follow-up beside it */
+.see-stage {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: clamp(20px, 3cqi, 36px);
+  min-width: 0;
+  padding-top: clamp(24px, 3cqi, 34px);
+  overflow: hidden;
+}
+.see-phone-wrap {
+  flex: none;
+  width: var(--ph, min(440px, 46cqi));
+  container-type: inline-size;
+}
+/* Card 2's drawing has its own margins around the phone, so its box is made a touch larger and moved
+   to put the phone's body exactly where the other four phones' bodies are (same width, same top) */
+.see-card-slide[data-card="chat"] .see-phone-wrap {
+  width: calc(var(--ph, 440px) * 1.0198);
+  margin: calc(var(--ph, 440px) * -0.0149) calc(var(--ph, 440px) * -0.0103) 0 calc(var(--ph, 440px) * -0.0095);
+}
+.see-phone {
+  --u: calc(100cqw / 517);
+  --fs: max(12.5px, calc(16 * var(--u)));
+  position: relative;
+  height: calc(980 * var(--u));
+  overflow: hidden;
+  font-size: var(--fs);
+  line-height: 1.28;
+  color: var(--ink);
+  text-align: left;
+}
+.see-screen {
+  position: relative;
+  z-index: 1;
+  margin: calc(19 * var(--u)) 0 0 calc(23 * var(--u));
+  width: calc(470.6 * var(--u));
+  height: calc(100% - 19 * var(--u));
+  overflow: hidden;
+  border-radius: calc(37.5 * var(--u)) calc(37.5 * var(--u)) 0 0;
+  background: #f4f3f0;
+  padding-top: calc(80 * var(--u));
+  box-sizing: border-box;
+}
+/* The bezel, over the screen's edges: the same picture as the hero's phone */
+.see-bezel {
+  position: absolute;
+  z-index: 4;
+  inset: calc(-7.929 * var(--u)) calc(-4.8 * var(--u)) calc(-1.271 * var(--u)) calc(-5.094 * var(--u));
+  box-sizing: border-box;
+  border-style: solid;
+  border-color: transparent;
+  border-width: calc(528.06 * var(--u)) 0 0;
+  border-image-source: url(/assets/home/phone/phone-bezel.png);
+  border-image-slice: 1353 0 0 fill;
+  border-image-repeat: stretch;
+  pointer-events: none;
+}
+/* The mockup's own drawings (status bar, Overview header), at the phone's size, over the screen */
+.see-mock { position: absolute; z-index: 3; top: 0; left: 0; width: 100%; height: auto; pointer-events: none; user-select: none; }
+
+.see-icon { width: calc(19 * var(--u)); height: calc(19 * var(--u)); fill: none; stroke: currentColor; stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.see-round {
+  display: grid;
+  place-items: center;
+  width: calc(42 * var(--u));
+  height: calc(42 * var(--u));
+  padding: 0;
+  border: 0.6px solid var(--see-edge);
+  border-radius: calc(14 * var(--u));
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+}
+.see-round--ghost { visibility: hidden; }
+button.see-round { cursor: pointer; }
+.see-head {
+  display: flex;
+  align-items: center;
+  gap: calc(8 * var(--u));
+  margin: 0 calc(20 * var(--u)) calc(10 * var(--u));
+}
+.see-head b {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: calc(18 * var(--u));
+  font-weight: 500;
+}
+.see-card {
+  margin: 0 calc(14 * var(--u)) calc(10 * var(--u));
+  padding: calc(22 * var(--u)) calc(26 * var(--u));
+  border-radius: calc(29 * var(--u));
+  background: var(--surface-t2);
+  border: 0.6px solid var(--see-edge);
+}
+.see-dog { display: block; width: calc(56 * var(--u)); height: auto; }
+.see-dog--small { width: calc(44 * var(--u)); margin-bottom: calc(6 * var(--u)); }
+.see-serif { margin: calc(12 * var(--u)) 0 calc(8 * var(--u)); font-family: var(--font-headline); font-size: calc(25 * var(--u)); line-height: 1.2; letter-spacing: -0.01em; }
+.see-body { margin: 0 0 calc(10 * var(--u)); font-size: var(--fs); line-height: 1.3; }
+.see-label { margin: calc(12 * var(--u)) 0 calc(4 * var(--u)); font-size: calc(13 * var(--u)); color: #8a8984; }
+.see-pill {
+  display: inline-block;
+  padding: calc(3 * var(--u)) calc(10 * var(--u));
+  border: 0.6px solid var(--see-edge);
+  border-radius: 999px;
+  background: #fff;
+  font-size: calc(13.5 * var(--u));
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Card 1 */
+.see-needs, .see-quiet, .see-choices { margin: 0; padding: 0; list-style: none; }
+.see-needs button, .see-quiet button {
+  display: flex;
+  align-items: flex-start;
+  gap: calc(9 * var(--u));
+  width: 100%;
+  padding: calc(7 * var(--u)) 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.see-needs i { flex: none; width: calc(13 * var(--u)); height: calc(13 * var(--u)); margin-top: 0.22em; box-sizing: border-box; border-radius: 50%; border: 1.5px solid color-mix(in srgb, var(--ink) 38%, transparent); }
+.see-needs em { font-style: normal; color: #8a8984; }
+.see-needs button:hover b, .see-quiet button:not(:disabled):hover b { text-decoration: underline; text-underline-offset: 2px; }
+.see-quiet { margin-top: calc(6 * var(--u)); padding-top: calc(6 * var(--u)); border-top: 0.6px solid var(--see-edge); }
+.see-quiet button { display: block; color: #77756f; font-size: 0.92em; cursor: default; padding-block: calc(4 * var(--u)); }
+.see-quiet button:not(:disabled) { cursor: pointer; }
+
+/* What opens over the phone: the detail of a chosen item */
+.see-sheet {
+  position: absolute;
+  z-index: 3;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: calc(20 * var(--u)) calc(26 * var(--u)) calc(60 * var(--u));
+  border-radius: calc(26 * var(--u)) calc(26 * var(--u)) 0 0;
+  background: #fff;
+  border-top: 0.6px solid var(--see-edge);
+  animation: see-sheet 0.4s var(--ease-sheet) both;
+}
+.see-sheet-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: calc(8 * var(--u)); }
+.see-sheet-top b { font-size: calc(18 * var(--u)); font-weight: 500; }
+.see-sheet p { margin: 0 0 calc(8 * var(--u)); line-height: 1.3; }
+@keyframes see-sheet { from { transform: translateY(40%); opacity: 0; } }
+
+/* Cards 2 and 4: the chat */
+.see-chips { display: flex; justify-content: center; gap: calc(6 * var(--u)); margin: calc(8 * var(--u)) calc(10 * var(--u)) calc(16 * var(--u)); }
+.see-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(6 * var(--u));
+  height: calc(34 * var(--u));
+  padding: 0 calc(12 * var(--u));
+  border: 0.6px solid var(--see-edge);
+  border-radius: 999px;
+  background: #fff;
+  font-size: calc(14.5 * var(--u));
+  font-weight: 500;
+  white-space: nowrap;
+}
+.see-chip--pin { width: calc(34 * var(--u)); padding: 0; justify-content: center; color: #3b82f6; }
+.see-bubble {
+  margin: 0;
+  padding: 0.7em 1.1em;
+  border-radius: 1.4em;
+  background: var(--surface-t3);
+  font-size: var(--fs);
+  line-height: 1.3;
+}
+.see-bubble--person { align-self: flex-end; margin-left: auto; max-width: 82%; background: #fff; border: 0.6px solid var(--see-edge); }
+.see-phone .see-bubble--first { display: block; width: fit-content; margin: 0 calc(20 * var(--u)) calc(14 * var(--u)) auto; }
+.see-activity { display: flex; align-items: center; gap: calc(7 * var(--u)); margin: 0 calc(22 * var(--u)) calc(10 * var(--u)); font-family: var(--font-headline); font-size: calc(13.5 * var(--u)); color: #9a9994; }
+.see-lead { margin: 0 calc(22 * var(--u)) calc(10 * var(--u)); font-family: var(--font-headline); font-size: calc(24 * var(--u)); line-height: 1.24; letter-spacing: -0.01em; }
+.see-lead--small { margin-top: calc(14 * var(--u)); font-size: calc(20 * var(--u)); }
+.see-support { margin: 0 calc(22 * var(--u)) calc(14 * var(--u)); font-family: var(--font-headline); font-size: calc(16 * var(--u)); line-height: 1.34; color: #77756f; }
+.see-data { margin: 0 calc(14 * var(--u)); padding: calc(10 * var(--u)) calc(12 * var(--u)) calc(12 * var(--u)); border: 0.6px solid var(--see-edge); border-radius: calc(26 * var(--u)); background: var(--surface-t2); }
+.see-bar { height: calc(16 * var(--u)); margin: calc(14 * var(--u)) calc(6 * var(--u)) calc(10 * var(--u)); border-radius: 999px; background: color-mix(in srgb, var(--ink) 7%, transparent); overflow: hidden; }
+.see-bar i { display: block; width: 74%; height: 100%; margin-left: 9%; border-radius: 999px; background: linear-gradient(90deg, #8b5cf6, #ec7fd0); }
+.see-times { display: flex; justify-content: space-between; }
+.see-times span { display: inline-flex; align-items: center; gap: calc(6 * var(--u)); padding: calc(4 * var(--u)) calc(11 * var(--u)); border: 0.6px solid var(--see-edge); border-radius: 999px; background: #fff; font-size: calc(14 * var(--u)); }
+.see-actions { display: flex; gap: calc(8 * var(--u)); margin-top: 4px; }
+.see-actions span { display: grid; place-items: center; width: 2.6em; height: 2.6em; border: 0.6px solid var(--see-edge); border-radius: 50%; background: #fff; color: var(--ink); }
+.see-actions .see-icon { width: 1.2em; height: 1.2em; }
+
+/* The follow-up, beside the phone (outside it, so its sizes are plain) */
+.see-thread {
+  --fs: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: none;
+  width: clamp(220px, 22vw, 300px);
+  padding-top: 34px;
+  font-size: var(--fs);
+  line-height: 1.32;
+}
+.see-thread .see-bubble { font-family: var(--font-headline); }
+.see-thread .see-bubble--person { font-family: var(--font-body); }
+.see-thread .see-icon { width: 1em; height: 1em; }
+
+/* Card 3: the Health screen. Three rings side by side (each one a white disc with the arc round a
+   soft well, in the zone's colour), then the suggestion card with its reasons */
+.see-gauges {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: calc(8 * var(--u));
+  margin: calc(6 * var(--u)) calc(14 * var(--u)) calc(14 * var(--u));
+  padding: calc(18 * var(--u)) calc(10 * var(--u)) calc(16 * var(--u));
+  list-style: none;
+  border-radius: calc(29 * var(--u));
+  background: var(--surface-t2);
+  border: 0.6px solid var(--see-edge);
+}
+.see-gauge-cell { display: grid; justify-items: center; gap: calc(2 * var(--u)); text-align: center; }
+.see-gauge {
+  --c: #22c55e;
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: calc(110 * var(--u));
+  aspect-ratio: 1;
+  margin-bottom: calc(8 * var(--u));
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 0 0.6px var(--see-edge), 0 calc(6 * var(--u)) calc(16 * var(--u)) rgb(26 26 26 / 0.07);
+}
+.see-gauge[data-tone="red"] { --c: #f43f5e; }
+.see-gauge[data-tone="orange"] { --c: #f97316; }
+.see-gauge[data-tone="green"] { --c: #22c55e; }
+.see-gauge svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+.see-g-well { fill: color-mix(in srgb, var(--c) 7%, #fff); }
+.see-g-track { fill: none; stroke: #ececea; stroke-width: 9; }
+.see-g-arc { fill: none; stroke-width: 9; stroke-linecap: round; }
+.see-g-from { stop-color: color-mix(in srgb, var(--c) 45%, #fff); }
+.see-g-to { stop-color: var(--c); }
+.see-gauge b { position: relative; font-size: calc(34 * var(--u)); font-weight: 500; line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.see-gauge-name { font-size: calc(16 * var(--u)); font-weight: 500; }
+.see-gauge-cell small { font-size: calc(13 * var(--u)); color: #77756f; }
+.see-plan { padding: calc(20 * var(--u)) calc(22 * var(--u)) calc(18 * var(--u)); }
+.see-plan-label { margin: 0 0 calc(10 * var(--u)); font-size: calc(13 * var(--u)); color: #8a8984; }
+.see-plan-main { display: flex; align-items: flex-end; justify-content: space-between; gap: calc(16 * var(--u)); margin-bottom: calc(12 * var(--u)); }
+.see-plan-dist { display: block; font-family: var(--font-headline); font-weight: 400; font-size: calc(58 * var(--u)); line-height: 1; letter-spacing: -0.02em; }
+.see-plan-effort { display: flex; align-items: center; gap: calc(7 * var(--u)); margin-top: calc(8 * var(--u)); font-size: calc(14 * var(--u)); color: #5f5e5a; }
+.see-plan-effort i { width: calc(9 * var(--u)); height: calc(9 * var(--u)); border-radius: 50%; background: #22c55e; }
+.see-plan-bars { display: flex; align-items: flex-end; gap: calc(5 * var(--u)); height: calc(56 * var(--u)); }
+.see-plan-bars i { width: calc(11 * var(--u)); border-radius: calc(4 * var(--u)); background: #e6e5e1; }
+.see-plan-bars i[data-on] { background: #22c55e; }
+.see-plan .see-body { margin-bottom: calc(14 * var(--u)); color: #5f5e5a; font-size: calc(14.5 * var(--u)); line-height: 1.32; }
+.see-plan-why { margin: 0 0 calc(8 * var(--u)); font-size: calc(13 * var(--u)); color: #8a8984; }
+.see-why { display: grid; grid-template-columns: repeat(3, 1fr); gap: calc(8 * var(--u)); margin: 0; padding: 0; list-style: none; }
+.see-why li { display: grid; gap: calc(2 * var(--u)); padding: calc(12 * var(--u)); border-radius: calc(18 * var(--u)); background: #fff; border: 0.6px solid var(--see-edge); }
+.see-why img { width: auto; max-width: 100%; height: calc(22 * var(--u)); justify-self: start; margin-bottom: calc(8 * var(--u)); object-fit: contain; }
+.see-why b { font-size: calc(17 * var(--u)); font-weight: 500; line-height: 1.15; letter-spacing: -0.01em; }
+.see-why span { font-size: calc(12.5 * var(--u)); color: #8a8984; }
+
+/* Card 4 */
+.see-draft dl { margin: 0 0 calc(10 * var(--u)); }
+.see-draft dl div { display: flex; gap: calc(10 * var(--u)); padding: calc(3 * var(--u)) 0; font-size: calc(14 * var(--u)); }
+.see-draft dt { width: 4.6em; color: #8a8984; }
+.see-draft dd { margin: 0; }
+.see-draft-text { display: block; width: 100%; box-sizing: border-box; margin: 0 0 calc(10 * var(--u)); padding: calc(12 * var(--u)) calc(14 * var(--u)); border: 0.6px solid var(--see-edge); border-radius: calc(18 * var(--u)); background: #fff; font: inherit; font-size: calc(15 * var(--u)); line-height: 1.34; color: var(--ink); resize: none; }
+textarea.see-draft-text { outline: 1.5px solid color-mix(in srgb, var(--ink) 40%, transparent); }
+.see-edit { padding: calc(6 * var(--u)) calc(14 * var(--u)); border: 0.6px solid var(--see-edge); border-radius: 999px; background: #fff; color: var(--ink); font: inherit; font-size: calc(14 * var(--u)); font-weight: 500; cursor: pointer; }
+.see-ask { margin: calc(4 * var(--u)) calc(22 * var(--u)) calc(10 * var(--u)); font-weight: 500; line-height: 1.3; }
+.see-phone .see-thread { width: auto; margin: 0 calc(22 * var(--u)); padding-top: 0; font-size: var(--fs); --fs: max(12.5px, calc(15 * var(--u))); }
+.see-composer { display: flex; align-items: center; gap: calc(10 * var(--u)); margin: calc(8 * var(--u)) calc(14 * var(--u)); padding: calc(8 * var(--u)); border-radius: calc(26 * var(--u)); background: #fff; border: 0.6px solid var(--see-edge); }
+.see-ph { flex: 1; color: #9a9994; font-size: calc(15 * var(--u)); }
+.see-composer > .see-icon { margin-right: calc(8 * var(--u)); }
+
+/* Card 5 */
+.see-recap { padding: 0 calc(24 * var(--u)); }
+.see-tag { display: inline-block; margin: 0 0 calc(10 * var(--u)); padding: calc(4 * var(--u)) calc(12 * var(--u)); border: 0.6px solid var(--see-edge); border-radius: 999px; background: #fff; font-size: calc(13 * var(--u)); color: #77756f; }
+.see-serif--big { margin: 0 0 calc(8 * var(--u)); font-weight: 400; font-size: calc(30 * var(--u)); }
+.see-serif--text { margin: 0 0 calc(10 * var(--u)); font-size: calc(19 * var(--u)); line-height: 1.26; }
+.see-small { margin: 0 0 calc(8 * var(--u)); font-size: calc(13.5 * var(--u)); color: #8a8984; }
+.see-choices { padding: calc(6 * var(--u)) calc(8 * var(--u)); border-radius: calc(24 * var(--u)); background: #fff; border: 0.6px solid var(--see-edge); }
+.see-choices button { display: flex; align-items: flex-start; gap: calc(10 * var(--u)); width: 100%; padding: calc(8 * var(--u)) calc(10 * var(--u)); border: 0; border-radius: calc(14 * var(--u)); background: none; color: inherit; font: inherit; font-size: calc(14.5 * var(--u)); text-align: left; cursor: pointer; }
+.see-choices button[data-on] { background: color-mix(in srgb, var(--ink) 6%, transparent); }
+.see-choices button i { flex: none; width: calc(16 * var(--u)); height: calc(16 * var(--u)); margin-top: 0.12em; box-sizing: border-box; border-radius: calc(5 * var(--u)); border: 1.5px solid color-mix(in srgb, var(--ink) 30%, transparent); }
+.see-choices button[data-on] i { border-color: var(--ink); box-shadow: inset 0 0 0 3px #fff, inset 0 0 0 20px var(--ink); }
+.see-input { display: flex; align-items: center; gap: calc(8 * var(--u)); margin-top: calc(4 * var(--u)); padding: calc(6 * var(--u)) calc(6 * var(--u)) calc(6 * var(--u)) calc(16 * var(--u)); border-radius: 999px; background: var(--surface-t3); }
+.see-input input { flex: 1; min-width: 0; border: 0; background: none; outline: none; font: inherit; font-size: calc(14.5 * var(--u)); color: var(--ink); }
+.see-input input::placeholder { color: #9a9994; }
+.see-go { display: grid; place-items: center; width: calc(34 * var(--u)); height: calc(34 * var(--u)); border-radius: 50%; background: var(--ink); color: #fff; }
+.see-note { margin: calc(8 * var(--u)) calc(6 * var(--u)) calc(12 * var(--u)); font-size: calc(13 * var(--u)); color: #8a8984; }
+.see-calendar { margin-inline: 0; }
+.see-calendar b { display: block; margin-bottom: calc(6 * var(--u)); font-weight: 500; text-align: center; }
+.see-calendar p { margin: 0 0 calc(4 * var(--u)); padding: calc(8 * var(--u)) calc(12 * var(--u)); border-radius: calc(12 * var(--u)); background: color-mix(in srgb, #f97316 14%, #fff); font-size: calc(14 * var(--u)); }
+.see-calendar em { font-style: normal; color: #8a8984; margin-right: 0.5em; }
+
+/* The controls under the strip: the same dots as under the hero's phone (phone-dots.tsx), the current
+   one drawn long and filling while the card waits its turn; no play or pause button */
+.see-controls { position: relative; display: flex; align-items: center; justify-content: center; height: 32px; margin-top: 26px; }
+.see :is(button, input, textarea):focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+@media (max-width: 640px) {
+  .see { --see-gap: 10px; }
+}
+
+/* Narrow cards: the words get their own place at the top, centred, about 28 to 32 characters a line,
+   with a set gap before the phone. Same 16px; only where it sits changes. */
+@container see-card (max-width: 759px) {
+  .see-inner, .see-card-slide[data-card="chat"] .see-inner { grid-template-columns: 1fr; grid-template-rows: auto 1fr; padding-left: 0; height: 660px; }
+  .see-copy { align-content: start; justify-items: center; padding: 24px 24px 0; text-align: center; }
+  .see-copy h3, .see-copy p { max-width: min(100%, var(--copy-ch-narrow, 32ch)); }
+  .see-stage { padding-top: 24px; }
+  .see-inner { --ph: min(380px, 88cqi); }
+}
+
+/* ── Card 2: Suyash's drawing of the chat, and the thread that opens from its replies button ──
+   The drawing is one picture (398 x 813). The replies button (the round message icon with the 7) is at
+   15.75% across and 66.1% down; a real button sits over it, and a pointer drawn over the picture goes to
+   it on arrival (see ChatScreen: phases 0 closed, 1 moving, 2 pressing, 3 open). */
+.see-form { position: relative; width: 100%; }
+.see-patch { position: absolute; z-index: 1; left: 6.03%; right: 6.28%; top: 19.7%; height: 66.4%; background: #f4f3f0; pointer-events: none; }
+.see-sl { position: absolute; z-index: 2; inset: 0; display: block; width: 100%; height: auto; pointer-events: none; opacity: 0; transform: translateY(8px) scale(0.97); transform-origin: 50% 60%; }
+.see-sl[data-in] { opacity: 1; transform: none; transition: opacity 0.4s var(--ease-out-quad), transform 0.6s var(--ease-card-spring); }
+.see-sl[data-band="ask"] { transform-origin: 100% 100%; transform: translateY(14px) scale(0.86); }
+.see-sl[data-band="ask"][data-in] { transform: none; }
+.see-sl[data-band="actions"] { transform-origin: 20% 50%; }
+/* Waldo's three dots, while he looks (where "Checked last night..." will appear) */
+.see-wait { position: absolute; z-index: 3; left: 8.9%; top: 28.2%; display: flex; gap: 1.3cqw; opacity: 0; transition: opacity 0.2s var(--ease-out-quad); pointer-events: none; }
+.see-wait[data-on] { opacity: 1; }
+.see-wait i { width: 1.7cqw; height: 1.7cqw; border-radius: 50%; background: #9a9994; animation: see-bub-dot 1.1s ease-in-out infinite; }
+.see-wait i:nth-child(2) { animation-delay: 0.15s; }
+.see-wait i:nth-child(3) { animation-delay: 0.3s; }
+
+.see-form-img { display: block; width: 100%; height: auto; }
+.see-threads {
+  z-index: 5;
+  position: absolute;
+  left: 15.75%;
+  top: 66.1%;
+  width: 11cqw;
+  height: 11cqw;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+}
+.see-threads[data-press]::after {
+  content: "";
+  position: absolute;
+  inset: 8%;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--ink) 16%, transparent);
+  animation: see-press 0.4s var(--ease-out-quad) both;
+}
+@keyframes see-press { from { transform: scale(0.55); opacity: 1; } to { transform: scale(1.35); opacity: 0; } }
+.see-cursor {
+  z-index: 6;
+  position: absolute;
+  left: 15.75%;
+  top: 66.1%;
+  width: 6.4cqw;
+  height: 6.4cqw;
+  margin: -0.6cqw 0 0 -1.2cqw;
+  fill: #fff;
+  stroke: #111;
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+  pointer-events: none;
+  filter: drop-shadow(0 1px 2px rgb(0 0 0 / 0.25));
+  opacity: 0;
+  transform: translate(26cqw, 15cqw);
+  transform-origin: 20% 14%;
+  transition: opacity 0.25s var(--ease-out-quad);
+}
+.see-cursor[data-phase="1"] { opacity: 1; transform: none; transition: opacity 0.25s var(--ease-out-quad), transform 1s cubic-bezier(0.45, 0, 0.2, 1); }
+.see-cursor[data-phase="2"] { opacity: 1; transform: scale(0.86); transition: transform 0.12s var(--ease-out-quad); }
+.see-cursor[data-phase="3"] { opacity: 0; transform: none; transition: opacity 0.3s var(--ease-out-quad) 0.1s; }
+/* The thread screen, inside the phone (see ThreadPage in screens.tsx). The replies button pushes it in
+   from the right, the way a phone's own screens do, over the chat and under the status bar. The window
+   it slides in is the drawing's own screen: the picture is 398 x 813 and its screen runs from x 23.2 to
+   374.2 and, under the status bar, from y 68 to 790.3, with the screen's rounded bottom corners (r 38). */
+.see-tw {
+  --see-rise: 12px;
+  position: absolute;
+  z-index: 7;
+  left: 5.83%;
+  width: 88.2%;
+  top: 8.36%;
+  bottom: 2.79%;
+  overflow: hidden;
+  border-radius: 0 0 9.5cqw 9.5cqw;
+  visibility: hidden;
+  pointer-events: none;
+  transition: visibility 0s linear 0.5s;
+}
+.see-tw[data-open="true"] { visibility: visible; pointer-events: auto; transition: none; }
+.see-tp {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-body);
+  font-size: max(10.5px, 3.5cqw);
+  line-height: 1.45;
+  color: var(--ink);
+  background: #f6f5f2;
+  transform: translateX(104%);
+  transition: transform 0.5s var(--ease-sheet);
+  box-shadow: -1px 0 0 color-mix(in srgb, var(--ink) 6%, transparent);
+}
+.see-tw[data-open="true"] .see-tp { transform: none; }
+.see-tp-head { display: flex; align-items: center; gap: 0.8em; padding: 0.9em 1em 0.5em; }
+.see-tp-head > div { flex: 1; min-width: 0; text-align: center; line-height: 1.2; }
+/* the chat under the pushed screen dims, as a phone's does */
+.see-tw-scrim { position: absolute; inset: 0; background: color-mix(in srgb, var(--ink) 9%, transparent); opacity: 0; transition: opacity 0.5s var(--ease-sheet); }
+.see-tw[data-open="true"] .see-tw-scrim { opacity: 1; }
+.see-tp-head b { display: block; font-size: 1.15em; font-weight: 500; }
+.see-tp-head small { display: block; margin-top: 0.2em; font-size: 0.82em; color: #8a8984; }
+.see-tp-btn {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 2.7em;
+  height: 2.7em;
+  padding: 0;
+  border: 0;
+  border-radius: 0.95em;
+  background: #fff;
+  box-shadow: 0 0 0 0.25em color-mix(in srgb, var(--ink) 5%, transparent), 0 0 0 0.6px color-mix(in srgb, var(--ink) 10%, transparent);
+  color: var(--ink);
+}
+button.see-tp-btn { cursor: pointer; }
+.see-tp .see-icon { width: 1.15em; height: 1.15em; }
+.see-tp-body { display: flex; flex: 1; flex-direction: column; gap: 0.95em; min-height: 0; padding: 0.7em 1.1em 0.5em; overflow-y: auto; scrollbar-width: none; }
+.see-tp-body::-webkit-scrollbar { display: none; }
+.see-tp-composer { display: flex; align-items: center; gap: 0.6em; margin: 0.7em 0.8em 0.9em; padding: 0.55em; border-radius: 1.7em; background: color-mix(in srgb, var(--ink) 3%, #fff); }
+.see-tp-composer .see-tp-btn { width: 2.4em; height: 2.4em; border-radius: 0.8em; box-shadow: 0 0 0 0.6px color-mix(in srgb, var(--ink) 10%, transparent); }
+.see-tp-composer > .see-tp-field { flex: 1; min-width: 0; color: #9a9994; }
+.see-tp-field[data-typing] { color: var(--ink); }
+.see-tp-caret { display: inline-block; width: 1.5px; height: 1.05em; margin-left: 1px; vertical-align: -0.15em; background: var(--ink); animation: see-caret 1s steps(1) infinite; }
+@keyframes see-caret { 50% { opacity: 0; } }
+.see-tp-send { display: grid; flex: none; place-items: center; width: 2.6em; height: 2.6em; border-radius: 0.9em; background: color-mix(in srgb, var(--ink) 80%, #fff); color: #fff; transition: background-color 0.2s var(--ease-out-quad), transform 0.2s var(--ease-out-quad); }
+.see-tp-send[data-on] { background: var(--ink); transform: scale(1.05); }
+.see-ct-b, .see-ct-in { position: relative; margin: 0; }
+.see-ct-dots { display: flex; gap: 0.3em; align-items: center; padding-block: 1.05em; }
+.see-ct-dots i { width: 0.5em; height: 0.5em; border-radius: 50%; background: color-mix(in srgb, var(--ink) 55%, transparent); }
+.see-ct-waldo, .see-ct-person {
+  box-sizing: border-box;
+  padding: 0.85em 1.25em;
+  border: 0.6px solid color-mix(in srgb, var(--ink) 7%, transparent);
+  border-radius: 1.6em;
+}
+.see-ct-waldo { align-self: flex-start; max-width: 88%; background: var(--surface-t2); }
+.see-ct-person { align-self: flex-end; max-width: 88%; background: #fff; border-radius: 999px; padding-block: 0.7em; }
+.see-ct-lead { max-width: 92%; margin-bottom: 0.9em; }
+.see-ct-expand {
+  position: absolute;
+  top: -0.7em;
+  right: -0.6em;
+  display: grid;
+  place-items: center;
+  width: 1.9em;
+  height: 1.9em;
+  border: 0.6px solid color-mix(in srgb, var(--ink) 9%, transparent);
+  border-radius: 50%;
+  background: #fff;
+}
+.see-ct-expand .see-icon, .see-ct-row .see-icon { width: 1em; height: 1em; }
+/* the thin line that hooks down from the first bubble to the reply */
+.see-ct-lead::after {
+  content: "";
+  position: absolute;
+  right: -0.5px;
+  top: calc(100% - 1.2em);
+  width: 0.9em;
+  height: calc(1.2em + 1.2em);
+  border-right: 0.6px solid color-mix(in srgb, var(--ink) 9%, transparent);
+  border-bottom-right-radius: 0.8em;
+  pointer-events: none;
+}
+.see-ct-row { display: flex; gap: 0.6em; margin-top: 0.2em; }
+.see-ct-row span { display: grid; place-items: center; width: 2.5em; height: 2.5em; border: 0.6px solid color-mix(in srgb, var(--ink) 9%, transparent); border-radius: 50%; background: #fff; }
+/* A line arrives as it does in a messaging app: it pops up from where it will sit, on a spring */
+@keyframes see-bub-w { from { opacity: 0; transform: translateY(14px) scale(0.86); } }
+@keyframes see-bub-p { from { opacity: 0; transform: translateY(14px) scale(0.86); } }
+@keyframes see-bub-dot { 0%, 60%, 100% { transform: translateY(0); opacity: 0.4; } 30% { transform: translateY(-0.28em); opacity: 1; } }
+@media (prefers-reduced-motion: no-preference) {
+  .see-ct-in { animation: see-bub-w 0.5s var(--ease-card-spring) backwards; transform-origin: 0 100%; }
+  .see-ct-person.see-ct-in { animation-name: see-bub-p; transform-origin: 100% 100%; }
+  .see-ct-dots i { animation: see-bub-dot 1.1s ease-in-out infinite; }
+  .see-ct-dots i:nth-child(2) { animation-delay: 0.15s; }
+  .see-ct-dots i:nth-child(3) { animation-delay: 0.3s; }
+}
+
+
+/* ── Card 1: the hero's Overview card (overview-player.tsx) ──
+   Set in the mockup's own units, as the hero's card was: the stack of three slivers behind it, the
+   card in front, and Waldo in its corner. It sits over the whole screen, under the header. Every
+   state of the card is in the same grid cell, so the card never changes height. */
+.see-h { position: absolute; inset: 0; z-index: 0; }
+.see-h-behind i {
+  position: absolute;
+  height: calc(700 * var(--u));
+  box-sizing: border-box;
+  transform-origin: 50% 0;
+  border-radius: calc(27.9 * var(--u));
+  background: var(--surface-t2);
+  border: 0.6px solid var(--see-edge);
+  /* the stack behind the card is fainter than the card, the further back the fainter (as in Linear's) */
+  opacity: var(--faint, 0.7);
+}
+.see-h-behind i:nth-child(1) { --faint: 0.35; }
+.see-h-behind i:nth-child(2) { --faint: 0.55; }
+.see-h-behind i:nth-child(3) { --faint: 0.75; }
+.see-h-behind i:nth-child(1) { left: calc(45.6 * var(--u)); top: calc(116.8 * var(--u)); width: calc(379.3 * var(--u)); }
+.see-h-behind i:nth-child(2) { left: calc(35.7 * var(--u)); top: calc(127.9 * var(--u)); width: calc(399.3 * var(--u)); }
+.see-h-behind i:nth-child(3) { left: calc(25.1 * var(--u)); top: calc(138.9 * var(--u)); width: calc(420.3 * var(--u)); }
+.see-h-card {
+  position: absolute;
+  z-index: 1;
+  left: calc(14.1 * var(--u));
+  top: calc(150.7 * var(--u));
+  width: calc(442.4 * var(--u));
+  box-sizing: border-box;
+  padding: calc(136 * var(--u)) calc(37.5 * var(--u)) calc(60 * var(--u));
+  border-radius: calc(29.3 * var(--u));
+  background: var(--surface-t2);
+  border: 0.6px solid var(--see-edge);
+}
+/* The card that was in front, swelling and fading as the next one grows in: a copy set exactly over it */
+.see-h-ghost { position: absolute; z-index: 2; margin: 0; pointer-events: none; }
+.see-h-ghost, .see-h-ghost * { animation: none !important; transition: none !important; }
+.see-h-card > img { position: absolute; left: calc(36.4 * var(--u)); top: calc(47.6 * var(--u)); display: block; width: calc(62.7 * var(--u)); height: auto; }
+.see-h-sheets { display: grid; font-size: max(14px, calc(16.5 * var(--u))); line-height: 1.28; color: var(--ink); }
+.see-h-sheet { grid-area: 1 / 1; visibility: hidden; opacity: 0; }
+.see-h-sheet[data-on] { visibility: visible; opacity: 1; }
+.see-h-sheet p { margin: 0 0 max(10px, calc(12 * var(--u))); }
+.see-h-sheet .see-h-lead { margin-top: max(14px, calc(16 * var(--u))); margin-bottom: max(6px, calc(8 * var(--u))); font-weight: 500; }
+.see-h-asks { list-style: none; margin: 0; padding: 0; display: grid; gap: max(6px, calc(8 * var(--u))); }
+.see-h-asks li { position: relative; padding-left: 1.5em; }
+/* What still needs the reader is a checkbox, not yet ticked */
+.see-h-asks li::before {
+  content: "";
+  position: absolute;
+  left: 0.1em;
+  top: 0.2em;
+  width: 0.78em;
+  height: 0.78em;
+  box-sizing: border-box;
+  border-radius: 0.2em;
+  border: 1.5px solid color-mix(in srgb, var(--ink) 38%, transparent);
+  background: #fff;
+}
+/* Something the sentence is about that lives in a connector, set inline as a small pill with that
+   connector's mark */
+.see-h-chip {
+  padding: 0.08em 0.5em 0.08em 0.4em;
+  border-radius: 999px;
+  background: var(--surface-t1);
+  border: 0.6px solid var(--see-edge);
+  font-size: max(12px, 0.84em);
+  font-weight: 500;
+  white-space: nowrap;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+.see-h-chip img { display: inline-block; width: 1.05em; height: 1.05em; margin-right: 0.38em; vertical-align: -0.16em; object-fit: contain; }
+/* ── Arrival ──
+   When a card comes into view its screen plays: every part marked .see-in rises into place in turn
+   (--i is its place in the order), a message pops in, the sleep bar fills, and on card 2 the follow-up
+   arrives bubble by bubble. Only the card in the middle plays (data-arrive), once per arrival; the
+   others rest as finished screens. It waits until the section is on screen (data-live on .see), and
+   with less motion nothing plays. */
+.see { --see-play: paused; }
+.see[data-live] { --see-play: running; }
+.see-phone { --see-rise: calc(16 * var(--u)); }
+.see-thread { --see-rise: 12px; --step: 520ms; --d: 900ms; }
+@keyframes see-rise { from { opacity: 0; transform: translateY(var(--see-rise, 14px)); } }
+@keyframes see-pop { from { opacity: 0; transform: translateY(var(--see-rise, 14px)) scale(0.9); } }
+@keyframes see-fill { from { transform: scaleX(0); } }
+@keyframes see-sweep { from { stroke-dasharray: 0 100; } }
+@media (prefers-reduced-motion: no-preference) {
+  .see-card-slide[data-arrive] :is(.see-in, .see-pop, .see-turn, .see-fill) {
+    animation-duration: 0.7s;
+    animation-timing-function: var(--ease-sheet);
+    animation-fill-mode: backwards;
+    animation-play-state: var(--see-play, paused);
+    animation-delay: calc(var(--d, 380ms) + var(--i, 0) * var(--step, 90ms));
+  }
+  .see-card-slide[data-arrive] .see-in { animation-name: see-rise; }
+  .see-card-slide[data-arrive] .see-turn { animation-name: see-rise; animation-duration: 0.6s; }
+  .see-card-slide[data-arrive] .see-pop { animation-name: see-pop; animation-duration: 0.8s; transform-origin: 100% 100%; animation-timing-function: var(--ease-card-spring); }
+  .see-card-slide[data-arrive] .see-g-arc { animation: see-sweep 1.3s var(--ease-sheet) backwards; animation-play-state: var(--see-play, paused); animation-delay: calc(var(--d, 380ms) + 250ms); }
+  .see-card-slide[data-arrive] .see-fill { animation-name: see-fill; animation-duration: 1.2s; transform-origin: 0 50%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .see-card-slide, .see-dot, .see-dot::before { transition: none; }
+  .see-sheet { animation: none; }
+}

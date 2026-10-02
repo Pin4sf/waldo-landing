@@ -26,6 +26,7 @@ This folder is where the whole website gets planned before it gets built. Each p
 | [type.md](type.md) | The three text levels on every page (label, title, body, with ink-and-medium emphasis), 20px body text, titles always two lines | **Live — in use** |
 | [motion.md](motion.md) | Space instead of lines, and every animation on the site (values copied from Linear) | **Live — in use** |
 | [hero-loop.md](hero-loop.md) | The moving picture under the homepage hero: tools in a wave, what they carry dropping into Waldo, his Overview card (in a phone) filling in underneath | **Built — one stream, card states waiting on matching copy** |
+| [what-you-see-plan.md](what-you-see-plan.md) | Plan for the five-card "What you see of it" section (copy and screens from the Claude brief): files, carousel behaviour, fixture checks, open decisions | **Plan only — nothing built** |
 | [sessions/](sessions/) | One log per working session: what was decided, what's open | Ongoing |
 
 ## Build status

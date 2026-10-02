@@ -19,6 +19,7 @@ import {
   Section,
 } from "@/components/site/blocks";
 import { Carousel } from "@/components/site/carousel";
+import { SeeSection } from "@/components/site/see/see-section";
 import { ConsoleTour } from "@/components/site/console-tour";
 import { type Feature, FeatureList } from "@/components/site/feature-sheet";
 import { SiteShell } from "@/components/site/site-shell";
@@ -113,7 +114,13 @@ export default function Home() {
           <Header
             as="h1"
             lines={["Life happens.", "Waldo handles it."]}
-            subtitle="He's a personal agent; manages you, across work & life. Reads what's coming, does what's needed, & only interrupts when it matters."
+            subtitle={
+              <>
+                A personal assistant that meets all needs
+                <br />
+                for life, work and health; with nothing hidden.
+              </>
+            }
             actions={{
               primary: { label: "Let Waldo in →", href: "/waitlist" },
               secondary: { label: "See how it works", href: "/how-it-works" },
@@ -122,6 +129,12 @@ export default function Home() {
           <WaldoLoop />
         </Section>
       </div>
+
+      {/* 2b · What you see of it: five views of the hero's story, a carousel with no end and no heading
+          (docs/website/what-you-see-plan.md) */}
+      <Section size="auto">
+        <SeeSection />
+      </Section>
 
       {/* 3 · The problem */}
       <Section>
@@ -237,8 +250,8 @@ export default function Home() {
         </Body>
       </Section>
 
-      {/* 6 · Trust: one white box. Centred title and text, the console, then the controls */}
-      <Section>
+      {/* 6 · Trust: one white box, edge to edge. Centred title and text, the console, then the controls */}
+      <section className="site-section site-section--box">
         <div className="site-box">
           <div className="site-box-head">
             <Header
@@ -247,11 +260,11 @@ export default function Home() {
             />
           </div>
           <ConsoleTour />
-          <div className="site-box-foot">
+          <div className="site-box-foot site-container">
             <FeatureList label="Your controls" section="Your controls" features={CONTROLS} />
           </div>
         </div>
-      </Section>
+      </section>
 
       {/* 7 · Where Waldo lives */}
       <Section>

@@ -23,6 +23,7 @@ export function PhoneDots({
   duration,
   stamp,
   label,
+  names,
   onSelect,
   onDone,
 }: {
@@ -38,6 +39,8 @@ export function PhoneDots({
   /** Changes whenever the fill should start again from the left */
   stamp: number;
   label: string;
+  /** What each dot is called for assistive tech (default: "Show step 3 of 7") */
+  names?: string[];
   onSelect: (index: number) => void;
   /** The fill has crossed */
   onDone: () => void;
@@ -51,7 +54,7 @@ export function PhoneDots({
       role="group"
       aria-label={label}
       data-live={running ? "" : undefined}
-      style={{ "--dots-ms": `${duration}ms` } as CSSProperties}
+      style={{ "--dots-ms": `${duration}ms`, "--dots-n": Math.min(count, VISIBLE) } as CSSProperties}
     >
       <div className="site-loop-dots-window">
         <div
@@ -71,7 +74,7 @@ export function PhoneDots({
                 type="button"
                 className="site-loop-dot"
                 data-active={on ? "" : undefined}
-                aria-label={`Show step ${i + 1} of ${count}`}
+                aria-label={names?.[i] ? `${names[i]}, ${i + 1} of ${count}` : `Show step ${i + 1} of ${count}`}
                 aria-current={on ? "true" : undefined}
                 onClick={() => onSelect(i)}
               >

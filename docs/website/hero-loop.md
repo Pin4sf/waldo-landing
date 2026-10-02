@@ -311,3 +311,24 @@ The flying pills now carry the short copy from `waldo-pill-copy-short` (`pill` a
 - **A long pause is not time that passed.** A frame after the tab was in the background moves the row on by one frame at most, instead of by the whole time away.
 
 Measured at 390px: the incoming and reply pills never overlap, nothing overlaps Waldo, and no pill is clipped.
+
+### Pills with connector marks, and a stronger card change (2026-10-01)
+
+- **Pills only for things that live in a connector, with that connector's mark.** In the phone card, a [bracketed] subject is now a pill with the mark of the app it belongs to in front of it (Design review and Board prep with Google Calendar, PR #184 with GitHub, Empty state with Figma, Quote v4 with Drive, 5km easy with Strava, and so on). A bracketed subject with no connector (the 60-seat cap, SSO, a combined "quote and update") is set as plain words, not a pill. The table is `CHIP_TOOLS` in `hero-states.ts` (`chipTool`); to give a subject a pill, add it there.
+- **The card change is bigger.** The new card now rises 44 units from below while it fades in (it was 16), the copy of the old card behind it shrinks back and fades, and the two slivers behind spring up a step (with a little overshoot) one after the other. 800ms in all. It runs on every change: a signal landing in Waldo, or a click on a dot.
+
+## The container and the bezel (2026-10-01)
+
+- **Container.** The white container behind the phone now hugs it: 10px of padding on all four sides
+  (`--loop-pad`), 30px corners smoothed 60% (`--loop-radius`). The smoothing is a clip path cut by
+  `lib/squircle.ts` (Figma's corner-smoothing maths) to the container's size, redone when it resizes;
+  without the script it falls back to plain 30px rounding. The dots sit below it, outside.
+- **Bezel in Safari.** The bezel picture was inside `phone-front.svg` (an `<image>` painted through a
+  `<pattern>`), which Safari does not paint when the SVG is used as a border image. It is now its own
+  file, `phone-bezel.png`, on its own layer (`.site-loop-phone-layer--bezel`); `phone-front.svg` keeps
+  only the vector parts (header, status bar). Same size and slicing as before.
+- Hero body copy: "A personal assistant that meets all life, work & health needs, with nothing hidden."
+
+## The phone is removed (2026-10-01)
+
+The phone under Waldo (the Overview card with its 27 states, the stack animation, the white container and the dots under it) is gone from the homepage hero, on Suyash's instruction. What stays: the headline and buttons, the connector row on its curve, the 27 signals (the notification that flies from each connector into Waldo, and his reply that flies back; `hero-states.ts` is unchanged, its `body`, `asks` and `work` are simply no longer shown), and Waldo, who sits where he always did above the fold. The "What you see of it" carousel now follows directly. Removed from `waldo-loop.tsx`: the phone markup, `pushCard`, the pills (`Rich`), the dots and their state. Removed from `site.css`: the white container, the phone and card styles and their motion. Kept: `phone-dots.tsx` and the dots styles (the carousel uses them), the phone bezel picture, `chipTool` and the card helpers in `hero-states.ts` (tested, unused for now).

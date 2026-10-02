@@ -601,6 +601,67 @@ export function segments(text: string): { text: string; chip: boolean }[] {
     );
 }
 
+/*
+  The connector a chip belongs to: the app the thing lives in. A chip is shown as a pill with that
+  app's mark in front of it; a [bracketed] subject with no connector in this table is set as plain
+  words, not a pill. Calendar items are in Google Calendar, a person is where they write to him,
+  quotes and documents are in Drive, a deal is in HubSpot, a build in GitHub, a design in Figma, a
+  ticket in Jira or Linear, training in Strava, and so on.
+*/
+const CHIP_TOOLS: Record<string, ToolId> = {
+  "5h 12m sleep": "garmin",
+  "Board prep": "google-calendar",
+  "Design review": "google-calendar",
+  "3pm clash": "google-calendar",
+  "8:30-9:30am": "google-calendar",
+  "Rohan’s train": "whatsapp",
+  Maya: "gmail",
+  "Flat 402": "gmail",
+  Soundroom: "gmail",
+  "Soundroom address": "gmail",
+  Leon: "slack",
+  Dev: "microsoft-outlook",
+  "Northstar quote": "hubspot",
+  "Northstar’s quote": "hubspot",
+  "Northstar’s $48k renewal": "hubspot",
+  Northstar: "hubspot",
+  "Quote v2": "google-drive",
+  v3: "google-drive",
+  "Quote v4": "google-drive",
+  "PR #184": "github",
+  "Empty state": "figma",
+  "Empty state v6": "figma",
+  "Try a sample workspace": "figma",
+  "v1.8": "jira",
+  "REL-42": "jira",
+  "ONB-73": "linear",
+  "ONB-74": "linear",
+  "Sleep timing": "oura",
+  "Priya’s build": "asana",
+  "Leon’s demo": "asana",
+  "Northstar call brief": "calendly",
+  "Northstar’s call brief": "calendly",
+  "Call brief": "calendly",
+  "Northstar brief": "calendly",
+  "Sample workspace fix": "openai",
+  "Maya update": "claude",
+  "Maya’s update": "claude",
+  "Maya’s draft": "claude",
+  "Friday’s call": "granola",
+  "32% recovery": "whoop",
+  "8km tempo": "strava",
+  "5km easy": "strava",
+  "12.4km of hills": "strava",
+  "64 bpm": "apple-health",
+  "Cedar’s $399 renewal": "stripe",
+  "Cedar’s retry": "stripe",
+  "Northstar’s three kits": "shopify",
+  "After Hours": "spotify",
+};
+
+/** The connector for a chip's words, or undefined when it has none (so it is not a pill). */
+export const chipTool = (text: string): ToolId | undefined => CHIP_TOOLS[text];
+
 /** "One thing still needs you." or "Two things still need you." */
 export const leadFor = (asks: number) =>
   asks === 1 ? "One thing still needs you." : "Two things still need you.";

@@ -1,26 +1,17 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
-import {
-  HERO_ROW,
-  HERO_STATES,
-  heldWork,
-  leadFor,
-  openWork,
-  segments,
-  slotOf,
-} from "./hero-states";
-import { PhoneDots } from "./phone-dots";
+import { HERO_ROW, HERO_STATES, slotOf } from "./hero-states";
 
 // The homepage loop (see docs/website/hero-loop.md).
 //
 // The connectors drift left to right along a U-shaped path, and the lowest part of it is right above
 // Waldo. Only the connectors passing through that low zone speak. Each one hands over one line (a
 // notification, written like the real thing), which travels from its own icon to a point just above
-// his head; he answers with one short line, which travels back to the same icon; and the Overview
-// card in the phone below him is replaced, whole, by what he made of it (hero-states.ts).
+// his head; he answers with one short line, which travels back to the same icon. (The phone with
+// the Overview card that used to sit under him was removed on 2026-10-01; see hero-loop.md.)
 //
 // The script is one fictional Wednesday, 27 signals long (hero-states.ts). The row of icons is laid
 // out to match it: signals sit three places apart, so two icons pass silent between one signal and
@@ -109,11 +100,6 @@ const CARD_EDGE = 1.2;
 const CARD_MARGIN = 12;
 /** How much of the gap under the hero buttons is taken out, by lifting the band. */
 const GAP_PULL = 0.2;
-/** How long the fill on the current dot takes to cross: about the time between two signals. */
-const STEP_MS = 3900;
-/** After a dot is clicked, how long the stream leaves the card alone so the step can be read. */
-const PEEK_MS = 9000;
-
 /** The line of hero text that was removed when it went from three lines to two. */
 const HERO_LINE = 24;
 /** The gap under the buttons never closes below this. */
@@ -138,148 +124,13 @@ const SPIN_SVG =
 const TICK_SVG =
   '<svg class="tick" viewBox="0 0 18 18" aria-hidden="true"><path d="M4.4 9.5l3.1 3.1 6.1-6.8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/></svg>';
 
-/** Card text with its [bracketed] subjects set as small inline chips (never an app's logo). */
-function Rich({ text }: { text: string }) {
-  return (
-    <>
-      {segments(text).map((part, i) =>
-        part.chip ? (
-          <span key={i} className="site-loop-chip">
-            {part.text}
-          </span>
-        ) : (
-          part.text
-        ),
-      )}
-    </>
-  );
-}
-
-/*
-  A new state of the card lands the way Linear's stacked cards do (linear.app/ai, "Automate the
-  overhead"): the card that was in front is left behind, shrinking back and up into the stack, the
-  next card rises into its place from below, and the cards behind each move up a step to make room.
-  The stack is the mockup's own: three slivers 11 units apart, each 5.3% narrower than the one in
-  front. Nothing is rebuilt: a copy of the old card is what goes back (so its words go with it), the
-  real card is what rises, and the slivers move from the step in front of them to their own.
-*/
-const STACK_MS = 700;
-const STACK_EASE = "cubic-bezier(0.32, 0.72, 0, 1)";
-/** How far the new card rises from, in the mockup's units. */
-const RISE = 16;
-/** Each sliver's step: how far up it moves, and how much wider the one in front of it is. */
-const STEPS: [number, number][] = [
-  [11.1, 1.0527],
-  [11.0, 1.0526],
-];
-/** The card that was in front ends where the nearest sliver is. */
-const BACK: [number, number] = [11.8, 0.95];
-
-function pushCard(root: HTMLElement | null) {
-  if (!root || window.matchMedia("(prefers-reduced-motion: reduce)").matches)
-    return;
-  const card = root.querySelector<HTMLElement>(".site-loop-overview");
-  const screen = card?.parentElement;
-  if (!card || !screen) return;
-
-  const ghost = card.cloneNode(true) as HTMLElement;
-  ghost.classList.add("site-loop-ghost");
-  Object.assign(ghost.style, {
-    left: `${card.offsetLeft}px`,
-    top: `${card.offsetTop}px`,
-    width: `${card.offsetWidth}px`,
-    height: `${card.offsetHeight}px`,
-  });
-  screen.insertBefore(ghost, card);
-  const back = ghost.animate(
-    [
-      { transform: "none", opacity: 1 },
-      {
-        transform: `translateY(calc(${-BACK[0]} * var(--u))) scale(${BACK[1]})`,
-        opacity: 0,
-      },
-    ],
-    { duration: STACK_MS, easing: STACK_EASE },
-  );
-  back.onfinish = back.oncancel = () => ghost.remove();
-
-  card.animate(
-    [
-      { transform: `translateY(calc(${RISE} * var(--u)))` },
-      { transform: "none" },
-    ],
-    { duration: STACK_MS, easing: STACK_EASE },
-  );
-  root
-    .querySelectorAll<HTMLElement>(".site-loop-behind i")
-    .forEach((sliver, i) => {
-      // The nearest sliver stays: the card that went back lands exactly on it.
-      if (i >= STEPS.length) return;
-      const [dy, sx] = STEPS[i];
-      sliver.animate(
-        [
-          { transform: `translateY(calc(${dy} * var(--u))) scaleX(${sx})` },
-          { transform: "none" },
-        ],
-        {
-          duration: STACK_MS,
-          easing: STACK_EASE,
-          delay: (STEPS.length - i) * 50,
-          fill: "backwards",
-        },
-      );
-    });
-}
-
 export function WaldoLoop() {
   const stage = useRef<HTMLDivElement>(null);
   const dog = useRef<HTMLDivElement>(null);
-  const slab = useRef<HTMLDivElement>(null);
-  // Which state of the card is showing, 1 to 27 (0 before the first signal has landed). Each signal
-  // sets it as it lands in Waldo; a click on a dot can put it anywhere, and the stream then leaves it
-  // alone for a few seconds (`peek`) so the step can be read.
-  const [shown, setShown] = useState(0);
-  const peek = useRef(0);
-  const shownNow = useRef(0);
-  // The phone is on screen and the tab is in front: the dots' fill only runs then.
-  const [live, setLive] = useState(false);
-
-  useEffect(() => {
-    const el = slab.current;
-    if (!el) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    let visible = false;
-    const sync = () =>
-      setLive(visible && document.visibilityState === "visible");
-    const eye = new IntersectionObserver(
-      ([entry]) => {
-        visible = entry.isIntersecting;
-        sync();
-      },
-      { threshold: 0.35 },
-    );
-    eye.observe(el);
-    document.addEventListener("visibilitychange", sync);
-    return () => {
-      eye.disconnect();
-      document.removeEventListener("visibilitychange", sync);
-    };
-  }, []);
-
-  useEffect(() => {
-    shownNow.current = shown;
-  }, [shown]);
-
-  // What the hidden ledger holds once this state has been reached (see hero-states.ts): everything
-  // still open, and the decisions the card's two bullets are not showing.
-  const open = openWork(shown).map((item) => item.id);
-  const held = heldWork(shown).map((item) => item.id);
-
   useEffect(() => {
     const host = stage.current;
     const waldo = dog.current;
-    const deckEl = slab.current;
-    if (!host || !waldo || !deckEl) return;
+    if (!host || !waldo) return;
     const plinth = host.querySelector<HTMLElement>(".site-loop-stage");
     if (!plinth) return;
 
@@ -389,7 +240,6 @@ export function WaldoLoop() {
     addEventListener("resize", refit);
     const tape = new ResizeObserver(refit);
     tape.observe(host);
-    tape.observe(deckEl);
     tape.observe(plinth);
 
     const reduced = window.matchMedia(
@@ -644,12 +494,6 @@ export function WaldoLoop() {
       });
       fly(signal, anchor, portal, () => {
         swallow();
-        // What he has read is what the card says: the card becomes this signal's state, whole
-        // (unless a dot was just clicked, and the step it shows is still being read).
-        if (performance.now() >= peek.current) {
-          if (shownNow.current !== index + 1) pushCard(host);
-          setShown(index + 1);
-        }
         // Then he answers, to the same icon it came from.
         repliesWaiting += 1;
         const launch = () => {
@@ -677,7 +521,9 @@ export function WaldoLoop() {
       if (!alive) return;
       // A frame after a long pause (the tab was in the background) moves the row on by a frame, not by
       // the time it was away, or the next icon would have drifted past its window.
-      if (last) offset += (Math.min(now - last, 100) / 1000) * DRIFT * (pitch / REF_PITCH);
+      if (last)
+        offset +=
+          (Math.min(now - last, 100) / 1000) * DRIFT * (pitch / REF_PITCH);
       last = now;
       place(now);
 
@@ -748,91 +594,6 @@ export function WaldoLoop() {
             height={63}
             unoptimized
             priority
-          />
-        </div>
-
-        <div className="site-loop-phone" ref={slab}>
-          <div
-            className="site-loop-phone-layer site-loop-phone-layer--back"
-            aria-hidden="true"
-          />
-          <div className="site-loop-screen">
-            <div className="site-loop-behind" aria-hidden="true">
-              <i />
-              <i />
-              <i />
-            </div>
-            <div
-              className="site-loop-overview"
-              data-open={open.join(" ") || undefined}
-              data-held={held.join(" ") || undefined}
-            >
-              <Image
-                src="/assets/home/mascots/waldo-card.svg"
-                alt=""
-                width={63}
-                height={49}
-                unoptimized
-              />
-              <span
-                className="site-loop-reading"
-                data-on={shown === 0 ? "" : undefined}
-                aria-hidden="true"
-              >
-                <i />
-                <i />
-                <i />
-              </span>
-              {/* Every state sits in the same cell, so the card is as tall as the longest of them and
-                  never jumps; the one that is showing is the only one that is not hidden. */}
-              <div className="site-loop-sheets">
-                {HERO_STATES.map((state, i) => (
-                  <div
-                    key={i}
-                    className="site-loop-sheet"
-                    data-on={i + 1 === shown ? "" : undefined}
-                  >
-                    {state.body.map((paragraph, k) => (
-                      <p key={k}>
-                        <Rich text={paragraph} />
-                      </p>
-                    ))}
-                    <p className="site-loop-lead">
-                      {leadFor(state.asks.length)}
-                    </p>
-                    <ul className="site-loop-asks">
-                      {state.asks.map((ask) => (
-                        <li key={ask.text}>
-                          <Rich text={ask.text} />
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-          <div
-            className="site-loop-phone-layer site-loop-phone-layer--front"
-            aria-hidden="true"
-          />
-        </div>
-
-        <div className="site-loop-bar">
-          <PhoneDots
-            count={HERO_STATES.length}
-            active={Math.min(HERO_STATES.length - 1, Math.max(0, shown - 1))}
-            running={live && shown > 0 && shown < HERO_STATES.length}
-            done={shown >= HERO_STATES.length}
-            duration={STEP_MS}
-            stamp={shown}
-            label="Overview card steps"
-            onSelect={(i) => {
-              peek.current = performance.now() + PEEK_MS;
-              if (shownNow.current !== i + 1) pushCard(stage.current);
-              setShown(i + 1);
-            }}
-            onDone={() => {}}
           />
         </div>
       </div>
