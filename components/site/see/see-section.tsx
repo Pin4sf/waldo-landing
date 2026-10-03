@@ -4,8 +4,10 @@ import { type CSSProperties, type KeyboardEvent, type ReactNode, useCallback, us
 
 import { PhoneDots } from "../phone-dots";
 import { useLive } from "../use-live";
-import { SlideState } from "./overview-player";
-import { CatchUpScreen, ChatScreen, HandoffScreen, HealthScreen, OverviewScreen } from "./screens";
+import { OutboxScreen, OverviewScreen } from "./brief";
+import { ChatScreen, PlanScreen } from "./chat";
+import { SlideState } from "./kit";
+import { OvernightScreen } from "./lock";
 import { SEE_CARDS, SEE_SECTION } from "./see-fixture";
 
 import "./see.css";
@@ -20,21 +22,20 @@ import "./see.css";
 // outer set it is moved, unseen, to the same card in the middle set. Presentation only: nothing in a
 // screen sends, approves or records anything.
 
-const HOLD_MS = 8000;
-/** The chat card holds longer: its screen is a conversation that is texted out, line by line */
-const CHAT_HOLD_MS = 21000;
+/** How long each card stays before the strip moves on: long enough for its screen to play through */
+const HOLD_MS: Record<string, number> = { overview: 17500, chat: 19000, health: 22000, handoff: 9000, "catch-up": 8000 };
 const DRAG = 4;
 /** How long the strip has to be still before it is moved back to the middle set, in ms */
 const REST_MS = 160;
-/** A copy of a card is swapped for the real one only after its screen has finished arriving, in ms */
-const ARRIVE_MS = 3200;
+/** A copy of a card is swapped for the real one only after its screen has finished playing, in ms */
+const ARRIVE_MS = 23000;
 
 const SCREENS: Record<string, ReactNode> = {
   overview: <OverviewScreen />,
   chat: <ChatScreen />,
-  health: <HealthScreen />,
-  handoff: <HandoffScreen />,
-  "catch-up": <CatchUpScreen />,
+  health: <PlanScreen />,
+  handoff: <OutboxScreen />,
+  "catch-up": <OvernightScreen />,
 };
 
 export function SeeSection() {
@@ -47,8 +48,8 @@ export function SeeSection() {
   const [held, setHeld] = useState(false);
   const [calm, setCalm] = useState(false);
   const [lap, setLap] = useState(0);
-  // Which of the hero's 27 states the Overview card on card 1 is showing (shared by every copy of it)
-  const [hero, setHero] = useState(27);
+  // Which part of the day card 1's brief is showing (shared by every copy of it)
+  const [hero, setHero] = useState(1);
   const live = useLive(root);
   const index = pos % count;
   // The place in the middle, for the handlers below that outlive a render
@@ -279,7 +280,7 @@ export function SeeSection() {
           active={index}
           running={running}
           done={false}
-          duration={index === 1 ? CHAT_HOLD_MS : HOLD_MS}
+          duration={HOLD_MS[SEE_CARDS[index].id] ?? 9000}
           stamp={lap}
           label="Choose a card"
           names={SEE_CARDS.map((card) => card.name)}

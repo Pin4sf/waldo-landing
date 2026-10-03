@@ -230,3 +230,120 @@ Update (same day), the whole of card 2 now plays as a real conversation would ar
 Health screen redone as the app's own UI (2026-10-02): card 3 is no longer rows plus a panel. It shows three rings side by side (Form 46, Recovery 32, Weight 38, 0 to 100, each in its zone's colour; Weight runs the other way, so 38 is a light day), then the suggestion card ("Easy 5 km", the summary, and the Sleep / Recovery / Previous run reasons with their sources) and a line that the calendar and plan have not changed. This replaces the earlier "no score ring, no percentage, Weight has no reading" rule: Recovery 32 is still WHOOP's reading, but Form 46 and Weight 38 are illustrative numbers chosen to fit the story (short sleep, hills yesterday, room in the calendar) and are not from the hero fixture.
 
 Health suggestion card redone (2026-10-02): the lower card is now a prepared-run card: "Suggested for tomorrow", a large "5 km" with an "Easy · No pace target" line and a five-bar effort meter (one bar filled), the summary, then three small tiles (Sleep 5h 12m, Recovery 32%, Previous run 12.4km hills), each with its source's connector logo (Garmin, WHOOP, Strava). The "calendar and plan have not changed" footnote was dropped to make room; the summary already says the run was not changed.
+
+## 17. One app, one kit (2026-10-02)
+
+Why: the five screens looked like five different apps. Card 2 was a picture with its own story (8h 2m, Recovery 61), card 3 was a dashboard of rings, and cards 4 and 5 each had their own layout and type. Suyash asked for screens that read as one app and show Waldo solving things, continuing the hero's story.
+
+**The rule:** card 1 stays the hero's Overview card (the app's home). Cards 2 to 5 are all **threads**, built from one kit in `screens.tsx`, with the look taken from Suyash's chat drawing (`chat-form.svg`):
+
+1. Header: the round-square list button, the title, "more".
+2. Chips: what Waldo is reading, with the pin before them and + after.
+3. The person's message, as a white pill on the right (not on card 4, where Waldo starts it).
+4. Waldo's three dots, then a grey line saying what he checked.
+5. His answer: one bold line, then a grey detail.
+6. **One white card** for what he prepared. Only this changes from card to card.
+
+Every screen plays the same way when its card arrives, in that order. The chat card no longer holds longer than the others (all 9s).
+
+**The story, all one Wednesday (the hero's facts):**
+
+| Card | Asked | Waldo's answer | The card |
+|---|---|---|---|
+| 2 Chat | Why do I feel so flat today? | Short night that started late; Recovery 32%. I'd keep the hour after board prep free. | Sleep chart, 1:18am to 6:30am, 5h 12m |
+| 3 Health | Still good for the tempo tomorrow? | I'd go easy. 5km, no pace target. Plan unchanged until you say so. | Thursday's run: 8km tempo beside 5km easy, "Swap it in" / "Keep the tempo" |
+| 4 Handoff | (he starts it) | Their email says Flat 204. Your order says 402. Correction drafted. | Gmail draft, "Draft only", "Send it" (inert) / "Edit" |
+| 5 Catch-up | Back. What did I miss? | Nothing's on fire. Three things need you; the quote can't wait past 5pm. | "Handled" (courier delay found, Cedar's retry set) and "Needs you" (the three decisions, each opens its detail) |
+
+Removed: Suyash's chat picture and its thread-and-pointer sequence, the three rings, the calendar glimpse, the follow-up beside the phone, the "run" choice on card 5. The picture `chat-form.svg` stays in `public/` as the reference for the look. Fixture tests updated; type-check, lint and tests pass. Not checked in Safari.
+
+**Type (2026-10-03):** on Suyash's call, everything inside the phones is set in SF Pro only, the iPhone's own font: no serif, and not the site's SF Pro Rounded. Waldo's answer line is SF Pro semibold. SF Pro is not bundled, so phones and Macs show it and other devices fall back to Helvetica or Arial. The words beside the phone stay in the site's type.
+
+**Lines and shadows (2026-10-03):** no drop shadows anywhere in the phone screens. Every line (buttons, chips, message pill, cards, dividers) is 0.5px, #1A1A1A at 8%, in light and dark mode alike. The round header buttons lost their soft outer ring.
+
+**Card 4 is not a thread (2026-10-03):** Suyash's note: it is something Waldo shows you, not a chat. It no longer uses the thread kit (no chips row, no message, no "checked" line). It is its own screen: a "Found by Waldo" tag and heading ("Wrong flat on your delivery"), a card comparing Soundroom's email (Flat 204, struck through, a red cross) with the order (Flat 402, a green tick), the order facts (SR-2081, Thursday), the drafted correction ("Draft only"), and the choice in a bar at the foot ("Send correction" is inert, "Edit" works). Cards 2, 3 and 5 still use the thread kit.
+
+## 18. The delivery card opens from the Overview (2026-10-03)
+
+Card 1 now carries the delivery story (Suyash's note: show it in the Overview itself, as a small actionable card first, then open the detailed screen with an animation).
+
+- **The screen:** the Overview is scrolled up under the header, so only its foot shows (the last lines of the hero's card, faded out under the title, with the cards behind it as slivers below). The focus is the white **delivery card**: "Found by Waldo", "Wrong flat on your delivery", Soundroom's email (Flat 204, struck through) against the order (Flat 402), and a dark "Review the correction" button with "Draft only". Under it, "Also waiting on you" loads in from the bottom and is cut off by the phone: Northstar (Quote v4, $48k / 60 seats, before 5pm), Maya's update (held), Design review (unsent). These are the same three things as card 5, and they are not clickable.
+- **The animation:** clicking the delivery card grows the full delivery screen (card 4's screen) out of the card's own outline, over 560ms, while the Overview's header fades and the screen's parts rise in one after another. The back button folds it back into the card (420ms). Esc also closes it. Leaving the card resets it to the Overview. With reduced motion it simply appears.
+- **Still there:** card 4 keeps the same screen on its own. **Open question for Suyash: drop card 4 now that it lives inside card 1?** (One entry per feature.)
+- Slide height is back to 580-640 (wide) and 660 (narrow). `FEED` in `see-fixture.ts` holds the three rows.
+
+## 19. Second brief from Suyash (2026-10-03): the five cards, rebuilt
+
+Rules for every screen: SF Pro only, no drop shadows, 0.5px lines (#1A1A1A at 8%), crisp copy, and **a button to talk to Waldo on every screen** (Siri-like: a glowing orb in a bar at the foot of the visible screen). Decisions are yes / no; details open in a sheet from the bottom ("toaster"), and documents are linked in that sheet, never in the decision itself.
+
+| Card | Time | What it shows |
+|---|---|---|
+| 1 Daily brief | Wed, through the day | The brief card on top of a stack. It changes with the part of the day (6:40am, 11:20am, 2:10pm, 4:15pm, 8:30pm); the clock and a "Morning / Midday / ..." label change with it. The stack behind it is what Waldo did to get there, opened on demand ("How I got here"). Each decision has Yes / No and a Details link. The top of the "To send" box (card 4) shows under it. |
+| 2 Chat | Wed 9:12am | Prequel: an empty chat, the question typed and sent. Waldo names the chat, pins the relevant trends, works through several checks at once (they collapse to one line), answers in short with a detailed sleep graphic and what to do about it. Copy / thread / like / dislike / speak / retry under it. Then a plain follow-up with no graphic. |
+| 3 Plan | Wed 8:55pm | Prequel: Thursday's packed calendar. The Waldo button is pressed and the chat rises over it: "When do I train tomorrow, and what?" Waldo answers (7am, easy 5km and mobility), shows it on tomorrow's timeline, and quietly lists what he handled: the calendar block, a text to Mrs. Chen the chef, the Forerunner charge reminder. No meeting moves. |
+| 4 To send ("Every reply drafted. Yours to send.") | Wed 4:15pm | The same screen as card 1, scrolled up: the brief's foot at the top, then the condensed "To send" box, ranked by priority, work and life mixed (Soundroom, Dev's quote, Mum's birthday, the landlord, Maya). A row opens a sheet with the draft and "Send with Gmail" (or WhatsApp / Slack). |
+| 5 Overnight | Thu 6:30am | Not "what did I miss": the lock screen when you wake. Waldo held the night's noise and shows the few things that matter, including Soundroom confirming Flat 402. |
+
+**Built (2026-10-03).** Files: `kit.tsx` (phone with live clock, header, Waldo button, bottom sheet, reply buttons, script player), `brief.tsx` (cards 1 and 4), `chat.tsx` (cards 2 and 3), `lock.tsx` (card 5), `phone.css` (all screen styles), `see-fixture.ts` (the story). `screens.tsx` and `overview-player.tsx` are gone; card 1 no longer plays the hero's 27 states, it plays five parts of the day.
+
+- The phone measures where the card crops it, so the Waldo button and the sheets always sit just above the crop (checked at 1440, 800 and 390 wide).
+- Each card holds long enough to play through: brief 17.5s, chat 19s, plan 22s, to send 9s, overnight 8s.
+- Interactions: Yes / No and Details on every decision, "How I got here" (also by tapping the stack), every "To send" row opens its draft, Send marks it sent, Edit makes the draft editable.
+- Sleep is shown with Apple Health's mark, since Garmin's mark is a wordmark that can't be read at chip size.
+- Checks: `tests/see-fixture.test.mjs` rewritten for the new story (yes / no decisions, docs only in details, crisp copy, one set of facts, ranked list with work and life). Type-check, lint and production build pass.
+- Not checked in Safari. On a 390px phone the phone picture is about 290px wide, so its text is small.
+
+## 20. Simpler, quieter, Notion-like (2026-10-03, plan)
+
+Suyash's note: the concepts are right, but the screens are confusing for someone seeing Waldo for the first time. Waldo shows things very simply. No rainbow on the Waldo button. Lower contrast, Notion-like, subtle like Linear (in light mode), with micro-interactions, subtle motion and subtle gradients. Better hierarchy and legibility.
+
+**Look**
+- Notion's warm palette: text #37352F, secondary #787774, faint #A3A29E; colour only from Notion's muted set (blue #337EA9, purple #9065B0, green #448361, orange #D9730D, red #D44C47) and their pale backgrounds. No black buttons: the one main action in a sheet is Notion blue; everything else is a soft grey fill.
+- Lines stay 0.5px #1A1A1A at 8%. No drop shadows.
+- Screen background is a barely-there warm gradient. The brief card carries a faint tint for the part of the day (peach morning, blue midday, butter afternoon, rose late afternoon, lilac evening) that cross-fades when the brief updates.
+- Headers lose their boxed buttons (plain grey icons). Fewer weights: 500 for emphasis, 600 only for screen titles.
+
+**Simpler**
+- Card 1: the day label moves into the brief card (dog, "Morning brief", time); the separate day rail goes. Chips in sentences become soft inline mentions. Decisions: the question, a grey "Details", and two small soft buttons.
+- Card 2 / 3: pinned trends without the + button and without orange badges; the graphic loses its legend; tips and "Handled" become one grouped list.
+- Card 4: priority dots go; only what is due today is tinted.
+- The Waldo button: a plain white bar with Waldo's dog, "Ask Waldo", and a mic. A slow grey shimmer passes over the words now and then.
+
+**Motion (all subtle)**
+- Brief updates: the old text blurs out, the new one sharpens in; the day tint cross-fades.
+- Buttons press in slightly; Yes / No settle into a tick with a small spring; Undo brings them back.
+- Sheets rise on a spring over a soft scrim. Chat lines rise and un-blur. Checks shimmer while running and settle into one line.
+- "How I got here" is a small timeline whose dots appear one after another.
+
+**Built (2026-10-03).** Section 20 is in: Notion palette and contrast in `phone.css`, plain header icons, the Waldo button with the dog (no rainbow) and an occasional grey shimmer, the brief card's part-of-day wash, soft Yes / No, quieter "To send" (no dots; only the most urgent due dates in orange), pins without + or badges, sleep stages on their own lines, grouped tip and "Handled" lists, timeline in "How I got here", blur-in motion for new text, spring ticks, a fade under the Waldo button in chats. Mum's message is now due "Tonight". Checked in the browser at 800px wide; type-check, lint, tests and build pass.
+
+## 21. Linear's UI and charts, icons from Suyash's set, no gradients (2026-10-03, plan)
+
+Suyash: use icons strictly from `waldo-icons/`; remove gradients; the infographics should follow Linear's, line by line; and the UI should come from Linear too.
+
+**Icons.** Every icon is an SF Symbol from `waldo-icons/`, copied to `public/assets/home/icons/` with its glyph re-framed to fill its box, and drawn as a mask in the text colour. Mapping: back/chevron (chevron.left/right.tag), more (ellipsis.tag), panel (sidebar.left), mic, plus, send (arrow.up.tag), close (xmark.tag), check, pin, moon, sun (sun.and.horizon), bed (bed.double), heart, calendar, coffee tip (clock.tag), chat (bubble.left), watch (applewatch), copy (square.on.square), thread (text.bubble), like / dislike (thumbs.up / thumbs.down), speak (speaker.waves), retry (arrow.clockwise), lock, flashlight, camera, priority (cellularbars), pending (circle.dotted), milestone (diamond.shape).
+
+**No gradients.** Flat screen colours; the Waldo button sits on a flat band; chart bars are flat colours. (The moving shimmer on "checking…" lines stays: it is motion, not a fill.)
+
+**Linear's UI, in light.** Read from linear.app (their Thread panel, issue cards and Insights dashboard): 0.5px borders, ~9px card corners, two weights (510 / 590), 12 to 16px type, grey meta text, an indigo accent (#5E6AD2) for the one primary action, labels as small pills with a coloured dot. The chat becomes Linear's thread: avatar, name, time, then the text, no bubbles; the composer is Linear's input box with an indigo send button.
+
+**Linear's charts.** As on linear.app/insights: a card with its title top left; thin stacked bars with small gaps between segments, flat colours; dotted horizontal gridlines; axis numbers on the right in small grey; dots for legends. Card 2: sleep over the last 7 nights (deep, REM, light), last night the short one. Card 3: tomorrow as Linear's timeline: hour ticks on top with dotted lines, rows for Run (a bar), Meals (diamonds) and Meetings (grey bars).
+
+**Built (2026-10-03).** Section 21 is in. Icons: 31 SF Symbols from `waldo-icons/` in `public/assets/home/icons/` (plus person, priority, pending, diamond), drawn by `Icon` in `kit.tsx` as masks. No gradients anywhere in the screens (the screen, the brief card, chart bars, the chat sheet and the lock screen are flat; the old fades under the Waldo button are a flat band). Linear palette and type in `phone.css` (weights rendered as 500 / 600 because the system SF Pro snaps 510 / 590). Chat is Linear's thread: avatar, name, time, text. Card 2's chart: "Sleep, last 7 nights", stacked bars (deep / REM / light), dotted gridlines, scale on the right, last night in full and the six before at half strength. Card 3's chart: Linear's timeline for Thursday (Run bar, Meals diamonds, Meetings grey). Priority in "To send" uses the signal-bars icon. Checked in the browser at 800px; type-check, lint, tests and build pass.
+
+## 22. Round, Apple-like, in Waldo's colours (2026-10-03)
+
+- **Colours from DESIGN-SYSTEM.md:** ink #1A1A1A with greys #6B6B68 / #9A9A96, canvas #F4F3F0, white cards, sunken #E8E6E0. Primary actions are ink pills. The orange accent #FB943F appears once per screen: Waldo's send button (and a soft orange behind his dog in the Waldo button). Action blue #2388FF is for calendar items and edit focus. Green #22C55E for done, red #F43F5E for "below your usual". The indigo is gone; the sleep chart is ink / grey / sunken.
+- **Round:** buttons, inputs, chips, header buttons and avatars are pills or circles; cards, sheets, lists and notifications have ~24 to 36 unit corners with the site's continuous (squircle) corner shape.
+- **Brief text in the Overview mockup's style:** body in ink at a larger size; chips as white pills with a hairline and a coloured icon (Sleep in purple, calendar items in blue), an icon-only round chip, and a green circle with the run icon (figure.run, from waldo-icons) for the workout. "Needs you" as a quiet grey heading.
+- **One-to-one chat:** your messages on the right in a rounded white bubble; Waldo's on the left beside his dog, with no names or times.
+
+**Follow-up (2026-10-03):** taken from Waldo's own iOS app (`~/Documents/GitHub/Waldo/waldo-app`, `ChatBubble.tsx`) and the Overview mockup. Chat: no picture for Waldo; your messages in an ink bubble on the right (corner tucked bottom right), Waldo's words in a white bubble on the left (corner tucked bottom left), charts and lists full width under them. Brief: the dog at its mockup size at the top; a hairline and "One thing / Two things still need you." as a heading between the brief and its decisions; "How I got here" removed as a row, the stack behind is the way in, with a small grey line under the card ("Tap the cards behind to see how I got here. You probably won't need to."), which also separates the brief from "To send".
+
+**Fixes (2026-10-03):**
+- Card 3: the calendar's header (with its round buttons) fades out when the chat sheet rises, so nothing peeks past the sheet's rounded corners; the sheet's own header sits lower.
+- Card 3's calendar made real: "October" with a week strip (Thursday 1 October picked), an all-day item (Release week · v1.8), hour and dotted half-hour lines, and each meeting with its time and place or people (Zoom · Dev, Maya; Room 4B · Priya, Leon; Jira REL-42...), a dashed "Commute", one-line meetings when under an hour. The date is now Thursday 1 October (2026's calendar) on the lock screen too.
+- Card 5: no Ask Waldo bar on the lock screen; just the flashlight and camera at the corners.
+- The dog is gone from the brief card.
+- Bed, heart, run and watch icons were upside down (their health-set files carry a flip); fixed in the files.
+- Type hierarchy pass: brief text 18, decisions 15.5, section heads 17 ("Two things still need you.", "To send"), chat text 16.5, sheet titles 19 with 16 body and buttons, list names 15.5 with 13 detail; meta (part of day, times, axes, notes) stays 10.5 to 13 in grey.
