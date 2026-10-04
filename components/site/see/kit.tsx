@@ -89,7 +89,7 @@ export function SeePhone({ children, clock, dark, className = "" }: { children: 
   const phone = useRef<HTMLDivElement>(null);
   useLayoutEffect(() => {
     const el = phone.current;
-    const slide = el?.closest<HTMLElement>(".see-card-slide");
+    const slide = el?.closest<HTMLElement>(".see-card-slide, .site-visual--panel");
     if (!el || !slide) return;
     const measure = () => {
       const p = el.getBoundingClientRect();
@@ -137,8 +137,14 @@ export function AppHeader({ title, left = "back", right = "more", titleKey }: { 
   then a slow grey shimmer passes over the words. In a chat it is the composer, and shows what is
   being typed; elsewhere it is the way in, and presses in when used.
 */
-export function WaldoBar({ typed, placeholder = "Ask Waldo", pressed, onPress, label = "Talk to Waldo" }: { typed?: string; placeholder?: string; pressed?: boolean; onPress?: () => void; label?: string }) {
-  const content = (
+export function WaldoBar({ typed, placeholder = "Ask Waldo", pressed, onPress, label = "Talk to Waldo", compact }: { typed?: string; placeholder?: string; pressed?: boolean; onPress?: () => void; label?: string; compact?: boolean }) {
+  // compact: just Waldo's dog in a round button, for screens that give the room to something else
+  const content = compact ? (
+    <span className="see-bar-dog" aria-hidden="true">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/assets/home/mascots/waldo-card.svg" alt="" />
+    </span>
+  ) : (
     <>
       <span className="see-bar-dog" aria-hidden="true">
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -153,7 +159,7 @@ export function WaldoBar({ typed, placeholder = "Ask Waldo", pressed, onPress, l
     </>
   );
   return (
-    <div className="see-bar-wrap">
+    <div className="see-bar-wrap" data-compact={compact ? "" : undefined}>
       {onPress ? (
         <button type="button" className="see-bar" data-pressed={pressed ? "" : undefined} aria-label={label} onClick={onPress}>{content}</button>
       ) : (
@@ -194,6 +200,14 @@ export function DocRow({ name, tool, meta }: { name: string; tool: string; meta:
       <Icon name="chevron" />
     </span>
   );
+}
+
+/**
+  How far along a piece of work is, in the same words on every screen: Checked, Prepared, Needs you,
+  Watching, and Done (green, kept for work that was approved and finished)
+*/
+export function StateTag({ state }: { state: string }) {
+  return <span className="see-state" data-state={state.toLowerCase().replace(/\s+/g, "-")}>{state}</span>;
 }
 
 /** The buttons under an answer of Waldo's */

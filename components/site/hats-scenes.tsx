@@ -4,10 +4,11 @@ import { type RefObject, useEffect, useLayoutEffect, useRef, useState } from "re
 
 import { useLive } from "./use-live";
 
-// The three pictures for "Same Waldo. Different hats." (see docs/website/pages/home.md): the same
+// The five pictures for "Same Waldo. Different hats." (see docs/website/pages/home.md): the same
 // kind of thread as "Works with every agent" (agents-chat.tsx), but in the place each person would
 // actually have it. The founder texts him on WhatsApp while travelling, the engineer asks him from the
-// terminal, the investor talks to him from a watch. You say it the way you would tell a person, and he
+// terminal, the investor talks to him from a watch, the designer leaves him a comment in Figma and the
+// salesperson sends him a voice clip in Slack. You say it the way you would tell a person, and he
 // answers in one dry line.
 //
 // What you send is not only words: a photo of the departures board, a voice note, a clip of a hotel
@@ -16,11 +17,12 @@ import { useLive } from "./use-live";
 //
 // Each one plays by itself, only while it is on screen, and holds its first exchange (finished) for
 // anyone who asks for less motion. Everything in them is invented (Priya, PR #212, pitch five are the
-// homepage story), and nothing is a claim about what the product sends, books or merges.
+// homepage story, Noor and Dana are made up), and nothing is a claim about what the product sends, books
+// or merges.
 
 type Agent = "Claude" | "Codex" | "Cursor";
 type Part = string | { agent: Agent };
-type Art = "board" | "room" | "slide";
+type Art = "board" | "room" | "slide" | "frame" | "pipeline";
 type Media =
   | { kind: "image"; art: Art }
   | { kind: "video"; art: Art; secs: number }
@@ -86,6 +88,36 @@ function Pic({ art }: { art: Art }) {
     return (
       // eslint-disable-next-line @next/next/no-img-element
       <img src={photo.src} alt="" className="hats-pic hats-pic--photo" style={{ objectPosition: photo.at, aspectRatio: photo.ratio }} />
+    );
+  if (art === "frame")
+    return (
+      <svg viewBox="0 0 200 130" className="hats-pic" aria-hidden="true">
+        <rect width="200" height="130" fill="#e5e5e5" />
+        <rect x="62" y="10" width="76" height="110" rx="4" fill="#fff" />
+        <rect x="72" y="20" width="36" height="5" rx="2" fill="#1a1a1a" />
+        <circle cx="100" cy="56" r="17" fill="#f2f2f0" stroke="#c4c4c0" strokeDasharray="3 3" />
+        <rect x="76" y="82" width="48" height="3.5" rx="1.75" fill="#d6d6d2" />
+        <rect x="84" y="90" width="32" height="3.5" rx="1.75" fill="#d6d6d2" />
+        <rect x="74" y="102" width="52" height="10" rx="5" fill="#1a1a1a" />
+      </svg>
+    );
+  if (art === "pipeline")
+    return (
+      <svg viewBox="0 0 200 130" className="hats-pic" aria-hidden="true">
+        <rect width="200" height="130" fill="#fafaf8" />
+        <rect x="16" y="14" width="70" height="8" rx="2" fill="#1a1a1a" />
+        {[
+          [34, 168, "#d6d6d2"],
+          [54, 132, "#d6d6d2"],
+          [74, 104, "#f97316"],
+          [94, 70, "#d6d6d2"],
+        ].map(([y, w, fill]) => (
+          <g key={y as number}>
+            <rect x="16" y={y as number} width="26" height="5" rx="2" fill="#c4c4c0" />
+            <rect x="50" y={(y as number) - 3} width={(w as number) - 34} height="11" rx="3" fill={fill as string} />
+          </g>
+        ))}
+      </svg>
     );
   return (
     <svg viewBox="0 0 200 130" className="hats-pic" aria-hidden="true">
@@ -756,6 +788,485 @@ export function InvestorWatch() {
         {/* The watch itself: the picture from "Your watch knows", its screen cut out, so what plays sits under it */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img className="hats-watch-photo" src="/assets/home/hats/apple-watch.png" alt="" />
+      </div>
+    </div>
+  );
+}
+
+/* ── 4 · Designer, in Figma ─────────────────────────────────────────────────────────────────────── */
+
+const DESIGNER: { you: string; art?: Art; file?: string; time: string; waldo: string }[] = [
+  {
+    you: "@Waldo the review is at 3 and the empty states aren’t done",
+    art: "frame",
+    file: "empty-states.png",
+    time: "9:12 AM",
+    waldo: "Review moves to 4:30. One to three is yours for the empty states, your clearest stretch today.",
+  },
+  {
+    you: "@Waldo the client wants the icon set before lunch",
+    time: "9:41 AM",
+    waldo: "Icons get nine to eleven. The 10am crit moves to Thursday, when you’ll have more to give.",
+  },
+];
+
+type Comment = { id: number; who: "you" | "waldo"; text: string; time: string; art?: Art; fresh?: boolean };
+
+/** "@Waldo" is set as a mention, while it is being typed too */
+function Mention({ text }: { text: string }) {
+  const n = text.startsWith("@") ? Math.min(text.length, 6) : 0;
+  if (!n || text.slice(0, n) !== "@Waldo".slice(0, n)) return <>{text}</>;
+  return (
+    <>
+      <b className="hats-fig-at">{text.slice(0, n)}</b>
+      {text.slice(n)}
+    </>
+  );
+}
+
+function WaldoFace() {
+  // eslint-disable-next-line @next/next/no-img-element
+  return <img src="/assets/home/mascots/waldo-card.svg" alt="" />;
+}
+
+/** The designer leaving Waldo a comment on a frame in Figma, with a screenshot, and him answering under it */
+export function DesignerFigma() {
+  const root = useRef<HTMLDivElement>(null);
+  const flow = useRef<HTMLDivElement>(null);
+  const live = useLive(root);
+  const [comments, setComments] = useState<Comment[]>([
+    { id: -2, who: "you", text: DESIGNER[0].you, time: DESIGNER[0].time, art: DESIGNER[0].art },
+    { id: -1, who: "waldo", text: DESIGNER[0].waldo, time: DESIGNER[0].time },
+  ]);
+  const [draft, setDraft] = useState<string | null>(null);
+  const [attach, setAttach] = useState<{ art: Art; file: string } | null>(null);
+  const [typing, setTyping] = useState(false);
+  const scene = useRef(1);
+  const nextId = useRef(1);
+
+  useEffect(() => {
+    if (!live) return;
+    let alive = true;
+    const push = (c: Omit<Comment, "id" | "fresh">) =>
+      setComments((all) => [...all, { ...c, id: nextId.current++, fresh: true }].slice(-3));
+    (async () => {
+      while (alive) {
+        const { you, art, file, time, waldo } = DESIGNER[scene.current % DESIGNER.length];
+        for (let n = 1; n <= you.length && alive; n++) {
+          setDraft(you.slice(0, n));
+          await sleep(TYPE_MS);
+        }
+        if (!alive) return;
+        // The screenshot is dropped into the comment
+        if (art && file) {
+          await sleep(350);
+          setAttach({ art, file });
+          await sleep(900);
+        } else {
+          await sleep(500);
+        }
+        if (!alive) return;
+        setDraft(null);
+        setAttach(null);
+        push({ who: "you", text: you, time, art });
+        await sleep(800);
+        if (!alive) return;
+        setTyping(true);
+        await sleep(1700);
+        if (!alive) return;
+        setTyping(false);
+        push({ who: "waldo", text: waldo, time });
+        scene.current += 1;
+        await sleep(3400);
+      }
+    })();
+    return () => {
+      alive = false;
+      setDraft(null);
+      setAttach(null);
+      setTyping(false);
+    };
+  }, [live]);
+
+  useLift(flow, [comments, typing]);
+
+  return (
+    <div className="hats hats-fig" ref={root}>
+      <div className="hats-fig-bar">
+        <b>Onboarding</b>
+        <small>/ Empty states</small>
+        <span className="hats-fig-badge">Draft</span>
+        <span className="hats-fig-people" aria-hidden="true">
+          <i style={{ background: "#f5a623" }}>N</i>
+          <i className="hats-fig-waldo">
+            <WaldoFace />
+          </i>
+        </span>
+        <span className="hats-fig-share">Share</span>
+      </div>
+
+      <div className="hats-fig-canvas">
+        <div className="hats-fig-board" aria-hidden="true">
+          <span className="hats-fig-label">03 · Empty state</span>
+          <div className="hats-fig-frame">
+            <i className="hats-fig-w" data-kind="title" />
+            <i className="hats-fig-w" data-kind="art" />
+            <i className="hats-fig-w" data-kind="line" />
+            <i className="hats-fig-w" data-kind="line" data-short="" />
+            <i className="hats-fig-w" data-kind="button" />
+          </div>
+        </div>
+        <span className="hats-fig-pin" aria-hidden="true">
+          <i>N</i>
+        </span>
+
+        <div className="hats-fig-pop">
+          <div className="hats-fig-pophead">
+            <b>Empty state</b>
+            <span aria-hidden="true">
+              <svg viewBox="0 0 16 16">
+                <circle cx="8" cy="8" r="6.2" />
+                <path d="m5.2 8.2 2 2 3.6-4" />
+              </svg>
+              <svg viewBox="0 0 16 16" className="hats-fig-more">
+                <circle cx="3" cy="8" r="1.1" />
+                <circle cx="8" cy="8" r="1.1" />
+                <circle cx="13" cy="8" r="1.1" />
+              </svg>
+            </span>
+          </div>
+
+          <div className="hats-thread">
+            <div className="hats-flow" ref={flow}>
+              {comments.map((c, i) => (
+                <div
+                  key={c.id}
+                  className="hats-fig-comment"
+                  data-age={Math.min(comments.length - 1 - i + (typing ? 1 : 0), 3)}
+                  data-fresh={c.fresh ? "" : undefined}
+                >
+                  <span className="hats-fig-avatar" data-who={c.who}>
+                    {c.who === "waldo" ? <WaldoFace /> : "N"}
+                  </span>
+                  <div>
+                    <p className="hats-fig-head">
+                      <b>{c.who === "waldo" ? "Waldo" : "Noor"}</b>
+                      <time>{c.time}</time>
+                    </p>
+                    <p className="hats-fig-text">
+                      <Mention text={c.text} />
+                    </p>
+                    {c.art ? (
+                      <span className="hats-fig-img">
+                        <Pic art={c.art} />
+                      </span>
+                    ) : null}
+                  </div>
+                </div>
+              ))}
+              {typing ? (
+                <div className="hats-fig-comment" data-age="0" data-fresh="">
+                  <span className="hats-fig-avatar" data-who="waldo">
+                    <WaldoFace />
+                  </span>
+                  <p className="hats-fig-dots" aria-hidden="true">
+                    <i />
+                    <i />
+                    <i />
+                  </p>
+                </div>
+              ) : null}
+            </div>
+          </div>
+
+          <div className="hats-fig-composer" data-typing={draft !== null ? "" : undefined}>
+            {attach ? (
+              <span className="hats-fig-chip">
+                <span>
+                  <Pic art={attach.art} />
+                </span>
+                {attach.file}
+              </span>
+            ) : null}
+            <p>
+              {draft !== null ? (
+                <>
+                  <Mention text={draft} />
+                  <span className="hats-fig-caret" />
+                </>
+              ) : (
+                <span className="hats-fig-placeholder">Reply</span>
+              )}
+            </p>
+            <span className="hats-fig-send" data-on={draft !== null ? "" : undefined} aria-hidden="true">
+              <svg viewBox="0 0 14 16">
+                <path d="M7 14V2.5M2.5 7 7 2.5 11.5 7" />
+              </svg>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── 5 · Sales, in Slack ────────────────────────────────────────────────────────────────────────── */
+
+/** What Waldo did, as a Slack app would attach it under his reply: where it happened, what it is, a button */
+type SlackCard = { logo: "gmail" | "google-calendar"; label: string; title: string; line: string; was?: string; action: string };
+
+const SALES: { text?: string; media: Media; file?: string; time: string; waldo: string; card: SlackCard }[] = [
+  {
+    media: { kind: "voice", secs: 7, bars: bars(4, 9, 14, 8, 17, 11, 6, 15, 10, 5, 13, 8, 16, 7, 12, 6, 9, 4, 11, 5) },
+    time: "9:14 AM",
+    waldo: "Held Thursday, ten to twelve, your sharpest hours, for the proposal. The note to Dana is ready when you are.",
+    card: { logo: "gmail", label: "Draft · not sent", title: "To Dana Reyes", line: "Great talking today. The proposal lands Friday.", action: "Review" },
+  },
+  {
+    text: "where do we stand this week",
+    media: { kind: "image", art: "pipeline" },
+    file: "pipeline.png",
+    time: "11:02 AM",
+    waldo: "Three deals close this week. The Acme call moves to 2pm, your best hour. The rest can wait.",
+    card: { logo: "google-calendar", label: "Moved", title: "Acme renewal call", line: "Today, 2:00 PM", was: "11:00 AM", action: "Undo" },
+  },
+];
+
+type SlackMessage = { id: number; who: "you" | "waldo"; text?: string; media?: Media; card?: SlackCard; time: string; fresh?: boolean; react?: boolean };
+
+function SlackCardView({ card }: { card: SlackCard }) {
+  return (
+    <div className="hats-slk-card">
+      <div className="hats-slk-card-text">
+        <p className="hats-slk-card-label">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={`/assets/connectors/${card.logo}.svg`} alt="" />
+          {card.label}
+        </p>
+        <b>{card.title}</b>
+        <p className="hats-slk-card-line">
+          {card.line}
+          {card.was ? <s>{card.was}</s> : null}
+        </p>
+      </div>
+      <span className="hats-slk-card-btn">{card.action}</span>
+    </div>
+  );
+}
+
+/** The salesperson sending Waldo a voice clip, and a screenshot, in a Slack DM */
+export function SalesSlack() {
+  const root = useRef<HTMLDivElement>(null);
+  const flow = useRef<HTMLDivElement>(null);
+  const live = useLive(root);
+  const [messages, setMessages] = useState<SlackMessage[]>([
+    { id: -2, who: "you", media: SALES[0].media, time: SALES[0].time },
+    { id: -1, who: "waldo", text: SALES[0].waldo, card: SALES[0].card, time: SALES[0].time, react: true },
+  ]);
+  const [draft, setDraft] = useState<string | null>(null);
+  const [attach, setAttach] = useState<{ art: Art; file: string } | null>(null);
+  const [rec, setRec] = useState<number | null>(null);
+  const [typing, setTyping] = useState(false);
+  const scene = useRef(1);
+  const nextId = useRef(1);
+
+  useEffect(() => {
+    if (!live) return;
+    let alive = true;
+    const push = (m: Omit<SlackMessage, "id" | "fresh">) =>
+      setMessages((all) => [...all, { ...m, id: nextId.current++, fresh: true }].slice(-3));
+    (async () => {
+      while (alive) {
+        const { text, media, file, time, waldo, card } = SALES[scene.current % SALES.length];
+        if (text) {
+          for (let n = 1; n <= text.length && alive; n++) {
+            setDraft(text.slice(0, n));
+            await sleep(TYPE_MS);
+          }
+          await sleep(300);
+        }
+        if (media.kind === "voice") {
+          for (let s = 0; s <= media.secs && alive; s++) {
+            setRec(s);
+            await sleep(460);
+          }
+          setRec(null);
+        } else if (media.kind === "image" && file) {
+          setAttach({ art: media.art, file });
+          await sleep(1200);
+        }
+        if (!alive) return;
+        setDraft(null);
+        setAttach(null);
+        push({ who: "you", text, media, time });
+        await sleep(900);
+        if (!alive) return;
+        setTyping(true);
+        await sleep(1700);
+        if (!alive) return;
+        setTyping(false);
+        push({ who: "waldo", text: waldo, card, time });
+        scene.current += 1;
+        // Ria gives it a thumbs up
+        await sleep(1500);
+        if (!alive) return;
+        setMessages((all) => all.map((m, i) => (i === all.length - 1 ? { ...m, react: true } : m)));
+        await sleep(2400);
+      }
+    })();
+    return () => {
+      alive = false;
+      setDraft(null);
+      setAttach(null);
+      setRec(null);
+      setTyping(false);
+    };
+  }, [live]);
+
+  useLift(flow, [messages, typing]);
+
+  return (
+    <div className="hats hats-slk" ref={root}>
+      <div className="hats-slk-head">
+        <div className="hats-slk-who">
+          <span className="hats-slk-av" data-who="waldo">
+            <WaldoFace />
+            <i className="hats-slk-presence" />
+          </span>
+          <b>Waldo</b>
+          <small>APP</small>
+          <span className="hats-slk-huddle" aria-hidden="true">
+            <svg viewBox="0 0 16 16">
+              <path d="M2.4 9.6V8a5.6 5.6 0 0 1 11.2 0v1.6" />
+              <rect x="1.8" y="9" width="3" height="4.6" rx="1.2" />
+              <rect x="11.2" y="9" width="3" height="4.6" rx="1.2" />
+            </svg>
+            Huddle
+          </span>
+        </div>
+        <div className="hats-slk-tabs" aria-hidden="true">
+          <span data-on="">Messages</span>
+          <span>Files</span>
+          <span className="hats-slk-add">+</span>
+        </div>
+      </div>
+
+      <div className="hats-thread">
+        <div className="hats-flow" ref={flow}>
+          <p className="hats-slk-day" aria-hidden="true">
+            <span>Today</span>
+          </p>
+          {messages.map((m, i) => (
+            <div
+              key={m.id}
+              className="hats-slk-msg"
+              data-age={Math.min(messages.length - 1 - i + (typing ? 1 : 0), 3)}
+              data-fresh={m.fresh ? "" : undefined}
+            >
+              <span className="hats-slk-av" data-who={m.who}>
+                {m.who === "waldo" ? <WaldoFace /> : "R"}
+              </span>
+              <div>
+                <p className="hats-slk-meta">
+                  <b>{m.who === "waldo" ? "Waldo" : "Ria"}</b>
+                  {m.who === "waldo" ? <small>APP</small> : null}
+                  <time>{m.time}</time>
+                </p>
+                {m.text ? <p className="hats-slk-body">{m.text}</p> : null}
+                {m.media?.kind === "voice" ? (
+                  <span className="hats-slk-clip">
+                    <span className="hats-slk-play">{PLAY}</span>
+                    <span className="hats-slk-bars">
+                      {Array.from({ length: 30 }, (_, n) => (
+                        <i key={n} style={{ height: `${Math.max(18, (m.media as { bars: number[] }).bars[(n * 7) % (m.media as { bars: number[] }).bars.length] * 5)}%` }} />
+                      ))}
+                    </span>
+                    <small>{clock(m.media.secs)}</small>
+                  </span>
+                ) : null}
+                {m.media?.kind === "image" ? (
+                  <span className="hats-slk-file">
+                    <Pic art={m.media.art} />
+                  </span>
+                ) : null}
+                {m.card ? <SlackCardView card={m.card} /> : null}
+                {m.react ? (
+                  <span className="hats-slk-react">
+                    <em>👍</em>1
+                  </span>
+                ) : null}
+              </div>
+            </div>
+          ))}
+          {typing ? (
+            <div className="hats-slk-msg" data-age="0" data-fresh="">
+              <span className="hats-slk-av" data-who="waldo">
+                <WaldoFace />
+              </span>
+              <p className="hats-slk-dots" aria-hidden="true">
+                <i />
+                <i />
+                <i />
+              </p>
+            </div>
+          ) : null}
+        </div>
+      </div>
+
+      <div className="hats-slk-bar" data-rec={rec !== null ? "" : undefined}>
+        <div className="hats-slk-tools" aria-hidden="true">
+          <b>B</b>
+          <i>I</i>
+          <s>S</s>
+          <span>&lt;/&gt;</span>
+          <span>≡</span>
+        </div>
+        <div className="hats-slk-field">
+          {rec !== null ? (
+            <p className="hats-slk-rec">
+              <i />
+              <time>{clock(rec)}</time>
+              <span>Recording audio clip</span>
+            </p>
+          ) : (
+            <>
+              {attach ? (
+                <span className="hats-slk-chip">
+                  <span>
+                    <Pic art={attach.art} />
+                  </span>
+                  {attach.file}
+                </span>
+              ) : null}
+              <p>
+                {draft !== null ? (
+                  <>
+                    {draft}
+                    <span className="hats-slk-caret" />
+                  </>
+                ) : (
+                  <span className="hats-slk-placeholder">Message Waldo</span>
+                )}
+              </p>
+            </>
+          )}
+        </div>
+        <div className="hats-slk-foot" aria-hidden="true">
+          <svg viewBox="0 0 16 16" className="hats-slk-plus">
+            <path d="M8 2.5v11M2.5 8h11" />
+          </svg>
+          <span>Aa</span>
+          <span>@</span>
+          <svg viewBox="0 0 16 16" className="hats-slk-mic" data-on={rec !== null ? "" : undefined}>
+            <rect x="5.6" y="1.6" width="4.8" height="8" rx="2.4" />
+            <path d="M3.2 7.6a4.8 4.8 0 0 0 9.6 0M8 12.4v2" />
+          </svg>
+          <span className="hats-slk-send" data-on={attach || (rec !== null && rec > 0) || draft !== null ? "" : undefined}>
+            <svg viewBox="0 0 16 16">
+              <path d="M2 2.2 14 8 2 13.8l1.6-5.2L9 8 3.6 7.4 2 2.2Z" />
+            </svg>
+          </span>
+        </div>
       </div>
     </div>
   );

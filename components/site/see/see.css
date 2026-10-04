@@ -80,28 +80,23 @@
   display: grid;
   align-content: center;
   justify-items: start;
-  gap: 2px;
+  gap: 0;
   padding: 0;
   text-align: left;
 }
-.see-copy h3, .see-copy p { max-width: var(--copy-ch, 26ch); text-wrap: balance; }
-.see-copy h3 {
-  display: block;
-  margin: 0;
-  font-family: var(--font-body);
-  font-weight: 500;
-  font-size: var(--type-body);
-  line-height: var(--body-leading);
-  letter-spacing: 0.02em;
-  color: var(--ink);
-}
+/* One paragraph: the headline is its first words (ink, medium), the line after it carries on in the same
+   paragraph (body grey, regular) */
 .see-copy p {
   margin: 0;
+  max-width: var(--copy-ch, 26ch);
+  text-wrap: pretty;
   font-size: var(--type-body);
+  font-weight: 400;
   line-height: var(--body-leading);
   letter-spacing: 0.02em;
   color: #6b6b68;
 }
+.see-copy strong { font-weight: 500; color: var(--ink); }
 
 /* The picture side: the phone, cropped by the card's bottom edge, and on card 2 the follow-up beside it */
 .see-stage {
@@ -122,7 +117,13 @@
   --u: calc(100cqw / 517);
   /* Every line in the app screens: #1A1A1A at 8%, 0.5px. No drop shadows. */
   --see-edge: rgb(26 26 26 / 0.08);
-  --fs: max(12.5px, calc(16 * var(--u)));
+  /* Floors for the app's small text (phone.css): none on wide cards, where the phone is drawn at full
+     size; on narrower cards they keep labels, times, evidence and buttons readable (set below) */
+  --f-xs: 0px;
+  --f-sm: 0px;
+  --f-md: 0px;
+  --f-lg: 0px;
+  --fs: max(12.5px, var(--f-lg), calc(16 * var(--u)));
   position: relative;
   height: calc(980 * var(--u));
   overflow: hidden;
@@ -147,19 +148,22 @@
   padding-top: calc(80 * var(--u));
   box-sizing: border-box;
 }
-/* The bezel, over the screen's edges: the same picture as the hero's phone */
+/* The bezel, over the screen's edges: the same picture as the hero's phone (phone-bezel.png, 1350 x 1420).
+   Drawn with plain backgrounds, not border-image, so it shows in every browser (Safari left it out): the
+   top 1353px of the picture is laid at its own proportions across the width, and its last 67px row is
+   stretched down over the rest of the phone's height, so the phone can be any height. */
 .see-bezel {
   position: absolute;
   z-index: 4;
   inset: calc(-7.929 * var(--u)) calc(-4.8 * var(--u)) calc(-1.271 * var(--u)) calc(-5.094 * var(--u));
-  box-sizing: border-box;
-  border-style: solid;
-  border-color: transparent;
-  border-width: calc(528.06 * var(--u)) 0 0;
-  border-image-source: url(/assets/home/phone/phone-bezel.png);
-  border-image-slice: 1353 0 0 fill;
-  border-image-repeat: stretch;
+  background: url(/assets/home/phone/phone-bezel.png) top center / 100% auto no-repeat;
   pointer-events: none;
+}
+.see-bezel::after {
+  content: "";
+  position: absolute;
+  inset: calc(528.06 * var(--u)) 0 0;
+  background: url(/assets/home/phone/phone-bezel.png) bottom center / 100% calc(100% * 1420 / 67) no-repeat;
 }
 /* The mockup's own drawings (status bar, Overview header), at the phone's size, over the screen */
 .see-mock { position: absolute; z-index: 3; top: 0; left: 0; width: 100%; height: auto; pointer-events: none; user-select: none; }
@@ -173,14 +177,30 @@
   .see { --see-gap: 10px; }
 }
 
-/* Narrow cards: the words get their own place at the top, centred, about 28 to 32 characters a line,
-   with a set gap before the phone. Same 16px; only where it sits changes. */
+/* Narrow cards (tablet and phone): the words get their own place at the top, centred, above the phone.
+   The 16px rule is for wide cards only; here the one paragraph is set for the layout: 16px on a
+   phone-width card growing to 18px on a tablet-width one, about 34 characters a line. */
 @container see-card (max-width: 759px) {
-  .see-inner, .see-card-slide[data-card="chat"] .see-inner { grid-template-columns: 1fr; grid-template-rows: auto 1fr; padding-left: 0; height: 660px; }
-  .see-copy { align-content: start; justify-items: center; padding: 24px 24px 0; text-align: center; }
-  .see-copy h3, .see-copy p { max-width: min(100%, var(--copy-ch-narrow, 32ch)); }
-  .see-stage { padding-top: 24px; }
-  .see-inner { --ph: min(380px, 88cqi); }
+  .see-inner, .see-card-slide[data-card="chat"] .see-inner { grid-template-columns: 1fr; grid-template-rows: auto 1fr; padding-left: 0; height: 780px; }
+  .see-copy { align-content: start; justify-items: center; gap: 0; padding: 44px 24px 0; text-align: center; }
+  .see-copy p {
+    max-width: min(100%, 34ch);
+    font-size: clamp(16px, calc(14.2px + 0.55cqi), 18px);
+    line-height: 1.42;
+    letter-spacing: 0.01em;
+  }
+  .see-stage { padding-top: 36px; }
+  /* The phone is drawn as large as on a wide card when there is room, never smaller than it needs to be */
+  .see-inner { --ph: min(440px, 66cqi); }
+  /* the app's small text keeps a readable size while the phone is drawn smaller than on a wide card */
+  .see-phone { --f-xs: 10.5px; --f-sm: 11.5px; --f-md: 12.5px; --f-lg: 13.5px; }
+}
+/* Phone-width cards: the phone is drawn larger than the card and cropped at its sides, so the screen
+   fills the card; the bezel's edges fall outside. The copy sits a little closer to the top. */
+@container see-card (max-width: 480px) {
+  .see-inner { --ph: min(440px, 112cqi); height: 760px; }
+  .see-copy { padding-top: 36px; }
+  .see-stage { padding-top: 28px; }
 }
 
 /* ── Arrival ──

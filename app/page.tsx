@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Fragment } from "react";
 
 import { AgentsChat } from "@/components/site/agents-chat";
 import { ConnectorRows } from "@/components/site/connector-rows";
 import {
+  DesignerFigma,
   EngineerCli,
   FounderWhatsApp,
   InvestorWatch,
+  SalesSlack,
 } from "@/components/site/hats-scenes";
 import { LearningWeeks } from "@/components/site/learning-weeks";
 import {
@@ -20,9 +21,9 @@ import {
 } from "@/components/site/blocks";
 import { Carousel } from "@/components/site/carousel";
 import { SeeSection } from "@/components/site/see/see-section";
-import { ConsoleTour } from "@/components/site/console-tour";
-import { type Feature, FeatureList } from "@/components/site/feature-sheet";
 import { SiteShell } from "@/components/site/site-shell";
+import { LiveClose } from "@/components/site/live-close";
+import { TrustWindow } from "@/components/site/trust-window";
 import { WaldoLoop } from "@/components/site/waldo-loop";
 import {
   OG_DESCRIPTION,
@@ -50,48 +51,6 @@ export const metadata: Metadata = {
     images: [OG_IMAGE_URL],
   },
 };
-
-const CONTROLS: Feature[] = [
-  {
-    name: "Autonomy",
-    line: "Three stages. Pick one, and move it anytime.",
-    detail: [
-      <Fragment key="tell">
-        <strong>Tell me.</strong> Waldo says what it would do, and waits. Nothing changes until you say so.
-      </Fragment>,
-      <Fragment key="ask">
-        <strong>Ask me.</strong> Waldo drafts the move, you approve it. Skip one and nothing is sent.
-      </Fragment>,
-      <Fragment key="do">
-        <strong>Just do it.</strong> Waldo acts, logs what it did, and you can undo anything in one tap.
-      </Fragment>,
-    ],
-  },
-  {
-    name: "Only what you connect",
-    line: "Waldo reaches the tools you allow, and nothing else.",
-    detail: ["Every connection is listed in the console, with what Waldo can reach through it."],
-  },
-  {
-    name: "Metadata, not messages",
-    line: "Volume, timing and urgency. Never what your messages say.",
-    detail: ["Waldo uses how many, how often and how urgent to plan your day. The words in your messages stay private."],
-  },
-  {
-    name: "Health is context",
-    line: "It shapes your day. It never makes medical decisions.",
-    detail: [
-      "Sleep and stress help Waldo decide what to move and what to protect. They feed a plan for your day, not a diagnosis, and Waldo gives no medical advice.",
-    ],
-  },
-  {
-    name: "Never sold, never trained on",
-    line: "Your data stays yours.",
-    detail: [
-      "Waldo does not sell your data, train on it or share it with third parties. It is encrypted at rest and in transit.",
-    ],
-  },
-];
 
 const announcement = (
   <div className="site-container">
@@ -130,98 +89,86 @@ export default function Home() {
         </Section>
       </div>
 
-      {/* 2b · What you see of it: five views of the hero's story, a carousel with no end and no heading
-          (docs/website/what-you-see-plan.md) */}
-      <Section size="auto">
-        <SeeSection />
-      </Section>
-
-      {/* 3 · The problem */}
+      {/* 2b · Every tool, handled: five cards (the last two moved up from the removed "Agents do tasks" section). Swapped with "What you see of it" on 2026-10-04: it now follows the hero. */}
       <Section>
         <Header
-          lines={["Co-ordinating your data with AI", "shouldn’t be your job."]}
-          subtitle="More apps, more agents, more data about you. All of it still waits on you to read it, brief it, check it and decide."
+          lines={["You can’t keep up", "with everything. Waldo can."]}
+          center
         />
         <Body>
-          <Carousel label="What you're carrying">
+          <Carousel label="What you're carrying" loop>
             <Item
-              visual="Health data piling up across apps, and nothing acting on it"
+              visual="Months of health data in a watch and a recovery app, and nothing acting on it"
               image="/assets/home/problem/watch-recovery.svg"
               plain
-              strong="Your watch knows. Nothing acts."
+              strong="Your health data is huge. Almost none of it gets used."
             >
-              It knows you slept five hours and your stress is up. Your calendar
-              still has four meetings before noon.
+              Months of sleep, heart rate and recovery sit in your watch, WHOOP
+              or Oura, in breakdowns most of us never learn to apply. Pasting a
+              few readings into a chat never compounds. Waldo reads all of it,
+              every day, and turns it into a plan.
             </Item>
             <Item
               visual="You, spread across accounts, apps and agents"
               scene={<ConnectorRows />}
-              strong="Every new tool wants your life story."
+              strong="Every tool needs teaching. None knows the day you’re having."
             >
-              A better tool shows up, and you spend an hour teaching it who you
-              are. Then the next one shows up.
+              You spend hours telling each tool and AI who you are, and it still
+              falls short. They&apos;re built for a normal day. On no food, little
+              sleep and back-to-back meetings, nothing connects the dots. Waldo
+              does, and fixes the cause, not the symptom.
             </Item>
             <Item
               visual="An agent's finished work, waiting on you to review it"
               image="/assets/home/problem/agent-diffs.svg"
               plain
-              strong="Every agent reports to you."
+              strong="Chat AI writes walls of text you can’t review."
               link={{ label: "This is where Kennel starts →", href: "/kennel" }}
             >
-              Agents finish tasks, but you hold the why. Every re-brief, every
-              review and every &ldquo;what did you mean?&rdquo; runs through
-              you.
-            </Item>
-          </Carousel>
-        </Body>
-      </Section>
-
-      {/* 4 · An agent, not a product */}
-      <Section>
-        <Header
-          lines={["Agents do tasks.", "Waldo carries outcomes."]}
-          subtitle="An agent can finish the code while the release is still blocked. Waldo stays on it until the release ships, and only pulls you in when it's your call."
-          actions={{ primary: { label: "Let Waldo in →", href: "/waitlist" } }}
-        />
-        <Body>
-          <Carousel label="What Waldo does differently">
-            <Item
-              title="Never makes you explain twice."
-              visual="Your accounts, health and work, held as one context"
-              image="/assets/home/never-explain-twice.svg"
-              plain
-            >
-              Remembers the people, the context and how you like it done. Say it
-              once. It sticks.
+              Its memory is gone when you change chats, you can&apos;t add all your
+              context by hand, and each one locks you into its own ecosystem. It
+              waits to be asked, with no consumer app on top. Waldo remembers
+              across everything, speaks up when it matters, and works with every
+              agent.
             </Item>
             <Item
-              title="Works with every agent."
               visual="A text thread with Waldo: you name the agents in the message, he answers in one line"
               scene={<AgentsChat />}
+              strong="Text agents run where you can’t see."
             >
-              Claude, Codex, or whatever ships next. Waldo runs them and hands
-              you back one result.
+              Your data is processed online, with no way to see how, and nothing
+              you control. Waldo shows what he can access and what he does, and
+              lets you take access back.
             </Item>
             <Item
-              title="Knows what kind of day it is."
               visual="The same Tuesday over three weeks: Waldo asks, then suggests, then just does it, as he learns you"
               scene={<LearningWeeks />}
+              strong="Everyone’s day has its own rhythm."
             >
-              The same request gets a different plan on a rough day. Waldo can
-              tell which day you&apos;re having.
+              Busy people either spend real time working out what to do when, or
+              let things happen. Waldo learns your rhythm, tells a rough day from
+              an easy one and plans around it. He looks after your day the way a
+              considerate person would.
             </Item>
           </Carousel>
         </Body>
       </Section>
 
-      {/* 5 · Who it's for */}
+      {/* 3 · What you see of it (after "Every tool, handled" since 2026-10-04): five views of the hero's story, a carousel with no end and no heading
+          (docs/website/what-you-see-plan.md) */}
+      <Section size="auto">
+        <SeeSection />
+      </Section>
+
+      {/* 4 · Who it's for */}
       <Section>
         <Header
           lines={["Same Waldo.", "Different hats."]}
-          subtitle="Starting with founders, engineers and investors, the people already running several agents at once."
+          subtitle="The same Waldo, in the place each of them already works."
+          center
         />
         <Body>
-          <Carousel label="Who Waldo works for">
+          <Carousel label="Who Waldo works for" loop>
             <Item
               title="Founders"
               visual="A founder travelling, sending Waldo a photo, a voice note and a clip in WhatsApp"
@@ -246,66 +193,41 @@ export default function Home() {
               Pitches spaced to what you can actually give. The founder at pitch
               five gets your pitch-one attention.
             </Item>
+            <Item
+              title="Designers"
+              visual="A designer leaving Waldo a comment on a frame in Figma, with a screenshot, and him answering under it"
+              scene={<DesignerFigma />}
+            >
+              The crit is at 3 and the empty states aren&apos;t done. Waldo gives
+              you the clearest hours before it and moves the review back.
+            </Item>
+            <Item
+              title="Sales"
+              visual="A salesperson sending Waldo a voice clip and a screenshot of the pipeline in a Slack message"
+              scene={<SalesSlack />}
+            >
+              Your most important call lands in your best hour. The follow-up is
+              drafted before you hang up.
+            </Item>
           </Carousel>
         </Body>
       </Section>
 
-      {/* 6 · Trust: one white box, edge to edge. Centred title and text, the console, then the controls */}
-      <section className="site-section site-section--box">
-        <div className="site-box">
-          <div className="site-box-head">
-            <Header
-              lines={["Waldo does as much as you let it.", "Then shows its work."]}
-              subtitle="Start with Waldo only telling you what it would do. Hand over more when you’re ready. Everything it remembers, and everything it does, sits in your console in plain sight. On a leash you hold."
-            />
-          </div>
-          <ConsoleTour />
-          <div className="site-box-foot site-container">
-            <FeatureList label="Your controls" section="Your controls" features={CONTROLS} />
-          </div>
+      {/* 5 · Trust: one box, the heading in it, and one app window rising out of its foot that holds what Waldo can
+          see, do and keep and where it goes (docs/website/trust-carousel-review.md) */}
+      <Section size="auto">
+        <div className="tv">
+          <Header
+            lines={["Your context.", "Your call."]}
+            subtitle="What he can access. What he can do. What he keeps."
+            actions={{ secondary: { label: "Read the Privacy page", href: "/privacy" } }}
+            center
+          />
+          <TrustWindow />
         </div>
-      </section>
-
-      {/* 7 · Where Waldo lives */}
-      <Section>
-        <Header
-          lines={["Where’s Waldo?", "Wherever you are."]}
-          subtitle="It starts on your Mac, comes to your iPhone next, and answers in the chats you already use."
-        />
-        <Body>
-          <Carousel label="Where Waldo lives">
-            <Item
-              meta="Open beta"
-              title="Kennel for Mac"
-              href="/kennel"
-              visual="Kennel in the Mac menu bar, around the notch"
-              image="/build/menubar-illustration.svg"
-              link={{ label: "See Kennel →", href: "/kennel" }}
-            >
-              Lives in the notch. Shows what Waldo is working on, and what needs
-              you.
-            </Item>
-            <Item
-              meta="Coming soon"
-              title="Waldo for iPhone"
-              visual="Waldo's overview on iPhone"
-              image="/build/phone-mockup.png"
-            >
-              Where Waldo gets to know the person behind the work.
-            </Item>
-            <Item
-              meta="Coming soon"
-              title="Messaging & browser"
-              visual="Asking Waldo in a chat thread"
-              image="/assets/home/agent-ask-thread.svg"
-            >
-              Talk to the same Waldo in WhatsApp, Slack or your browser.
-            </Item>
-          </Carousel>
-        </Body>
       </Section>
 
-      {/* 8 · Questions */}
+      {/* 6 · Questions */}
       <Section size="auto">
         <Header lines={["You’re going to", "ask these."]} />
         <Body>
@@ -349,14 +271,8 @@ export default function Home() {
         </Body>
       </Section>
 
-      {/* 9 · Close */}
-      <Section>
-        <Header
-          lines={["Your agents aren’t going", "to fix your life."]}
-          subtitle="One Waldo across work and life, carrying what matters so you don't have to."
-          actions={{ primary: { label: "Let Waldo in →", href: "/waitlist" } }}
-        />
-      </Section>
+      {/* 7 · Close: the live build's hero section, copied as it is (components/site/live-close.tsx) */}
+      <LiveClose />
     </SiteShell>
   );
 }

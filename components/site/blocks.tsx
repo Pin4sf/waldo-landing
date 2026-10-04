@@ -92,6 +92,7 @@ export function Header({
   body,
   actions,
   reveal,
+  center,
 }: {
   label?: string;
   lines: string[];
@@ -100,6 +101,8 @@ export function Header({
   body?: ReactNode | ReactNode[];
   actions?: { primary?: LinkSpec; secondary?: LinkSpec };
   reveal?: Reveal;
+  /** Title and text centred on the page, as in the home hero */
+  center?: boolean;
 }) {
   const Heading = as;
   const bodies = Array.isArray(body) ? body : body ? [body] : [];
@@ -113,7 +116,7 @@ export function Header({
   const actionsDelay = actions ? revealDelay(step + 1.5) : undefined;
 
   return (
-    <div className="site-header-block" data-reveal={mode === "none" ? undefined : mode}>
+    <div className="site-header-block" data-reveal={mode === "none" ? undefined : mode} data-center={center ? "" : undefined}>
       {label ? (
         <p className="site-label site-rv" style={labelDelay}>
           {label}
@@ -193,6 +196,7 @@ export function Item({
   cover,
   plain,
   scene,
+  panel,
   eager,
   strong,
   children,
@@ -207,6 +211,8 @@ export function Item({
   plain?: boolean;
   /** The picture is drawn in code (a moving scene) instead of being an image file */
   scene?: ReactNode;
+  /** The scene has controls in it (a panel you can open), so it is read out and focusable, and the frame isn't pressed like a picture */
+  panel?: boolean;
   eager?: boolean;
   strong?: ReactNode;
   children?: ReactNode;
@@ -219,7 +225,13 @@ export function Item({
         <h3 className="site-item-title">{href ? <SiteAnchor href={href}>{title}</SiteAnchor> : title}</h3>
       ) : null}
       {visual && scene ? (
-        <div className="site-visual site-visual--image site-visual--plain site-visual--scene" data-visual={visual} aria-hidden="true">
+        <div
+          className={`site-visual site-visual--image site-visual--plain site-visual--scene${panel ? " site-visual--panel" : ""}`}
+          data-visual={visual}
+          aria-hidden={panel ? undefined : true}
+          role={panel ? "group" : undefined}
+          aria-label={panel ? visual : undefined}
+        >
           {scene}
         </div>
       ) : visual ? (
@@ -227,8 +239,18 @@ export function Item({
       ) : null}
       {strong || children ? (
         <div className="site-item-text">
-          {strong ? <strong>{strong}</strong> : null}
-          {typeof children === "string" ? <p>{children}</p> : children}
+          {/* The first line (ink, medium) and the rest (grey, regular) are one paragraph */}
+          {strong && (typeof children === "string" || !children) ? (
+            <p>
+              <strong>{strong}</strong>
+              {children ? <> {children}</> : null}
+            </p>
+          ) : (
+            <>
+              {strong ? <p><strong>{strong}</strong></p> : null}
+              {typeof children === "string" ? <p>{children}</p> : children}
+            </>
+          )}
         </div>
       ) : null}
       {link ? (

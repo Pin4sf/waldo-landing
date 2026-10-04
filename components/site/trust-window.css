@@ -1,0 +1,209 @@
+/* "Your context. Your call.": one rounded box, a centred heading in it, and one app window rising out of its
+   foot (trust-window.tsx). The window tells one small story in five beats: a calendar that stays, and a card
+   that changes with the beat. It is the product's own look: SF Pro, 0.5px hairlines at 8%, pills for buttons,
+   ink for what needs you, the orange only for something held. No shadows. Sizes are in px (the window is wider
+   than a phone and is recomposed, not scaled, on narrow screens). */
+
+.tv {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(44px, 7vw, 92px) clamp(0px, 3vw, 24px) 0;
+  border-radius: var(--box-radius);
+  corner-shape: var(--box-corner);
+  background: color-mix(in srgb, var(--ink) 3.5%, var(--surface-t2));
+  box-shadow: inset 0 0 0 0.5px color-mix(in srgb, var(--ink) 8%, transparent);
+}
+
+.tw {
+  --tw-ink: #1a1a1a;
+  --tw-grey: #6b6b68;
+  --tw-faint: #8d8b86;
+  --tw-line: rgb(26 26 26 / 0.08);
+  --tw-fill: #f4f3f0;
+  --hr: 40px; /* one hour in the calendar */
+  position: relative;
+  width: min(940px, 100%);
+  margin: clamp(36px, 5vw, 64px) auto 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  border-radius: 20px 20px 0 0;
+  background: #fff;
+  box-shadow: 0 0 0 0.5px rgb(26 26 26 / 0.1);
+  text-align: left;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.35;
+  color: var(--tw-ink);
+  -webkit-user-select: none;
+  user-select: none;
+}
+.tw :is(h3, p, ul, ol) { margin: 0; }
+.tw :is(ul, ol) { padding: 0; list-style: none; }
+
+/* Title bar */
+.tw-bar { display: flex; align-items: center; gap: 7px; height: 46px; padding: 0 18px; border-bottom: 0.5px solid var(--tw-line); }
+.tw-bar i { width: 11px; height: 11px; border-radius: 50%; background: #ff5f57; }
+.tw-bar i:nth-child(2) { background: #febc2e; }
+.tw-bar i:nth-child(3) { background: #28c840; }
+.tw-bar span { flex: 1; display: flex; align-items: baseline; justify-content: center; gap: 8px; margin-right: 52px; }
+.tw-bar b { font-size: 13.5px; font-weight: 600; }
+.tw-bar small { font-size: 12.5px; color: var(--tw-faint); }
+
+.tw-chip { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; background: var(--tw-fill); color: var(--tw-ink); font-size: 12.5px; font-weight: 500; white-space: nowrap; }
+.tw-chip i { width: 7px; height: 7px; border-radius: 50%; background: #b5b3ad; }
+.tw-chip[data-dot="green"] i { background: #22c55e; }
+.tw-chip[data-dot="orange"] i { background: var(--accent, #f97316); }
+.tw-chip .tw-mask { width: 12px; height: 12px; }
+.tw-logo { display: block; flex: none; width: 24px; height: 24px; object-fit: contain; }
+.tw-mask { display: block; flex: none; width: 15px; height: 15px; background-color: currentColor; -webkit-mask: var(--icon) center / contain no-repeat; mask: var(--icon) center / contain no-repeat; }
+
+/* The five steps of the story, along the top: buttons, so you can go straight to one */
+.tw-steps { display: flex; align-items: center; gap: 4px; padding: 18px 28px 0; overflow-x: auto; scrollbar-width: none; }
+.tw-steps::-webkit-scrollbar { display: none; }
+.tw-step { display: inline-flex; flex: none; align-items: center; gap: 8px; padding: 5px 13px 5px 5px; border: 0; border-radius: 999px; background: transparent; color: var(--tw-faint); font: inherit; font-size: 13px; font-weight: 500; cursor: pointer; transition: background-color 0.3s var(--ease-out-quad), color 0.3s var(--ease-out-quad); }
+.tw-step i { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--tw-fill); color: var(--tw-grey); font-style: normal; font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums; transition: background-color 0.3s var(--ease-out-quad), color 0.3s var(--ease-out-quad); }
+.tw-step .tw-mask { width: 11px; height: 11px; }
+.tw-step[data-state="past"] { color: var(--tw-grey); }
+.tw-step[data-state="now"] { background: var(--tw-ink); color: #fff; }
+.tw-step[data-state="now"] i { background: rgb(255 255 255 / 0.2); color: #fff; }
+.tw-step:hover:not([data-state="now"]) { background: var(--tw-fill); }
+.tw-step:focus-visible { outline: 2px solid var(--tw-ink); outline-offset: 2px; }
+
+/* The words of the beat */
+.tw-words { min-height: 104px; padding: 22px 32px 0; }
+.tw-title { font-size: 22px; font-weight: 600; letter-spacing: -0.015em; line-height: 1.2; }
+.tw-text { max-width: 60ch; margin-top: 8px; font-size: 14.5px; line-height: 1.42; color: var(--tw-grey); }
+
+/* The stage: the calendar that stays, and the card of the beat */
+.tw-stage { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 22px; align-items: start; padding: 22px 32px 0; }
+
+/* Calendar: Tuesday, where the clash is, and Thursday, where it goes */
+.tw-cal { box-sizing: border-box; border-radius: 18px 18px 0 0; box-shadow: inset 0 0 0 0.5px rgb(26 26 26 / 0.14); background: #fff; overflow: hidden; }
+.tw-cal-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; height: 44px; padding: 0 14px 0 16px; border-bottom: 0.5px solid var(--tw-line); }
+.tw-cal-title { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; }
+.tw-cal-body { display: grid; grid-template-columns: 42px minmax(0, 1fr) minmax(0, 1fr); }
+.tw .tw-gutter { padding-top: 30px; }
+.tw-gutter li { height: var(--hr); padding-left: 12px; font-size: 11px; line-height: 1; color: var(--tw-faint); font-variant-numeric: tabular-nums; transform: translateY(-5px); }
+.tw-day { border-left: 0.5px solid var(--tw-line); min-width: 0; }
+.tw-day-name { display: flex; align-items: baseline; justify-content: center; gap: 5px; height: 30px; padding-top: 7px; box-sizing: border-box; font-size: 12px; color: var(--tw-faint); }
+.tw-day-name b { font-weight: 600; color: var(--tw-ink); }
+.tw-day-col { position: relative; height: calc(8 * var(--hr)); border-top: 0.5px solid var(--tw-line); background-image: repeating-linear-gradient(to bottom, transparent 0, transparent calc(var(--hr) - 1px), var(--tw-line) calc(var(--hr) - 1px), var(--tw-line) var(--hr)); }
+
+.tw-block { position: absolute; top: calc(var(--at) * var(--hr) + 1px); left: 4px; right: 4px; height: calc(var(--len) * var(--hr) - 2px); box-sizing: border-box; display: flex; flex-direction: column; gap: 1px; padding: 5px 7px; overflow: hidden; border-radius: 8px; background: #eceae4; font-size: 11.5px; line-height: 1.2; transition: opacity 0.5s var(--ease-out-quad), transform 0.7s cubic-bezier(0.2, 1.3, 0.4, 1), background-color 0.4s var(--ease-out-quad), box-shadow 0.4s var(--ease-out-quad); }
+.tw-block[data-half="l"] { right: calc(50% + 2px); }
+.tw-block[data-half="r"] { left: calc(50% + 2px); }
+.tw-block b { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tw-block small { font-size: 11px; color: var(--tw-grey); }
+.tw-block[data-tone="ink"] { background: var(--tw-ink); color: #fff; }
+.tw-block[data-tone="ink"] small { color: rgb(255 255 255 / 0.65); }
+/* a half-hour meeting is one line */
+.tw-block[data-short] { flex-direction: row; align-items: center; gap: 7px; padding: 0 8px; }
+/* held: the meeting he is asking about; ghost: where he would put it; gone: not there */
+.tw-block[data-state="held"] { background: color-mix(in srgb, var(--accent, #f97316) 12%, #fff); box-shadow: inset 0 0 0 1.5px var(--accent, #f97316); }
+.tw-block[data-state="ghost"] { background: transparent; box-shadow: none; border: 1.5px dashed var(--accent, #f97316); padding: 4px 7px; }
+.tw-block[data-state="gone"] { opacity: 0; transform: scale(0.94); pointer-events: none; }
+
+/* The calendar being read: a band sweeps down both days */
+.tw-scan { position: absolute; left: 0; right: 0; top: 0; height: 46px; opacity: 0; pointer-events: none; background: linear-gradient(180deg, transparent, rgb(26 26 26 / 0.07)); border-bottom: 1.5px solid rgb(26 26 26 / 0.3); transform: translateY(-46px); }
+.tw-focus { position: absolute; left: 0; right: 0; top: 0; height: calc(3 * var(--hr)); box-sizing: border-box; padding: 6px 10px; background: rgb(34 197 94 / 0.11); font-size: 11px; font-weight: 600; color: #15803d; opacity: 0; transition: opacity 0.6s var(--ease-out-quad); }
+.tw-focus[data-on] { opacity: 1; }
+
+/* The beat's card */
+.tw-beatcard { min-height: 330px; }
+.tw-card { box-sizing: border-box; padding: 16px 18px 18px; border-radius: 18px; corner-shape: var(--box-corner); box-shadow: inset 0 0 0 0.5px rgb(26 26 26 / 0.14); background: #fff; }
+.tw-card-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
+.tw-card-kind { font-size: 13px; font-weight: 500; color: var(--tw-faint); }
+
+.tw-who { display: flex; align-items: center; gap: 12px; padding-bottom: 12px; border-bottom: 0.5px solid var(--tw-line); }
+.tw-logos { display: inline-flex; }
+.tw-logos .tw-logo + .tw-logo { margin-left: -6px; }
+.tw-who-text { display: grid; min-width: 0; }
+.tw-who-text b { font-size: 15px; font-weight: 600; }
+.tw-who-text small { font-size: 12.5px; color: var(--tw-grey); }
+.tw-scopes li { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 11px 0; border-bottom: 0.5px solid var(--tw-line); font-size: 14px; }
+.tw-scopes li:last-child { border-bottom: 0; padding-bottom: 0; }
+.tw-scopes b { font-weight: 500; }
+.tw-scopes span { font-size: 13px; color: var(--tw-grey); }
+
+.tw-req-title { font-size: 17px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.3; }
+.tw-req-sub { display: block; margin-top: 6px; font-size: 12.5px; line-height: 1.4; color: var(--tw-grey); }
+.tw-req-actions { display: flex; gap: 8px; margin-top: 16px; }
+.tw-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 36px; padding: 0 20px; border-radius: 999px; font-size: 13.5px; font-weight: 500; box-shadow: inset 0 0 0 0.5px rgb(26 26 26 / 0.18); color: var(--tw-ink); transition: transform 0.2s var(--ease-out-quad), background-color 0.2s var(--ease-out-quad); }
+.tw-btn[data-primary] { background: var(--tw-ink); color: #fff; box-shadow: none; }
+.tw-btn[data-press] { transform: scale(0.92); background: #3a3a38; }
+.tw-btn[data-quiet] { background: #fff; }
+
+.tw-note-text { font-size: 17px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.3; border-radius: 6px; }
+.tw-field { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 40px; margin-top: 14px; box-sizing: border-box; padding: 4px 5px 4px 16px; border-radius: 999px; box-shadow: inset 0 0 0 0.5px rgb(26 26 26 / 0.18); font-size: 13.5px; color: var(--tw-faint); transition: box-shadow 0.2s var(--ease-out-quad); }
+.tw-field[data-typing] { box-shadow: inset 0 0 0 1px var(--tw-ink); color: var(--tw-ink); }
+.tw-field > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tw-send { display: grid; place-items: center; flex: none; width: 30px; height: 30px; border-radius: 50%; background: #e4e3df; transition: background-color 0.2s var(--ease-out-quad); }
+.tw-send svg { width: 13px; height: 14px; fill: none; stroke: #fff; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+.tw-send[data-on] { background: var(--tw-ink); }
+.tw-talk { display: flex; flex-direction: column; gap: 8px; height: 118px; margin-top: 12px; overflow: hidden; }
+.tw-bubble { max-width: 88%; padding: 8px 14px; border-radius: 18px; font-size: 13.5px; line-height: 1.3; }
+.tw-bubble--you { align-self: flex-end; background: var(--tw-ink); color: #fff; border-bottom-right-radius: 6px; }
+.tw-bubble--waldo { align-self: flex-start; background: var(--tw-fill); border-bottom-left-radius: 6px; }
+.tw-dots { display: flex; gap: 4px; padding: 12px 14px; }
+.tw-dots i { width: 6px; height: 6px; border-radius: 50%; background: #9a9893; }
+
+.tw-services li { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 0.5px solid var(--tw-line); }
+.tw-services li:first-child { padding-top: 0; }
+.tw-services li:last-child { border-bottom: 0; padding-bottom: 0; }
+.tw-services .tw-logo { margin-top: 1px; }
+.tw-services span { display: grid; gap: 1px; min-width: 0; font-size: 13px; line-height: 1.4; color: var(--tw-grey); }
+.tw-services b { font-size: 14px; font-weight: 500; color: var(--tw-ink); }
+
+/* Narrower: the calendar and the card stack, the steps scroll, and only the step you are on keeps its name */
+@media (max-width: 859px) {
+  .tw-step:not([data-state="now"]) > span { display: none; }
+  .tw-step:not([data-state="now"]) { padding-right: 5px; }
+  .tw-stage { grid-template-columns: minmax(0, 1fr); }
+  .tw-beatcard { min-height: 0; }
+  .tw-words { min-height: 128px; }
+}
+@media (max-width: 759px) {
+  .tv { padding-inline: 0; }
+  .tw { --hr: 32px; width: calc(100% - 16px); }
+  .tw-cal-body { grid-template-columns: 34px minmax(0, 1fr) minmax(0, 1fr); }
+  .tw-gutter li { padding-left: 8px; font-size: 10.5px; }
+  /* two meetings side by side in a narrow day: the names wrap and the times go */
+  .tw-block[data-half] { padding: 4px 4px; font-size: 10px; line-height: 1.15; }
+  .tw-block[data-half] b { white-space: normal; text-overflow: clip; }
+  .tw-block[data-half] small { display: none; }
+  .tw-block:not([data-short]) small { display: none; }
+  .tw-block:not([data-short]) { justify-content: center; padding-block: 2px; }
+  .tw-steps { padding-inline: 16px; }
+  .tw-words { padding: 20px 20px 0; min-height: 168px; }
+  .tw-title { font-size: 20px; }
+  .tw-stage { padding: 18px 12px 0; }
+  .tw-bar span { margin-right: 36px; }
+  .tw-talk { height: 150px; }
+  .tw-beatcard { min-height: 330px; }
+}
+
+/* Motion: the window arrives once; each beat's card and words rise in; the calendar is read, a held meeting
+   breathes, and the one that is moving is the one that moves */
+@keyframes tw-rise { from { opacity: 0; transform: translateY(12px); } }
+@keyframes tw-pop { from { opacity: 0; transform: translateY(14px) scale(0.97); } }
+@keyframes tw-flash { from { background-color: rgb(34 197 94 / 0.22); } to { background-color: transparent; } }
+@keyframes tw-scan { 0% { opacity: 0; transform: translateY(-46px); } 12% { opacity: 1; } 88% { opacity: 1; } 100% { opacity: 0; transform: translateY(calc(8 * var(--hr))); } }
+@keyframes tw-hold { 50% { box-shadow: inset 0 0 0 1.5px var(--accent, #f97316), 0 0 0 4px color-mix(in srgb, var(--accent, #f97316) 18%, transparent); } }
+@media (prefers-reduced-motion: no-preference) {
+  .tw[data-armed]:not([data-seen]) .tw-in { opacity: 0; }
+  .tw[data-seen] .tw-in { animation: tw-rise 0.7s var(--ease-sheet) backwards; animation-delay: calc(120ms + var(--i, 0) * 120ms); }
+  .tw-title, .tw-text { animation: tw-rise 0.5s var(--ease-sheet) both; }
+  .tw-text { animation-delay: 70ms; }
+  .tw-card { animation: tw-pop 0.55s var(--ease-sheet) both; }
+  .tw-scopes li, .tw-services li { animation: tw-rise 0.5s var(--ease-sheet) both; animation-delay: calc(240ms + var(--i, 0) * 110ms); }
+  .tw-note-text[data-fresh] { animation: tw-flash 1.6s ease-out both; }
+  .tw-bubble { animation: tw-rise 0.45s var(--ease-sheet) both; }
+  .tw-dots i { animation: site-chat-wave 1.2s ease-in-out infinite; }
+  .tw-dots i:nth-child(2) { animation-delay: 0.2s; }
+  .tw-dots i:nth-child(3) { animation-delay: 0.4s; }
+  .tw[data-beat="0"][data-live] .tw-scan { animation: tw-scan 3.4s ease-in-out 0.5s 1 both; }
+  .tw[data-live] .tw-block[data-state="held"] { animation: tw-hold 2.4s ease-in-out infinite; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tw-btn, .tw-field, .tw-send, .tw-step, .tw-step i, .tw-block, .tw-focus { transition: none; }
+}

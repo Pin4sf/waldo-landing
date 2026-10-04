@@ -27,6 +27,7 @@ This folder is where the whole website gets planned before it gets built. Each p
 | [motion.md](motion.md) | Space instead of lines, and every animation on the site (values copied from Linear) | **Live — in use** |
 | [hero-loop.md](hero-loop.md) | The moving picture under the homepage hero: tools in a wave, what they carry dropping into Waldo, his Overview card (in a phone) filling in underneath | **Built — one stream, card states waiting on matching copy** |
 | [what-you-see-plan.md](what-you-see-plan.md) | The five-card "What you see of it" section after the hero: story, screens, carousel behaviour, fixture checks. Section 17: one kit for all the app screens | **Built, on the homepage (local)** |
+| [trust-carousel-review.md](trust-carousel-review.md) | The homepage Trust section as four privacy panels ("Your context. Your call."): copy, what each panel is backed by in the product code, and the open privacy and security questions | **Built locally for review, not published** |
 | [sessions/](sessions/) | One log per working session: what was decided, what's open | Ongoing |
 
 ## Build status

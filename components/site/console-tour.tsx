@@ -4,14 +4,14 @@ import { type KeyboardEvent, useEffect, useRef, useState } from "react";
 
 import { useLive } from "./use-live";
 
-// "You see what it stores": Waldo's console, kept to the point. A sidebar of five names and one
-// plain list per screen (sample records). It tours itself until you touch it, but only while it is
-// the picture to watch (use-live.ts) and never while the pointer or focus is inside it.
+// Homepage concept preview. These screens are illustrative sample content, not a live console.
+// Memory is kept visually separate because it is a concept screen, not a shipped feature.
 
 const SCREENS = [
   {
     id: "today",
     label: "Today",
+    eyebrow: "YOUR DAY",
     line: "What needs you, and what’s next.",
     rows: [
       ["Waiting on you", "Draft reply about Friday lunch"],
@@ -22,6 +22,7 @@ const SCREENS = [
   {
     id: "waiting",
     label: "Waiting",
+    eyebrow: "YOUR DECISIONS",
     line: "Nothing happens until you decide.",
     rows: [
       ["Draft reply about Friday lunch", "Needs your yes"],
@@ -31,6 +32,7 @@ const SCREENS = [
   {
     id: "patrol",
     label: "Patrol",
+    eyebrow: "ON RECORD",
     line: "Everything Waldo did, on record.",
     rows: [
       ["Inbox review", "Completed 1:15 PM"],
@@ -38,22 +40,24 @@ const SCREENS = [
     ],
   },
   {
+    id: "connections",
+    label: "Connections",
+    eyebrow: "CONNECTED TOOLS",
+    line: "Only what you connect.",
+    rows: [
+      ["Google", "Calendar, Gmail"],
+      ["Telegram", "Not connected"],
+    ],
+  },
+  {
     id: "memory",
     label: "Memory",
+    eyebrow: "CONCEPT PREVIEW",
     line: "What Waldo holds about you.",
     rows: [
       ["Spots", "Single things it noticed"],
       ["Constellation", "Patterns across weeks"],
       ["Profile", "What it knows about your work"],
-    ],
-  },
-  {
-    id: "connections",
-    label: "Connections",
-    line: "Only what you connect.",
-    rows: [
-      ["Google", "Calendar, Gmail"],
-      ["Telegram", "Not connected"],
     ],
   },
 ] as const;
@@ -97,40 +101,58 @@ export function ConsoleTour() {
       onFocus={() => setInside(true)}
       onBlur={() => setInside(false)}
     >
-      <div className="console-lights" aria-hidden="true">
-        <i />
-        <i />
-        <i />
+      <div className="console-topbar">
+        <div className="console-lights" aria-hidden="true">
+          <i />
+          <i />
+          <i />
+        </div>
+        <span className="console-window-title">Waldo <span>/</span> Console</span>
+        <span className="console-window-state"><i /> Sample view</span>
       </div>
       <div className="console-split">
         <div className="console-nav" role="tablist" aria-label="Console" aria-orientation="vertical" onKeyDown={onKeys}>
+          <span className="console-nav-label">WALDO CONSOLE</span>
           {SCREENS.map((item, index) => (
-            <button
-              key={item.id}
-              id={`console-tab-${item.id}`}
-              type="button"
-              role="tab"
-              aria-selected={at === index}
-              aria-controls="console-panel"
-              tabIndex={at === index ? 0 : -1}
-              className="console-tab"
-              onClick={() => go(index)}
-            >
-              {item.label}
-            </button>
+            <div className={item.id === "memory" ? "console-nav-group console-nav-group--concept" : "console-nav-group"} key={item.id}>
+              {item.id === "memory" && <span className="console-nav-label">CONCEPT SCREENS</span>}
+              <button
+                id={`console-tab-${item.id}`}
+                type="button"
+                role="tab"
+                aria-selected={at === index}
+                aria-controls="console-panel"
+                tabIndex={at === index ? 0 : -1}
+                className="console-tab"
+                onClick={() => go(index)}
+              >
+                <span className={`console-tab-mark console-tab-mark--${item.id}`} aria-hidden="true" />
+                <span>{item.label}</span>
+                {item.id === "memory" && <span className="console-concept-chip">Concept</span>}
+              </button>
+            </div>
           ))}
+          <div className="console-sidebar-foot"><span className="console-avatar">W</span><span><b>Waldo</b><small>On a leash you hold.</small></span></div>
         </div>
         <div className="console-page" key={screen.id} id="console-panel" role="tabpanel" aria-labelledby={`console-tab-${screen.id}`}>
-          <h4>{screen.label}.</h4>
-          <p>{screen.line}</p>
+          <div className="console-page-head">
+            <div>
+              <span className="console-eyebrow">{screen.eyebrow}</span>
+              <h4>{screen.label}<span>.</span></h4>
+              <p>{screen.line}</p>
+            </div>
+            {screen.id === "memory" ? <span className="console-preview-badge">Illustrative concept</span> : <span className="console-date">Thursday, May 14</span>}
+          </div>
           <ul className="console-list">
-            {screen.rows.map(([name, note]) => (
+            {screen.rows.map(([name, note], index) => (
               <li key={name}>
-                <b>{name}</b>
-                <span>{note}</span>
+                <span className={`console-row-icon console-row-icon--${screen.id}`} aria-hidden="true">{screen.id === "memory" ? ["•", "↗", "○"][index] : ["↗", "·", "✓"][index % 3]}</span>
+                <span className="console-row-copy"><b>{name}</b><span>{note}</span></span>
+                <span className="console-row-arrow" aria-hidden="true">↗</span>
               </li>
             ))}
           </ul>
+          {screen.id === "memory" && <p className="console-memory-note">A direction for how Waldo could make patterns visible over time.</p>}
         </div>
       </div>
     </div>

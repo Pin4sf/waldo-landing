@@ -30,12 +30,29 @@ const distance = (peer: Peer) => {
   );
 };
 
+const soon = () => {
+  if (!queued) queued = requestAnimationFrame(decide);
+};
+
+/** In a centred, looping carousel only the card in the middle may move (carousel.tsx marks it data-centre) */
+const inMiddle = (el: HTMLElement) => {
+  const card = el.closest(".site-carousel-card");
+  const row = card?.parentElement;
+  return !row?.hasAttribute("data-loop") || card?.hasAttribute("data-centre");
+};
+
+/** Ask again which picture should be moving (a carousel calls this when a different card comes to the middle) */
+export function refreshLive() {
+  soon();
+}
+
 function decide() {
   queued = 0;
   const ready = [...peers].filter(
     (peer) =>
       (ratios.get(peer.el) ?? 0) >= SHOWN &&
-      document.visibilityState === "visible",
+      document.visibilityState === "visible" &&
+      inMiddle(peer.el),
   );
   const nearest = ready.reduce<Peer | null>(
     (best, peer) => (!best || distance(peer) < distance(best) ? peer : best),
@@ -55,10 +72,6 @@ function decide() {
     }
   });
 }
-
-const soon = () => {
-  if (!queued) queued = requestAnimationFrame(decide);
-};
 
 function join(peer: Peer) {
   if (!peers.size) {

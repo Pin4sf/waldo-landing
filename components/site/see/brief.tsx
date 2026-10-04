@@ -2,29 +2,27 @@
 
 import { type CSSProperties, useContext, useEffect, useLayoutEffect, useRef, useState } from "react";
 
-import { AppHeader, DocRow, Icon, Logo, Rich, SeePhone, SlideState, Toast, WaldoBar, at, useScript } from "./kit";
-import { BRIEFS, type Decision, OUTBOX, OUTBOX_BRIEF, type Outgoing } from "./see-fixture";
+import { AppHeader, DocRow, Icon, Logo, Rich, SeePhone, SlideState, StateTag, Toast, WaldoBar, at, useScript } from "./kit";
+import { BRIEFS, type Decision, OUTBOX, OUTBOX_BRIEF, OUTBOX_CLOCK, outboxAt } from "./see-fixture";
 
 // Cards 1 and 4 are one screen: the daily brief on top of its stack, and the "To send" box under it.
-// Card 1 shows it at the top, the brief changing with the part of the day. Card 4 shows the same
-// screen scrolled up to the box, at 4:15pm, and plays one message going out.
+// Card 1 shows it at the top, the brief changing with the part of the day, and the box holding only
+// what had been drafted by then. Card 4 shows the same screen after the evening update, scrolled up
+// to the box, with Maya's corrected reply open: ready, held, and not sent until you send it.
 
 /** How long each part of the day stays before the brief moves on, on card 1 */
-const PART_MS = 3400;
+const PART_MS = 4200;
 
 type Choice = "yes" | "no";
 
 /** One yes / no decision, with a link to its details */
-function DecisionRow({ decision, choice, onChoose, onDetails }: { decision: Decision; choice?: Choice; onChoose: (c: Choice | undefined) => void; onDetails: () => void }) {
+function DecisionRow({ decision, choice, onChoose, onDetails }: { decision: Decision; choice?: Choice; onChoose: (c: Choice) => void; onDetails: () => void }) {
   return (
     <li className="see-decide" data-choice={choice}>
       <span className="see-decide-text">
         <b>{decision.text}</b>
         {choice ? (
-          <small>
-            {choice === "yes" ? "Waldo’s on it." : "Skipped."}{" "}
-            <button type="button" className="see-quiet-link" onClick={() => onChoose(undefined)}>Undo</button>
-          </small>
+          <small>{choice === "yes" ? decision.yes : decision.no}</small>
         ) : (
           <button type="button" className="see-quiet-link" onClick={onDetails}>Details</button>
         )}
@@ -41,56 +39,72 @@ function DecisionRow({ decision, choice, onChoose, onDetails }: { decision: Deci
   );
 }
 
-/** The "To send" box: what is drafted and waiting, most urgent first */
-function Outbox({ sent, onOpen, n = 0 }: { sent: string[]; onOpen: (id: string) => void; n?: number }) {
+/** The "To send" box: what is drafted and waiting by this part of the day, most urgent first */
+function Outbox({ part, sent, onOpen, n = 0, opening }: { part: number; sent: string[]; onOpen: (id: string) => void; n?: number; opening?: string }) {
+  const items = outboxAt(part);
   return (
     <section className="see-outbox see-in" style={at(n)} aria-label={OUTBOX.label}>
       <div className="see-outbox-top">
         <b>{OUTBOX.label}</b>
-        <span>{OUTBOX.items.length - sent.length}</span>
+        <span>{items.length - sent.length || ""}</span>
+        <small>{OUTBOX.note}</small>
       </div>
-      <ul>
-        {OUTBOX.items.map((item) => {
-          const done = sent.includes(item.id);
-          return (
-            <li key={item.id} data-sent={done ? "" : undefined} data-urgent={item.priority === "high" ? "" : undefined}>
-              <button type="button" onClick={() => onOpen(item.id)} aria-label={`${item.to}: ${item.about}`}>
-                <span className="see-prio" data-p={item.priority} aria-label={`${item.priority} priority`}><Icon name="priority" /></span>
-                <Logo name={item.tool} size={18} />
-                <span>
-                  <b>{item.to}</b>
-                  <small>{item.about}</small>
-                </span>
-                <em>{done ? <><Icon name="check" />{OUTBOX.sent}</> : item.due}</em>
-              </button>
-            </li>
-          );
-        })}
-      </ul>
+      {items.length ? (
+        <ul>
+          {items.map((item) => {
+            const done = sent.includes(item.id);
+            return (
+              <li key={item.id} data-sent={done ? "" : undefined} data-urgent={item.priority === "high" ? "" : undefined} data-press={opening === item.id ? "" : undefined}>
+                <button type="button" onClick={() => onOpen(item.id)} aria-label={`${item.to}: ${item.about}`}>
+                  <span className="see-prio" data-p={item.priority} aria-label={`${item.priority} priority`}><Icon name="priority" /></span>
+                  <Logo name={item.tool} size={18} />
+                  <span>
+                    <b>{item.to}</b>
+                    <small>{item.about}</small>
+                  </span>
+                  <em>{done ? <><Icon name="check" />Sent by you</> : item.due}</em>
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      ) : (
+        <p className="see-outbox-empty">{OUTBOX.empty}</p>
+      )}
     </section>
   );
 }
 
-function OutgoingSheet({ item, pressing, onSend }: { item: Outgoing; pressing: boolean; onSend: () => void }) {
+function OutgoingSheet({ item, onSend }: { item: ReturnType<typeof outboxAt>[number]; onSend: () => void }) {
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(item.draft);
   return (
     <>
       <dl className="see-mail-meta">
-        <div><dt>To</dt><dd>{item.to}</dd></div>
+        <div><dt>To</dt><dd><Logo name={item.tool} size={15} />{item.to}</dd></div>
       </dl>
+      {item.held ? (
+        <div className="see-held">
+          <p><span className="see-held-icon"><Icon name="pending" /></span>{item.held}</p>
+          {item.changed ? (
+            <p className="see-held-changed">
+              <span>Changed</span>
+              {item.changed.map((c) => <b key={c}>{c}</b>)}
+            </p>
+          ) : null}
+        </div>
+      ) : null}
       {editing ? (
-        <textarea className="see-draft" aria-label={`Draft to ${item.to}`} value={draft} rows={4} onChange={(event) => setDraft(event.target.value)} />
+        <textarea className="see-draft" aria-label={`Draft to ${item.to}`} value={draft} rows={5} onChange={(event) => setDraft(event.target.value)} />
       ) : (
         <p className="see-draft">{draft}</p>
       )}
       {item.docs.length ? <div className="see-docs">{item.docs.map((doc) => <DocRow key={doc.name} {...doc} />)}</div> : null}
       <div className="see-sheet-actions">
-        <button type="button" className="see-btn see-btn--primary" data-press={pressing ? "" : undefined} onClick={onSend}>
-          <Logo name={item.tool} size={18} />
+        <button type="button" className="see-btn" onClick={() => setEditing((v) => !v)}>{editing ? "Keep edits" : "Edit"}</button>
+        <button type="button" className="see-btn see-btn--primary" onClick={onSend}>
           {item.send}
         </button>
-        <button type="button" className="see-btn" onClick={() => setEditing((v) => !v)}>{editing ? "Keep edits" : "Edit"}</button>
       </div>
     </>
   );
@@ -110,23 +124,25 @@ function BriefScreen({ mode }: { mode: "brief" | "outbox" }) {
     return () => window.clearInterval(id);
   }, [outbox, active, running, setHero]);
 
-  // Card 4's script: start at the top, scroll up to the box, open the first message, press send, sent
-  const { step, playing } = useScript(outbox ? [900, 1500, 2400, 450] : []);
+  // Card 4's script: start at the top, scroll up to the box, press Maya's reply, and open it. It rests
+  // there, with the reply open and unsent; only a tap on its send button sends it.
+  const { step } = useScript(outbox ? [900, 1500, 600] : []);
   const scrolled = outbox && step >= 1;
 
   // What the reader has done; a new arrival starts again from the script
   const [choices, setChoices] = useState<Record<string, Choice>>({});
-  const [sheet, setSheet] = useState<{ kind: "decision"; d: Decision } | { kind: "steps" } | { kind: "send"; id: string } | null | undefined>(undefined);
-  const [sentByYou, setSentByYou] = useState<string[]>([]);
+  const [sheet, setSheet] = useState<{ kind: "decision"; d: Decision } | { kind: "steps" } | { kind: "open" } | { kind: "send"; id: string } | null | undefined>(undefined);
+  const [sent, setSent] = useState<string[]>([]);
   const [was, setWas] = useState(active);
   if (active !== was) {
     setWas(active);
     setSheet(undefined);
-    setSentByYou([]);
+    setSent([]);
+    setChoices({});
   }
-  const scriptSheet = outbox && playing && step >= 2 ? ({ kind: "send", id: OUTBOX.items[0].id } as const) : null;
+  const maya = "maya";
+  const scriptSheet = outbox && step >= 3 ? ({ kind: "send", id: maya } as const) : null;
   const open = sheet === undefined ? scriptSheet : sheet;
-  const sent = [...new Set([...(outbox && step >= 4 ? [OUTBOX.items[0].id] : []), ...sentByYou])];
 
   // Card 4 scrolls the screen up so the brief's foot shows above the box
   const column = useRef<HTMLDivElement>(null);
@@ -146,16 +162,17 @@ function BriefScreen({ mode }: { mode: "brief" | "outbox" }) {
     return () => watch.disconnect();
   }, [outbox]);
 
-  const item = open?.kind === "send" ? OUTBOX.items.find((i) => i.id === open.id) : undefined;
+  const item = open?.kind === "send" ? outboxAt(shown).find((i) => i.id === open.id) : undefined;
+  const choose = (d: Decision, c: Choice) => setChoices((all) => ({ ...all, [d.text]: c }));
 
   return (
-    <SeePhone clock={brief.clock}>
+    <SeePhone clock={outbox ? OUTBOX_CLOCK : brief.clock}>
       <AppHeader title="Overview" />
       <div className="see-feed-window" data-mode={mode}>
         <div ref={column} className="see-feed" style={{ transform: scrolled ? `translateY(${-lift}px)` : undefined }}>
           {/* The stack: the brief in front, the steps behind it */}
           <div className="see-stack see-in" style={at(0)}>
-            <button type="button" className="see-stack-behind" aria-label={`How I got here: ${brief.steps.length} steps`} onClick={() => setSheet({ kind: "steps" })}>
+            <button type="button" className="see-stack-behind" aria-label={`Why this changed: ${brief.steps.length} steps`} onClick={() => setSheet({ kind: "steps" })}>
               <i /><i /><i />
             </button>
             <div ref={card} className="see-brief">
@@ -166,36 +183,36 @@ function BriefScreen({ mode }: { mode: "brief" | "outbox" }) {
                       <b>{b.part}</b>
                       <small>{b.time}</small>
                     </div>
-                    {b.body.map((line) => <p key={line} className="see-brief-line"><Rich text={line} /></p>)}
-                    <p className="see-needs">{b.decisions.length === 1 ? "One thing still needs you." : "Two things still need you."}</p>
+                    <p className="see-brief-line"><Rich text={b.body.join(" ")} /></p>
+                    <p className="see-needs">{b.decisions.length === 1 ? "Needs your yes or no" : "Needs your yes or no"}</p>
                     <ul className="see-decisions">
                       {b.decisions.map((d) => (
                         <DecisionRow
                           key={d.text}
                           decision={d}
                           choice={choices[d.text]}
-                          onChoose={(c) => setChoices((all) => {
-                            const next = { ...all };
-                            if (c) next[d.text] = c;
-                            else delete next[d.text];
-                            return next;
-                          })}
+                          onChoose={(c) => choose(d, c)}
                           onDetails={() => setSheet({ kind: "decision", d })}
                         />
                       ))}
                     </ul>
+                    <div className="see-brief-links">
+                      <button type="button" className="see-how" onClick={() => setSheet({ kind: "steps" })}>
+                        Why this changed <Icon name="chevron" />
+                      </button>
+                      {b.open.length ? (
+                        <button type="button" className="see-how" onClick={() => setSheet({ kind: "open" })}>
+                          {b.open.length} more open <Icon name="chevron" />
+                        </button>
+                      ) : null}
+                    </div>
                   </div>
                 ))}
               </div>
             </div>
           </div>
 
-          {/* As in the Overview mockup: the cards behind are how Waldo got here, one tap away */}
-          <button type="button" className="see-behind-note see-in" style={at(1)} onClick={() => setSheet({ kind: "steps" })}>
-            Tap the cards behind to see how I got here. You probably won’t need to.
-          </button>
-
-          <Outbox sent={sent} n={2} onOpen={(id) => setSheet({ kind: "send", id })} />
+          <Outbox part={shown} sent={sent} n={1} opening={outbox && step === 2 ? maya : undefined} onOpen={(id) => setSheet({ kind: "send", id })} />
         </div>
       </div>
 
@@ -208,34 +225,40 @@ function BriefScreen({ mode }: { mode: "brief" | "outbox" }) {
             {open.d.details.lines.map((line) => <p key={line} className="see-toast-line">{line}</p>)}
             <div className="see-docs">{open.d.details.docs.map((doc) => <DocRow key={doc.name} {...doc} />)}</div>
             <div className="see-sheet-actions">
-              <button type="button" className="see-btn" onClick={() => { setChoices((all) => ({ ...all, [open.d.text]: "no" })); setSheet(null); }}>No</button>
-              <button type="button" className="see-btn see-btn--primary" onClick={() => { setChoices((all) => ({ ...all, [open.d.text]: "yes" })); setSheet(null); }}>Yes</button>
+              <button type="button" className="see-btn" onClick={() => { choose(open.d, "no"); setSheet(null); }}>No</button>
+              <button type="button" className="see-btn see-btn--primary" onClick={() => { choose(open.d, "yes"); setSheet(null); }}>Yes</button>
             </div>
           </>
         ) : null}
       </Toast>
 
-      <Toast open={open?.kind === "steps"} label="How I got here" title="How I got here" onClose={() => setSheet(null)}>
+      <Toast open={open?.kind === "steps"} label="Why this changed" title="Why this changed" onClose={() => setSheet(null)}>
         <ol className="see-steps">
           {brief.steps.map((s, k) => (
             <li key={s.time + s.text} style={{ "--k": k } as CSSProperties}>
               <time>{s.time}</time>
               <Logo name={s.tool} size={18} />
               <span>{s.text}</span>
+              <StateTag state={s.state} />
             </li>
           ))}
         </ol>
       </Toast>
 
-      <Toast open={!!item} label={item ? `Message to ${item.to}` : "Message"} title={item?.about ?? ""} onClose={() => setSheet(null)}>
-        {item ? (
-          <OutgoingSheet
-            key={item.id}
-            item={item}
-            pressing={outbox && step === 3 && sheet === undefined}
-            onSend={() => { setSentByYou((all) => [...all, item.id]); setSheet(null); }}
-          />
-        ) : null}
+      <Toast open={open?.kind === "open"} label="Still open" title="Still open" onClose={() => setSheet(null)}>
+        <ul className="see-ledger">
+          {brief.open.map((o, k) => (
+            <li key={o.text} style={{ "--k": k } as CSSProperties}>
+              <Logo name={o.tool} size={18} />
+              <span>{o.text}</span>
+              <StateTag state={o.state} />
+            </li>
+          ))}
+        </ul>
+      </Toast>
+
+      <Toast open={!!item} label={item ? `Reply to ${item.to}` : "Reply"} title="Ready to send" onClose={() => setSheet(null)}>
+        {item ? <OutgoingSheet key={item.id + item.from} item={item} onSend={() => { setSent((all) => [...all, item.id]); setSheet(null); }} /> : null}
       </Toast>
     </SeePhone>
   );

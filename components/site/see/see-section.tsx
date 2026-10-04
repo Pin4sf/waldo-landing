@@ -8,6 +8,7 @@ import { OutboxScreen, OverviewScreen } from "./brief";
 import { ChatScreen, PlanScreen } from "./chat";
 import { SlideState } from "./kit";
 import { OvernightScreen } from "./lock";
+import { PatternsScreen } from "./patterns";
 import { SEE_CARDS, SEE_SECTION } from "./see-fixture";
 
 import "./see.css";
@@ -22,13 +23,14 @@ import "./see.css";
 // outer set it is moved, unseen, to the same card in the middle set. Presentation only: nothing in a
 // screen sends, approves or records anything.
 
-/** How long each card stays before the strip moves on: long enough for its screen to play through */
-const HOLD_MS: Record<string, number> = { overview: 17500, chat: 19000, health: 22000, handoff: 9000, "catch-up": 8000 };
+/** How long each card stays before the strip moves on: its screen plays through, then holds a few
+    seconds on the answer, so there is time to read it before the next card comes */
+const HOLD_MS: Record<string, number> = { overview: 21500, chat: 32000, health: 32000, handoff: 12000, "catch-up": 12000, patterns: 22000 };
 const DRAG = 4;
 /** How long the strip has to be still before it is moved back to the middle set, in ms */
 const REST_MS = 160;
 /** A copy of a card is swapped for the real one only after its screen has finished playing, in ms */
-const ARRIVE_MS = 23000;
+const ARRIVE_MS = 36000;
 
 const SCREENS: Record<string, ReactNode> = {
   overview: <OverviewScreen />,
@@ -36,6 +38,7 @@ const SCREENS: Record<string, ReactNode> = {
   health: <PlanScreen />,
   handoff: <OutboxScreen />,
   "catch-up": <OvernightScreen />,
+  patterns: <PatternsScreen />,
 };
 
 export function SeeSection() {
@@ -155,6 +158,7 @@ export function SeeSection() {
     let startLeft = 0;
     const down = (event: PointerEvent) => {
       if (event.pointerType !== "mouse" || event.button !== 0) return;
+      // controls inside a screen (buttons, fields, the yes / no swipe) keep the pointer to themselves
       if ((event.target as HTMLElement).closest("button, input, textarea, a")) return;
       active = true;
       moved = false;
@@ -261,8 +265,9 @@ export function SeeSection() {
             >
               <div className="see-inner">
                 <div className="see-copy" style={{ "--copy-ch": card.copyCh } as CSSProperties}>
-                  <h3>{card.headline}</h3>
-                  <p>{card.line}</p>
+                  <p>
+                    <strong>{card.headline}</strong> {card.line}
+                  </p>
                 </div>
                 <div className="see-stage">{SCREENS[card.id]}</div>
               </div>

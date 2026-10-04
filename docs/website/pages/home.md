@@ -26,32 +26,26 @@ Buttons: "Let Waldo in →", "See how it works"
 
 ---
 
-### Co-ordinating your data with AI / shouldn’t be your job.
-Body: More apps, more agents, more data about you. All of it still waits on you to read it, brief it, check it and decide.
+### You can’t keep up / with everything. Waldo can.
+_2026-10-04: new title (was "Every tool, handled."), centred, and an endless carousel. This is the section that names the problems, so each card says the problem first and then, in a sentence, how Waldo solves it. Picture notes are in brackets._
 
-- *Your watch knows. Nothing acts.* It knows you slept five hours and your stress is up. Your calendar still has four meetings before noon.
-  - _Picture: Health data piling up across apps, and nothing acting on it (`/assets/home/too-much-data.svg`)_
-- *Every new tool wants your life story.* A better tool shows up, and you spend an hour teaching it who you are. Then the next one shows up.
-  - _Picture (2026-10-01): four rows of connector tiles drifting, row 1 left to right, row 2 right to left, row 3 left to right, row 4 right to left, with the edges faded (`components/site/connector-rows.tsx`). It holds every connector that has a mark in `public/assets/connectors` (all 45); a new tool joins by adding its mark and a name to a row. CSS only, and still with reduced motion._
-  - _Picture: You, spread across accounts, apps and agents (`/waldo-web-assets/agent-features/apps-accounts-agents.webp`)_
-- *Every agent reports to you.* Agents finish tasks, but you hold the why. Every re-brief, every review and every “what did you mean?” runs through you. [This is where Kennel starts →](/kennel)
-  - _Picture: An agent's finished work, waiting on you to review it (`/build/work-unit-agent-illustration.svg`)_
+- **Your health data is huge. Almost none of it gets used.** Months of sleep, heart rate and recovery sit in your watch, WHOOP or Oura, in breakdowns most of us never learn to apply. Pasting a few readings into a chat never compounds. Waldo reads all of it, every day, and turns it into a plan.
+  - _Picture: the Apple Watch recovery screen (`/assets/home/problem/watch-recovery.svg`)_
+- **Every tool needs teaching. None knows the day you’re having.** You spend hours telling each tool and AI who you are, and it still falls short. They're built for a normal day. On no food, little sleep and back-to-back meetings, nothing connects the dots. Waldo does, and fixes the cause, not the symptom.
+  - _Picture: four rows of connector tiles drifting (`ConnectorRows`)_
+- **Chat AI writes walls of text you can’t review.** Its memory is gone when you change chats, you can't add all your context by hand, and each one locks you into its own ecosystem. It waits to be asked, with no consumer app on top. Waldo remembers across everything, speaks up when it matters, and works with every agent. [This is where Kennel starts →](/kennel)
+  - _Picture: an agent's finished work waiting for review (`/assets/home/problem/agent-diffs.svg`)_
+- **Text agents run where you can’t see.** Your data is processed online, with no way to see how, and nothing you control. Waldo shows what he can access and what he does, and lets you take access back.
+  - _Picture: a text thread with Waldo (`AgentsChat`)_
+- **Everyone’s day has its own rhythm.** Busy people either spend real time working out what to do when, or let things happen. Waldo learns your rhythm, tells a rough day from an easy one and plans around it. He looks after your day the way a considerate person would.
+  - _Picture: the same Tuesday over three weeks (`LearningWeeks`)_
 ---
 
-### Agents do tasks. / Waldo carries outcomes.
-Body: An agent can finish the code while the release is still blocked. Waldo stays on it until the release ships, and only pulls you in when it's your call.
-Buttons: "Let Waldo in →"
-
-- **Never makes you explain twice.** — Remembers the people, the context and how you like it done. Say it once. It sticks.
-  - _Picture: Your accounts, health and work, held as one context (`/build/understands-illustration.svg`)_
-- **Works with every agent.** — Claude, Codex, or whatever ships next. Waldo runs them and hands you back one result.
-  - _Picture: Waldo at the centre, the agents it works with around it (`/build/coordinates-illustration.svg`)_
-- **Knows what kind of day it is.** — The same request gets a different plan on a rough day. Waldo can tell which day you're having.
-  - _Picture: The same weekly sync, handled differently as your Form changes week to week (`/build/returns-illustration.svg`)_
 ---
 
 ### Same Waldo. / Different hats.
-Body: Starting with founders, engineers and investors, the people already running several agents at once.
+Body: The same Waldo, in the place each of them already works.
+_Layout (2026-10-04): centred headline and an endless carousel with the card in the middle moving, the same as "You can't keep up with everything. Waldo can."_
 
 - **Founders** — Three calls back to back, then the co-founder sync. Waldo puts ten minutes of air before it, so the snappy reply never happens.
   - _Picture: a founder travelling, texting Waldo in WhatsApp (iOS look, edge to edge, no phone frame). Sends a photo of the departures board, a voice note and a clip of a hotel room (`components/site/hats-scenes.tsx`, FounderWhatsApp). Photos are from Unsplash (free licence, no credit needed): the departures board by Zulfugar Karimov, the hotel room by Wes Hicks (`/assets/home/hats/`)_
@@ -59,10 +53,35 @@ Body: Starting with founders, engineers and investors, the people already runnin
   - _Picture: an engineer asking Waldo from a light-mode terminal. Attaches a screenshot of a red build and a screen recording (EngineerCli)_
 - **Investors** — Pitches spaced to what you can actually give. The founder at pitch five gets your pitch-one attention.
   - _Picture: an investor on the Apple Watch photo from "Your watch knows" (`/assets/home/hats/apple-watch.png`), screen animated in code. Records a voice note, then sends a slide (InvestorWatch)_
+- **Designers** — The crit is at 3 and the empty states aren't done. Waldo gives you the clearest hours before it and moves the review back.
+  - _Picture: a designer in Figma (`DesignerFigma`): a frame on the grey canvas with a comment pin, and the comment thread open beside it. The designer types an @Waldo comment and drops in a screenshot; he answers under it. Two exchanges (the review moves, the icon set gets the morning)._
+- **Sales** — Your most important call lands in your best hour. The follow-up is drafted before you hang up.
+  - _Picture: a salesperson in a Slack DM with Waldo (`SalesSlack`). Sends a voice clip, then a screenshot of the pipeline. He replies with one line and an app card showing what he did: a Gmail draft (Draft · not sent, Review) and a calendar move (Moved, Undo), then a thumbs-up arrives. Names (Noor, Ria, Dana, Acme) are made up._
 
 ---
 
-### Waldo does as much as you let it. / Then shows its work.
+### Your context. / Your call.
+_2026-10-04 (local review): now one single visual instead of the four-card carousel, told as a story: one rounded box with the centred heading, a "Read the Privacy page" button and one app window rising out of the foot that plays five beats about one meeting (he sees, he asks, you decide, he keeps, where it goes). See `docs/website/trust-carousel-review.md`. The carousel notes below describe what it replaced._
+_2026-10-03 (local review, not published): replaces the "Waldo does as much as you let it" Tell / Ask / Just do it carousel. A carousel of four panels about privacy and control. Every panel is the same mini-panel (label, state, two to four rows, one control) and every word is limited to what the product code does. The evidence for each panel, and the questions it can't answer yet, are in [../trust-carousel-review.md](../trust-carousel-review.md). Nothing connects to a service; the controls only reveal detail._
+
+Body: What he can access. What he can do. What he keeps.
+
+- **What can he see?** — Each connection shows what Waldo can read, and where to take that access back.
+  - _Picture: one Google connection: can read Calendar, Gmail, Tasks (`calendar.readonly`, `gmail.readonly`, `tasks.readonly`); can change nothing, editing is a separate permission; "How to take access back" opens the route in the Google Account._
+- **What can he do?** — Waldo prepares a change and waits. Nothing moves until you approve it.
+  - _Picture: a permission request: move Design review to Thursday, 11:00 (Google Calendar, one event), waits for your yes, expires after 4 hours; the Northstar reply is held, prepared, not sent. "Review the change" shows now and proposed._
+- **What does he remember?** — A saved note shows when it last changed. To correct it, tell Waldo.
+  - _Picture: one saved note ("Keeps mornings for focus work."), a preference, written by Waldo, used as background and not as an instruction; "How to correct it" shows the chat route._
+- **Where does my data go?** — The services that handle your data, and what each one does, in plain words.
+  - _Picture: Supabase (stores), Anthropic (writes replies), Telegram (carries his messages, if you chat there); policy in draft; links to the Privacy page._
+
+Small line under the carousel: Illustrative controls · sample data. Take it off once the controls are real and the policy facts are confirmed.
+
+_The old section's pieces are unused now: the console tour (`console-tour.tsx`), the "Tell me" Mac notification (`mac-notifications.tsx`), and the Ask me / Just do it pictures (`agent-approval.svg`, `agent-patrol.svg`). The old copy is kept below as a record._
+
+#### The earlier section (kept as a record)
+
+### Waldo does as much as you let it. / Then shows its work. (earlier version)
 _2026-10-01: the whole section sits in one white box (30px radius, 60% corner smoothing, 10px padding). Title and text are centred, like the hero. Then the console, then one "Your controls +" row whose names open a side panel (`FeatureList`). The three autonomy cards became one item, "Autonomy". Not claimed: editing or deleting what is stored, which is still marked "confirm" in the console._
 
 Body: Start with Waldo only telling you what it would do. Hand over more when you’re ready. Everything it remembers, and everything it does, sits in your console in plain sight. On a leash you hold.
@@ -78,17 +97,6 @@ Body: Start with Waldo only telling you what it would do. Hand over more when yo
 
 _Unused since this change: the "Tell me" Mac notification picture (`mac-notifications.tsx`) and the Ask me / Just do it pictures (`agent-approval.svg`, `agent-patrol.svg`)._
 
----
-
-### Where’s Waldo? / Wherever you are.
-Body: It starts on your Mac, comes to your iPhone next, and answers in the chats you already use.
-
-- (Open beta) **Kennel for Mac** — Lives in the notch. Shows what Waldo is working on, and what needs you. [See Kennel →](/kennel)
-  - _Picture: Kennel in the Mac menu bar, around the notch (`/build/menubar-illustration.svg`)_
-- (Coming soon) **Waldo for iPhone** — Where Waldo gets to know the person behind the work.
-  - _Picture: Waldo's overview on iPhone (`/build/phone-mockup.png`)_
-- (Coming soon) **Messaging & browser** — Talk to the same Waldo in WhatsApp, Slack or your browser.
-  - _Picture: Asking Waldo in a chat thread (`/assets/home/agent-ask-thread.svg`)_
 ---
 
 ### You’re going to / ask these.
@@ -150,8 +158,8 @@ If a Home section needs a paragraph to make its point, that paragraph belongs on
 ## Sections
 
 ```
-1 Kennel banner → 2 Hero → 3 The problem → 4 An agent, not a product
-→ 5 Who it's for → 6 Trust → 7 Where Waldo lives → 8 Questions → 9 Close
+1 Kennel banner → 2 Hero → 3 Every tool, handled (five cards) → 3b What you see of it (five phone screens; swapped to come after "Every tool, handled" on 2026-10-04) → 4 Who it's for
+→ 5 Trust → 6 Questions → 7 Close (2026-10-04: "An agent, not a product" and "Where Waldo lives" are removed)
 ```
 
 ---
@@ -424,3 +432,7 @@ too late. Yet.
 2. **Teams:** is Pack real enough to mention? If yes, can we promise teammates never see your health data?
 3. **Third surface name:** "Plugins" or "Messaging & browser"?
 4. **Setup:** is "no setup, ever" true at launch, or should it say "never explain yourself twice"?
+
+**Same Waldo. Different hats., now five cards (2026-10-04):** the "And everyone else" colour-grid card was dropped (the grid animation did not work). In its place two more scenes in the same style as the first three: Designers (Figma comment thread) and Sales (Slack DM). The other jobs from the profession list (product, chief of staff, consulting, writing, students) have no card yet; the Sales and Designers lines reuse the spirit of their profession copy.
+
+**Close (2026-10-04, local review):** replaces "Your agents aren't going to fix your life." with the live build's hero section, copied as it is from `components/home-build/home-build-page.tsx` (`components/site/live-close.tsx`): heading **Life happens. Waldo handles it.**, body "Waldo is the one assistant that plans like Sherlock, thinks like Einstein and moves like the Flash — all in the body of a friendly dalmatian.", buttons **Early Access** (to /waitlist) and **Learn More** (to /blogs), and the live `HandledCardsSection` (`components/home/handled-cards-section.tsx`): five coloured cards, a fan on desktop, click one to open it and dock the rest, a swipeable deck on a phone. It sits on the live page's #F4F3F0 and is zoomed to 90% like the live page, with the same four `.hero-cards-only` style rules. Taken verbatim on Suyash's instruction. Note for review: the brand notes list "Learn More" and cultural references as banned, and "clinician" reads as a medical claim.

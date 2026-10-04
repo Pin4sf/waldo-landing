@@ -15,6 +15,8 @@ Every piece of copy is one of three things. Nothing else: no subtitles, no aside
 | **Title** | Mottle, 28.8px to 36px (same as the hero) | Page and section headlines. One size everywhere, including blog article titles |
 | **Body** | 16px everywhere (same as the hero; it was 17.1px, then 15px), 140% line height, +0.02em, grey #6B6B68 | Everything else |
 
+**Exception: the "What you see of it" cards on tablet and phone.** The 16px body size is a desktop rule for those cards. When a card is narrower than 760px (tablet and phone), its words sit above the phone and are set for that layout: the first line 19px (phone-width card) to 22px (tablet-width card), the line after it 16px to 17.5px, with the measure, spacing and phone size adjusted to match (see `what-you-see-plan.md`). Desktop stays 16px, same weight and style.
+
 **Emphasis** inside body text is `#1A1A1A` (ink) and medium weight. Use it for:
 - the names of columns, items and features
 - the first line of a card

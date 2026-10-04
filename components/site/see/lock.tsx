@@ -1,14 +1,14 @@
 "use client";
 
-import { Icon, SeePhone, useScript } from "./kit";
+import { Icon, SeePhone, StateTag, useScript } from "./kit";
 import { OVERNIGHT } from "./see-fixture";
 
-// Card 5: not "what did I miss". Thursday, 6:30am, the lock screen you wake up to. Waldo held the
-// night's noise and leaves only what matters: the morning in one line, Soundroom's answer to
-// yesterday's correction, and the rest, held and sorted. The notes arrive one by one.
+// Card 5: Thursday, 6:30am, the lock screen you wake up to. One notification only: the correction that
+// waits for your yes. Nothing about what Waldo did overnight or is watching, on purpose, and the line under
+// it says so: he doesn't trouble you about what he can do himself. The note arrives, then the line.
 
 export function OvernightScreen() {
-  const { step } = useScript([600, 900, 900, 900]);
+  const { step } = useScript([600, 900, 1100]);
   return (
     <SeePhone className="see-phone--lock">
       <div className="see-lock">
@@ -18,24 +18,22 @@ export function OvernightScreen() {
           <b>{OVERNIGHT.time}</b>
         </div>
         <ul className="see-notes" aria-label="Notifications">
-          {OVERNIGHT.notes.map((note, k) => [
-            <li key={note.id} className="see-note" data-on={step >= k + 2 ? "" : undefined}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img className="see-note-app" src="/assets/home/mascots/waldo-card.svg" alt="" />
-              <span className="see-note-text">
-                <span className="see-note-head">
-                  <b>{note.title}</b>
-                  <small>{note.when}</small>
-                </span>
-                <span>{note.text}</span>
+          <li className="see-note" data-on={step >= 2 ? "" : undefined}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img className="see-note-app" src="/assets/home/mascots/waldo-card.svg" alt="" />
+            <span className="see-note-text">
+              <span className="see-note-head">
+                <b>{OVERNIGHT.note.title}</b>
+                <StateTag state={OVERNIGHT.note.state} />
               </span>
-            </li>,
-            // the held notes sit stacked under their summary
-            note.id === "held" ? (
-              <li key="stack" className="see-note-stack" data-on={step >= k + 2 ? "" : undefined} aria-hidden="true"><i /><i /></li>
-            ) : null,
-          ])}
+              <span>{OVERNIGHT.note.text}</span>
+            </span>
+          </li>
         </ul>
+        <p className="see-lock-quiet" data-on={step >= 3 ? "" : undefined}>
+          <b>{OVERNIGHT.quiet.line}</b>
+          <span>{OVERNIGHT.quiet.reason}</span>
+        </p>
       </div>
       <div className="see-lock-foot">
         <span className="see-lock-round" aria-hidden="true"><Icon name="flash" /></span>
