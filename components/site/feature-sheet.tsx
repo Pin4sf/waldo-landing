@@ -33,7 +33,18 @@ function titleLines(name: string) {
   return [name.slice(0, middle), name.slice(middle + 1)];
 }
 
-export function FeatureList({ label = "Also", section, features }: { label?: string; section: string; features: Feature[] }) {
+export function FeatureList({
+  label = "Also",
+  section,
+  features,
+  center = false,
+}: {
+  label?: string;
+  section: string;
+  features: Feature[];
+  /** Centred under a centred title (site-pages.css) */
+  center?: boolean;
+}) {
   const dialog = useRef<HTMLDialogElement>(null);
   const titleId = useId();
   // Keeps the last feature after closing, so the panel still has its content while it slides out
@@ -47,7 +58,7 @@ export function FeatureList({ label = "Also", section, features }: { label?: str
   }
 
   return (
-    <div className="site-features">
+    <div className="site-features" data-center={center ? "" : undefined}>
       <p className="site-label">{label}</p>
       <ul className="site-features-list" data-appear="stagger">
         {features.map((item, index) => (

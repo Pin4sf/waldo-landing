@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 
-import { Body, Grid, Header, Item, Placeholder, Questions, Section, Table } from "@/components/site/blocks";
+import { Body, Grid, Header, Item, Placeholder, Questions, Section } from "@/components/site/blocks";
 import { SiteShell } from "@/components/site/site-shell";
 import { SITE_URL } from "@/lib/site-metadata";
 
 // Copy: docs/website/pages/support.md (v1). Answers marked "confirm" in the doc still need checking.
+// Layout follows the homepage (docs/website/site-wide-pass.md): centred titles and white boxed cards; the
+// question lists keep the homepage's left-aligned questions layout.
 
 const DESCRIPTION = "Answers about getting in, your data, your account and Kennel, plus how to reach a real person.";
 const KENNEL_REPO = "https://github.com/waldoco/Waldo-Kennel";
@@ -19,15 +21,16 @@ export const metadata: Metadata = {
 export default function SupportPage() {
   return (
     <SiteShell>
-      <Section size="auto">
+      <Section size="open">
         <Header
           as="h1"
           lines={["How can we", "help?"]}
           subtitle="Quick answers below. If they don't cover it, a real person reads every message."
           body="No bots in the inbox. We checked that too."
+          center
         />
         <Body>
-          <Grid cols={4}>
+          <Grid cols={4} boxed>
             <Item title="Getting in" href="#getting-in">Access, the waitlist, price.</Item>
             <Item title="Kennel" href="#kennel">Bugs, questions, setup.</Item>
             <Item title="Your data" href="#data">Download, delete, disconnect.</Item>
@@ -90,16 +93,19 @@ export default function SupportPage() {
       </Section>
 
       <Section id="kennel" size="auto">
-        <Header lines={["Kennel", "for Mac."]} subtitle="Kennel is open source, so its help lives where the code does." body="Found a bug? Kennel's on GitHub, and so are we." />
+        <Header
+          lines={["Kennel", "for Mac."]}
+          subtitle="Kennel is open source, so its help lives where the code does."
+          body="Found a bug? Kennel's on GitHub, and so are we."
+          center
+        />
         <Body>
-          <Table
-            columns={["Need", "Where"]}
-            rows={[
-              ["Something's broken", <a key="i" className="site-link" href={`${KENNEL_REPO}/issues`} target="_blank" rel="noreferrer">Open an issue →</a>],
-              ["A question, or an idea", <a key="d" className="site-link" href={`${KENNEL_REPO}/discussions`} target="_blank" rel="noreferrer">Discussions →</a>],
-              ["Setting it up", <a key="r" className="site-link" href={KENNEL_REPO} target="_blank" rel="noreferrer">The README →</a>],
-            ]}
-          />
+          {/* Was a two-column table (Need / Where): each need is now a white card that links where to go */}
+          <Grid cols={3} boxed>
+            <Item meta="Something's broken" title="Open an issue →" href={`${KENNEL_REPO}/issues`} />
+            <Item meta="A question, or an idea" title="Discussions →" href={`${KENNEL_REPO}/discussions`} />
+            <Item meta="Setting it up" title="The README →" href={KENNEL_REPO} />
+          </Grid>
         </Body>
       </Section>
 
@@ -125,7 +131,12 @@ export default function SupportPage() {
       </Section>
 
       <Section id="contact" size="auto">
-        <Header lines={["Still stuck?", "Write to us."]} subtitle="A real person reads every message. We usually reply within two working days." body="The dog doesn't answer these. We do." />
+        <Header
+          lines={["Still stuck?", "Write to us."]}
+          subtitle="A real person reads every message. We usually reply within two working days."
+          body="The dog doesn't answer these. We do."
+          center
+        />
         <Body>
           <Placeholder>
             <strong>Support email goes here</strong> (for example support@heywaldo.in, once it exists and someone reads it).

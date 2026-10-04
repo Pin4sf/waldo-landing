@@ -1,6 +1,9 @@
 # Connectors — Copy Structure
 
 Status: **Built. The live copy is at the top (the copy review's ★ picks, 2026-09-28).**
+
+Layout (2026-10-04): made like the homepage (centred, endless carousels, the Stage box, white cards, one close). Words unchanged. See [../site-wide-pass.md](../site-wide-pass.md).
+
 Last updated: 2026-09-28
 URL: `/connectors`
 Built from: `components/connectors/connector-data.ts` (45 tools), `Waldo/Docs/WALDO_CONNECTOR_ECOSYSTEM.md` (213 enumerated, April 2026), the adapter statuses in `Waldo/Docs/WALDO_DESIGNER_BRIEF.md`, AGENTS.md connector tiers

@@ -1,6 +1,9 @@
 # How it works — Copy Structure
 
 Status: **Built. The live copy is at the top (v5: v4 plus the copy review's ★ picks, 2026-09-28).** The v4 notes and the v3 full reference are below.
+
+Layout (2026-10-04): made like the homepage (centred, endless carousels, the Stage box, white cards, one close). Words unchanged. See [../site-wide-pass.md](../site-wide-pass.md).
+
 Last updated: 2026-09-28
 URL: `/how-it-works` (the old `/features` redirects here)
 Replaces: v3 (2026-09-28), which is kept below as the full reference

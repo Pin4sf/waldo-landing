@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { Actions, Placeholder, Section, revealDelay } from "@/components/site/blocks";
+import { Close, Placeholder, Section, revealDelay } from "@/components/site/blocks";
 import { SiteShell } from "@/components/site/site-shell";
 import { titleFit } from "@/lib/title-fit";
 import { OG_IMAGE_URL, SITE_URL } from "@/lib/site-metadata";
 
 // Copy: docs/website/pages/why-waldo.md ("Live copy" at the top).
 // The dashed boxes mark the parts only Suyash can write.
+// Layout follows the homepage (docs/website/site-wide-pass.md): the letter is a centred column with a centred
+// opening, and it ends on the shared close.
 
 const pageTitle = "Why I'm building Waldo — a note from the founder";
 const pageDescription =
@@ -35,7 +37,7 @@ export const metadata: Metadata = {
 export default function WhyWaldoPage() {
   return (
     <SiteShell>
-      <Section size="auto">
+      <Section size="open">
         <article className="site-letter" data-reveal="load">
           <p className="site-label site-rv" style={revealDelay(0)}>
             Why Waldo
@@ -188,19 +190,17 @@ export default function WhyWaldoPage() {
             </p>
           </div>
 
-          <div style={{ marginTop: "var(--site-row-gap)" }}>
-            <p className="site-text" style={{ marginTop: 0 }}>
-              <strong>One person. One Waldo.</strong>
-            </p>
-            <div style={{ marginTop: 32 }}>
-              <Actions
-                primary={{ label: "Let Waldo in →", href: "/waitlist" }}
-                secondary={{ label: "See how it works", href: "/how-it-works" }}
-              />
-            </div>
-          </div>
         </article>
       </Section>
+
+      {/* The letter's last line closes the page, as every page closes (docs/website/site-wide-pass.md) */}
+      <Close
+        lines={["One person.", "One Waldo."]}
+        actions={{
+          primary: { label: "Let Waldo in →", href: "/waitlist" },
+          secondary: { label: "See how it works", href: "/how-it-works" },
+        }}
+      />
     </SiteShell>
   );
 }

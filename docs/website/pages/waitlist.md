@@ -1,6 +1,9 @@
 # Let Waldo in (Waitlist) — Copy Structure
 
 Status: **Built. The live copy is at the top (2026-09-28).**
+
+Layout (2026-10-04): made like the homepage (centred, endless carousels, the Stage box, white cards, one close). Words unchanged. See [../site-wide-pass.md](../site-wide-pass.md).
+
 Last updated: 2026-09-28
 URL: `/waitlist`
 Live source: `app/waitlist/page.tsx`, `components/site/waitlist-panel.tsx`, `actions/submit-email.ts`

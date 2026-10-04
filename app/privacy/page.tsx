@@ -7,6 +7,7 @@ import { SITE_URL } from "@/lib/site-metadata";
 
 // Copy: docs/website/pages/privacy.md (v1). Part A is the plain-language draft. Part B (legal policy)
 // must be written by a lawyer before launch.
+// Layout follows the homepage (docs/website/site-wide-pass.md): centred titles, white boxed cards for the summaries.
 
 const DESCRIPTION = "What Waldo collects, why, who else touches it, and how to take it back.";
 
@@ -21,35 +22,34 @@ export const metadata: Metadata = {
 export default function PrivacyPage() {
   return (
     <SiteShell>
-      <Section size="auto">
+      <Section size="open">
         <Header
           as="h1"
           lines={["Your data,", "plainly."]}
           subtitle="What Waldo collects, why, who else touches it, and how to take it back. The legal version is further down, and it says the same thing in more words."
           body="The boundary is part of the product."
+          center
         />
         <DraftNotice>Draft. This page is being written and reviewed, and the legal policy below isn&apos;t final yet.</DraftNotice>
       </Section>
 
       <Section size="auto">
-        <Header lines={["The short", "version."]} />
+        <Header lines={["The short", "version."]} center />
         <Body>
-          <List
-            items={[
-              <><strong>You choose what Waldo connects to.</strong> Nothing connects on its own.</>,
-              <><strong>From email and messages, Waldo reads the pattern, never the words:</strong> volume, timing, urgency.</>,
-              <><strong>We never sell your data</strong> and never use it for ads.</>,
-              <><strong>We don&apos;t train AI models on your data.</strong></>,
-              <><strong>You can see it, download it and delete it,</strong> any time.</>,
-            ]}
-          />
+          <Grid cols={3} boxed>
+            <Item strong="You choose what Waldo connects to.">Nothing connects on its own.</Item>
+            <Item strong="From email and messages, Waldo reads the pattern, never the words:">volume, timing, urgency.</Item>
+            <Item strong="We never sell your data">and never use it for ads.</Item>
+            <Item strong="We don't train AI models on your data." />
+            <Item strong="You can see it, download it and delete it,">any time.</Item>
+          </Grid>
         </Body>
       </Section>
 
       <Section size="auto">
-        <Header lines={["Which Waldo", "are you using?"]} subtitle="Different parts of Waldo handle different data." />
+        <Header lines={["Which Waldo", "are you using?"]} subtitle="Different parts of Waldo handle different data." center />
         <Body>
-          <Grid cols={4}>
+          <Grid cols={4} boxed>
             <Item title="Visiting this website">Almost nothing. No ad trackers, no analytics scripts.</Item>
             <Item title="On the waitlist">Your email, and where you found us.</Item>
             <Item title="Using Waldo (beta)">Only what you connect. See below.</Item>
@@ -59,7 +59,7 @@ export default function PrivacyPage() {
       </Section>
 
       <Section size="auto">
-        <Header lines={["The website", "and the waitlist."]} />
+        <Header lines={["The website", "and the waitlist."]} center />
         <Body>
           <Table
             columns={["What", "Why", "Where it goes"]}
@@ -73,7 +73,7 @@ export default function PrivacyPage() {
       </Section>
 
       <Section size="auto">
-        <Header lines={["Using Waldo:", "what it collects, and why."]} subtitle="Only from what you connect." />
+        <Header lines={["Using Waldo:", "what it collects, and why."]} subtitle="Only from what you connect." center />
         <Body>
           <Table
             columns={["Source", "What Waldo reads", "Why"]}
@@ -90,7 +90,7 @@ export default function PrivacyPage() {
       </Section>
 
       <Section size="auto">
-        <Header lines={["Who else", "touches it."]} subtitle="Waldo uses a few companies to run. They process data only to provide Waldo's service to you, not for their own purposes." />
+        <Header lines={["Who else", "touches it."]} subtitle="Waldo uses a few companies to run. They process data only to provide Waldo's service to you, not for their own purposes." center />
         <Body>
           <Table
             columns={["Company", "What they do for Waldo", "What they see"]}
@@ -109,7 +109,7 @@ export default function PrivacyPage() {
       </Section>
 
       <Section size="auto">
-        <Header lines={["What we", "never do."]} />
+        <Header lines={["What we", "never do."]} center />
         <Body>
           <List
             items={[
@@ -130,7 +130,7 @@ export default function PrivacyPage() {
       </Section>
 
       <Section size="auto">
-        <Header lines={["Kennel", "for Mac."]} subtitle="Kennel is open source and runs on your Mac." />
+        <Header lines={["Kennel", "for Mac."]} subtitle="Kennel is open source and runs on your Mac." center />
         <Body>
           <List
             items={[
@@ -143,7 +143,7 @@ export default function PrivacyPage() {
       </Section>
 
       <Section size="auto">
-        <Header lines={["Your", "controls."]} />
+        <Header lines={["Your", "controls."]} center />
         <Body>
           <Table
             columns={["You can…", "How"]}
@@ -164,7 +164,7 @@ export default function PrivacyPage() {
       </Section>
 
       <Section size="auto">
-        <Header label="Part B" lines={["Privacy", "Policy."]} subtitle="The legal version of everything above." />
+        <Header label="Part B" lines={["Privacy", "Policy."]} subtitle="The legal version of everything above." center />
         <Body>
           <Placeholder>
             <strong>Legal policy goes here, written and reviewed by a lawyer.</strong> It covers who we are, what we

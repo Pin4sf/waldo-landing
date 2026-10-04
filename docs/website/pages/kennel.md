@@ -1,6 +1,9 @@
 # Kennel for Mac — Final Copy
 
 Status: **Built. The live copy is at the top (v1.1: new hero and first section from the copy review, 2026-09-28).**
+
+Layout (2026-10-04): made like the homepage (centred, endless carousels, the Stage box, white cards, one close). Words unchanged. See [../site-wide-pass.md](../site-wide-pass.md).
+
 URL: `/kennel`
 Live source: `app/kennel/page.tsx`
 Checked against: the Kennel repo README and `docs/STATUS.md` (checkpoint 2026-09-13)

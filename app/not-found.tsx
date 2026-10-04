@@ -4,6 +4,7 @@ import { Body, Grid, Header, Item, Section, Visual } from "@/components/site/blo
 import { SiteShell } from "@/components/site/site-shell";
 
 // Copy: docs/website/pages/404.md ("Live copy" at the top)
+// Layout follows the homepage (docs/website/site-wide-pass.md): centred opening, white boxed links.
 
 export const metadata: Metadata = {
   title: "Page not found",
@@ -13,16 +14,17 @@ export const metadata: Metadata = {
 export default function NotFound() {
   return (
     <SiteShell>
-      <Section>
+      <Section size="open">
         <Header
           as="h1"
           lines={["Wrong turn.", "Waldo’s not here."]}
           subtitle="This page doesn't exist, or it's moved. The rest of the site is right where we left it."
           body="Usually where the work is."
+          center
         />
         <Body>
           <Visual label="Waldo, looking off somewhere else" src="/assets/home/mascots/watching-dark-mode.svg" eager />
-          <Grid cols={4}>
+          <Grid cols={4} boxed>
             <Item title="Home" href="/">Start from the top.</Item>
             <Item title="How it works" href="/how-it-works">Everything Waldo does.</Item>
             <Item title="Kennel for Mac" href="/kennel">In open beta now.</Item>

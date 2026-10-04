@@ -35,8 +35,11 @@ export default async function WaitlistRoute({
 
   return (
     <SiteShell>
-      <Section>
-        <WaitlistPanel variant={variant} />
+      {/* In the homepage's box, everything centred (docs/website/site-wide-pass.md) */}
+      <Section size="open">
+        <div className="site-stage site-stage--close site-stage--form">
+          <WaitlistPanel variant={variant} />
+        </div>
       </Section>
     </SiteShell>
   );

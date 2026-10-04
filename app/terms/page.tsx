@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { Body, DraftNotice, Header, List, Placeholder, Section, Table } from "@/components/site/blocks";
+import { Body, DraftNotice, Grid, Header, Item, Placeholder, Section, Table } from "@/components/site/blocks";
 import { SiteShell } from "@/components/site/site-shell";
 import { SITE_URL } from "@/lib/site-metadata";
 
@@ -36,34 +36,35 @@ const SECTIONS: [string, string][] = [
 export default function TermsPage() {
   return (
     <SiteShell>
-      <Section size="auto">
+      <Section size="open">
         <Header
           as="h1"
           lines={["The terms.", "Readable ones."]}
           subtitle="Each section starts with the plain version. The legal version follows, and it's the one that counts."
           body="We tried to make this the least boring legal page you'll read today."
+          center
         />
         <DraftNotice>Draft. The plain summaries are here. The legal text is being written and reviewed.</DraftNotice>
       </Section>
 
       <Section size="auto">
-        <Header lines={["The short", "version."]} />
+        <Header lines={["The short", "version."]} center />
         <Body>
-          <List
-            items={[
-              <><strong>Waldo is in beta.</strong> It works, but it&apos;s still being finished. Things may change or break.</>,
-              <><strong>Waldo isn&apos;t a doctor.</strong> It uses health signals to plan your day. It doesn&apos;t diagnose or treat anything.</>,
-              <><strong>You&apos;re in charge of what Waldo can do.</strong> You choose what it connects to and how much it does on its own, and you can undo what it does.</>,
-              <><strong>Your data is yours.</strong> How we handle it is on the Privacy page.</>,
-              <><strong>Be decent.</strong> Don&apos;t misuse Waldo, other people&apos;s data, or our systems.</>,
-              <><strong>Kennel is open source</strong> under its own licence (Apache-2.0).</>,
-            ]}
-          />
+          <Grid cols={3} boxed>
+            <Item strong="Waldo is in beta.">It works, but it&apos;s still being finished. Things may change or break.</Item>
+            <Item strong="Waldo isn't a doctor.">It uses health signals to plan your day. It doesn&apos;t diagnose or treat anything.</Item>
+            <Item strong="You're in charge of what Waldo can do.">
+              You choose what it connects to and how much it does on its own, and you can undo what it does.
+            </Item>
+            <Item strong="Your data is yours.">How we handle it is on the Privacy page.</Item>
+            <Item strong="Be decent.">Don&apos;t misuse Waldo, other people&apos;s data, or our systems.</Item>
+            <Item strong="Kennel is open source">under its own licence (Apache-2.0).</Item>
+          </Grid>
         </Body>
       </Section>
 
       <Section size="auto">
-        <Header lines={["Section by", "section."]} />
+        <Header lines={["Section by", "section."]} center />
         <Body>
           <Table columns={["Section", "In plain words"]} rows={SECTIONS.map(([title, plain], index) => [`${index + 1}. ${title}`, plain])} />
         </Body>

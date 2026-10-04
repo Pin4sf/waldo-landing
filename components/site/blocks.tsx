@@ -56,8 +56,9 @@ export function Section({
   children,
 }: {
   id?: string;
-  /** "screen" is the home hero: one viewport tall, with what follows starting at the fold. */
-  size?: "frame" | "auto" | "tight" | "screen";
+  /** "screen" is the home hero: one viewport tall, with what follows starting at the fold. "open" is every
+      other page's opening: closer to the menu, like the home hero. */
+  size?: "frame" | "auto" | "tight" | "screen" | "open";
   children: ReactNode;
 }) {
   const classes = [
@@ -65,6 +66,7 @@ export function Section({
     size === "frame" ? "site-section--frame" : "",
     size === "tight" ? "site-section--tight" : "",
     size === "screen" ? "site-section--screen" : "",
+    size === "open" ? "site-section--open" : "",
   ]
     .filter(Boolean)
     .join(" ");
@@ -169,14 +171,77 @@ export function Actions({
   );
 }
 
+/**
+ * One rounded box with a centred title in it and one picture rising out of its foot, as in "Your context.
+ * Your call." on the homepage (docs/website/site-wide-pass.md). `children` is the title (a centred Header);
+ * `picture` is what rises: a StageImage, or a scene drawn in code. The picture sinks a little below the
+ * box's edge, so it reads as coming up out of it.
+ */
+export function Stage({
+  picture,
+  narrow = false,
+  children,
+}: {
+  picture: ReactNode;
+  /** For a tall picture: it rises at about half the box's width */
+  narrow?: boolean;
+  children: ReactNode;
+}) {
+  return (
+    <div className="site-stage" data-narrow={narrow ? "" : undefined}>
+      {children}
+      <div className="site-stage-picture" data-appear="rise">
+        {picture}
+      </div>
+    </div>
+  );
+}
+
+/** A picture file in a Stage: full width, its own shape, the top corners rounded */
+export function StageImage({ label, src, eager = false }: { label: string; src: string; eager?: boolean }) {
+  return (
+    <div className="site-stage-window" data-visual={label} aria-hidden="true">
+      <Image
+        src={src}
+        alt=""
+        width={0}
+        height={0}
+        sizes="(max-width: 640px) 100vw, 1100px"
+        unoptimized={src.endsWith(".svg")}
+        loading={eager ? "eager" : undefined}
+      />
+    </div>
+  );
+}
+
+/** The last section of a page: a centred title, a line and the button, in a box like the Stage's */
+export function Close({
+  lines,
+  body,
+  actions,
+}: {
+  lines: string[];
+  body?: ReactNode;
+  actions: { primary?: LinkSpec; secondary?: LinkSpec };
+}) {
+  return (
+    <Section size="auto">
+      <div className="site-stage site-stage--close">
+        <Header lines={lines} body={body} actions={actions} center />
+      </div>
+    </Section>
+  );
+}
+
 /** Whatever follows the header (grid, table, list) sits at the same distance below it. */
 export function Body({ children }: { children: ReactNode }) {
   return <div className="site-body">{children}</div>;
 }
 
-export function Grid({ cols = 3, children }: { cols?: 2 | 3 | 4 | 5; children: ReactNode }) {
+/** `boxed` puts each item in a white box (the homepage's card shape); a linked title makes the whole box the link */
+export function Grid({ cols = 3, boxed = false, children }: { cols?: 2 | 3 | 4 | 5; boxed?: boolean; children: ReactNode }) {
   return (
-    <div className="site-grid" data-appear="stagger" style={{ "--cols": cols } as CSSProperties}>
+    <div className="site-grid" data-appear="stagger" data-boxed={boxed ? "" : undefined} style={{ "--cols": cols } as CSSProperties}>
       {children}
     </div>
   );

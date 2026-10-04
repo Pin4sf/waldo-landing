@@ -1,6 +1,9 @@
 # Blog — Structure and Fixes
 
 Status: **Built. The live copy of the blog index is at the top (2026-09-28).** Posts are in `content/blogs/`, and how to write one is in [../blog-system.md](../blog-system.md).
+
+Layout (2026-10-04): made like the homepage (centred, endless carousels, the Stage box, white cards, one close). Words unchanged. See [../site-wide-pass.md](../site-wide-pass.md).
+
 Last updated: 2026-09-28
 URLs: `/blogs` (index), `/blogs/[slug]` (articles), `/blogs/rss.xml`
 Live source: `app/blogs/`, `components/blog/`, `lib/blog-posts.ts`, `content/blogs/*.md`

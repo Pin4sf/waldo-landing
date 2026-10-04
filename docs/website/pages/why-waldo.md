@@ -1,6 +1,9 @@
 # Why Waldo — Founder's Note
 
 Status: **Built. The live copy is at the top (the copy review's fixes, 2026-09-28). Still needs Suyash's own story in the marked gaps.**
+
+Layout (2026-10-04): made like the homepage (centred, endless carousels, the Stage box, white cards, one close). Words unchanged. See [../site-wide-pass.md](../site-wide-pass.md).
+
 Last updated: 2026-09-28
 URL: `/why-waldo`
 Live source: `app/why-waldo/page.tsx`

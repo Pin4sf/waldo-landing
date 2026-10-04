@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 
-import { Body, Grid, Header, Item } from "@/components/site/blocks";
+import { Body, Close, Grid, Header, Item } from "@/components/site/blocks";
 import { Carousel } from "@/components/site/carousel";
 import { formatBlogDate, getBlogPosts, type BlogPost } from "@/lib/blog-posts";
 import { SITE_URL } from "@/lib/site-metadata";
 
 // Structure: docs/website/pages/blog.md (v2): latest two big, then one uniform grid.
 // Category chips + search come back once there are 10+ posts.
+// Layout follows the homepage (docs/website/site-wide-pass.md): centred titles, an endless carousel, the shared close.
 
 const title = "Waldo notes: agents, your body and your day";
 const description =
@@ -57,7 +58,7 @@ export default function BlogsPage() {
 
   return (
     <main id="blog-main">
-      <section className="site-section site-section--frame">
+      <section className="site-section site-section--open">
         <div className="site-container">
           <Header
             as="h1"
@@ -65,9 +66,10 @@ export default function BlogsPage() {
             lines={["Things worth", "noticing."]}
             subtitle="Plain-language notes about agents, your body, and the patterns hiding inside an ordinary day."
             body="A quiet place for the things Waldo noticed."
+            center
           />
           <Body>
-            <p className="site-label">Latest</p>
+            <p className="site-label site-label--center">Latest</p>
             <Grid cols={2}>
               {latest.map((post) => (
                 <PostItem key={post.slug} post={post} eager />
@@ -80,9 +82,9 @@ export default function BlogsPage() {
       {rest.length > 0 ? (
         <section className="site-section">
           <div className="site-container">
-            <Header lines={["All", "notes."]} subtitle={`Every note so far, newest first. ${posts.length} in all.`} />
+            <Header lines={["All", "notes."]} subtitle={`Every note so far, newest first. ${posts.length} in all.`} center />
             <Body>
-              <Carousel label="All notes">
+              <Carousel label="All notes" loop>
                 {rest.map((post) => (
                   <PostItem key={post.slug} post={post} />
                 ))}
@@ -92,20 +94,16 @@ export default function BlogsPage() {
         </section>
       ) : null}
 
-      <section className="site-section site-section--tight">
-        <div className="site-container">
-          <Header
-            lines={["Waldo reads how you’re doing,", "then handles your day."]}
-            subtitle="See everything it does, one part at a time."
-            body={
-              <>
-                New notes arrive every two weeks. Follow them by <a className="site-link" href="/blogs/rss.xml">RSS</a>.
-              </>
-            }
-            actions={{ primary: { label: "See how Waldo works →", href: "/how-it-works" } }}
-          />
-        </div>
-      </section>
+      <Close
+        lines={["Waldo reads how you’re doing,", "then handles your day."]}
+        body={
+          <>
+            See everything it does, one part at a time. New notes arrive every two weeks. Follow them by{" "}
+            <a className="site-link" href="/blogs/rss.xml">RSS</a>.
+          </>
+        }
+        actions={{ primary: { label: "See how Waldo works →", href: "/how-it-works" } }}
+      />
     </main>
   );
 }

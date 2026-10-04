@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 
-import { Body, Grid, Header, Item, Section, Table } from "@/components/site/blocks";
+import { Body, Close, Grid, Header, Item, Section, Stage } from "@/components/site/blocks";
 import { type Feature, FeatureList } from "@/components/site/feature-sheet";
 import { Carousel } from "@/components/site/carousel";
+import { ConnectorRows } from "@/components/site/connector-rows";
+import { LockMoment } from "@/components/site/day-moments";
 import { SiteShell } from "@/components/site/site-shell";
 import { OG_IMAGE_URL, SITE_URL } from "@/lib/site-metadata";
 
@@ -10,6 +12,8 @@ import { OG_IMAGE_URL, SITE_URL } from "@/lib/site-metadata";
 // block, then the smaller features as a "+" row that opens a side panel. Only "Live" and "Next" features
 // appear as working; "Later" features live in the "What's coming" section. Statuses are the product docs'
 // (April 2026), still to be confirmed.
+// Layout, pictures and motion follow the homepage (docs/website/site-wide-pass.md): centred titles, centred
+// endless carousels, the Stage box, a centred close.
 
 const DESCRIPTION =
   "Everything Waldo does: how it reads how you're doing, runs your day around it, works across your tools, talks to you, and stays inside the limits you set.";
@@ -269,15 +273,16 @@ export default function HowItWorksPage() {
   return (
     <SiteShell>
       {/* 0 · Hero */}
-      <Section>
+      <Section size="open">
         <Header
           as="h1"
           lines={["Everything it handles.", "Nothing you have to."]}
           subtitle="Everything Waldo does, from reading last night's sleep to moving tomorrow's meeting."
           actions={{ primary: { label: "Let Waldo in →", href: "/waitlist" } }}
+          center
         />
         <Body>
-          <Grid cols={5}>
+          <Grid cols={5} boxed>
             <Item title="Health" href="#health">Knows how you&apos;re doing.</Item>
             <Item title="Day to day" href="#day">Runs your day around it.</Item>
             <Item title="Connectors" href="#connectors">Works with everything you use.</Item>
@@ -294,25 +299,26 @@ export default function HowItWorksPage() {
           lines={["Your health,", "without the homework."]}
           subtitle="Health apps hand you charts and a score, then leave the reading to you. Waldo does the reading. It even knows a racing heart on a morning run from a racing heart in a board call."
           body="You have better things to memorise."
+          center
         />
         <Body>
-          <Carousel label="Recovery, Form and Weight">
-            <Item title="Recovery" visual="Last night on iPhone: sleep, HRV and resting state" image="/figma-assets/waldo-cards/morning-overview.webp" strong="What did last night give you?">
+          <Carousel label="Recovery, Form and Weight" loop>
+            <Item title="Recovery" visual="Last night on iPhone: sleep, HRV and resting state" image="/figma-assets/waldo-cards/morning-overview.webp" plain strong="What did last night give you?">
               <p>Set each morning, from Sleep, HRV and Resting State.</p>
               <p>63: &ldquo;Short night, HRV 12% below your usual. Take the morning easy.&rdquo;</p>
             </Item>
-            <Item title="Form" visual="Stress climbing on iPhone" image="/figma-assets/waldo-cards/edge-phone-stress.webp" strong="What can you handle right now?">
+            <Item title="Form" visual="Stress climbing on iPhone" image="/figma-assets/waldo-cards/edge-phone-stress.webp" plain strong="What can you handle right now?">
               <p>Live all day, from Circadian, Motion and Stress.</p>
               <p>76: &ldquo;Steady. Stress rising since 1pm.&rdquo;</p>
             </Item>
-            <Item title="Weight" visual="A full calendar, with Waldo's changes marked" image="/figma-assets/waldo-cards/edge-waldo-action-calendar.webp" strong="What is today asking of you?">
+            <Item title="Weight" visual="A full calendar, with Waldo's changes marked" image="/figma-assets/waldo-cards/edge-waldo-action-calendar.webp" plain strong="What is today asking of you?">
               <p>Live all day. Higher means heavier: meetings, messages, tasks and Load.</p>
               <p>84: &ldquo;Six meetings and a full inbox. A heavy one.&rdquo;</p>
             </Item>
           </Carousel>
         </Body>
         <Body>
-          <FeatureList section="Health" features={HEALTH} />
+          <FeatureList section="Health" features={HEALTH} center />
           <p className="site-note" style={{ marginTop: 40 }}>
             Waldo uses health signals as context for planning your day. It isn&apos;t a medical device, and it doesn&apos;t
             diagnose anything.
@@ -327,33 +333,72 @@ export default function HowItWorksPage() {
           lines={["Done before", "you’re up."]}
           subtitle="Waldo reads your night, then rebuilds the day around it. The hard meeting moves, your best hours stay protected, and the inbox waits its turn."
           body="Most of it, you'll never see happen."
+          center
         />
         <Body>
-          <Table
-            columns={["When", "What Waldo does", "What it looks like"]}
-            rows={[
-              ["Morning", "The Brief", "“Rough night, about 5h 40m. Nudged your 9am to 10:30. The afternoon looks fine.”"],
-              ["Morning", "The Window", "“10:30–12:30 is your sharpest stretch. Blocked it.”"],
-              ["Before a big meeting", "Prep", "“Board call in 35 minutes. You're running lower than usual. Here are last time's open items.”"],
-              ["Afternoon", "The Heads-Up", "“This Tuesday is shaping up like the last three. Moved your 4pm before it lands.”"],
-              ["Evening", "The Close", "“Today: 3 things moved, 1 protected. Tomorrow looks lighter.”"],
-              ["End of week", "The Adjustment", "“22 hours of meetings this week. Friday afternoon cleared. Retro moved to Monday.”"],
-            ]}
-          />
+          {/* Was a table (When / What Waldo does / What it looks like). Same words: each one is now the message
+              arriving on the lock screen at that time (components/site/day-moments.tsx). */}
+          <Carousel label="Waldo through a day" loop>
+            <Item
+              meta="Morning"
+              visual="The Brief arriving on the lock screen at 7:02"
+              scene={<LockMoment day="Tuesday 6 October" time="7:02" title="The Brief" text="Rough night, about 5h 40m. Nudged your 9am to 10:30. The afternoon looks fine." />}
+              strong="The Brief"
+            />
+            <Item
+              meta="Morning"
+              visual="The Window arriving on the lock screen at 7:15"
+              scene={<LockMoment day="Tuesday 6 October" time="7:15" title="The Window" text="10:30–12:30 is your sharpest stretch. Blocked it." />}
+              strong="The Window"
+            />
+            <Item
+              meta="Before a big meeting"
+              visual="Prep arriving on the lock screen at 1:25, before a board call"
+              scene={<LockMoment day="Tuesday 6 October" time="1:25" title="Prep" text="Board call in 35 minutes. You're running lower than usual. Here are last time's open items." />}
+              strong="Prep"
+            />
+            <Item
+              meta="Afternoon"
+              visual="The Heads-Up arriving on the lock screen at 2:40"
+              scene={<LockMoment day="Tuesday 6 October" time="2:40" title="The Heads-Up" text="This Tuesday is shaping up like the last three. Moved your 4pm before it lands." />}
+              strong="The Heads-Up"
+            />
+            <Item
+              meta="Evening"
+              visual="The Close arriving on the evening lock screen at 6:48"
+              scene={<LockMoment day="Tuesday 6 October" time="6:48" title="The Close" text="Today: 3 things moved, 1 protected. Tomorrow looks lighter." evening />}
+              strong="The Close"
+            />
+            <Item
+              meta="End of week"
+              visual="The Adjustment arriving on the lock screen on Friday at 4:10"
+              scene={<LockMoment day="Friday 9 October" time="4:10" title="The Adjustment" text="22 hours of meetings this week. Friday afternoon cleared. Retro moved to Monday." />}
+              strong="The Adjustment"
+            />
+          </Carousel>
         </Body>
         <Body>
-          <FeatureList section="Day to day" features={DAY} />
+          <FeatureList section="Day to day" features={DAY} center />
         </Body>
       </Section>
 
-      {/* 3 · Connectors (teaser) */}
+      {/* 3 · Connectors (teaser): in a Stage, with the homepage's drifting tool tiles rising out of it */}
       <Section id="connectors" size="auto">
-        <Header
-          label="Connectors"
-          lines={["Already fluent", "in your tools."]}
-          subtitle="Your watch, your calendar, your inbox, your tasks, and the agents you already pay for. Growing to 200+ tools across 27 categories."
-          actions={{ primary: { label: "See every tool →", href: "/connectors" } }}
-        />
+        <Stage
+          picture={
+            <div className="site-stage-scene" data-visual="Every tool Waldo works with, drifting past in rows">
+              <ConnectorRows />
+            </div>
+          }
+        >
+          <Header
+            label="Connectors"
+            lines={["Already fluent", "in your tools."]}
+            subtitle="Your watch, your calendar, your inbox, your tasks, and the agents you already pay for. Growing to 200+ tools across 27 categories."
+            actions={{ primary: { label: "See every tool →", href: "/connectors" } }}
+            center
+          />
+        </Stage>
       </Section>
 
       {/* 4 · Talk to Waldo */}
@@ -363,9 +408,10 @@ export default function HowItWorksPage() {
           lines={["You don’t have to talk to it.", "But you can."]}
           subtitle="Waldo speaks first, but ask it anything, any time: “How did I sleep?” “When should I do the hard thing today?”"
           body="Talk to it on Telegram and the web today. WhatsApp and iPhone notifications are coming next."
+          center
         />
         <Body>
-          <FeatureList section="Talk to Waldo" features={TALK} />
+          <FeatureList section="Talk to Waldo" features={TALK} center />
         </Body>
       </Section>
 
@@ -377,28 +423,27 @@ export default function HowItWorksPage() {
           subtitle="You choose how far Waldo goes, area by area, and you can change it whenever you like."
           body="Every move is logged. One tap takes it back."
           actions={{ secondary: { label: "How we handle your data", href: "/privacy" } }}
+          center
         />
         <Body>
-          <FeatureList section="Your rules" features={RULES} />
+          <FeatureList section="Your rules" features={RULES} center />
         </Body>
       </Section>
 
       {/* 6 · What's coming */}
       <Section size="auto">
-        <Header lines={["New tricks,", "coming soon."]} />
+        <Header lines={["New tricks,", "coming soon."]} center />
         <Body>
-          <FeatureList label="Coming later" section="What's coming" features={COMING} />
+          <FeatureList label="Coming later" section="What's coming" features={COMING} center />
         </Body>
       </Section>
 
       {/* 7 · Close */}
-      <Section size="auto">
-        <Header
-          lines={["Now you know.", "Let it work."]}
-          body="You'll notice the difference, not the work."
-          actions={{ primary: { label: "Let Waldo in →", href: "/waitlist" } }}
-        />
-      </Section>
+      <Close
+        lines={["Now you know.", "Let it work."]}
+        body="You'll notice the difference, not the work."
+        actions={{ primary: { label: "Let Waldo in →", href: "/waitlist" } }}
+      />
     </SiteShell>
   );
 }

@@ -1,12 +1,15 @@
 import type { Metadata, Viewport } from "next";
 
-import { Body, Grid, Header, Item, List, Questions, Section, Visual } from "@/components/site/blocks";
+import { AgentPicker } from "@/components/site/agent-picker";
+import { Body, Close, Grid, Header, Item, Questions, Section, Stage, StageImage } from "@/components/site/blocks";
 import { Carousel } from "@/components/site/carousel";
 import { SiteShell } from "@/components/site/site-shell";
 import { OG_IMAGE_URL, SITE_URL } from "@/lib/site-metadata";
 
 // Copy: docs/website/pages/kennel.md ("Live copy" at the top). The existing Kennel visuals go into the blank
 // visual slots in the visual pass.
+// Layout, pictures and motion follow the homepage (docs/website/site-wide-pass.md): each big Kennel picture rises
+// out of a Stage box, carousels are centred and endless, titles are centred. Kennel stays dark.
 
 const KENNEL_URL = `${SITE_URL}/kennel`;
 const KENNEL_REPO = "https://github.com/waldoco/Waldo-Kennel";
@@ -39,22 +42,22 @@ export const viewport: Viewport = { themeColor: "#111111" };
 export default function KennelPage() {
   return (
     <SiteShell theme="dark">
-      {/* 0 · Hero */}
-      <Section>
-        <Header
-          as="h1"
-          label="Kennel for Mac"
-          lines={["Your agents finish.", "Kennel gets it done."]}
-          subtitle="Tell Kennel what should be true when you're done. It splits the work across Codex, Claude Code, Cursor and the rest, checks every result, and shows you the proof."
-          body="It's free, open source and in open beta, and it runs on your Mac."
-          actions={{
-            primary: { label: "Try the beta on GitHub", href: KENNEL_REPO },
-            secondary: { label: "Get the Mac app first →", href: KENNEL_WAITLIST },
-          }}
-        />
-        <Body>
-          <Visual wide label="Kennel app window showing a project's work queue" src="/build/kennel-hero-asset-3.svg" eager />
-        </Body>
+      {/* 0 · Hero: the title in a Stage, the app window rising out of it */}
+      <Section size="open">
+        <Stage picture={<StageImage label="Kennel app window showing a project's work queue" src="/build/kennel-hero-asset-3.svg" eager />}>
+          <Header
+            as="h1"
+            label="Kennel for Mac"
+            lines={["Your agents finish.", "Kennel gets it done."]}
+            subtitle="Tell Kennel what should be true when you're done. It splits the work across Codex, Claude Code, Cursor and the rest, checks every result, and shows you the proof."
+            body="It's free, open source and in open beta, and it runs on your Mac."
+            actions={{
+              primary: { label: "Try the beta on GitHub", href: KENNEL_REPO },
+              secondary: { label: "Get the Mac app first →", href: KENNEL_WAITLIST },
+            }}
+            center
+          />
+        </Stage>
       </Section>
 
       {/* 1 · Not done */}
@@ -62,9 +65,10 @@ export default function KennelPage() {
         <Header
           lines={["“Finished” isn’t", "“done.”"]}
           subtitle="An output is what the session produced. An outcome is what you wanted. Most agent tools stop at the output. Kennel is built around the outcome."
+          center
         />
         <Body>
-          <Carousel label="How Kennel works toward an outcome">
+          <Carousel label="How Kennel works toward an outcome" loop>
             <Item title="Outcome first." visual="Outcome card" image="/build/kennel/outcome-first.svg">
               What the project should look like in the end. Not the steps, the end state. That&apos;s the outcome, and
               it&apos;s the only thing Kennel measures against.
@@ -83,40 +87,39 @@ export default function KennelPage() {
 
       {/* 2–5 · How it runs */}
       <Section size="auto">
-        <Header lines={["Turns your intent", "into an outcome."]} subtitle="Waldo takes a loose sentence and turns it into a contract you can check." />
-        <Body>
-          <Visual wide label="Kennel turning a loose intent into a checkable contract" src="/build/kennel/intent-to-outcome.svg" />
-        </Body>
+        <Stage picture={<StageImage label="Kennel turning a loose intent into a checkable contract" src="/build/kennel/intent-to-outcome.svg" />}>
+          <Header lines={["Turns your intent", "into an outcome."]} subtitle="Waldo takes a loose sentence and turns it into a contract you can check." center />
+        </Stage>
       </Section>
 
       <Section size="auto">
-        <Header
-          lines={["One outcome.", "Many hands."]}
-          subtitle="Contracts flow to your agents in the right order. Each one hands off to the next and reports against the same outcome."
-        />
-        <Body>
-          <Visual wide label="Contracts moving between agents, a status list, and a contract card" src="/build/kennel/many-hands-2.svg" />
-        </Body>
+        <Stage picture={<StageImage label="Contracts moving between agents, a status list, and a contract card" src="/build/kennel/many-hands-2.svg" />}>
+          <Header
+            lines={["One outcome.", "Many hands."]}
+            subtitle="Contracts flow to your agents in the right order. Each one hands off to the next and reports against the same outcome."
+            center
+          />
+        </Stage>
       </Section>
 
       <Section size="auto">
-        <Header
-          lines={["Read the card,", "not the log."]}
-          subtitle="Every session summarises itself: what it did, what it's doing, what comes next. The full transcript is one click away."
-        />
-        <Body>
-          <Visual wide label="Kennel's work board with a session brief card" src="/build/kennel/read-card-2.svg" />
-        </Body>
+        <Stage picture={<StageImage label="Kennel's work board with a session brief card" src="/build/kennel/read-card-2.svg" />}>
+          <Header
+            lines={["Read the card,", "not the log."]}
+            subtitle="Every session summarises itself: what it did, what it's doing, what comes next. The full transcript is one click away."
+            center
+          />
+        </Stage>
       </Section>
 
       <Section size="auto">
-        <Header
-          lines={["Approve without", "switching."]}
-          subtitle="Island puts questions, approvals and Home (every project, what moved, what needs you) in the menu bar. Answer, and the run continues."
-        />
-        <Body>
-          <Visual wide label="Kennel Island in the macOS menu bar" src="/build/kennel/island-2.svg" />
-        </Body>
+        <Stage picture={<StageImage label="Kennel Island in the macOS menu bar" src="/build/kennel/island-2.svg" />}>
+          <Header
+            lines={["Approve without", "switching."]}
+            subtitle="Island puts questions, approvals and Home (every project, what moved, what needs you) in the menu bar. Answer, and the run continues."
+            center
+          />
+        </Stage>
       </Section>
 
       {/* 6 · Three things */}
@@ -124,17 +127,18 @@ export default function KennelPage() {
         <Header
           lines={["Three things stop", "being your job."]}
           subtitle="Ferrying context. Picking the model. Checking the work. Kennel takes the coordinating, the checking and the routing. You keep the decisions."
+          center
         />
         <Body>
-          <Carousel label="What stops being your job">
-            <Item title="Stop babysitting your agents." visual="Agents with context and contracts">
+          <Carousel label="What stops being your job" loop>
+            <Item title="Stop babysitting your agents." visual="Agents with context and contracts: Kennel's work board" image="/build/kennel/many-hands.svg">
               You approve the outcome, Kennel handles the rest. Each agent gets the context it needs and a contract for
               what&apos;s expected. No re-explaining, no tab hopping.
             </Item>
-            <Item title="Done means you’ve seen the proof." visual="Evidence attached to a contract">
+            <Item title="Done means you’ve seen the proof." visual="Evidence attached to a contract" image="/build/kennel/intent-contract.svg">
               Every contract comes with its own checks. Kennel gathers the evidence, and you make the call.
             </Item>
-            <Item title="Gets the best out of what you have." visual="Agent and model picker">
+            <Item title="Gets the best out of what you have." visual="Agent and model picker: a contract goes to the agent you approve" scene={<AgentPicker />}>
               Every piece goes to the agent and model you approve. Your subscriptions, your keys.
             </Item>
           </Carousel>
@@ -147,9 +151,10 @@ export default function KennelPage() {
           lines={["Your code", "stays home."]}
           subtitle="Kennel runs on your Mac and keeps its records there. Your agents work through your own accounts, the way they always have."
           body="A kennel, not a cloud."
+          center
         />
         <Body>
-          <Grid cols={3}>
+          <Grid cols={3} boxed>
             <Item title="Local first.">Everything Kennel tracks lives on your machine.</Item>
             <Item title="Only the access you approve.">Each agent gets exactly the files and permissions its contract needs. Nothing more.</Item>
             <Item title="Nothing hidden.">If something isn&apos;t set up, Kennel tells you. It never quietly swaps in a different agent.</Item>
@@ -164,9 +169,10 @@ export default function KennelPage() {
           subtitle="Waldo is one personal agent across work and life. Kennel is where it starts: your agents, your outcomes, on your Mac. The same Waldo is coming to your iPhone, where it knows how you're actually doing."
           body="Same dog, first room."
           actions={{ secondary: { label: "See the whole of Waldo", href: "/how-it-works" } }}
+          center
         />
         <Body>
-          <Grid cols={3}>
+          <Grid cols={3} boxed>
             <Item meta="You are here" title="Kennel for Mac">Waldo at work.</Item>
             <Item meta="Coming soon" title="Waldo for iPhone">Waldo in your personal life.</Item>
             <Item meta="Coming soon" title="Messaging & browser">Waldo everywhere else.</Item>
@@ -180,16 +186,15 @@ export default function KennelPage() {
           lines={["Built in", "the open."]}
           subtitle="Kennel is open source under Apache-2.0. Read the code, file an issue, or build with us."
           body="Good dogs share."
+          center
         />
         <Body>
-          <List
-            items={[
-              <a key="star" className="site-link" href={KENNEL_REPO} target="_blank" rel="noreferrer">Star on GitHub →</a>,
-              <a key="issues" className="site-link" href={`${KENNEL_REPO}/issues`} target="_blank" rel="noreferrer">Good first issues →</a>,
-              <a key="discussions" className="site-link" href={`${KENNEL_REPO}/discussions`} target="_blank" rel="noreferrer">Discussions →</a>,
-              <a key="contributing" className="site-link" href={`${KENNEL_REPO}/blob/main/CONTRIBUTING.md`} target="_blank" rel="noreferrer">How to contribute →</a>,
-            ]}
-          />
+          <div className="site-linkrow" data-appear="self">
+            <a className="site-link" href={KENNEL_REPO} target="_blank" rel="noreferrer">Star on GitHub →</a>
+            <a className="site-link" href={`${KENNEL_REPO}/issues`} target="_blank" rel="noreferrer">Good first issues →</a>
+            <a className="site-link" href={`${KENNEL_REPO}/discussions`} target="_blank" rel="noreferrer">Discussions →</a>
+            <a className="site-link" href={`${KENNEL_REPO}/blob/main/CONTRIBUTING.md`} target="_blank" rel="noreferrer">How to contribute →</a>
+          </div>
         </Body>
       </Section>
 
@@ -222,16 +227,14 @@ export default function KennelPage() {
       </Section>
 
       {/* 11 · Close */}
-      <Section>
-        <Header
-          lines={["More agents.", "Less for you to carry."]}
-          subtitle="Tell Kennel what should become true. Your agents do the rest, with evidence, not vibes."
-          actions={{
-            primary: { label: "Try the beta on GitHub", href: KENNEL_REPO },
-            secondary: { label: "Get the Mac app first →", href: KENNEL_WAITLIST },
-          }}
-        />
-      </Section>
+      <Close
+        lines={["More agents.", "Less for you to carry."]}
+        body="Tell Kennel what should become true. Your agents do the rest, with evidence, not vibes."
+        actions={{
+          primary: { label: "Try the beta on GitHub", href: KENNEL_REPO },
+          secondary: { label: "Get the Mac app first →", href: KENNEL_WAITLIST },
+        }}
+      />
     </SiteShell>
   );
 }

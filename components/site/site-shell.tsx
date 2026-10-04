@@ -1,4 +1,5 @@
 import "./site.css";
+import "./site-pages.css";
 
 import type { ReactNode } from "react";
 
@@ -11,7 +12,7 @@ import { SiteNav } from "./site-nav";
 // Every page is wrapped in this: the same menu, footer and page background everywhere.
 // Pages that render their own <main> (the blog articles) pass `ownMain`.
 // Every page is light. The Kennel page passes theme="dark" and is always dark (Kennel's own colours).
-// The homepage passes `home`: its page is #FAFAF8 instead of the site's #F4F3F0.
+// The homepage passes `home` (marks the page as data-home). Every light page is #FAFAF8, as the homepage is.
 export function SiteShell({
   children,
   announcement,

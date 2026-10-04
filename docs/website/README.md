@@ -28,6 +28,7 @@ This folder is where the whole website gets planned before it gets built. Each p
 | [hero-loop.md](hero-loop.md) | The moving picture under the homepage hero: tools in a wave, what they carry dropping into Waldo, his Overview card (in a phone) filling in underneath | **Built — one stream, card states waiting on matching copy** |
 | [what-you-see-plan.md](what-you-see-plan.md) | The five-card "What you see of it" section after the hero: story, screens, carousel behaviour, fixture checks. Section 17: one kit for all the app screens | **Built, on the homepage (local)** |
 | [trust-carousel-review.md](trust-carousel-review.md) | The homepage Trust section as four privacy panels ("Your context. Your call."): copy, what each panel is backed by in the product code, and the open privacy and security questions | **Built locally for review, not published** |
+| [site-wide-pass.md](site-wide-pass.md) | Every other page made like the homepage: page colour, centred titles, endless carousels, the Stage box, white cards, new moving pictures, one close. Words unchanged | **Built locally for review, not published** |
 | [sessions/](sessions/) | One log per working session: what was decided, what's open | Ongoing |
 
 ## Build status
@@ -37,6 +38,8 @@ This folder is where the whole website gets planned before it gets built. Each p
 **Minimal pass + motion (2026-09-28).** Divider lines removed site-wide, with space doing the separating. Hover, press, open/close, scroll-in and form-state animations were added using Linear's exact timings. See [motion.md](motion.md).
 
 **Titles, pictures and feature panels (2026-09-28).** Every title fits in two lines at any width (see [type.md](type.md)). Pictures from the older build now fill most of the empty spaces: Kennel's own pictures, Home's illustrations, the footer scene, menu icons, tool logos and blog art. How it works lists its smaller features as Linear-style "+" rows that open a side panel. See [sessions/2026-09-28.md](sessions/2026-09-28.md).
+
+**Site-wide pass (2026-10-04).** Every page other than the homepage now follows the homepage's layout, pictures and motion; the words are unchanged. See [site-wide-pass.md](site-wide-pass.md) and [sessions/2026-10-04.md](sessions/2026-10-04.md).
 
 ## How this works
 

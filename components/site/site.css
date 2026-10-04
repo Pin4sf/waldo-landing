@@ -1835,12 +1835,13 @@ html:has(.site-sheet[open]) { overflow: hidden; }
   --site-button-bg: #E6E6E4;
   --site-button-hover: var(--ink);
 }
-/* The homepage's page is #FAFAF8 (the site's is #F4F3F0). Anything that used #FAFAF8 to stand out from
-   the page, the picture frames under the hero, gets the hairline instead. */
-.site[data-home] { --surface-t3: var(--surface-t2); }
-html:has(.site[data-home]),
-html:has(.site[data-home]) body { background: var(--surface-t2); }
-.site[data-home] .site-visual--image { border: 0.6px solid color-mix(in srgb, var(--ink) 8%, transparent); }
+/* Every light page is #FAFAF8, as the homepage was first (2026-10-04, docs/website/site-wide-pass.md; the site's
+   page used to be #F4F3F0). Anything that used #FAFAF8 to stand out from the page, the picture frames, gets
+   the hairline instead. */
+.site:not([data-theme="dark"]) { --surface-t3: var(--surface-t2); }
+html:has(.site:not([data-theme="dark"])),
+html:has(.site:not([data-theme="dark"])) body { background: var(--surface-t2); }
+.site:not([data-theme="dark"]) .site-visual--image { border: 0.6px solid color-mix(in srgb, var(--ink) 8%, transparent); }
 /* The page behind the site (seen when a Mac trackpad bounces past the top or bottom) goes dark too */
 html:has(.site[data-theme="dark"]) { background: #111111; color-scheme: dark; }
 .site[data-theme="dark"] .site-nav-menu { box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5); }
