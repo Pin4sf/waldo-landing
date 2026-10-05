@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { AssetProtection } from "@/components/asset-protection";
 import { mottle, sfProRounded } from "@/lib/fonts";
 import {
@@ -85,6 +85,9 @@ export const metadata: Metadata = {
   },
 };
 
+// Phone browser bars match the light page. The Kennel page sets its own dark colour.
+export const viewport: Viewport = { themeColor: "#F4F3F0" };
+
 const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
@@ -137,8 +140,14 @@ const jsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${mottle.variable} ${sfProRounded.variable}`}>
+    <html lang="en" className={`${mottle.variable} ${sfProRounded.variable}`} suppressHydrationWarning>
       <head>
+        {/* Turns on scroll-in animations before first paint, so nothing flashes (see components/site/site.css) */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "if('IntersectionObserver'in window)document.documentElement.setAttribute('data-motion','')",
+          }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

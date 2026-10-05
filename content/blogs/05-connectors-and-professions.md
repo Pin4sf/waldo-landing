@@ -1,12 +1,24 @@
 ---
-type: article
 status: published
-title: Nobody wants to explain their job to a computer every morning
+slug: explain-your-job-to-a-computer
+title: Nobody wants to explain their job / to a computer every morning
+dek: The useful agent understands the shape of your work without making you describe it every day.
+excerpt: Calendar, mail, and work tools make a day legible. The point is not more data. It is better timing.
+aside: less explaining, more handling.
+category: Connectors
+author: team-connectors
+type: article
 tags: [waldo, blog, connectors, professions]
 created: 2026-07-30
 published: 2026-07-30
 updated: 2026-07-30
 site_section: connectors-and-profession-cards
+image: /assets/blogs/connectors-and-professions.webp
+imageAlt: Different working days connected into one clear and protected window
+audio: /assets/blogs/audio/explain-your-job-to-a-computer.m4a
+artCredit: Waldo, made with OpenAI
+sources:
+  - Waldo connector architecture, May 2026 | /features
 ---
 
 # Nobody wants to explain their job to a computer every morning

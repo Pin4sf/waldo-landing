@@ -1,0 +1,329 @@
+/*
+  The rest of the site, made like the homepage (2026-10-04, docs/website/site-wide-pass.md).
+  The homepage's own pieces live in site.css; these are the shared ones the other pages needed to look and move
+  the same way: the Stage box, the page opening, centred feature rows, white boxed cards, and the new pictures
+  drawn in code (How it works' lock screens, Connectors' two accounts, Kennel's agent picker).
+*/
+
+/* ── Page opening ──────────────────────────────────────
+   Closer to the menu than an ordinary section, as the home hero is, with the title, text and buttons centred
+   (Header's `center`). */
+.site-section--open { padding-block: clamp(56px, 11vh, 120px) clamp(64px, 10vh, 112px); }
+.site-section--open .site-header-block .site-text { max-width: 40rem; text-wrap: balance; }
+.site-section--open .site-draft { margin-inline: auto; text-align: center; }
+
+/* Centred blocks: the text under a centred title reads as two balanced lines, like the homepage's */
+.site-header-block[data-center] .site-text { max-width: 40rem; text-wrap: balance; }
+
+/* ── Stage ─────────────────────────────────────────────
+   One rounded box, a centred title in it, one picture rising out of its foot. Same box as "Your context. Your
+   call." (trust-window.css, .tv): a shade darker than the page, a 0.5px hairline, the white-box corner. */
+.site-stage {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(44px, 7vw, 92px) clamp(16px, 4vw, 56px) 0;
+  border-radius: var(--box-radius);
+  corner-shape: var(--box-corner);
+  background: color-mix(in srgb, var(--ink) 3.5%, var(--surface-t2));
+  box-shadow: inset 0 0 0 0.5px color-mix(in srgb, var(--ink) 8%, transparent);
+}
+.site-stage-picture {
+  width: min(1040px, 100%);
+  margin: clamp(36px, 5vw, 64px) auto 0;
+  /* sinks a little under the box's edge, so it comes up out of it */
+  margin-bottom: calc(-1 * var(--stage-sink, 2.5%));
+}
+.site-stage[data-narrow] .site-stage-picture { width: min(560px, 100%); }
+.site-stage-window {
+  overflow: hidden;
+  border-radius: 20px 20px 0 0;
+  background: var(--surface-t1);
+  box-shadow: 0 0 0 0.5px color-mix(in srgb, var(--ink) 10%, transparent);
+}
+.site-stage-window img { display: block; width: 100%; height: auto; }
+/* A picture drawn in code: its own white window, sized by its width */
+.site-stage-scene {
+  container-type: inline-size;
+  overflow: hidden;
+  border-radius: 20px 20px 0 0;
+  background: #fff;
+  box-shadow: 0 0 0 0.5px color-mix(in srgb, var(--ink) 10%, transparent);
+}
+/* The homepage's drifting tool tiles, at a fixed size here (their own --u would make them huge this wide) */
+.site-stage-scene .site-tiles { --u: clamp(0.62px, 100cqw / 900, 1.05px); height: calc(420 * var(--u)); padding-top: calc(24 * var(--u)); }
+/* The close: the same box with only words and a button in it */
+.site-stage--close { padding-bottom: clamp(44px, 7vw, 92px); }
+.site-stage--close .site-header-block > .site-actions { margin-top: 31px; }
+@media (max-width: 640px) {
+  .site-stage { padding-inline: 16px; }
+  .site-stage-picture { width: calc(100% + 8px); margin-inline: -4px; }
+}
+
+/* ── Feature rows, centred under their title ───────────
+   The "+" rows on How it works: the label above, the names in two columns, the block in the middle of the page. */
+.site-features[data-center] {
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: 14px;
+  max-width: 44rem;
+  margin-inline: auto;
+  text-align: center;
+}
+.site-features[data-center] .site-features-list { justify-items: center; }
+.site-features[data-center] .site-feature-button { text-align: center; }
+.site-body:has(> .site-features[data-center]) .site-note { max-width: 40rem; margin-inline: auto; text-align: center; }
+
+/* ── Boxed cards ───────────────────────────────────────
+   A grid of short items as white boxes (the homepage's white card shape). When the item's title is a link, the
+   whole card is the link, and it grows a touch on hover like a carousel card. */
+.site-grid[data-boxed] { column-gap: 10px; row-gap: 10px; }
+.site-grid[data-boxed] > .site-item {
+  position: relative;
+  box-sizing: border-box;
+  padding: clamp(20px, 2.4vw, 28px);
+  border-radius: var(--box-radius);
+  corner-shape: var(--box-corner);
+  background: var(--surface-t1);
+  box-shadow: inset 0 0 0 0.5px color-mix(in srgb, var(--ink) 8%, transparent);
+  transition: transform var(--motion-card-spring) var(--ease-card-spring), box-shadow var(--motion-button) var(--ease-out-quad);
+}
+.site-grid[data-boxed] .site-item-title a::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
+.site-grid[data-boxed] > .site-item:has(.site-item-title a):hover { transform: scale(1.01); box-shadow: inset 0 0 0 0.5px color-mix(in srgb, var(--ink) 16%, transparent); }
+.site-grid[data-boxed] > .site-item:has(.site-item-title a):active { transform: scale(0.98); }
+.site-grid[data-boxed] .site-item-title a { text-decoration: none; }
+.site-grid[data-boxed] .site-item-title a:focus-visible { outline: none; }
+.site-grid[data-boxed] > .site-item:has(.site-item-title a:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
+/* The arrow after a linked title leans forward on hover */
+.site-grid[data-boxed] .site-item-title a .site-arrow { margin-left: 6px; color: var(--text-tertiary); }
+.site-grid[data-boxed] > .site-item:hover .site-item-title a .site-arrow { color: var(--ink); }
+.site-grid[data-boxed] .site-item-meta { margin-bottom: 14px; }
+.site-grid[data-boxed] .site-visual--image { margin-top: 0; margin-bottom: 18px; }
+.site-grid[data-boxed] .site-visual--scene { aspect-ratio: 4 / 3; height: auto; border-radius: var(--box-inner-radius); }
+
+/* A row of links under a centred title (Kennel's "Built in the open") */
+.site-linkrow { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 28px; }
+
+/* ── Motion: the Stage's picture rises out of the box once, when it scrolls into view ── */
+@keyframes site-stage-rise {
+  from { opacity: 0; transform: translateY(56px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  html[data-motion] .site [data-appear="rise"]:not([data-inview]) { opacity: 0; transform: translateY(56px); }
+  html[data-motion] .site [data-appear="rise"][data-inview] { animation: site-stage-rise 1s var(--ease-sheet) 120ms both; }
+  html[data-motion]:not([data-motion-ready]) .site [data-appear="rise"] { animation: site-stage-rise 1ms 3s both; }
+}
+
+/* ── How it works · "Done before you're up": Waldo's message arriving on the lock screen (day-moments.tsx) ──
+   The card is the phone's lock screen, edge to edge, no phone frame (like the homepage's hats). In units of 1/480
+   of the frame's width, so it scales with the card. SF Pro, as the phone draws it. */
+.lock {
+  --u: calc(100cqw / 480);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  overflow: hidden;
+  padding: calc(56 * var(--u)) calc(22 * var(--u)) 0;
+  box-sizing: border-box;
+  background: linear-gradient(180deg, #f1efea 0%, #e9e6df 100%);
+  color: #1a1a1a;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+  text-align: center;
+  user-select: none;
+}
+.lock[data-tone="evening"] { background: linear-gradient(180deg, #2a2b33 0%, #1c1d22 100%); color: #f4f3f0; }
+.lock p { margin: 0; }
+.lock-date { font-size: max(12px, calc(19 * var(--u))); font-weight: 600; opacity: 0.72; }
+.lock-time { margin-top: calc(-2 * var(--u)); font-size: calc(92 * var(--u)); font-weight: 600; line-height: 1.05; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.lock-note {
+  display: flex;
+  gap: calc(12 * var(--u));
+  width: 100%;
+  margin-top: auto;
+  margin-bottom: calc(26 * var(--u));
+  box-sizing: border-box;
+  padding: calc(14 * var(--u)) calc(16 * var(--u)) calc(15 * var(--u));
+  border-radius: calc(24 * var(--u));
+  background: rgb(255 255 255 / 0.78);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  text-align: left;
+  font-size: max(12.5px, calc(16.5 * var(--u)));
+  line-height: 1.3;
+  color: #1a1a1a;
+}
+.lock[data-tone="evening"] .lock-note { background: rgb(255 255 255 / 0.14); color: #f4f3f0; }
+.lock-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: calc(40 * var(--u));
+  height: calc(40 * var(--u));
+  border-radius: calc(10 * var(--u));
+  background: #fff;
+  box-shadow: inset 0 0 0 0.5px rgb(26 26 26 / 0.1);
+}
+.lock-icon img { display: block; width: 62%; height: auto; }
+.lock-text { min-width: 0; flex: 1; }
+.lock-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.lock-head b { font-weight: 600; }
+.lock-head span { font-size: max(11px, calc(14 * var(--u))); opacity: 0.55; }
+.lock-body { margin-top: calc(2 * var(--u)); opacity: 0.86; }
+/* The ones that came before, tucked under it as iOS stacks them */
+.lock-stack { position: relative; width: 100%; margin-top: auto; }
+.lock-stack .lock-note { margin-top: 0; }
+.lock-stack::before,
+.lock-stack::after {
+  content: "";
+  position: absolute;
+  left: calc(10 * var(--u));
+  right: calc(10 * var(--u));
+  bottom: calc(18 * var(--u));
+  height: calc(30 * var(--u));
+  border-radius: 0 0 calc(20 * var(--u)) calc(20 * var(--u));
+  background: rgb(255 255 255 / 0.5);
+  z-index: -1;
+}
+.lock-stack::after { left: calc(22 * var(--u)); right: calc(22 * var(--u)); bottom: calc(10 * var(--u)); background: rgb(255 255 255 / 0.32); }
+.lock[data-tone="evening"] .lock-stack::before { background: rgb(255 255 255 / 0.08); }
+.lock[data-tone="evening"] .lock-stack::after { background: rgb(255 255 255 / 0.05); }
+.lock-stack { isolation: isolate; }
+@keyframes lock-arrive {
+  0% { opacity: 0; transform: translateY(calc(70 * var(--u))) scale(0.96); }
+  9% { opacity: 1; transform: translateY(0) scale(1); }
+  88% { opacity: 1; transform: translateY(0) scale(1); }
+  96%, 100% { opacity: 0; transform: translateY(calc(-8 * var(--u))) scale(0.98); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .lock[data-live] .lock-stack { animation: lock-arrive 9s var(--ease-sheet) infinite; }
+}
+
+/* ── Connectors · "Work Gmail. Personal Gmail.": one account, and the hours Waldo handles it (two-accounts.tsx) ── */
+.acct {
+  --u: calc(100cqw / 480);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: calc(14 * var(--u));
+  height: 100%;
+  box-sizing: border-box;
+  padding: calc(28 * var(--u));
+  background: #fff;
+  color: #1a1a1a;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+  font-size: max(12px, calc(16 * var(--u)));
+  line-height: 1.3;
+  text-align: left;
+  user-select: none;
+}
+.acct p { margin: 0; }
+.acct-row { display: flex; align-items: center; gap: calc(12 * var(--u)); padding: calc(14 * var(--u)) calc(16 * var(--u)); border-radius: calc(16 * var(--u)); box-shadow: inset 0 0 0 0.5px rgb(26 26 26 / 0.1); }
+.acct-row img { flex: none; width: calc(30 * var(--u)); height: calc(30 * var(--u)); }
+.acct-who { min-width: 0; flex: 1; }
+.acct-who b { display: block; font-weight: 600; }
+.acct-who span { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #6b6b68; font-size: max(11px, calc(14 * var(--u))); }
+.acct-chip { flex: none; display: inline-flex; align-items: center; gap: calc(6 * var(--u)); padding: calc(4 * var(--u)) calc(10 * var(--u)); border-radius: 999px; background: #f4f3f0; font-size: max(11px, calc(13 * var(--u))); font-weight: 500; }
+.acct-chip i { width: calc(7 * var(--u)); height: calc(7 * var(--u)); border-radius: 50%; background: #22c55e; }
+.acct-day { padding: calc(16 * var(--u)) calc(16 * var(--u)) calc(14 * var(--u)); border-radius: calc(16 * var(--u)); background: #f4f3f0; }
+.acct-day-head { display: flex; justify-content: space-between; font-size: max(11px, calc(13.5 * var(--u))); color: #6b6b68; }
+.acct-day-head b { color: #1a1a1a; font-weight: 600; }
+.acct-bar { position: relative; height: calc(34 * var(--u)); margin-top: calc(12 * var(--u)); border-radius: calc(9 * var(--u)); background: #fff; box-shadow: inset 0 0 0 0.5px rgb(26 26 26 / 0.08); }
+/* Work hours, shaded; where Waldo works this inbox, in ink */
+.acct-work { position: absolute; top: 0; bottom: 0; left: calc(3 / 18 * 100%); width: 50%; /* 9am to 6pm, on a 6am-to-midnight bar */ background: repeating-linear-gradient(135deg, rgb(26 26 26 / 0.05) 0 4px, transparent 4px 8px); }
+.acct-slot { position: absolute; top: calc(5 * var(--u)); bottom: calc(5 * var(--u)); border-radius: calc(6 * var(--u)); background: #1a1a1a; transition: background-color 0.4s var(--ease-out-quad), box-shadow 0.4s var(--ease-out-quad); }
+.acct-slot[data-on] { background: #f97316; box-shadow: 0 0 0 calc(3 * var(--u)) rgb(249 115 22 / 0.2); }
+.acct-now { position: absolute; top: calc(-4 * var(--u)); bottom: calc(-4 * var(--u)); width: 1.5px; margin-left: -0.75px; background: #f97316; }
+.acct-now::before { content: ""; position: absolute; top: calc(-3 * var(--u)); left: 50%; width: calc(7 * var(--u)); height: calc(7 * var(--u)); margin-left: calc(-3.5 * var(--u)); border-radius: 50%; background: #f97316; }
+.acct-hours { display: flex; justify-content: space-between; margin-top: calc(7 * var(--u)); font-size: max(10px, calc(12 * var(--u))); color: #8d8b86; font-variant-numeric: tabular-nums; }
+.acct-log { min-height: 2.6em; font-size: max(11.5px, calc(14.5 * var(--u))); color: #6b6b68; }
+.acct-log b { color: #1a1a1a; font-weight: 500; }
+.acct-log[data-fresh] { animation: lock-fade 0.5s var(--ease-sheet) both; }
+@keyframes lock-fade { from { opacity: 0; transform: translateY(calc(6 * var(--u))); } }
+
+/* ── Kennel · "Gets the best out of what you have.": a contract, and the agent you approve for it (agent-picker.tsx) ──
+   Kennel's own look: dark, hairlines at 8%, the orange only for the one being chosen. */
+.pick {
+  --u: calc(100cqw / 480);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: calc(12 * var(--u));
+  height: 100%;
+  box-sizing: border-box;
+  padding: calc(26 * var(--u));
+  background: radial-gradient(120% 80% at 50% 0%, #1f1f1f, #141414);
+  color: #fafaf8;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+  font-size: max(12px, calc(15.5 * var(--u)));
+  line-height: 1.3;
+  text-align: left;
+  user-select: none;
+}
+.pick p { margin: 0; }
+.pick-contract { padding: calc(14 * var(--u)) calc(16 * var(--u)); border-radius: calc(14 * var(--u)); background: #1a1a1a; box-shadow: inset 0 0 0 0.5px rgb(255 255 255 / 0.1); }
+.pick-contract small { display: block; font-size: max(10.5px, calc(12.5 * var(--u))); color: #868685; }
+.pick-contract b { display: block; margin-top: calc(3 * var(--u)); font-weight: 500; }
+.pick-list { margin: 0; padding: calc(6 * var(--u)); list-style: none; border-radius: calc(14 * var(--u)); background: #1a1a1a; box-shadow: inset 0 0 0 0.5px rgb(255 255 255 / 0.1); }
+.pick-list li { display: flex; align-items: center; gap: calc(10 * var(--u)); padding: calc(9 * var(--u)) calc(10 * var(--u)); border-radius: calc(9 * var(--u)); transition: background-color 0.35s var(--ease-out-quad); }
+.pick-list li[data-on] { background: rgb(255 255 255 / 0.07); }
+.pick-mark.pick-mark--logo { background: #f4f3f0; }
+.pick-mark--logo img { display: block; width: 68%; height: 68%; object-fit: contain; }
+.pick-mark { display: grid; place-items: center; flex: none; width: calc(22 * var(--u)); height: calc(22 * var(--u)); border-radius: calc(6 * var(--u)); background: #2a2a2a; font-size: max(9px, calc(11 * var(--u))); font-weight: 600; color: #cfcfcd; }
+.pick-name { flex: 1; min-width: 0; }
+.pick-name small { margin-left: calc(8 * var(--u)); font-size: max(10.5px, calc(12.5 * var(--u))); color: #868685; }
+.pick-tick { flex: none; width: calc(16 * var(--u)); height: calc(16 * var(--u)); border-radius: 50%; box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.2); transition: background-color 0.3s var(--ease-out-quad), box-shadow 0.3s var(--ease-out-quad); }
+.pick-list li[data-on] .pick-tick { background: #fb943f; box-shadow: inset 0 0 0 calc(4 * var(--u)) #1a1a1a, 0 0 0 1px #fb943f; }
+.pick-foot { display: flex; align-items: center; justify-content: space-between; gap: calc(10 * var(--u)); }
+.pick-foot span { font-size: max(11px, calc(13 * var(--u))); color: #868685; }
+.pick-btn { flex: none; padding: calc(8 * var(--u)) calc(18 * var(--u)); border-radius: 999px; background: #e6e6e4; color: #111; font-size: max(11.5px, calc(14 * var(--u))); font-weight: 500; transition: transform 0.2s var(--ease-out-quad), background-color 0.3s var(--ease-out-quad), color 0.3s var(--ease-out-quad); }
+.pick-btn[data-state="press"] { transform: scale(0.95); }
+.pick-btn[data-state="done"] { background: rgb(34 197 94 / 0.16); color: #4ade80; }
+
+/* ── A picture drawn in code in a grid (Connectors' two accounts): the carousel card's white frame, picture first ── */
+.site-grid .site-item:has(> .site-visual--scene) > .site-visual--scene {
+  order: -1;
+  aspect-ratio: 1 / 0.82;
+  margin: 0 0 22px;
+  border: 0;
+  border-radius: 26px;
+  corner-shape: var(--box-corner);
+  background: #fff;
+  box-shadow: inset 0 0 0 0.5px color-mix(in srgb, var(--ink) 8%, transparent);
+}
+.site-grid .site-item:has(> .site-visual--scene) > :not(.site-visual) { padding-inline: 8px; }
+
+/* Under a centred title, reading blocks (lists, notes, placeholders) sit in a centred column, their text still
+   left-aligned so it reads easily */
+.site-header-block[data-center] ~ .site-body :is(.site-list, .site-placeholder) { max-width: 48rem; margin-inline: auto; }
+.site-header-block[data-center] ~ .site-body > .site-note { max-width: 48rem; margin-inline: auto; text-align: center; }
+
+/* ── Why Waldo: the letter is a centred column; its opening (label, title, line, byline) is centred, the letter
+   itself reads left-aligned ── */
+.site-letter { margin-inline: auto; }
+.site-letter > :is(.site-label, .site-heading, .site-text) { text-align: center; }
+.site-letter > .site-letter-byline { justify-content: center; }
+.site-label--center { text-align: center; }
+
+/* ── Let Waldo in: the form in the homepage's box, everything centred ── */
+.site-stage--form { padding-inline: clamp(20px, 6vw, 80px); }
+.site-stage--form .site-header-block { align-items: center; text-align: center; }
+.site-stage--form .site-mascot { margin-inline: auto; object-position: center; }
+.site-stage--form .site-text { max-width: 40rem; margin-inline: auto; text-wrap: balance; }
+.site-stage--form .site-list { max-width: 30rem; margin-inline: auto; justify-items: center; }
+.site-stage--form .site-form { margin-inline: auto; justify-content: center; }
+.site-stage--form .site-note { max-width: 34rem; margin-inline: auto; }
+.site-stage--form .site-body { text-align: center; }
+
+/* ── Page not found: the mascot sits in the middle above the links ── */
+.site-section--open .site-header-block[data-center] + .site-body > .site-visual--image:not(.site-visual--wide) {
+  max-width: 220px;
+  margin: 0 auto clamp(32px, 4vw, 48px);
+  border: 0;
+  background: none;
+}
+
+/* Phones: short boxed links (four or five of them) sit two to a row instead of one long column */
+@media (max-width: 640px) {
+  .site-grid[data-boxed]:is([style*="--cols: 4"], [style*="--cols: 5"]) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}

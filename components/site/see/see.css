@@ -1,0 +1,236 @@
+/* "What you see of it": the five-card strip and the phone frame (see-section.tsx; the screens inside the
+   phones are styled in phone.css; docs/website/what-you-see-plan.md). Sizes inside a phone are in the mockup's units (--u is 1/517 of
+   the phone's width), as in the hero; the strip, its cards and its controls are in px. */
+
+.see {
+  --see-gap: 12px;
+  /* How much of each neighbour shows: about 16px on a phone, growing smoothly to 160px, so the card's
+     width changes continuously with the window and never jumps at a breakpoint */
+  --see-peek: clamp(16px, 10vw - 20px, 160px);
+  --see-w: min(1120px, calc(100vw - 2 * (var(--see-peek) + var(--see-gap))));
+  --see-edge: color-mix(in srgb, var(--ink) 8%, transparent);
+  position: relative;
+  margin-inline: calc(50% - 50vw);
+}
+.see-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* The strip: native sideways scroll, snapping to the middle; the padding lets the first and last
+   card reach the middle too */
+.see-track {
+  display: flex;
+  gap: var(--see-gap);
+  padding-inline: calc((100% - var(--see-w)) / 2);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  outline: none;
+}
+.see-track::-webkit-scrollbar { display: none; }
+.see-track[data-dragging] { scroll-snap-type: none; cursor: grabbing; user-select: none; }
+.see-track:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; border-radius: 30px; }
+
+/* Each card is a container: what is inside it is laid out for the card's own width (below), not the
+   window's, so the words and the phone are recomposed, never scaled down as one picture */
+.see-card-slide {
+  container: see-card / inline-size;
+  position: relative;
+  flex: none;
+  box-sizing: border-box;
+  width: var(--see-w);
+  overflow: hidden;
+  scroll-snap-align: center;
+  border-radius: var(--box-radius);
+  corner-shape: var(--box-corner);
+  background: var(--surface-t1);
+  box-shadow: inset 0 0 0 0.5px var(--see-edge);
+  opacity: 0.6;
+  transition: opacity 0.5s var(--ease-sheet);
+}
+.see-card-slide[data-active] { opacity: 1; }
+
+/* Wide cards: a real column for the words beside the phone. The column is a fixed range (240 to
+   320px), so the same words keep the same shape on every wide card; the phone takes the rest. The
+   card keeps a steady height instead of following its width, so the phone never gets squeezed. */
+.see-inner {
+  /* the words column, the gap, the phone (and on the chat card the follow-up beside it) */
+  --col: clamp(220px, 26cqi, 300px);
+  --gap: clamp(40px, 7cqi, 88px);
+  --ph: min(440px, 46cqi);
+  --extra: 0px;
+  display: grid;
+  grid-template-columns: var(--col) auto;
+  column-gap: var(--gap);
+  /* The group sits left of centre: half the space that centring would leave on its left */
+  padding-left: calc((100cqi - var(--col) - var(--gap) - var(--ph) - var(--extra)) / 4);
+  height: clamp(580px, 56cqi, 640px);
+}
+
+/* The words, as plain body text (see docs/website/type.md): the headline in ink and medium weight,
+   the line after it in body grey, both the site's 16px. Each card can set how wide its words run
+   (--copy-ch, from see-fixture.ts) so every headline breaks well without forced line breaks. */
+.see-copy {
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  gap: 0;
+  padding: 0;
+  text-align: left;
+}
+/* One paragraph: the headline is its first words (ink, medium), the line after it carries on in the same
+   paragraph (body grey, regular) */
+.see-copy p {
+  margin: 0;
+  max-width: var(--copy-ch, 26ch);
+  text-wrap: pretty;
+  font-size: var(--type-body);
+  font-weight: 400;
+  line-height: var(--body-leading);
+  letter-spacing: 0.02em;
+  color: #6b6b68;
+}
+.see-copy strong { font-weight: 500; color: var(--ink); }
+
+/* The picture side: the phone, cropped by the card's bottom edge, and on card 2 the follow-up beside it */
+.see-stage {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: clamp(20px, 3cqi, 36px);
+  min-width: 0;
+  padding-top: clamp(24px, 3cqi, 34px);
+  overflow: hidden;
+}
+.see-phone-wrap {
+  flex: none;
+  width: var(--ph, min(440px, 46cqi));
+  container-type: inline-size;
+}
+.see-phone {
+  --u: calc(100cqw / 517);
+  /* Every line in the app screens: #1A1A1A at 8%, 0.5px. No drop shadows. */
+  --see-edge: rgb(26 26 26 / 0.08);
+  /* Floors for the app's small text (phone.css): none on wide cards, where the phone is drawn at full
+     size; on narrower cards they keep labels, times, evidence and buttons readable (set below) */
+  --f-xs: 0px;
+  --f-sm: 0px;
+  --f-md: 0px;
+  --f-lg: 0px;
+  --fs: max(12.5px, var(--f-lg), calc(16 * var(--u)));
+  position: relative;
+  height: calc(980 * var(--u));
+  overflow: hidden;
+  /* The app screens are set in SF Pro, the iPhone's own font (not the site's SF Pro Rounded, and no serif) */
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+  font-size: var(--fs);
+  line-height: 1.28;
+  letter-spacing: normal;
+  /* the app inside is always light, in either site theme */
+  color: #1a1a1a;
+  text-align: left;
+}
+.see-screen {
+  position: relative;
+  z-index: 1;
+  margin: calc(19 * var(--u)) 0 0 calc(23 * var(--u));
+  width: calc(470.6 * var(--u));
+  height: calc(100% - 19 * var(--u));
+  overflow: hidden;
+  border-radius: calc(37.5 * var(--u)) calc(37.5 * var(--u)) 0 0;
+  background: #f4f3f0;
+  padding-top: calc(80 * var(--u));
+  box-sizing: border-box;
+}
+/* The bezel, over the screen's edges: the same picture as the hero's phone (phone-bezel.png, 1350 x 1420).
+   Drawn with plain backgrounds, not border-image, so it shows in every browser (Safari left it out): the
+   top 1353px of the picture is laid at its own proportions across the width, and its last 67px row is
+   stretched down over the rest of the phone's height, so the phone can be any height. */
+.see-bezel {
+  position: absolute;
+  z-index: 4;
+  inset: calc(-7.929 * var(--u)) calc(-4.8 * var(--u)) calc(-1.271 * var(--u)) calc(-5.094 * var(--u));
+  background: url(/assets/home/phone/phone-bezel.png) top center / 100% auto no-repeat;
+  pointer-events: none;
+}
+.see-bezel::after {
+  content: "";
+  position: absolute;
+  inset: calc(528.06 * var(--u)) 0 0;
+  background: url(/assets/home/phone/phone-bezel.png) bottom center / 100% calc(100% * 1420 / 67) no-repeat;
+}
+/* The mockup's own drawings (status bar, Overview header), at the phone's size, over the screen */
+.see-mock { position: absolute; z-index: 3; top: 0; left: 0; width: 100%; height: auto; pointer-events: none; user-select: none; }
+
+/* The controls under the strip: the same dots as under the hero's phone (phone-dots.tsx), the current
+   one drawn long and filling while the card waits its turn; no play or pause button */
+.see-controls { position: relative; display: flex; align-items: center; justify-content: center; height: 32px; margin-top: 26px; }
+.see :is(button, input, textarea):focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+@media (max-width: 640px) {
+  .see { --see-gap: 10px; }
+}
+
+/* Narrow cards (tablet and phone): the words get their own place at the top, centred, above the phone.
+   The 16px rule is for wide cards only; here the one paragraph is set for the layout: 16px on a
+   phone-width card growing to 18px on a tablet-width one, about 34 characters a line. */
+@container see-card (max-width: 759px) {
+  .see-inner, .see-card-slide[data-card="chat"] .see-inner { grid-template-columns: 1fr; grid-template-rows: auto 1fr; padding-left: 0; height: 780px; }
+  .see-copy { align-content: start; justify-items: center; gap: 0; padding: 44px 24px 0; text-align: center; }
+  .see-copy p {
+    max-width: min(100%, 34ch);
+    font-size: clamp(16px, calc(14.2px + 0.55cqi), 18px);
+    line-height: 1.42;
+    letter-spacing: 0.01em;
+  }
+  .see-stage { padding-top: 36px; }
+  /* The phone is drawn as large as on a wide card when there is room, never smaller than it needs to be */
+  .see-inner { --ph: min(440px, 66cqi); }
+  /* the app's small text keeps a readable size while the phone is drawn smaller than on a wide card */
+  .see-phone { --f-xs: 10.5px; --f-sm: 11.5px; --f-md: 12.5px; --f-lg: 13.5px; }
+}
+/* Phone-width cards: the phone is drawn larger than the card and cropped at its sides, so the screen
+   fills the card; the bezel's edges fall outside. The copy sits a little closer to the top. */
+@container see-card (max-width: 480px) {
+  .see-inner { --ph: min(440px, 112cqi); height: 760px; }
+  .see-copy { padding-top: 36px; }
+  .see-stage { padding-top: 28px; }
+}
+
+/* ── Arrival ──
+   When a card comes into view its screen plays: every part marked .see-in rises into place in turn
+   (--i is its place in the order), a message pops in, the sleep bar fills, and on card 2 the follow-up
+   arrives bubble by bubble. Only the card in the middle plays (data-arrive), once per arrival; the
+   others rest as finished screens. It waits until the section is on screen (data-live on .see), and
+   with less motion nothing plays. */
+.see { --see-play: paused; }
+.see[data-live] { --see-play: running; }
+.see-phone { --see-rise: calc(16 * var(--u)); }
+@keyframes see-rise { from { opacity: 0; transform: translateY(var(--see-rise, 14px)); } }
+@keyframes see-pop { from { opacity: 0; transform: translateY(var(--see-rise, 14px)) scale(0.9); } }
+@keyframes see-fill { from { transform: scaleX(0); } }
+@media (prefers-reduced-motion: no-preference) {
+  .see-card-slide[data-arrive] :is(.see-in, .see-pop, .see-turn, .see-fill) {
+    animation-duration: 0.7s;
+    animation-timing-function: var(--ease-sheet);
+    animation-fill-mode: backwards;
+    animation-play-state: var(--see-play, paused);
+    animation-delay: calc(var(--d, 380ms) + var(--i, 0) * var(--step, 90ms));
+  }
+  .see-card-slide[data-arrive] .see-in { animation-name: see-rise; }
+  .see-card-slide[data-arrive] .see-turn { animation-name: see-rise; animation-duration: 0.6s; }
+  .see-card-slide[data-arrive] .see-pop { animation-name: see-pop; animation-duration: 0.8s; transform-origin: 100% 100%; animation-timing-function: var(--ease-card-spring); }
+  .see-card-slide[data-arrive] .see-fill { animation-name: see-fill; animation-duration: 1.2s; transform-origin: 0 50%; }
+}
+@keyframes see-bounce { 0%, 60%, 100% { transform: translateY(0); opacity: 0.45; } 30% { transform: translateY(-0.28em); opacity: 1; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .see-card-slide, .see-dot, .see-dot::before { transition: none; }
+  .see-sheet { animation: none; }
+}

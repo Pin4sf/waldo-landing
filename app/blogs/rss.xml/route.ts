@@ -1,4 +1,4 @@
-import { BLOG_POSTS, readBlogMarkdown } from "@/lib/blog-posts";
+import { getBlogPosts, readBlogMarkdown } from "@/lib/blog-posts";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site-metadata";
 
 export const dynamic = "force-static";
@@ -13,7 +13,7 @@ function escapeXml(value: string) {
 }
 
 export function GET() {
-  const items = BLOG_POSTS.map((post) => {
+  const items = getBlogPosts().map((post) => {
     const { readingTime } = readBlogMarkdown(post);
     const url = `${SITE_URL}/blogs/${post.slug}`;
 

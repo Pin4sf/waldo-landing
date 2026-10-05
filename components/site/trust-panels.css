@@ -1,0 +1,220 @@
+/* "Your context. Your call.": the four mini-panels in the Trust carousel (trust-panels.tsx,
+   docs/website/trust-carousel-review.md). One panel shape for all four: a label and a state, two to four
+   rows, one control. Sizes are in units of 1/480 of the frame's width (--u), like the other carousel
+   pictures, each with a floor in px so the text stays readable when the card is narrow; on a narrow card
+   the rows are recomposed (label over value) instead of the whole panel being shrunk. */
+
+/* The frame these pictures sit in: the carousel's usual rounded frame, but tall enough for the panel to
+   open (the detail grows into the room under it), and not zoomed or pressed like a picture is */
+.site-carousel .site-visual--panel {
+  background: linear-gradient(165deg, var(--surface-t3), var(--surface-t4));
+  height: var(--tp-frame, clamp(300px, var(--card-image-height), 640px));
+}
+.site-carousel .site-visual--panel:hover,
+.site-carousel .site-visual--panel:active { transform: none; }
+.site-carousel .site-visual--panel::after { display: none; }
+@media (max-width: 1439px) { .site-carousel { --tp-frame: 522px; } }
+@media (max-width: 1199px) { .site-carousel { --tp-frame: 526px; } }
+@media (max-width: 767px) { .site-carousel { --tp-frame: 560px; } }
+@media (max-width: 519px) { .site-carousel { --tp-frame: 600px; } }
+
+.tp {
+  --u: calc(100cqw / 480);
+  --tp-ink: var(--ink);
+  --tp-grey: #6b6b68;
+  --tp-faint: #8d8b86;
+  --tp-line: color-mix(in srgb, var(--ink) 9%, transparent);
+  position: relative;
+  height: 100%;
+  box-sizing: border-box;
+  padding: calc(24 * var(--u));
+  overflow: hidden;
+  text-align: left;
+  font-size: max(13.5px, calc(15 * var(--u)));
+  line-height: 1.35;
+  color: var(--tp-ink);
+  display: grid;
+  align-content: start;
+  padding-top: calc(52 * var(--u));
+}
+.tp-panel {
+  display: grid;
+  gap: 0;
+  box-sizing: border-box;
+  padding: calc(18 * var(--u)) calc(20 * var(--u)) calc(20 * var(--u));
+  border-radius: calc(24 * var(--u));
+  corner-shape: var(--box-corner);
+  background: var(--surface-t1);
+  border: 0.6px solid var(--tp-line);
+}
+.tp-icon {
+  display: inline-block;
+  flex: none;
+  width: 1em;
+  height: 1em;
+  background-color: currentColor;
+  -webkit-mask: var(--icon) center / 80% no-repeat;
+  mask: var(--icon) center / 80% no-repeat;
+}
+.tp-logo { display: block; flex: none; width: max(22px, calc(26 * var(--u))); height: max(22px, calc(26 * var(--u))); object-fit: contain; }
+
+/* The label and the state */
+.tp-head { display: flex; align-items: center; justify-content: space-between; gap: calc(12 * var(--u)); margin-bottom: calc(12 * var(--u)); }
+.tp-label { font-size: max(12px, calc(13.5 * var(--u))); color: var(--tp-faint); }
+.tp-state {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(7 * var(--u));
+  padding: calc(4 * var(--u)) calc(11 * var(--u));
+  border-radius: 999px;
+  background: var(--surface-t3);
+  font-size: max(12px, calc(13.5 * var(--u)));
+  font-weight: 500;
+  white-space: nowrap;
+}
+.tp-state i { width: max(7px, calc(8 * var(--u))); height: max(7px, calc(8 * var(--u))); border-radius: 50%; background: #b5b3ad; }
+.tp-state[data-dot="green"] i { background: #22c55e; }
+.tp-state[data-dot="orange"] i { background: var(--accent); }
+
+/* Who the panel is about (card 1) */
+.tp-who { display: flex; align-items: center; gap: calc(12 * var(--u)); padding-bottom: calc(14 * var(--u)); margin-bottom: calc(2 * var(--u)); border-bottom: 0.6px solid var(--tp-line); }
+.tp-logos { display: inline-flex; }
+.tp-logos .tp-logo + .tp-logo { margin-left: calc(-6 * var(--u)); }
+.tp-who-text { display: grid; gap: 1px; min-width: 0; }
+.tp-who-text b { font-size: max(14.5px, calc(16.5 * var(--u))); font-weight: 500; }
+.tp-who-text small { font-size: max(12.5px, calc(14 * var(--u))); color: var(--tp-grey); }
+
+/* The rows */
+.tp-rows { margin: 0; }
+.tp-row {
+  display: grid;
+  grid-template-columns: calc(98 * var(--u)) minmax(0, 1fr);
+  gap: calc(14 * var(--u));
+  padding: calc(12 * var(--u)) 0;
+  border-bottom: 0.6px solid var(--tp-line);
+}
+.tp-row:last-child { border-bottom: 0; }
+.tp-row dt { font-size: max(12px, calc(13.5 * var(--u))); color: var(--tp-faint); padding-top: 0.12em; }
+.tp-row dd { margin: 0; display: grid; gap: calc(2 * var(--u)); min-width: 0; font-size: max(13.5px, calc(15 * var(--u))); color: var(--tp-grey); }
+.tp-row dd b { color: var(--tp-ink); font-weight: 500; }
+.tp-row dd small { font-size: max(12.5px, calc(13.5 * var(--u))); color: var(--tp-faint); }
+.tp-scopes, .tp-services { margin: 0; padding: 0; list-style: none; display: grid; gap: calc(7 * var(--u)); }
+.tp-scopes li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px calc(10 * var(--u)); }
+.tp-scopes b { color: var(--tp-ink); font-weight: 500; }
+.tp-scopes code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: max(11.5px, calc(12.5 * var(--u))); color: var(--tp-faint); }
+.tp-row:has(.tp-services) { grid-template-columns: minmax(0, 1fr); gap: calc(8 * var(--u)); }
+.tp-services { gap: calc(11 * var(--u)); }
+.tp-services li { display: flex; align-items: flex-start; gap: calc(12 * var(--u)); }
+.tp-services .tp-logo { margin-top: 1px; }
+.tp-services span { display: grid; gap: 1px; min-width: 0; }
+.tp-services b { color: var(--tp-ink); font-weight: 500; }
+.tp-bar { display: block; width: 100%; height: max(4px, calc(5 * var(--u))); margin-top: calc(6 * var(--u)); border-radius: 999px; background: var(--surface-t3); overflow: hidden; }
+.tp-bar i { display: block; width: 100%; height: 100%; border-radius: inherit; background: color-mix(in srgb, var(--ink) 28%, transparent); transform-origin: 0 50%; }
+
+/* The one control: a pill, the way the site's buttons are */
+.tp-control {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(10 * var(--u));
+  width: 100%;
+  box-sizing: border-box;
+  min-height: max(42px, calc(46 * var(--u)));
+  margin-top: calc(6 * var(--u));
+  padding: 0 calc(18 * var(--u));
+  border: 0.6px solid var(--tp-line);
+  border-radius: 999px;
+  background: var(--surface-t2);
+  color: var(--tp-ink);
+  font: inherit;
+  font-size: max(14px, calc(15.5 * var(--u)));
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--motion-button), transform var(--motion-button);
+}
+.tp-control:hover { background: var(--surface-t3); }
+.tp-control:active { transform: scale(0.98); }
+.tp-control:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.tp-control .tp-icon { width: max(14px, calc(16 * var(--u))); height: max(14px, calc(16 * var(--u))); }
+.tp-control[aria-expanded="true"] .tp-icon { transform: rotate(90deg); }
+
+/* The detail is a sheet that slides up over the panel, the way an app's own sheets do, so the frame
+   never has to grow: it covers the rows, with a close button, and Escape closes it too */
+.tp-panel { position: static; }
+.tp-sheet {
+  position: absolute;
+  z-index: 3;
+  left: calc(14 * var(--u));
+  right: calc(14 * var(--u));
+  bottom: calc(14 * var(--u));
+  max-height: calc(100% - 28 * var(--u));
+  box-sizing: border-box;
+  overflow-y: auto;
+  padding: calc(16 * var(--u)) calc(18 * var(--u)) calc(20 * var(--u));
+  border-radius: calc(26 * var(--u));
+  corner-shape: var(--box-corner);
+  background: var(--surface-t1);
+  border: 0.6px solid var(--tp-line);
+  box-shadow: 0 calc(-6 * var(--u)) calc(30 * var(--u)) rgb(26 26 26 / 0.08);
+  transform: translateY(calc(100% + 28 * var(--u)));
+  visibility: hidden;
+  transition: transform 0.45s var(--ease-sheet), visibility 0s linear 0.45s;
+}
+.tp-sheet[data-open] { transform: none; visibility: visible; transition-delay: 0s; }
+.tp-sheet-top { display: flex; align-items: center; justify-content: space-between; gap: calc(10 * var(--u)); margin-bottom: calc(12 * var(--u)); }
+.tp-sheet-top b { font-size: max(14.5px, calc(16 * var(--u))); font-weight: 500; }
+.tp-close {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: max(34px, calc(36 * var(--u)));
+  height: max(34px, calc(36 * var(--u)));
+  padding: 0;
+  border: 0.6px solid var(--tp-line);
+  border-radius: 50%;
+  background: var(--surface-t2);
+  color: var(--tp-ink);
+  font-size: max(13px, calc(14 * var(--u)));
+  cursor: pointer;
+}
+.tp-close:hover { background: var(--surface-t3); }
+.tp-close:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.tp-steps { margin: 0; padding: 0 0 0 1.3em; list-style: decimal; display: grid; gap: calc(8 * var(--u)); font-size: max(13px, calc(14 * var(--u))); line-height: 1.38; color: var(--tp-grey); }
+.tp-diff { margin: 0; display: grid; gap: calc(8 * var(--u)); font-size: max(13px, calc(14 * var(--u))); }
+.tp-diff div { display: grid; grid-template-columns: calc(84 * var(--u)) minmax(0, 1fr); gap: calc(10 * var(--u)); }
+.tp-diff dt { color: var(--tp-faint); }
+.tp-diff dd { margin: 0; color: var(--tp-ink); font-weight: 500; }
+.tp-diff p { margin: calc(2 * var(--u)) 0 0; color: var(--tp-grey); line-height: 1.38; }
+.tp-chat { display: grid; gap: calc(8 * var(--u)); }
+.tp-bubble { margin: 0; max-width: 88%; padding: calc(9 * var(--u)) calc(14 * var(--u)); border-radius: calc(18 * var(--u)); font-size: max(13px, calc(14 * var(--u))); line-height: 1.35; }
+.tp-bubble--you { justify-self: end; background: var(--ink); color: var(--surface-t2); }
+.tp-bubble--waldo { justify-self: start; background: var(--surface-t3); color: var(--tp-ink); }
+
+/* Narrow frame: the rows are recomposed, label over value, with a little less room around them */
+@container (max-width: 400px) {
+  .tp { padding: calc(16 * var(--u)); padding-top: calc(40 * var(--u)); }
+  .tp-panel { padding: 16px 16px 16px; border-radius: 22px; }
+  .tp-row { grid-template-columns: minmax(0, 1fr); gap: 3px; padding: 10px 0; }
+  .tp-head { margin-bottom: 8px; }
+  .tp-who { padding-bottom: 10px; }
+}
+
+/* ── Arrival: the rows rise in turn, the bar fills, the bubbles pop; once, when the panel first shows ── */
+@keyframes tp-rise { from { opacity: 0; transform: translateY(12px); } }
+@keyframes tp-fill { from { transform: scaleX(0); } }
+@keyframes tp-pop { from { opacity: 0; transform: translateY(8px) scale(0.92); } }
+@media (prefers-reduced-motion: no-preference) {
+  .tp[data-armed]:not([data-seen]) .tp-in { opacity: 0; }
+  .tp[data-seen] .tp-in {
+    animation: tp-rise 0.7s var(--ease-sheet) backwards;
+    animation-delay: calc(120ms + var(--i, 0) * 90ms);
+  }
+  .tp[data-seen] .tp-bar i { animation: tp-fill 1.2s var(--ease-sheet) backwards; animation-delay: 700ms; }
+  .tp-sheet[data-open] .tp-pop { animation: tp-pop 0.6s var(--ease-card-spring) backwards; animation-delay: calc(180ms + var(--i, 0) * 520ms); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tp-sheet, .tp-control { transition: none; }
+}
+
+.tp-note { margin: 18px 0 0; }

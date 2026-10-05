@@ -10,13 +10,14 @@ import { ArticleContents } from "@/components/blog/article-contents";
 import { ArticleListenPlayer } from "@/components/blog/article-listen-player";
 import { CopyLinkButton } from "@/components/blog/copy-link-button";
 import {
-  BLOG_POSTS,
+  getBlogPosts,
   findBlogPost,
   formatBlogDate,
   readBlogMarkdown,
   slugifyHeading,
 } from "@/lib/blog-posts";
 import { SITE_NAME, SITE_URL } from "@/lib/site-metadata";
+import { titleFit } from "@/lib/title-fit";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -60,7 +61,7 @@ function ArticleH3({ children, ...props }: ComponentPropsWithoutRef<"h3">) {
 }
 
 export function generateStaticParams() {
-  return BLOG_POSTS.map((post) => ({ slug: post.slug }));
+  return getBlogPosts().map((post) => ({ slug: post.slug }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -98,10 +99,9 @@ export default async function BlogArticlePage({ params }: PageProps) {
   if (!post) notFound();
 
   const { content, headings, readingTime } = readBlogMarkdown(post);
-  const postIndex = BLOG_POSTS.findIndex((candidate) => candidate.slug === post.slug);
-  const relatedPosts = [1, 2].map(
-    (offset) => BLOG_POSTS[(postIndex + offset) % BLOG_POSTS.length],
-  );
+  const posts = getBlogPosts();
+  const postIndex = posts.findIndex((candidate) => candidate.slug === post.slug);
+  const relatedPosts = [1, 2].map((offset) => posts[(postIndex + offset) % posts.length]);
   const authorName = post.author.name || "Waldo team";
   const articleUrl = `${SITE_URL}/blogs/${post.slug}`;
   const jsonLd = {
@@ -145,10 +145,10 @@ export default async function BlogArticlePage({ params }: PageProps) {
       <article className="blog-article">
         <header className="blog-article-header">
           <Link href="/blogs" className="blog-back-link">
-            Latest writing
+            All notes
           </Link>
           <p className="blog-kicker">{post.category}</p>
-          <h1 className="blog-display">
+          <h1 className="blog-display" style={titleFit(post.titleLines)}>
             {post.titleLines.map((line) => (
               <span key={line}>{line}</span>
             ))}
@@ -183,7 +183,7 @@ export default async function BlogArticlePage({ params }: PageProps) {
           <figcaption>{post.artCredit}</figcaption>
         </figure>
 
-        <ArticleListenPlayer src={post.audio} />
+        {post.audio ? <ArticleListenPlayer src={post.audio} /> : null}
 
         <div className="blog-mobile-actions">
           <CopyLinkButton title={post.title} />
@@ -206,22 +206,24 @@ export default async function BlogArticlePage({ params }: PageProps) {
               {content}
             </ReactMarkdown>
 
-            <section className="blog-sources" aria-labelledby="blog-sources-title">
-              <h2 id="blog-sources-title">Sources and basis</h2>
-              <ul>
-                {post.sources.map((source) => (
-                  <li key={source.label}>
-                    <a
-                      href={source.href}
-                      target={source.href.startsWith("http") ? "_blank" : undefined}
-                      rel={source.href.startsWith("http") ? "noreferrer" : undefined}
-                    >
-                      {source.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </section>
+            {post.sources.length > 0 ? (
+              <section className="blog-sources" aria-labelledby="blog-sources-title">
+                <h2 id="blog-sources-title">Sources and basis</h2>
+                <ul>
+                  {post.sources.map((source) => (
+                    <li key={source.label}>
+                      <a
+                        href={source.href}
+                        target={source.href.startsWith("http") ? "_blank" : undefined}
+                        rel={source.href.startsWith("http") ? "noreferrer" : undefined}
+                      >
+                        {source.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ) : null}
 
             <section className="blog-author-note" aria-label="About the author">
               <Image src={post.author.image} alt="" width={58} height={58} />

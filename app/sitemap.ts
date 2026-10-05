@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { BLOG_POSTS } from "@/lib/blog-posts";
+import { getBlogPosts } from "@/lib/blog-posts";
 import { LAST_CONTENT_UPDATE, SITE_URL } from "@/lib/site-metadata";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -11,6 +11,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified,
       changeFrequency: "weekly",
       priority: 1,
+    },
+    {
+      url: `${SITE_URL}/how-it-works`,
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
+      url: `${SITE_URL}/connectors`,
+      lastModified,
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    {
+      url: `${SITE_URL}/support`,
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 0.5,
     },
     {
       url: `${SITE_URL}/waitlist`,
@@ -36,7 +54,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.8,
     },
-    ...BLOG_POSTS.map((post) => ({
+    ...getBlogPosts().map((post) => ({
       url: `${SITE_URL}/blogs/${post.slug}`,
       lastModified: new Date(post.dateModified),
       changeFrequency: "monthly" as const,

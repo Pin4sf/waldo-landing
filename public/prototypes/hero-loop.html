@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Homepage loop — rough prototypes</title>
+<style>
+  :root {
+    --paper: #FAFAF8;
+    --ink: #1A1A1A;
+    --ink-2: #6B6B63;
+    --ink-3: #9A9A92;
+    --line: rgba(26, 26, 26, 0.1);
+    --card: #FFFFFF;
+    --orange: #F97316;
+    --t2: rgba(26, 26, 26, 0.04);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font: 400 16px/1.3 -apple-system, "SF Pro Rounded", "SF Pro Text", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 56px 32px 96px; }
+  .lede { max-width: 580px; margin-bottom: 64px; }
+  h1 { font-size: 40px; font-weight: 500; letter-spacing: -0.02em; margin: 0 0 12px; }
+  h2 { font-size: 20px; font-weight: 500; margin: 0 0 4px; letter-spacing: -0.01em; }
+  p { margin: 0; color: var(--ink-2); }
+  .label { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 10px; }
+  .demo { margin: 0 0 88px; }
+  .stage { margin-top: 24px; background: var(--t2); border-radius: 20px; overflow: hidden; position: relative; }
+
+  .core {
+    border-radius: 50%; background: var(--card); border: 0.5px solid var(--line);
+    display: grid; place-items: center; position: relative;
+    box-shadow: 0 2px 10px rgba(26,26,26,0.05);
+  }
+  .core em { font-style: normal; font-size: 13px; color: var(--ink-2); }
+  .core .dog { font-size: 34px; line-height: 1; }
+  .pulse { position: absolute; inset: -1px; border-radius: 50%; border: 1px solid var(--orange); opacity: 0; animation: pulse 3.2s ease-out infinite; }
+  @keyframes pulse { 0% { transform: scale(1); opacity: 0.45; } 70%, 100% { transform: scale(1.34); opacity: 0; } }
+
+  .chip {
+    background: var(--card); border: 0.5px solid var(--line); border-radius: 11px;
+    padding: 8px 12px; box-shadow: 0 1px 2px rgba(26,26,26,0.04);
+  }
+  .chip b { display: block; font-weight: 500; font-size: 13px; white-space: nowrap; }
+  .chip span { display: block; font-size: 11px; color: var(--ink-3); margin-top: 2px; white-space: nowrap; }
+
+  /* ---------- E1 · converge ---------- */
+  .field { height: 480px; position: relative; }
+  .field .core { width: 140px; height: 140px; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 3; }
+  .src {
+    position: absolute; transform: translate(-50%, -50%);
+    font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink-3);
+    white-space: nowrap; z-index: 1;
+  }
+  .fly { position: absolute; transform: translate(-50%, -50%); z-index: 2; will-change: transform, opacity; pointer-events: none; }
+  .done {
+    position: absolute; left: 0; right: 0; bottom: 0; padding: 14px 20px;
+    display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+    border-top: 0.5px solid var(--line); background: rgba(250,250,248,0.9); z-index: 4;
+  }
+  .done .label { margin: 0 6px 0 0; }
+  .act {
+    background: var(--ink); color: var(--paper); border-radius: 999px;
+    padding: 6px 13px; font-size: 13px; white-space: nowrap;
+    opacity: 0; transform: translateY(6px); transition: opacity 0.45s, transform 0.45s;
+  }
+  .act.on { opacity: 1; transform: translateY(0); }
+
+  /* ---------- E2 · many lanes ---------- */
+  .lanes { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; height: 400px; }
+  .stack { display: grid; gap: 10px; overflow: hidden; }
+  .lane { overflow: hidden; position: relative; height: 52px; display: flex; align-items: center; }
+  .lane .tagline {
+    position: absolute; left: 0; top: 0; z-index: 3; height: 100%; display: flex; align-items: center;
+    padding-right: 16px; padding-left: 20px;
+    font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink-3);
+    background: linear-gradient(90deg, var(--paper) 62%, transparent);
+  }
+  .run { display: flex; align-items: center; gap: 10px; width: max-content; will-change: transform; }
+  @keyframes slide { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+  .lanes .core { width: 128px; height: 128px; margin: 0 22px; z-index: 2; }
+  .out { overflow: hidden; position: relative; height: 100%; display: flex; align-items: center; }
+  .out::after { content: ""; position: absolute; inset: 0; background: linear-gradient(270deg, var(--paper) 0%, transparent 16%); pointer-events: none; }
+  .out .chip { min-width: 184px; }
+  .out .chip b::before {
+    content: ""; display: inline-block; width: 5px; height: 5px; border-radius: 50%;
+    background: var(--ink); margin-right: 7px; vertical-align: 2px;
+  }
+
+  /* ---------- B · the conveyor ---------- */
+  .belt { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; height: 260px; }
+  .beltlane { overflow: hidden; position: relative; height: 100%; display: flex; align-items: center; }
+  .beltlane::after { content: ""; position: absolute; inset: 0; pointer-events: none; }
+  .beltlane.i::after { background: linear-gradient(90deg, var(--paper) 0%, transparent 18%); }
+  .beltlane.o::after { background: linear-gradient(270deg, var(--paper) 0%, transparent 18%); }
+  .belt .core { width: 132px; height: 132px; margin: 0 26px; z-index: 2; }
+  .belt .chip { min-width: 156px; }
+  .belt .o .chip { min-width: 184px; }
+  .belt .o .chip b::before {
+    content: ""; display: inline-block; width: 5px; height: 5px; border-radius: 50%;
+    background: var(--ink); margin-right: 7px; vertical-align: 2px;
+  }
+
+  /* ---------- A · the night shift ---------- */
+  .night { padding: 28px 32px 32px; height: 300px; position: relative; }
+  .rail { position: relative; height: 1px; background: var(--line); margin: 150px 0 0; }
+  .tick { position: absolute; top: -26px; font-size: 12px; color: var(--ink-3); transform: translateX(-50%); }
+  .tick::after { content: ""; position: absolute; left: 50%; top: 20px; width: 1px; height: 6px; background: var(--line); }
+  .head { position: absolute; top: -7px; width: 13px; height: 13px; border-radius: 50%; background: var(--orange); transform: translateX(-50%); }
+  .event {
+    position: absolute; top: 22px; transform: translateX(-50%) translateY(6px);
+    background: var(--card); border: 0.5px solid var(--line); border-radius: 12px;
+    padding: 9px 12px; width: 168px; opacity: 0; transition: opacity 0.5s, transform 0.5s;
+  }
+  .event.on { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .event b { display: block; font-size: 13px; font-weight: 500; }
+  .event span { display: block; font-size: 12px; color: var(--ink-3); margin-top: 3px; }
+  .event.doing { top: -104px; }
+  .brief {
+    position: absolute; right: 32px; bottom: 28px; width: 300px;
+    background: var(--card); border: 0.5px solid var(--line); border-radius: 14px;
+    padding: 16px 18px; opacity: 0; transform: translateY(8px); transition: opacity 0.6s, transform 0.6s;
+  }
+  .brief.on { opacity: 1; transform: translateY(0); }
+  .brief p { font-size: 14px; color: var(--ink); }
+
+  /* ---------- C · one thread ---------- */
+  .thread { padding: 28px; height: 380px; display: flex; flex-direction: column; gap: 10px; justify-content: flex-end; }
+  .msg { max-width: 420px; border-radius: 14px; padding: 12px 15px; font-size: 14px; opacity: 0; transform: translateY(8px); transition: opacity 0.45s, transform 0.45s; }
+  .msg.on { opacity: 1; transform: translateY(0); }
+  .msg.you { align-self: flex-end; background: var(--ink); color: var(--paper); }
+  .msg.him { align-self: flex-start; background: var(--card); border: 0.5px solid var(--line); }
+  .row {
+    align-self: flex-start; display: flex; align-items: center; gap: 10px;
+    background: var(--card); border: 0.5px solid var(--line); border-radius: 10px;
+    padding: 9px 13px; font-size: 13px; width: 380px;
+    opacity: 0; transform: translateY(8px); transition: opacity 0.4s, transform 0.4s;
+  }
+  .row.on { opacity: 1; transform: translateY(0); }
+  .row i { font-style: normal; color: var(--ink-2); flex: 1; }
+  .tag { font-size: 11px; letter-spacing: 0.04em; padding: 3px 8px; border-radius: 999px; background: var(--t2); color: var(--ink-2); }
+  .tag.wait { background: rgba(249,115,22,0.12); color: #9A4A0E; }
+
+  @media (max-width: 720px) {
+    .wrap { padding: 32px 20px 64px; }
+    h1 { font-size: 30px; }
+    .field { height: 440px; }
+    .field .core { width: 104px; height: 104px; }
+    .lanes { height: 340px; }
+    .lanes .core, .belt .core { width: 92px; height: 92px; margin: 0 10px; }
+    .core .dog { font-size: 26px; }
+    .core em { font-size: 11px; }
+    .belt { height: 210px; }
+    .night { padding: 20px; height: 420px; }
+    .brief { position: static; width: auto; margin-top: 130px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="lede">
+    <h1>Rough loops</h1>
+    <p>Not final art. Grey boxes stand in for the real cards. Watch the movement and the story, not the pixels.</p>
+  </div>
+
+  <section class="demo">
+    <div class="label">New — everything at once · converge</div>
+    <h2>All of it goes in. One of him. Everything comes out handled.</h2>
+    <p>Your body, your calendar, your inbox, your tasks, your code, your money, the weather, your agents. It never stops arriving, and it never reaches you.</p>
+    <div class="stage">
+      <div class="field" id="field">
+        <div class="core"><span class="pulse"></span><span class="dog">🐕</span><em>Waldo</em></div>
+        <div class="done" id="done"><span class="label">Handled, while you got on with it</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="demo">
+    <div class="label">New — everything at once · lanes</div>
+    <h2>Same story, tidier.</h2>
+    <p>One lane per kind of context, all running at different speeds into the middle. Calmer, easier to read, less alive.</p>
+    <div class="stage">
+      <div class="lanes">
+        <div class="stack" id="stack"></div>
+        <div class="core"><span class="pulse"></span><span class="dog">🐕</span><em>Waldo</em></div>
+        <div class="out"><div class="run" id="laneOut"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="demo">
+    <div class="label">Concept B — the conveyor</div>
+    <h2>Everything comes at you. One thing sits in the middle. Less comes out.</h2>
+    <p>The simplest version. One lane in, one lane out.</p>
+    <div class="stage">
+      <div class="belt">
+        <div class="beltlane i"><div class="run" id="beltIn"></div></div>
+        <div class="core"><span class="pulse"></span><span class="dog">🐕</span><em>Waldo</em></div>
+        <div class="beltlane o"><div class="run" id="beltOut"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="demo">
+    <div class="label">Concept A — the night shift</div>
+    <h2>It worked while you slept. You woke up to it done.</h2>
+    <p>One night, sped up. Signals come in, then actions go out, then the message.</p>
+    <div class="stage">
+      <div class="night">
+        <div class="rail" id="rail"></div>
+        <div class="brief" id="brief">
+          <div class="label">This morning</div>
+          <p>Rough night — about five and a half hours, and your body is running low. I moved your nine and your ten. The afternoon is fine.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="demo">
+    <div class="label">Concept C — one thread</div>
+    <h2>You say one ordinary thing. It handles the rest.</h2>
+    <p>The last row stays with you. That is the whole control story, shown instead of argued.</p>
+    <div class="stage">
+      <div class="thread" id="thread"></div>
+    </div>
+  </section>
+</div>
+
+<script>
+const SOURCES = [
+  { name: "Body", items: [["Slept 5h 42m", "cut short, twice"], ["Heart rate", "up since last night"], ["Stress", "climbing since 1pm"], ["Steps", "340 by noon"]] },
+  { name: "Calendar", items: [["9:00 standup", "back-to-back until noon"], ["Design review", "moved twice already"], ["Flight Thursday", "6am, again"]] },
+  { name: "Mail", items: [["14 threads", "three actually need you"], ["Investor reply", "due today"]] },
+  { name: "Messages", items: [["Mum", "called twice"], ["#q1-prep", "92 unread"]] },
+  { name: "Tasks", items: [["Q1 doc", "overdue since Tuesday"], ["Renew passport", "sixth week running"]] },
+  { name: "Code", items: [["3 reviews", "waiting on you"], ["PR #482", "failing since Friday"]] },
+  { name: "Design", items: [["6 Figma comments", "before crit"]] },
+  { name: "Money", items: [["Stripe", "month closed up"], ["Runway", "fourteen months"]] },
+  { name: "Music", items: [["Same playlist", "since two o'clock"]] },
+  { name: "Weather", items: [["31° and heavy", "air is poor today"]] },
+  { name: "Agents", items: [["Claude Code", "finished, unreviewed"], ["Codex", "waiting on a decision"]] }
+];
+
+const ACTIONS = [
+  "Two meetings moved", "Mornings kept quiet", "The heavy task pushed to Thursday",
+  "Investor reply drafted", "Priya and Sam told", "Recovery block booked",
+  "Reviews batched into your focus hour", "Agent sent off with your context",
+  "Passport renewal booked", "Crit notes sorted", "Flight moved to the afternoon"
+];
+
+const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const chip = ([a, b]) => `<div class="chip"><b>${a}</b><span>${b}</span></div>`;
+const flat = SOURCES.flatMap(s => s.items);
+
+/* ---------- E1 · converge ---------- */
+const field = document.getElementById("field");
+const doneBar = document.getElementById("done");
+const pts = [];
+SOURCES.forEach((s, i) => {
+  const a = (i / SOURCES.length) * Math.PI * 2 - Math.PI / 2;
+  const x = 50 + Math.cos(a) * 42, y = 46 + Math.sin(a) * 40;
+  const el = document.createElement("div");
+  el.className = "src";
+  el.style.left = x + "%";
+  el.style.top = y + "%";
+  el.textContent = s.name;
+  field.appendChild(el);
+  pts.push({ x, y, items: s.items });
+});
+
+let flying = 0;
+function send() {
+  if (flying > 9 || document.hidden) return;
+  const p = pts[Math.floor(Math.random() * pts.length)];
+  const el = document.createElement("div");
+  el.className = "fly";
+  el.innerHTML = chip(p.items[Math.floor(Math.random() * p.items.length)]);
+  const jx = (Math.random() - 0.5) * 7, jy = (Math.random() - 0.5) * 7;
+  el.style.left = (p.x + jx) + "%";
+  el.style.top = (p.y + jy) + "%";
+  field.appendChild(el);
+  flying++;
+  const box = field.getBoundingClientRect();
+  const dx = (50 - p.x - jx) / 100 * box.width;
+  const dy = (46 - p.y - jy) / 100 * box.height;
+  el.animate(
+    [
+      { transform: "translate(-50%, -50%) translate(0, 0) scale(1)", opacity: 0 },
+      { opacity: 1, offset: 0.14 },
+      { opacity: 1, offset: 0.66 },
+      { transform: `translate(-50%, -50%) translate(${dx}px, ${dy}px) scale(0.55)`, opacity: 0 }
+    ],
+    { duration: 3600 + Math.random() * 1400, easing: "cubic-bezier(0.4, 0, 0.5, 1)" }
+  ).onfinish = () => { el.remove(); flying--; };
+}
+
+let actAt = 0;
+function emit() {
+  const el = document.createElement("div");
+  el.className = "act";
+  el.textContent = ACTIONS[actAt++ % ACTIONS.length];
+  doneBar.appendChild(el);
+  requestAnimationFrame(() => el.classList.add("on"));
+  const kids = doneBar.querySelectorAll(".act");
+  if (kids.length > 3) {
+    const old = kids[0];
+    old.classList.remove("on");
+    setTimeout(() => old.remove(), 500);
+  }
+}
+
+if (reduced) {
+  pts.forEach(p => {
+    const el = document.createElement("div");
+    el.className = "fly";
+    el.style.left = p.x + "%";
+    el.style.top = p.y + "%";
+    el.innerHTML = chip(p.items[0]);
+    field.appendChild(el);
+  });
+  emit(); emit(); emit();
+} else {
+  setInterval(send, 420);
+  setInterval(emit, 2600);
+  emit();
+}
+
+/* ---------- E2 · lanes ---------- */
+const stack = document.getElementById("stack");
+SOURCES.slice(0, 6).forEach((s, i) => {
+  const lane = document.createElement("div");
+  lane.className = "lane";
+  const run = document.createElement("div");
+  run.className = "run";
+  const set = s.items.concat(flat.slice(i * 3, i * 3 + 3)).map(chip).join("");
+  run.innerHTML = set + set;
+  run.style.animation = `slide ${22 + i * 5}s linear infinite`;
+  lane.innerHTML = `<span class="tagline">${s.name}</span>`;
+  lane.appendChild(run);
+  stack.appendChild(lane);
+});
+const laneOut = document.getElementById("laneOut");
+const outSet = ACTIONS.slice(0, 6).map(a => chip([a, "done"])).join("");
+laneOut.innerHTML = outSet + outSet;
+laneOut.style.animation = "slide 40s linear infinite";
+
+/* ---------- B · conveyor ---------- */
+const beltIn = document.getElementById("beltIn");
+const inSet = flat.slice(0, 10).map(chip).join("");
+beltIn.innerHTML = inSet + inSet;
+beltIn.style.animation = "slide 26s linear infinite";
+const beltOut = document.getElementById("beltOut");
+const bSet = ACTIONS.slice(0, 5).map(a => chip([a, "done"])).join("");
+beltOut.innerHTML = bSet + bSet;
+beltOut.style.animation = "slide 38s linear infinite";
+
+/* ---------- A · night shift ---------- */
+const NIGHT = [
+  { at: 0.06, t: "Asleep at 1:40", s: "later than you meant", act: false },
+  { at: 0.24, t: "Woke at 3:10", s: "back down after twenty minutes", act: false },
+  { at: 0.42, t: "Recovery is low", s: "your body did not get the night", act: false },
+  { at: 0.58, t: "Two meetings moved", s: "nine and ten, pushed", act: true },
+  { at: 0.72, t: "Mornings kept quiet", s: "no pings until eleven", act: true },
+  { at: 0.86, t: "The heavy task pushed", s: "Thursday, when you will have it", act: true }
+];
+const rail = document.getElementById("rail");
+const brief = document.getElementById("brief");
+const head = document.createElement("div");
+head.className = "head";
+rail.appendChild(head);
+[["1am", 0], ["4am", 0.34], ["7am", 0.68], ["9am", 1]].forEach(([l, p]) => {
+  const d = document.createElement("div");
+  d.className = "tick";
+  d.style.left = (p * 100) + "%";
+  d.textContent = l;
+  rail.appendChild(d);
+});
+const nodes = NIGHT.map(e => {
+  const d = document.createElement("div");
+  d.className = "event" + (e.act ? " doing" : "");
+  d.style.left = (e.at * 100) + "%";
+  d.innerHTML = `<b>${e.t}</b><span>${e.s}</span>`;
+  rail.appendChild(d);
+  return d;
+});
+const SPAN = 15000, HOLD = 3500;
+let t0 = performance.now();
+function night(now) {
+  let p = (now - t0) / SPAN;
+  if (p > 1 + HOLD / SPAN) { t0 = now; p = 0; }
+  const c = Math.min(p, 1);
+  head.style.left = (c * 100) + "%";
+  nodes.forEach((n, i) => n.classList.toggle("on", c >= NIGHT[i].at));
+  brief.classList.toggle("on", c >= 0.99);
+  requestAnimationFrame(night);
+}
+requestAnimationFrame(night);
+
+/* ---------- C · thread ---------- */
+const THREAD = [
+  { k: "you", v: "not going to make the 4pm" },
+  { k: "him", v: "Makes sense — you have been going since seven and your afternoon is the worst of the week. I will handle it." },
+  { k: "row", v: "Moved to Thursday 11am", tag: "Calendar" },
+  { k: "row", v: "Told Priya and Sam, no reason given", tag: "Slack" },
+  { k: "row", v: "Rest of today held clear", tag: "Calendar" },
+  { k: "row", v: "Reply to the investor — read it first", tag: "Waiting on you", wait: true },
+  { k: "him", v: "That last one is yours. Everything else is done." }
+];
+const thread = document.getElementById("thread");
+function playThread() {
+  thread.innerHTML = "";
+  THREAD.forEach((m, i) => {
+    const d = document.createElement("div");
+    if (m.k === "row") {
+      d.className = "row";
+      d.innerHTML = `<i>${m.v}</i><span class="tag${m.wait ? " wait" : ""}">${m.tag}</span>`;
+    } else {
+      d.className = "msg " + m.k;
+      d.textContent = m.v;
+    }
+    thread.appendChild(d);
+    setTimeout(() => d.classList.add("on"), 400 + i * 1100);
+  });
+  setTimeout(playThread, 400 + THREAD.length * 1100 + 4000);
+}
+playThread();
+</script>
+</body>
+</html>

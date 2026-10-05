@@ -1,12 +1,25 @@
 ---
-type: article
 status: published
-title: We put a Dalmatian on it, and we would like to explain ourselves
+slug: why-a-dalmatian
+title: We put a Dalmatian on it, / and we would like to explain ourselves
+dek: Spots, patterns, and a dog that makes the product easier to understand without saying a word.
+excerpt: The mascot is not decoration. It is a compact explanation of how Waldo notices and connects what others miss.
+aside: the spots were doing useful work.
+category: Inside Waldo
+author: team-brand
+type: article
 tags: [waldo, blog, brand]
 created: 2026-07-25
 published: 2026-07-25
 updated: 2026-07-25
 site_section: brand
+image: /assets/blogs/why-a-dalmatian.webp
+imageAlt: A resting Dalmatian studying a constellation made from its own spots
+audio: /assets/blogs/audio/why-a-dalmatian.m4a
+artCredit: Waldo, made with OpenAI
+sources:
+  - American Kennel Club: Dalmatian history, current article | https://www.akc.org/expert-advice/dog-breeds/dalmatian-history/
+  - Waldo brand and product story, May 2026 | /
 ---
 
 # We put a Dalmatian on it, and we would like to explain ourselves

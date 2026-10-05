@@ -234,9 +234,9 @@ export default function HomeBuildPage() {
           className="type-body reveal reveal-in mx-auto w-fit text-center text-[#6B6B68]"
           style={{ fontSize: "17.1px", lineHeight: "1.4", ...revealDelay(1) }}
         >
-          Waldo is the one assistant that plans like Sherlock, thinks like Einstein
+          Waldo is the only assistant that coordinates work, life
           <br />
-          and moves like the Flash — all in the body of a friendly dalmatian.
+          and everything between it.
         </p>
 
         <div className="flex items-center gap-3 pt-2">
@@ -369,7 +369,7 @@ export default function HomeBuildPage() {
             </Link>
           </div>
 
-          <div className="relative mt-12 flex w-full max-w-[500px] flex-1 flex-col justify-end">
+          <div className="relative mt-[38.4px] flex w-full max-w-[500px] flex-1 flex-col justify-end">
             <Image
               src="/build/phone-mockup.png"
               alt=""
