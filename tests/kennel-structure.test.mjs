@@ -9,26 +9,16 @@ test("kennel route exists with canonical metadata", () => {
 
   const page = read("app/kennel/page.tsx");
   assert.match(page, /canonical: "\/kennel"/);
-  assert.match(page, /<KennelPage \/>/);
+  assert.match(page, /SiteShell theme="dark"/);
 });
 
 test("kennel page carries the core sections", () => {
-  const component = read("components/kennel/kennel-page.tsx");
-
-  assert.match(component, /<BuildSiteNav \/>/);
-  assert.match(component, /Kennel for Mac/);
-  assert.match(component, /Stop managing agent sessions\./);
-  assert.match(component, /The difference/);
-  assert.match(component, /How it works/);
-  assert.match(component, /Works with/);
-  assert.match(component, /Open beta/);
-  assert.match(component, /waldoco\/Waldo-Kennel/);
-  assert.match(component, /FAQ/);
-  assert.match(component, /<SceneCloseSection \/>/);
-
-  for (const provider of ["Codex", "Claude Code", "OpenCode", "Cursor", "Pi"]) {
-    assert.match(component, new RegExp(`"${provider}"`));
+  const page = read("app/kennel/page.tsx");
+  assert.match(page, /SiteShell theme="dark"/);
+  for (const text of ["Kennel for Mac", "How Kennel works", "Questions", "Codex", "Claude Code", "Cursor", "waldoco/Waldo-Kennel"]) {
+    assert.ok(page.includes(text), `missing ${text}`);
   }
+  assert.match(page, /Kennel gets it done/);
 });
 
 test("kennel page is listed in the sitemap", () => {

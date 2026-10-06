@@ -40,7 +40,17 @@ Suyash, 2026-10-04: "now the homepage is made as per my needs, with proper layou
 - **Support:** centred opening with four white jump cards; questions as on the homepage; Kennel help as three white link cards (it was a table); contact centred.
 - **Privacy, Terms:** centred opening and titles; the short versions as white cards; the detailed tables and lists stay.
 - **Blog:** centred opening; "All notes" carousel centred and endless; shared close. Articles unchanged.
-- **Let Waldo in:** the form in the homepage's box, everything centred.
+- **Let Waldo in:** the form in the homepage's box, everything centred. *Replaced 2026-10-05 by the amped-up page (Waldo's notifications, the sky, the pill form, the rising phone, questions): see [pages/waitlist.md](pages/waitlist.md).*
+
+## The footer (2026-10-05)
+
+Suyash: the dock illustration should be at the edge, the last part of the site with nothing below it; the links stay exactly as they are but sit in one container, right before the illustration, after the close.
+
+- Order is now: the page's close, one box with every link, then the dock scene at the very bottom, flush with the page edge (checked: the scene's bottom is the page's bottom at desktop and phone widths).
+- The box is white (#ffffff) with a hairline and the white-box corner, on the page's own background (#FAFAF8; nothing is tinted behind the footer). On Kennel's dark page it is Kennel's raised dark card, as the other white boxes are there. It holds the Waldo logo, the same four groups (Products, Company, Legal, Elsewhere) and the same "© Waldo" and "Let Waldo in →" row. The line under the logo ("One personal agent across work and life.") was removed at Suyash's request. No link was added, removed or renamed.
+- The homepage's close band (the live build's cards) no longer has its own colour (it was #F4F3F0): it sits on the page's default #FAFAF8, like the footer around it. The cards are unchanged.
+- The scene is shown as drawn: full width at its own height (1440 x 1060 on desktop), never cropped, squeezed or faded. It keeps its art-directed versions for phone, tablet and landscape, each shown whole.
+- Code: `components/site/site-footer.tsx` and the "Footer" block in `components/site/site.css`.
 
 ## In the code
 

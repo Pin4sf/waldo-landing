@@ -99,6 +99,22 @@ _Unused since this change: the "Tell me" Mac notification picture (`mac-notifica
 
 ---
 
+### Longer he learns, / smarter he gets.
+_2026-10-05: a new section after "Your context. Your call." and before the questions: the centred heading, then a web you can use, running the full width of the window with no box. The words are Suyash's, with one typo fixed ("compund" is "compound"). Rebuilt the same day after review as a copy of andrewtrousdale.com's own page (see [../andrew-trousdale-notes.md](../andrew-trousdale-notes.md))._
+
+Body: Months in, Waldo gets to know you, more than you do. It finds the patterns. Shows how you can compound. No tool has all of it.
+No buttons.
+
+- _Picture: a web of nodes in andrewtrousdale.com's own style (`components/site/memory-map.tsx`, styles in `memory-map.css`, the physics in `see/force-sim.ts`, what is shown when in `see/memory-graph.ts`, the words in `see/memory-data.ts`). Waldo is the main node (his orange mark, turning slowly, "4 months in" under it). Round him stand the six constellations as numbered hexagons joined by his dog-leg lines, each with a few of its spots: circles (body), squares (focus) and triangles (habit, joined by dashed lines). Three greyer spots sit at the edge, joined by dotted lines. Thin black outlines, one-pixel lines, names in small type with a grey line that comes up on hover. Nothing else._
+  - _Drag any node, Waldo included, and the rest follow on their springs; let go and it settles again. Every link is a spring and every node pushes the others away (the same three forces and numbers as his site: link, charge, centre), so nothing is laid out by hand._
+  - _Choose a node (a click or tap that does not drag): the web narrows to the way back to Waldo, that node, what it is made of (all of its spots) and what turns up with it (greyer, dotted). A panel opens on the right with what it is, when it was first seen, what he does about it (constellations), and its connections, each of which can be followed. Choose Waldo, the node you are on, the cross, or press Escape to go back. On a phone the panel opens under the web._
+  - _No box and no edge drawn: the stage runs the full width of the window and the nodes can go anywhere in it, with only a soft fade at the top and bottom where it meets the page. The first time it scrolls into view it fades in, nearest the middle first. With less motion the web is settled at once; dragging still works._
+  - _38 spots in 6 constellations, all invented: the Tuesday Crash 7 (the phone card's), Cognitive Stress 6, Sleep Pattern 6, Meals 5, Work Flow 6, Training Style 8. About 20 "seen with" links join spots across constellations. These counts are not the phone card's "77 spots in 6 patterns"; reconcile if both stay._
+  - _Removed after review (2026-10-05), in two steps: first the week row, the card under the map and the "Sample data" line; then the box, the white name pills with colour icons, the curved lines and the orange selection, which did not suit the design._
+- _Open: "smarter" is on the banned-words list in AGENTS.md ("smart", "intelligent"), though that doc's own long-game block used it; and the body mixes "Waldo ... It finds" with the title's "he" (the pronoun question in the README is still open)._
+
+---
+
 ### You’re going to / ask these.
 
 - **How is Waldo different from ChatGPT or Claude?**
@@ -117,6 +133,26 @@ _Unused since this change: the "Tell me" Mac notification picture (`mac-notifica
 [More questions →](/support)
 
 ---
+
+### Hand it over. / Waldo has it.
+_2026-10-05: new words for the close. The live build's version repeated the hero's title ("Life happens. Waldo handles it."), compared Waldo to Sherlock, Einstein and the Flash (a cultural reference, which the brand rules rule out), and used the buttons "Early Access" and "Learn More". The layout and the five coloured cards are the live build's, unchanged._
+
+Body: One Waldo across your work and your life. He reads what's coming, does what's needed, and only speaks up when it matters.
+Buttons: "Let Waldo in →" (to /waitlist), "See how it works" (to /how-it-works)
+
+Why these words: the page has just answered the objections, so the close is the invitation, and it can't say the hero's line again. "Hand it over" is the ask; "Waldo has it" is the promise. The body is the page's own approved line ("reads what's coming, does what's needed, only interrupts when it matters"), so nothing new is claimed. The buttons match the hero's.
+
+Other titles considered (not used):
+- Now you know. / Let Waldo in. (the How it works page already ends on "Now you know.")
+- One Waldo. / The whole day. (describes, doesn't ask)
+- You've got a lot on. / Waldo has it. (a touch too chatty)
+
+**The five cards** (click one to open it): four are unchanged. The third is rewritten:
+- Was: **Reads you like a clinician.** "Goes through your numbers the way a careful clinician would, and finds what you'd never catch alone." That reads as a medical claim, which the brand rules rule out (Waldo never diagnoses or stands in for a doctor).
+- Now: **Knows the day you're having.** "Sleep, stress and recovery become a plan for your day. Context, never a diagnosis."
+- The others: **Plans your day. In detail.** / **Never makes you explain twice.** / **Works with all models / agents.** / **Shows how far you've come.**
+
+#### The earlier close (kept as a record)
 
 ### Your agents aren’t going / to fix your life.
 Body: One Waldo across work and life, carrying what matters so you don't have to.

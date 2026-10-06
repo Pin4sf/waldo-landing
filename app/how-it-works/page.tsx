@@ -101,7 +101,7 @@ const DAY: Feature[] = [
   },
   {
     name: "The right task, at the right time",
-    line: "Hard things land when you’re fresh. Deadlines never slip.",
+    line: "Hard things land when you’re fresh. Deadlines stay visible.",
     detail: [
       "Your list is ordered by what’s due and by how much you’ve got in you. The hardest thing goes to your sharpest hour.",
       "On a low day, big tasks get broken into small chunks. Anything due today stays put, even on a rough one.",
@@ -110,9 +110,9 @@ const DAY: Feature[] = [
   },
   {
     name: "Fewer pings",
-    line: "Watches how much is coming at you, never what it says. Email in two blocks, Slack on Focus.",
+    line: "Helps plan time for messages. The screens below are examples.",
     detail: [
-      "Waldo reads volume, timing and urgency, never the words. When messages spike and your stress climbs with them, it offers to go quiet for a while.",
+      "Message access and handling depend on the connected service and your permissions. Final app data details are under review.",
       "It can batch email into two blocks a day, and set Slack to Focus while you work.",
     ],
     status: "next",
@@ -121,7 +121,7 @@ const DAY: Feature[] = [
     name: "Fixed first, mentioned after",
     line: "The Patrol runs overnight too. It fixes what it can within your limits, and asks about the rest.",
     detail: [
-      "The Patrol runs around the clock. When something looks off, like two meetings overlapping, Waldo fixes it if your limits allow, and tells you after. With an undo.",
+      "The Patrol runs around the clock. When something looks off, like two meetings overlapping, Waldo fixes it if your limits allow, and tells you after. Whether it can be reversed depends on the action.",
       "If it can’t fix something, it comes to you with options. If something is only worth watching, it watches.",
     ],
     status: "today",
@@ -206,10 +206,10 @@ const RULES: Feature[] = [
   },
   {
     name: "The activity log",
-    line: "Everything Waldo did, and chose not to do, with one-tap undo.",
+    line: "Review recorded actions and their outcomes.",
     detail: [
       "Every move is written down with the reason for it, including the things Waldo noticed and decided to leave alone.",
-      "Anything it changed can be undone with one tap.",
+      "Whether an action can be reversed depends on the service and the action.",
     ],
     status: "today",
   },
@@ -235,8 +235,8 @@ const RULES: Feature[] = [
     name: "Yours, always",
     line: "Export everything any time. Delete your account, and it’s gone.",
     detail: [
-      "Download everything Waldo holds about you, whenever you want. Delete your account, and your data goes with it.",
-      "It’s encrypted when stored and when it moves. The full detail is on the Privacy page.",
+      "Export and deletion controls are still being reviewed. Do not rely on these example screens as a promise of available controls.",
+      "Final security and retention details have not been published here yet.",
     ],
     status: "today",
   },
@@ -419,7 +419,7 @@ export default function HowItWorksPage() {
       <Section id="rules" size="auto">
         <Header
           label="Your rules"
-          lines={["Nothing happens", "that you can’t undo."]}
+          lines={["Review actions", "before they count."]}
           subtitle="You choose how far Waldo goes, area by area, and you can change it whenever you like."
           body="Every move is logged. One tap takes it back."
           actions={{ secondary: { label: "How we handle your data", href: "/privacy" } }}

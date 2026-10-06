@@ -56,7 +56,7 @@ export default function ConnectorsPage() {
             rows={[
               ["Body", "Sleep, heart rate, HRV, stress, movement", "Works out Recovery, Form and Weight. Spots when you're running low."],
               ["Calendar", "Meetings, gaps, back-to-backs, late nights", "Moves, blocks and protects time, within your limits"],
-              ["Mail & messages", "Volume, timing, urgency. Never the words.", "Batches your inbox, goes quiet when it's too much, flags what needs you"],
+              ["Mail & messages", "Email access details under review.", "Batches your inbox, goes quiet when it's too much, flags what needs you"],
               ["Tasks & projects", "Due dates, overdue items, what's piling up", "Reorders by deadline and energy, breaks big tasks down"],
               ["Notes & files", "Documents you point it to", "Pulls context together, so you don't re-explain"],
               ["Engineering", "Reviews waiting on you, ticket load", "Batches reviews into your focus time, updates tickets"],
@@ -144,7 +144,7 @@ export default function ConnectorsPage() {
           <Grid cols={4} boxed>
             <Item strong="You approve every tool.">Nothing connects on its own.</Item>
             <Item strong="Read only, unless you say so.">Each tool shows whether Waldo can change anything there.</Item>
-            <Item strong="Words stay private.">From email and messages, Waldo reads volume and timing, never what&apos;s written.</Item>
+            <Item strong="Review access first.">Email access depends on the permissions you grant. App data details are under review.</Item>
             <Item strong="One tap to disconnect.">What Waldo learned from that tool goes with it.</Item>
           </Grid>
         </Body>

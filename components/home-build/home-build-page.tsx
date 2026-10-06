@@ -620,7 +620,7 @@ export default function HomeBuildPage() {
             className="type-body mx-auto w-fit max-w-[420px] text-center"
             style={{ fontSize: "17.1px", lineHeight: "1.4" }}
           >
-            <span className="font-medium text-white">Watches how you're actually doing.</span>
+            <span className="font-medium text-white">Watches how you&apos;re actually doing.</span>
             <span className="font-normal text-white/60"> Then shapes the day around what your body can actually handle.</span>
           </p>
 

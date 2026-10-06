@@ -11,11 +11,11 @@ test("blog index and article routes are available at the plural /blogs path", ()
   const index = read("app/blogs/page.tsx");
   const article = read("app/blogs/[slug]/page.tsx");
 
-  assert.match(index, /Latest writing/);
-  assert.match(index, /BLOG_POSTS/);
+  assert.match(index, /Blog/);
+  assert.match(index, /getBlogPosts/);
   assert.match(article, /generateStaticParams/);
   assert.match(article, /ReactMarkdown/);
-  assert.match(article, /CopyLinkButton/);
+  assert.match(article, /CopyLink/);
 });
 
 test("both navigation systems enable Blog and point to /blogs", () => {
@@ -30,7 +30,7 @@ test("both navigation systems enable Blog and point to /blogs", () => {
 
 test("the six published essays are local content with explicit metadata", () => {
   const files = readdirSync("content/blogs")
-    .filter((file) => file.endsWith(".md"))
+    .filter((file) => file.endsWith(".md") && !file.startsWith("_"))
     .sort();
   assert.equal(files.length, 6);
   const publicationDates = [
@@ -43,10 +43,10 @@ test("the six published essays are local content with explicit metadata", () => 
   ];
 
   const data = read("lib/blog-posts.ts");
-  assert.match(data, /export const BLOG_POSTS/);
-  assert.match(data, /author: DEFAULT_BLOG_AUTHOR/);
-  assert.match(data, /name: "Waldo team"/);
-  assert.match(data, /artCredit: "Waldo, made with OpenAI"/);
+  assert.match(data, /export function getBlogPosts/);
+  assert.match(data, /BLOG_AUTHORS/);
+  assert.match(data, /Waldo team/);
+  assert.match(data, /artCredit/);
   assert.doesNotMatch(data, /Corben/i);
 
   for (const [index, file] of files.entries()) {
@@ -83,7 +83,7 @@ test("every article has a generated hero asset and sitemap entry", () => {
   }
 
   const sitemap = read("app/sitemap.ts");
-  assert.match(sitemap, /BLOG_POSTS/);
+  assert.match(sitemap, /getBlogPosts/);
   assert.match(sitemap, /\/blogs/);
 });
 
@@ -147,9 +147,9 @@ test("articles include an accessible New Yorker-inspired listen control", () => 
 test("draft gating is enforced before posts reach the index or feed", () => {
   const data = read("lib/blog-posts.ts");
   assert.match(data, /post\.status === "published"/);
-  assert.match(data, /b\.datePublished\.localeCompare\(a\.datePublished\)/);
+  assert.match(data, /b\.datePublished\.localeCompare/);
 
   const feed = read("app/blogs/rss.xml/route.ts");
-  assert.match(feed, /BLOG_POSTS\.map/);
+  assert.match(feed, /getBlogPosts/);
   assert.match(feed, /application\/rss\+xml/);
 });

@@ -19,7 +19,7 @@ This folder is where the whole website gets planned before it gets built. Each p
 | [pages/privacy.md](pages/privacy.md) | Privacy: live copy at the top, then the legal outline and compliance checklist | Built — **legal part needs a lawyer** |
 | [pages/terms.md](pages/terms.md) | Terms: live copy at the top, then the legal outline | Built — **legal text needs a lawyer** |
 | [pages/404.md](pages/404.md) | Page not found: live copy at the top | **Built** |
-| [pages/waitlist.md](pages/waitlist.md) | Let Waldo in: live copy at the top (page, Kennel version, errors, success), then the confirmation email draft | **Built** |
+| [pages/waitlist.md](pages/waitlist.md) | Let Waldo in: the 2026-10-05 layout (Waldo's notifications after locky.so, the Soonix-style first screen, questions), Waldo's lines, then the live copy and the confirmation email draft | **Built locally for review, not published** |
 | [dark-mode.md](dark-mode.md) | Dark mode: Kennel is always dark, everything else light (the site-wide switch was built, then dropped) | **Live — Kennel only** |
 | [layout-linear.md](layout-linear.md) | Layout experiment: a Linear-style layout, compared with the current one | Rejected — removed, kept as a record |
 | [copy-review.md](copy-review.md) | Copy review of every page against the older Codex copy, with options per block (★ = recommended) | **Applied — the ★ picks are live** |
@@ -29,6 +29,7 @@ This folder is where the whole website gets planned before it gets built. Each p
 | [what-you-see-plan.md](what-you-see-plan.md) | The five-card "What you see of it" section after the hero: story, screens, carousel behaviour, fixture checks. Section 17: one kit for all the app screens | **Built, on the homepage (local)** |
 | [trust-carousel-review.md](trust-carousel-review.md) | The homepage Trust section as four privacy panels ("Your context. Your call."): copy, what each panel is backed by in the product code, and the open privacy and security questions | **Built locally for review, not published** |
 | [site-wide-pass.md](site-wide-pass.md) | Every other page made like the homepage: page colour, centred titles, endless carousels, the Stage box, white cards, new moving pictures, one close. Words unchanged | **Built locally for review, not published** |
+| [andrew-trousdale-notes.md](andrew-trousdale-notes.md) | How andrewtrousdale.com's web works (read from his page and script) and what the homepage's "Longer he learns" web took from it | **Reference** |
 | [sessions/](sessions/) | One log per working session: what was decided, what's open | Ongoing |
 
 ## Build status

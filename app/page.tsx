@@ -15,7 +15,6 @@ import {
   Body,
   Header,
   Item,
-  List,
   Questions,
   Section,
 } from "@/components/site/blocks";
@@ -23,6 +22,7 @@ import { Carousel } from "@/components/site/carousel";
 import { SeeSection } from "@/components/site/see/see-section";
 import { SiteShell } from "@/components/site/site-shell";
 import { LiveClose } from "@/components/site/live-close";
+import { MemoryMap } from "@/components/site/memory-map";
 import { TrustWindow } from "@/components/site/trust-window";
 import { WaldoLoop } from "@/components/site/waldo-loop";
 import {
@@ -225,6 +225,18 @@ export default function Home() {
           />
           <TrustWindow />
         </div>
+      </Section>
+
+      {/* 5b · Learns: one box, the heading in it, and the Spots and Constellations map to use: tap a spot or a pattern,
+          drag to look around, step through the weeks (docs/website/pages/home.md, "Longer he learns") */}
+      <Section size="auto">
+        <MemoryMap>
+          <Header
+            lines={["Longer he learns,", "smarter he gets."]}
+            body="Months in, Waldo gets to know you, more than you do. It finds the patterns. Shows how you can compound. No tool has all of it."
+            center
+          />
+        </MemoryMap>
       </Section>
 
       {/* 6 · Questions */}

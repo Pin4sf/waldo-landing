@@ -46,8 +46,8 @@ const handledCards: HandledCard[] = [
     dock: { offsetX: 31, offsetY: 49, rotation: -2 },
   },
   {
-    title: "Reads you\nlike a clinician.",
-    body: "Goes through your numbers the way a careful clinician would - and finds what you'd never catch alone.",
+    title: "Knows the day\nyou're having.",
+    body: "Sleep, stress and recovery become a plan for your day. Context, never a diagnosis.",
     tone: "purple",
     fan: { offsetX: 0, offsetY: -41, rotation: -2 },
     dock: { offsetX: 0, offsetY: 51, rotation: 0 },
