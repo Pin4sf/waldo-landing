@@ -89,7 +89,7 @@ Then it goes quiet, which is most of the job.
 
 Connectors are shipping in stages. Calendar and mail first, then the work tools, then the long tail, and the profession-specific behaviour gets sharper the longer it watches you rather than arriving fully formed on day one.
 
-And it will get things wrong. It will protect a block you did not want protected, or move something you needed where it was. Every action Waldo takes shows its reason and keeps the undo one tap away, and the corrections feed back in, because a system that acts on your behalf and cannot be corrected is not something anyone should install.
+And it will get things wrong. It will protect a block you did not want protected, or move something you needed where it was. Actions should explain their purpose and limits before they count. Whether a change can be reversed depends on the connected service; a blanket undo guarantee would be misleading.
 
 But it will not tell a nurse coming off nights to push harder. It can see the shift.
 

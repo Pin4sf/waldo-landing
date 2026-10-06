@@ -2,16 +2,86 @@
 
 Status: **Built. The live copy is at the top (2026-09-28).**
 
-Layout (2026-10-04): made like the homepage (centred, endless carousels, the Stage box, white cards, one close). Words unchanged. See [../site-wide-pass.md](../site-wide-pass.md).
+Layout (2026-10-05): **amped up**, after two references from Suyash: Soonix (a Framer waitlist template) for the page, and locky.so for the notifications, then made flat and minimal the same day. See "Layout (2026-10-05)" just below. New words: the title "Waldo handles it. / Get in line early.", Waldo's notifications and the questions section.
 
-Last updated: 2026-09-28
+Last updated: 2026-10-05
 URL: `/waitlist`
-Live source: `app/waitlist/page.tsx`, `components/site/waitlist-panel.tsx`, `actions/submit-email.ts`
+Live source: `app/waitlist/page.tsx`, `components/site/waitlist-hero.tsx`, `components/site/waitlist-panel.tsx`, `components/site/waldo-pings.tsx`, `components/site/waitlist.css`, `actions/submit-email.ts`
 Reviewed: the live page at desktop width, plus the code
 
 ---
 
+## Layout (2026-10-05)
+
+Suyash: "we need to amp up the waitlist page" (with a Soonix screenshot), then "https://www.locky.so — need you to implement these sort of notifications as well."
+
+**Revised the same day** after Suyash: "the gradients don't fall in our design language, yeet all of them. I need this to be minimal UI. For Waldo's pfp, keep the Waldo illustration. Remove the Waldo illustration above the title. The line is short, but we shouldn't lead with that. Any other BS, move it below the phone visual." Then: "the drop shadows as well, not our thing."
+
+Flat and minimal: white and hairlines on the warm page. **No gradients, no drop shadows, no blur.**
+
+**First screen, top to bottom** (nothing else):
+
+1. **Waldo's notifications** (from Locky). Phone-style notifications drop in at the top, under the menu. The newest sits in front; the two before it tuck in behind, smaller. Each line types itself in. Hover the pile and it fans out; a small × dismisses one. Tapping one takes you to the email box. On phones they sit at the top of the page and scroll away with it; on wider screens they stay put while the form is on screen. **Waldo's picture** on each is the same Waldo illustration the app's own notifications use (`waldo-card.svg`). It is the only place the illustration appears on this page.
+2. **The title, on its own.** No picture above it, no label, no line under it: the title carries the whole message (Suyash: "this should be consolidated into the title itself, so make sure it has the bang for the buck").
+   ### Waldo handles it. / Get in line early.
+   *Why it works:* the first line is the promise (the homepage's own "Waldo handles it"), the second is the action and the reason to act now ("line" says waitlist; "early" is true, since people who join earlier get in earlier). The old line under it ("Waldo is letting people in a few at a time. Leave your email, and you'll hear the moment it's your turn.") is gone from the page; "One email when you're in" in the small print covers the rest.
+   From Kennel: **Get the Mac app / the day it ships.** (the old "Kennel is in open beta on GitHub today..." line is gone too; the beta link is below the phone.)
+   Only a problem with the email gets a line under the title (the error words, unchanged).
+3. **The form as one pill** (from Soonix): the email box and "Let Waldo in →" inside one white pill with a hairline. On phones the button sits under the box, inside the same pill.
+4. **Small print**, one short line under the form (the Terms and Privacy agreement). It stays here because it has to sit with the button.
+5. **The app rising out of a box**: the homepage's Overview phone (the daily brief) in the same flat box as "Your context. Your call.", cropped by the box's edge. It opens on the brief for the visitor's part of the day and moves through the day while it's on screen. Screen readers hear that the names and numbers in it are samples.
+
+**Below the phone:**
+
+6. *(Deleted by Suyash, 2026-10-05: the "The line is short. / For now." section with its three cards and the "About time." aside. The words are kept in "Live copy" below in case they come back. From Kennel, only "Can't wait? Try the beta now →" remains here.)*
+7. **Before you get in.** A short questions section, centred (below).
+8. The footer, as on every page.
+
+What we did **not** copy from Soonix: the "Join +1,000 others" faces, the countdown clock, the sky and the glow behind it. No real faces, numbers or launch date to show, and nothing on the page is made up.
+
+## Waldo's notifications (2026-10-05)
+
+Every line is true: it only uses what the page itself can see (the visitor's clock, the email box, them leaving the tab and coming back). He never claims to have read anything of theirs. Lowercase, no exclamation marks. A handful of lines, then he goes quiet: Waldo doesn't nag. Edit the words here, then carry them into `components/site/waldo-pings.tsx`.
+
+Every notification reads **Waldo** · *now* (it becomes "1m ago" and so on as time passes).
+
+**On their own, one at a time** (the first after about 1.5 seconds, then 6 to 12 seconds apart, only while the form is on screen and the tab is open):
+
+| # | Everyone | From Kennel (`?utm_source=kennel`) |
+|---|---|---|
+| 1 | *By their clock:* 5–11am "morning. good time to get in line." · 11am–5pm "afternoon. this takes ten seconds." · 5–9pm "evening. one small thing before bed." · 9pm–5am "it's 11:42pm. join first, then sleep." (their actual time) | that was kennel. i'm the rest of it. |
+| 2 | the box wants one email. the real one. *(skipped once they've clicked into the box)* | your email gets you the mac app first. *(same)* |
+| 3 | that's all i need. no password. no card. | no password. no card. one email. |
+| 4 | no rush. waiting is most of my job. | no rush. waiting is most of my job. |
+| 5 | your watch has been waiting too. | |
+
+**When something happens** (each once per visit):
+
+| When | Line |
+|---|---|
+| They click into the email box | that one. i'll write when it matters. |
+| They leave the tab for a few seconds and come back | you left. i noticed. it's my thing. |
+| They join | got you. you're on the list. *then* go on. i'll write when it's your turn. *(9pm–5am: "now sleep. i'll write when it's time.")* After this he says nothing more. |
+
+## Before you get in (2026-10-05)
+
+### Before you / get in.
+
+- **When do I get access to Waldo?** We're letting people in a few at a time. Joining the list is the way in, and people who joined earlier get in earlier. *(Support)*
+- **What can I use today?** Kennel for Mac is in open beta now. iPhone and messaging come next, and people on the list get in first. *(Home)*
+- **How much will Waldo cost?** Free while it's in beta. We'll tell you well before anything changes, and nothing will be charged without you choosing a plan. *(Support)*
+- **Which watches work?** Apple Watch works best. Oura, WHOOP, Garmin and Fitbit are coming. The full list is on the Connectors page. *(Support)*
+- **Is there an Android app?** iPhone comes first. Android follows. Join the list to hear when. *(Support)*
+- **I joined the waitlist but didn't get an email.** Check spam and promotions first. Still nothing? Write to us from the same address, and we'll sort it out. *(Support)*
+- **How do I leave the waitlist?** Every email we send has an unsubscribe link. Or write to us, and we'll remove you. *(Support)*
+
+[More questions →](/support)
+
+⚠️ Home says "Apple Watch, Oura, WHOOP, Garmin and Fitbit all work"; Support says the others "are coming". This page uses Support's, the more careful one. One of the two needs correcting.
+
 ## Live copy (2026-09-28)
+
+> **Where this disagrees with "Layout (2026-10-05)" above, the layout section wins.** The title, the mascot pictures, the "Let Waldo in" label and where the list and "About time." sit have all changed. The error and success words below are unchanged.
 
 This is the copy on the built page right now, top to bottom. **Edit the words here**, then carry them into `components/site/waitlist-panel.tsx`.
 
@@ -294,3 +364,5 @@ Signing up already sends a `waitlist_signup` event to Loops. ⚠️ **Confirm wh
 3. **What you get:** is "first access to Waldo for iPhone + the Kennel Mac app" the right promise?
 4. **Profession question:** OK to add? Any options to change?
 5. **Button:** "Let Waldo in →" (consistent with the site), or keep "About time." as the button?
+6. **Watches (2026-10-05):** do Oura, WHOOP, Garmin and Fitbit work today (Home) or are they coming (Support)?
+7. **Notifications (2026-10-05):** happy with Waldo's lines, and with how many there are?

@@ -13,7 +13,7 @@ import "./trust-window.css";
 //   2 He asks       two meetings land together; he prepares a move and waits
 //   3 You decide    you approve, the meeting moves, and one tap would undo it
 //   4 He keeps      he saves a note about you, you correct it, he saves it over
-//   5 Where it goes the three services the whole trail passed through
+//   5 Where it goes example services, without a completeness guarantee
 //
 // The calendar on the left is the one thing that stays; the card on the right is the beat. It plays by itself
 // while it is on screen, one beat after another, and goes round; the five steps along the top are buttons too,
@@ -33,8 +33,8 @@ const CORRECTION = "Mornings are only for focus on Tuesdays and Thursdays.";
 const BEATS = [
   {
     rail: "He sees",
-    title: "He can see your calendar. He can’t change it.",
-    text: "Connect Google and he reads Calendar, Gmail and Tasks. Read only. Editing is a separate permission.",
+    title: "Reading and editing are separate permissions.",
+    text: "This example starts with read-only access. Moving an event also needs calendar write access and your approval.",
   },
   {
     rail: "He asks",
@@ -43,8 +43,8 @@ const BEATS = [
   },
   {
     rail: "You decide",
-    title: "You say yes. It moves.",
-    text: "Approve it, reject it, or undo it in one tap.",
+    title: "Try an approval in this example.",
+    text: "Approve or reject the sample proposal. No real calendar is connected.",
   },
   {
     rail: "He keeps",
@@ -53,8 +53,8 @@ const BEATS = [
   },
   {
     rail: "Where it goes",
-    title: "That’s the whole trail.",
-    text: "Supabase keeps it, Anthropic writes his replies, Telegram carries his messages. Read the rest on the Privacy page.",
+    title: "Data handling needs a clear explanation.",
+    text: "These are example services, not a complete provider list or a privacy guarantee. Final app data practices are still under review.",
   },
 ] as const;
 
@@ -69,7 +69,7 @@ function Mask({ name }: { name: string }) {
   return <span className="tw-mask" style={{ "--icon": `url(/assets/home/icons/${name}.svg)` } as CSSProperties} aria-hidden="true" />;
 }
 
-type Request = "wait" | "press" | "done";
+type Request = "wait" | "press" | "done" | "rejected";
 
 /** A meeting block: where it starts and how long it runs, in hours, and (for two side by side) which half */
 function Block({
@@ -101,6 +101,7 @@ export function TrustWindow() {
   const root = useRef<HTMLDivElement>(null);
   const live = useLive(root);
   const [beat, setBeat] = useState(0);
+  const [manual, setManual] = useState(false);
   const [request, setRequest] = useState<Request>("wait");
   const [note, setNote] = useState<"old" | "new">("old");
   const [draft, setDraft] = useState<string | null>(null);
@@ -127,7 +128,7 @@ export function TrustWindow() {
 
   // The story: each beat plays its own small scene, then the next one starts; after the last it goes round
   useEffect(() => {
-    if (!live) return;
+    if (!live || manual) return;
     let alive = true;
     (async () => {
       if (beat === 0) {
@@ -183,7 +184,7 @@ export function TrustWindow() {
       setDraft(null);
       setTyping(false);
     };
-  }, [live, beat]);
+  }, [live, beat, manual]);
 
   // What the calendar shows follows the story
   const done = beat >= 3 || (beat === 2 && request === "done");
@@ -210,7 +211,7 @@ export function TrustWindow() {
             className="tw-step"
             data-state={i === beat ? "now" : i < beat ? "past" : undefined}
             aria-current={i === beat ? "step" : undefined}
-            onClick={() => setBeat(i)}
+            onClick={() => { setManual(true); setRequest("wait"); setNote(i === 3 ? "new" : "old"); setDraft(null); setSent(false); setReplied(false); setBeat(i); }}
           >
             <i aria-hidden="true">{i < beat ? <Mask name="check" /> : i + 1}</i>
             <span>{b.rail}</span>
@@ -218,6 +219,7 @@ export function TrustWindow() {
         ))}
       </div>
 
+      <p className="tw-demo-label">Interactive example · sample data · no real account connected</p>
       <div className="tw-words" aria-live="polite">
         <h3 key={`t${beat}`} className="tw-title">
           {copy.title}
@@ -242,7 +244,7 @@ export function TrustWindow() {
             </span>
             <span className="tw-chip">
               <Mask name="lock" />
-              Read only
+              {done ? "Sample write access" : "Read only"}
             </span>
           </div>
           <div className="tw-cal-body">
@@ -316,25 +318,25 @@ export function TrustWindow() {
                 <span className="tw-card-kind">What he does</span>
                 <span className="tw-chip" data-dot={request === "done" ? "green" : "orange"}>
                   <i aria-hidden="true" />
-                  {request === "done" ? "Done" : "Waiting for you"}
+                  {request === "done" ? "Example approved" : request === "rejected" ? "Example rejected" : "Waiting for you"}
                 </span>
               </div>
-              <p className="tw-req-title">{request === "done" ? "Design review is now Thursday, 14:00." : "Move Design review to Thursday, 14:00."}</p>
-              <small className="tw-req-sub">{request === "done" ? "Calendar · one event moved" : "Calendar · one event · nothing moves until you say yes"}</small>
+              <p className="tw-req-title">{request === "done" ? "In this example, Design review moves to Thursday, 14:00." : request === "rejected" ? "Example rejected. The calendar stays unchanged." : "Move Design review to Thursday, 14:00."}</p>
+              <small className="tw-req-sub">{request === "done" ? "Sample result only · no real event moved" : "Sample calendar · requires write access and approval"}</small>
               <div className="tw-req-actions">
                 {request === "done" ? (
-                  <span className="tw-btn" data-quiet="">
+                  <button type="button" className="tw-btn" data-quiet="" onClick={() => { setManual(true); setRequest("wait"); }}>
                     <Mask name="retry" />
-                    Undo
-                  </span>
+                    Reset example
+                  </button>
                 ) : (
                   <>
-                    <span className="tw-btn" data-primary="" data-press={request === "press" ? "" : undefined}>
-                      Approve
-                    </span>
-                    <span className="tw-btn" data-quiet="">
-                      Reject
-                    </span>
+                    <button type="button" className="tw-btn" data-primary="" onClick={() => { setManual(true); setRequest("done"); }}>
+                      Approve example
+                    </button>
+                    <button type="button" className="tw-btn" data-quiet="" onClick={() => { setManual(true); setRequest("rejected"); }}>
+                      Reject example
+                    </button>
                   </>
                 )}
               </div>
@@ -377,13 +379,13 @@ export function TrustWindow() {
             <div key="goes" className="tw-card tw-pop">
               <div className="tw-card-top">
                 <span className="tw-card-kind">Where it goes</span>
-                <span className="tw-chip">Policy in draft</span>
+                <span className="tw-chip">Example services</span>
               </div>
               <ul className="tw-services">
                 {[
-                  { key: "supabase", logo: "supabase", name: "Supabase", text: "Stores your account, readings, calendar and message timing, notes and chats." },
-                  { key: "anthropic", logo: "claude", name: "Anthropic", text: "Writes his replies from the context each message needs." },
-                  { key: "telegram", logo: "telegram", name: "Telegram", text: "Carries his messages, if you chat there." },
+                  { key: "supabase", logo: "supabase", name: "Supabase", text: "Example storage provider. App data details are under review." },
+                  { key: "anthropic", logo: "claude", name: "Anthropic", text: "Example model provider. Final provider list is pending." },
+                  { key: "telegram", logo: "telegram", name: "Telegram", text: "Example messaging service, where enabled." },
                 ].map((s, i) => (
                   <li key={s.key} style={{ "--i": i } as CSSProperties}>
                     <Logo name={s.logo} />

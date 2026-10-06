@@ -67,7 +67,7 @@ const TOOLS: Tool[] = [
   { name: "Apple Calendar", group: "Calendar", status: "planned", reads: "Meetings and gaps" },
   { name: "Zoom", group: "Calendar", status: "planned", reads: "Call times and length" },
   { name: "Calendly", group: "Calendar", status: "planned", reads: "Bookings" },
-  { name: "Gmail", group: "Mail & messages", status: "today", reads: "Volume, timing, urgency. Never the words." },
+  { name: "Gmail", group: "Mail & messages", status: "today", reads: "Email access details under review." },
   { name: "Telegram", group: "Mail & messages", status: "today", reads: "Where Waldo talks to you" },
   { name: "Slack", group: "Mail & messages", status: "next", reads: "Message volume and timing" },
   { name: "WhatsApp", group: "Mail & messages", status: "next", reads: "Where Waldo talks to you" },

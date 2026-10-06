@@ -1,22 +1,25 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
 import { submitEmail } from "@/actions/submit-email";
 import { ArrowLabel, revealDelay } from "@/components/site/blocks";
+import { waldoSignal } from "@/components/site/waldo-pings";
 import { titleFit } from "@/lib/title-fit";
 import { readUtmParams } from "@/lib/utm";
 import { isValidEmail } from "@/lib/validate-email";
 
 // Copy: docs/website/pages/waitlist.md ("Live copy" at the top). One calm column: default → error → success.
 // The headline rises in on load, and again whenever the state changes. A wrong email nudges the form.
+// The form is one pill, the box and the button in it (after Soonix). Flat and minimal: no picture above the title,
+// no gradients. Waldo's notifications at the top of the page (waldo-pings.tsx) hear when the box is first used
+// and when you've joined. The small print stays under the form; everything else is below the phone (page.tsx).
 
 type Variant = "default" | "kennel";
 type ErrorKind = "invalid" | "disposable" | "server";
 
-const KENNEL_REPO = "https://github.com/waldoco/Waldo-Kennel";
+export const WAITLIST_EMAIL_ID = "waitlist-email";
 
 const ERRORS: Record<ErrorKind, { lines: string[]; body: string }> = {
   invalid: { lines: ["That email", "looks off."], body: "Check for a typo and try again. We'll wait." },
@@ -26,12 +29,6 @@ const ERRORS: Record<ErrorKind, { lines: string[]; body: string }> = {
   },
   server: { lines: ["That one’s", "on us."], body: "It didn't go through on our end. Give it a minute and try again." },
 };
-
-// Waldo above each state, from the older build's mascots. Calm on the way in, pleased once you're
-// on the list, and alert (never upset) when something needs fixing.
-function Mascot({ src }: { src: string }) {
-  return <Image className="site-mascot site-rv" style={revealDelay(0)} src={src} alt="" width={96} height={72} unoptimized />;
-}
 
 export function WaitlistPanel({ variant }: { variant: Variant }) {
   const [pending, setPending] = useState(false);
@@ -63,6 +60,7 @@ export function WaitlistPanel({ variant }: { variant: Variant }) {
     if (result.success) {
       setJoined(email.toLowerCase());
       setError(null);
+      waldoSignal("joined");
       return;
     }
     fail(result.error === "disposable_email" ? "disposable" : result.error === "invalid_email" ? "invalid" : "server");
@@ -70,8 +68,7 @@ export function WaitlistPanel({ variant }: { variant: Variant }) {
 
   if (joined) {
     return (
-      <div className="site-header-block" data-reveal="now">
-        <Mascot src="/illustrations/success.svg" />
+      <div className="site-header-block wl-copy" data-reveal="now">
         <h1 className="site-heading" style={titleFit(["Already on it."])}>
           <span className="site-rv" style={revealDelay(0)}>
             Already on it.
@@ -81,21 +78,21 @@ export function WaitlistPanel({ variant }: { variant: Variant }) {
           You&apos;re on the list. We&apos;ll write to <strong>{joined}</strong> when it&apos;s your turn. Check your inbox
           for a note from us, and your promotions tab, just in case.
         </p>
-        <div className="site-body site-rv" style={revealDelay(4.5)}>
+        <div className="wl-wait site-rv" style={revealDelay(3)}>
           <p className="site-label">While you wait</p>
-          <ul className="site-list">
+          <ul>
             <li>
-              <Link className="site-link" href="/how-it-works">
+              <Link className="wl-wait-link" href="/how-it-works">
                 <ArrowLabel label="See how Waldo works →" />
               </Link>
             </li>
             <li>
-              <Link className="site-link" href="/kennel">
+              <Link className="wl-wait-link" href="/kennel">
                 <ArrowLabel label="Try Kennel for Mac, in open beta →" />
               </Link>
             </li>
             <li>
-              <Link className="site-link" href="/blogs">
+              <Link className="wl-wait-link" href="/blogs">
                 <ArrowLabel label="Read the blog →" />
               </Link>
             </li>
@@ -108,55 +105,32 @@ export function WaitlistPanel({ variant }: { variant: Variant }) {
   const heading = error
     ? ERRORS[error].lines
     : variant === "kennel"
-      ? ["Get the Mac app", "first."]
-      : ["The line is short.", "For now."];
-  const showList = !error && variant !== "kennel";
-  const formDelay = revealDelay(heading.length + (showList ? 3 : 2) + 1.5);
+      ? ["Get the Mac app", "the day it ships."]
+      : ["Waldo handles it.", "Get in line early."];
+  const formDelay = revealDelay(heading.length + 2);
 
   return (
-    <div className="site-header-block" data-reveal={changed ? "now" : "load"}>
+    <div className="site-header-block wl-copy" data-reveal={changed ? "now" : "load"}>
       {/* Keyed on the state, so the headline rises again when it changes. The form below keeps what was typed. */}
-      <div key={error ?? "default"}>
-        <Mascot src={error ? "/assets/home/mascots/watching-dark-mode.svg" : "/assets/home/mascots/good-week-dark-mode.svg"} />
-        <p className="site-label site-rv" style={revealDelay(0)}>
-          Let Waldo in
-        </p>
+      <div key={error ?? "default"} className="wl-head">
         <h1 className="site-heading" style={titleFit(heading)}>
           {heading.map((line, index) => (
-            <span key={line} className="site-rv" style={revealDelay(index + 1)}>
+            <span key={line} className="site-rv" style={revealDelay(index)}>
               {line}
             </span>
           ))}
         </h1>
-
+        {/* The title carries the message on its own; only a problem with the email gets a line under it */}
         {error ? (
-          <p className="site-text site-rv" style={revealDelay(heading.length + 1)}>
+          <p className="site-text site-rv" style={revealDelay(heading.length)}>
             {ERRORS[error].body}
           </p>
-        ) : variant === "kennel" ? (
-          <p className="site-text site-rv" style={revealDelay(heading.length + 1)}>
-            Kennel is in open beta on GitHub today. Join the list, and you&apos;ll get the packaged Mac app the day it
-            ships.
-          </p>
-        ) : (
-          <>
-            <p className="site-text site-rv" style={revealDelay(heading.length + 1)}>
-              Waldo is letting people in a few at a time. Leave your email, and you&apos;ll hear the moment it&apos;s
-              your turn.
-            </p>
-            <ul className="site-list site-rv" style={{ marginTop: 32, ...revealDelay(heading.length + 2) }}>
-              <li>First access to Waldo for iPhone</li>
-              <li>The Kennel for Mac app when it ships (it&apos;s in open beta now)</li>
-              <li>A note when something ships. Nothing else.</li>
-            </ul>
-          </>
-        )}
+        ) : null}
       </div>
 
-      <div className={changed ? undefined : "site-rv"} style={changed ? undefined : formDelay}>
+      <div className={changed ? "wl-act" : "wl-act site-rv"} style={changed ? undefined : formDelay}>
         <form
-          className="site-form"
-          style={{ marginTop: 48 }}
+          className="wl-form"
           onSubmit={handleSubmit}
           noValidate
           data-bounce={bounce ? "" : undefined}
@@ -165,7 +139,8 @@ export function WaitlistPanel({ variant }: { variant: Variant }) {
           }}
         >
           <input
-            className="site-input"
+            id={WAITLIST_EMAIL_ID}
+            className="wl-input"
             name="email"
             type="email"
             placeholder="enter your email — the one you actually check"
@@ -174,28 +149,16 @@ export function WaitlistPanel({ variant }: { variant: Variant }) {
             inputMode="email"
             maxLength={254}
             disabled={pending}
+            onFocus={() => waldoSignal("focus")}
           />
-          <button type="submit" className="site-button site-button--primary" disabled={pending}>
+          <button type="submit" className="site-button site-button--primary wl-submit" disabled={pending}>
             {pending ? "Sending…" : error ? "Try again" : <ArrowLabel label="Let Waldo in →" />}
           </button>
         </form>
 
-        <p className="site-text" style={{ marginTop: 24 }}>
-          About time.
-        </p>
-
-        {variant === "kennel" && !error ? (
-          <p className="site-note">
-            Can&apos;t wait?{" "}
-            <a href={KENNEL_REPO} target="_blank" rel="noreferrer">
-              Try the beta now →
-            </a>
-          </p>
-        ) : null}
-
         <p className="site-note">
-          One email when you&apos;re in, and the odd update. Unsubscribe anytime. By joining, you agree to our{" "}
-          <Link href="/terms">Terms</Link> and <Link href="/privacy">Privacy Policy</Link>.
+          Your email goes to Loops for waitlist updates. By joining, you request those updates. App terms and privacy details are still under review.{" "}
+          <Link href="/privacy">Read the current information</Link>.
         </p>
       </div>
     </div>

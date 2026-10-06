@@ -17,7 +17,7 @@ const navItems: NavItem[] = [
   { label: "Features", href: "/features", tooltip: "Explore the full tour of Waldo." },
   { label: "Pricing", tooltip: "free to find out. when we're ready." },
   { label: "Blog", href: "/blogs", tooltip: "waldo's been busy. so have we." },
-  { label: "Support", href: "mailto:woof@heywaldo.com", tooltip: "here if you need us." },
+  { label: "Support", href: "/support", tooltip: "here if you need us." },
 ];
 
 function WaldoMark({ dark }: { dark?: boolean }) {

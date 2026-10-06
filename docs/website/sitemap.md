@@ -48,12 +48,12 @@ Rule: if a page doesn't exist, it isn't in the menu.
 
 ## Footer — the same on every page
 
-Mascot scene on top, then four link groups:
+Changed 2026-10-05: every link sits in one white (#ffffff) box, right after the page's close. Under the box is the mascot scene, Waldo on the dock at sunset, which is the last thing on the page: flush with the bottom edge, nothing below it. The links, groups and wording are unchanged. The box holds the Waldo logo (no line under it), four link groups and the "© Waldo" / "Let Waldo in →" row:
 
-| Products | Company | Legal | Social |
+| Products | Company | Legal | Elsewhere |
 |---|---|---|---|
-| How it works | Why Waldo | Privacy | X |
-| Kennel for Mac | Blog | Terms | GitHub |
+| How it works | Why Waldo | Privacy | GitHub |
+| Kennel for Mac | Blog | Terms | RSS |
 | Connectors | Support | | |
 
 ## Page template — every page follows this

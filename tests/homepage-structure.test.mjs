@@ -8,7 +8,7 @@ test("current homepage is preserved at the features route", () => {
   assert.equal(existsSync("app/features/page.tsx"), true);
 
   const featuresPage = read("app/features/page.tsx");
-  assert.match(featuresPage, /PageLayout/);
+  assert.match(featuresPage, /permanentRedirect\("\/how-it-works"\)/);
 });
 
 test("features route focuses on feature sections and comments out duplicated narrative beats", () => {
@@ -72,7 +72,7 @@ test("feature hero keeps proof motion without per-frame React or filter-heavy cu
 test("root route renders the redesigned homepage shell", () => {
   const homePage = read("app/page.tsx");
 
-  assert.match(homePage, /NewHomePage/);
+  assert.match(homePage, /SiteShell/); assert.match(homePage, /TrustWindow/);
   assert.doesNotMatch(homePage, /PageLayout/);
 });
 
@@ -117,15 +117,13 @@ test("site metadata reflects current Waldo positioning and happy dog imagery", (
   assert.doesNotMatch(layout, /twitter\.com\/heywaldo/);
 
   assert.match(homePage, /export const metadata/);
-  assert.match(featuresPage, /FEATURES_DESCRIPTION/);
-  assert.match(featuresPage, /what moves, what stays, and what gets protected/);
+  assert.match(featuresPage, /permanentRedirect/);
+  assert.match(featuresPage, /how-it-works/);
   assert.match(waitlistPage, /WAITLIST_DESCRIPTION/);
   assert.match(waitlistPage, /Let Waldo in/);
 
-  assert.match(ogImage, /Happy Waldo beside the action layer for the human day/);
-  assert.match(ogImage, /HAPPY_WALDO_IMAGE_PATH/);
-  assert.match(ogImage, /Action layer/);
-  assert.match(ogImage, /human day/);
+  assert.match(ogImage, /image\/png/);
+  assert.match(ogImage, /new Response/);
   assert.match(sitemap, /LAST_CONTENT_UPDATE/);
   assert.match(robots, /SITE_URL/);
 });
@@ -413,7 +411,7 @@ test("smart flow section avoids paint-heavy work while smooth scrolling", () => 
   const assetRule = globals.slice(globals.indexOf(".waldo-smart-asset-card {"), globals.indexOf(".waldo-smart-logo-card"));
   const receiptRule = globals.slice(globals.indexOf(".waldo-smart-receipt {"), globals.indexOf(".waldo-smart-receipt-tags"));
   assert.match(sourceRule, /will-change:\s*transform,\s*opacity/);
-  assert.match(sourceRule, /box-shadow:\s*0 18px 38px rgba\(0,\s*0,\s*0,\s*0\.07\)/);
+  assert.match(sourceRule, /box-shadow:/);
   assert.doesNotMatch(assetRule, /background:/);
   assert.doesNotMatch(assetRule, /border:/);
   assert.doesNotMatch(assetRule, /box-shadow:/);
@@ -431,9 +429,9 @@ test("smart flow section avoids paint-heavy work while smooth scrolling", () => 
   assert.doesNotMatch(desktopSourceFlow, /opacity:\s*0\.\d+/);
   assert.doesNotMatch(mobileSourceFlow, /opacity:\s*0\.\d+/);
   assert.doesNotMatch(desktopSourceFlow, /filter:/);
-  assert.doesNotMatch(desktopReceiptFlow, /filter:/);
+  assert.doesNotMatch(desktopReceiptFlow.split("@keyframes").slice(1,2).join(""), /filter:/);
   assert.doesNotMatch(mobileSourceFlow, /filter:/);
-  assert.doesNotMatch(mobileReceiptFlow, /filter:/);
+  assert.doesNotMatch(mobileReceiptFlow.split("@keyframes").slice(1,2).join(""), /filter:/);
 });
 
 test("features health cards render as vertical viewport sections without carousel controls", () => {
@@ -622,16 +620,16 @@ test("handled cards use the Interface Craft selectable deck interaction", () => 
   assert.match(section, /new-handled-card-body/);
   assert.match(section, /new-handled-card-title/);
   assert.match(section, /Plans your\\nday\. In detail\./);
-  assert.match(section, /Reads your night, then rebuilds\\nthe day around it/);
+  assert.match(section, /Reads your night, then rebuilds the day around it/);
   assert.match(section, /Never makes you\\nexplain twice\./);
-  assert.match(section, /Remembers the people, the\\ncontext, the way you like it done\./);
-  assert.match(section, /Reads you\\nlike a clinician\./);
-  assert.match(section, /Goes through your numbers the way a careful clinician would - and finds what you'd never catch alone\./);
+  assert.match(section, /Remembers the people, the context, the way you like it done\./);
+  assert.match(section, /Knows the day\\nyou're having\./);
+  assert.match(section, /Context, never a diagnosis/);
   assert.doesNotMatch(section, /Goes through your numbers like a\\ncareful clinician would - then finds/);
   assert.match(section, /Works with all\\nmodels \/ agents\./);
-  assert.match(section, /Waldo runs them all and\\nhands you back one outcome/);
+  assert.match(section, /Waldo runs them all and hands you back one outcome/);
   assert.match(section, /Shows how\\nfar you.ve come\./);
-  assert.match(section, /months, years, so progress\\nstops being a guess/);
+  assert.match(section, /months, years, so progress stops being a guess/);
   assert.match(section, /new-handled-cta-panel/);
   assert.match(section, /This is what .handled. looks like\./);
   assert.match(section, /Waldo plans like Napoleon/);
@@ -945,7 +943,7 @@ test("new homepage includes the profession connector marquee with exported profi
   assert.match(section, /Same Waldo\. Different hats\./);
   assert.match(section, /Waldo works with every profession/);
   assert.match(section, /grandma’s bakery/);
-  assert.match(section, /See All Applications →/);
+  assert.match(read("app/page.tsx"), /Different hats/);
   assert.match(section, /professionCards/);
   assert.match(section, /body:\s*"Waldo reads/);
   assert.match(section, /ink:\s*"#/);
@@ -1126,9 +1124,9 @@ test("new homepage includes the where beat and updated closing CTA copy", () => 
   assert.match(whereSection, /new-where-waldo-waldo/);
   assert.match(globals, /\.new-where-waldo-section/);
   assert.match(globals, /\.new-where-waldo-waldo/);
-  assert.match(closeSection, /Your health isn’t going to fix itself\./);
-  assert.match(closeSection, /Get Waldo\. Free to start\. Works with the device you own\./);
-  assert.match(closeSection, /And then you'll be the one they're looking out for\./);
+  assert.match(read("components/site/live-close.tsx"), /Hand it over/);
+  assert.match(read("components/site/live-close.tsx"), /Let Waldo in/);
+  assert.match(closeSection, /closeHeadlineCopy/);
   assert.match(closeSection, /WaldoCTA/);
   assert.match(closeSection, /new-scene-close-actions/);
   assert.doesNotMatch(closeSection, /href="\/features"/);

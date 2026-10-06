@@ -305,16 +305,6 @@
 .site-letter > .site-letter-byline { justify-content: center; }
 .site-label--center { text-align: center; }
 
-/* ── Let Waldo in: the form in the homepage's box, everything centred ── */
-.site-stage--form { padding-inline: clamp(20px, 6vw, 80px); }
-.site-stage--form .site-header-block { align-items: center; text-align: center; }
-.site-stage--form .site-mascot { margin-inline: auto; object-position: center; }
-.site-stage--form .site-text { max-width: 40rem; margin-inline: auto; text-wrap: balance; }
-.site-stage--form .site-list { max-width: 30rem; margin-inline: auto; justify-items: center; }
-.site-stage--form .site-form { margin-inline: auto; justify-content: center; }
-.site-stage--form .site-note { max-width: 34rem; margin-inline: auto; }
-.site-stage--form .site-body { text-align: center; }
-
 /* ── Page not found: the mascot sits in the middle above the links ── */
 .site-section--open .site-header-block[data-center] + .site-body > .site-visual--image:not(.site-visual--wide) {
   max-width: 220px;

@@ -207,3 +207,12 @@
 @media (prefers-reduced-motion: reduce) {
   .tw-btn, .tw-field, .tw-send, .tw-step, .tw-step i, .tw-block, .tw-focus { transition: none; }
 }
+
+.tw-demo-label { padding: 16px 28px 0; font-size: 12px; color: #656560; }
+.tw-btn { border: 0; font-family: inherit; cursor: pointer; min-height: 44px; }
+.tw-btn:focus-visible { outline: 2px solid #1a1a1a; outline-offset: 3px; }
+@media(max-width:859px) {
+  .tw-beatcard { order: -1; min-height: 0; }
+  .tw-words { min-height: 0; padding-bottom: 8px; }
+  .tw-stage { padding-bottom: 20px; }
+}

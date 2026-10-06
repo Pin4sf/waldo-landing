@@ -1,0 +1,229 @@
+/* "Longer he learns, smarter he gets.": the interactive web (memory-map.tsx), after andrewtrousdale.com (his page and
+   styles read on 2026-10-05). The same few things he draws and nothing else: thin black outlines in four shapes with the
+   page's colour inside, one-pixel straight lines (dashed to the triangles, dotted and grey for what only turns up with
+   something), a name in small type under each node with a quiet grey line that comes up on hover, and one orange node
+   that turns slowly. No box, no shadow, no fill but the orange. The stage runs the full width of the window. */
+
+.mm {
+  --mm-ink: #1a1a1a;
+  --mm-grey: #8d8b86;
+  --mm-bg: var(--surface-t2);
+  position: relative;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+}
+.mm :is(h3, p, ul) { margin: 0; }
+.mm ul { padding: 0; list-style: none; }
+.mm button { font: inherit; color: inherit; }
+
+/* ── The stage: the whole width of the window, with no edge drawn ── */
+.mm-stage {
+  position: relative;
+  width: 100vw;
+  height: clamp(620px, 84vh, 800px);
+  margin: clamp(8px, 2vw, 24px) calc(50% - 50vw) 0;
+  /* clip, not hidden: a hidden box can still be scrolled, and the browser scrolls it to bring a focused node into view */
+  overflow: hidden;
+  overflow: clip;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  /* only a soft fade at the top and bottom, where it meets the page; the sides run off the window */
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+@media (max-width: 639px) { .mm-stage { height: 560px; } }
+
+/* ── Lines ── */
+.mm-links { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.mm-link { fill: none; stroke: var(--mm-ink); stroke-width: 1px; }
+.mm-link--dashed { stroke-dasharray: 5 5; }
+.mm-link--dotted { stroke: var(--mm-grey); stroke-width: 2px; stroke-dasharray: 2 10; }
+
+/* ── Nodes: a point the simulation moves, the shape on it, the name under it ── */
+.mm-nodes { position: absolute; inset: 0; pointer-events: none; }
+.mm-node { position: absolute; left: 0; top: 0; width: 0; height: 0; will-change: transform; }
+.mm-hit {
+  position: absolute;
+  left: -22px;
+  top: -22px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  cursor: pointer;
+  pointer-events: auto;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.mm-hit:focus { outline: none; }
+.mm-hit:focus-visible { outline: 2px solid var(--accent); outline-offset: -4px; }
+.mm-shape { display: block; overflow: visible; pointer-events: none; transition: transform 0.1s ease-in-out; }
+.mm-hit:hover .mm-shape { transform: scale(1.1); }
+.mm-shape:not(.mm-shape--root) :is(path, circle, rect) { fill: var(--mm-bg); stroke: var(--mm-ink); stroke-width: 1px; stroke-linejoin: miter; }
+.mm-shape--root path { fill: currentColor; stroke: none; }
+.mm-shape text { fill: var(--mm-ink); stroke: none; font-size: 11px; letter-spacing: 0.05em; font-family: inherit; }
+.mm-node[data-connected] .mm-shape:not(.mm-shape--root) :is(path, circle, rect) { stroke: var(--mm-grey); }
+.mm-node[data-connected] .mm-shape text { fill: var(--mm-grey); }
+.mm-node[data-current] .mm-shape:not(.mm-shape--root) :is(path, circle, rect):not(.mm-x) { fill: var(--accent); }
+.mm-shape .mm-x { fill: none; stroke: var(--mm-ink); stroke-width: 1.2px; stroke-linecap: round; }
+/* the main node: the Waldo mark in orange, turning slowly (his turns too) */
+.mm-node[data-shape="root"] .mm-shape { color: var(--accent); width: 25px; height: 22px; }
+.mm-node[data-shape="root"] .mm-shape .mm-mark { transform-box: fill-box; transform-origin: center; }
+
+.mm-label {
+  position: absolute;
+  left: 0;
+  top: 17px;
+  width: 150px;
+  transform: translateX(-50%);
+  text-align: center;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+.mm-node[data-shape="circle"] .mm-label,
+.mm-node[data-shape="square"] .mm-label { top: 15px; }
+.mm-label b {
+  display: inline;
+  padding: 1px 3px;
+  border-radius: 5px;
+  background: var(--mm-bg);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  color: var(--mm-ink);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+.mm-label i {
+  display: block;
+  width: max-content;
+  margin: 1px auto 0;
+  padding: 1px 3px;
+  border-radius: 3px;
+  background: var(--mm-bg);
+  font-size: 11px;
+  font-style: normal;
+  line-height: 1.45;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--mm-grey);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.mm-node[data-shape="root"] .mm-label i,
+.mm-node[data-current] .mm-label i,
+.mm-node:hover .mm-label i { opacity: 1; }
+.mm-node[data-connected] .mm-label b { color: var(--mm-grey); }
+.mm-node:hover { z-index: 3; }
+
+/* On a phone, names stay off the small shapes until you choose a constellation, so the web can breathe */
+@media (max-width: 639px) {
+  .mm-label { width: 104px; }
+  .mm-label b { font-size: 12px; }
+  .mm-node[data-shape="circle"] .mm-label,
+  .mm-node[data-shape="square"] .mm-label,
+  .mm-node[data-shape="triangle"] .mm-label { display: none; }
+  .mm[data-focus] .mm-label { display: block !important; }
+}
+
+/* ── Arriving: the web fades in once, the first time it is in view; lines a little after the nodes ── */
+.mm:not([data-ready]) :is(.mm-node, .mm-link) { opacity: 0; }
+@keyframes mm-in { from { opacity: 0; } }
+@keyframes mm-turn { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: no-preference) {
+  .mm[data-ready] .mm-node { animation: mm-in 1s var(--ease-out-quad) var(--ed, 0ms) both; }
+  .mm[data-ready] .mm-link { animation: mm-in 1s var(--ease-out-quad) calc(var(--ed, 0ms) + 500ms) both; }
+  .mm-node[data-shape="root"] .mm-mark { animation: mm-turn 10s linear infinite; }
+}
+
+/* ── The panel: what the node you chose is (his page panel, quieter) ── */
+.mm-panel {
+  position: absolute;
+  top: 14px;
+  bottom: 14px;
+  right: calc(max(0px, (100vw - var(--site-max)) / 2) + var(--site-edge));
+  width: 296px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 18px 20px 22px;
+  border-radius: var(--box-inner-radius);
+  corner-shape: var(--box-corner);
+  background: #fff;
+  box-shadow: inset 0 0 0 0.5px rgb(26 26 26 / 0.1);
+  color: var(--mm-ink);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(16px);
+  transition: opacity 0.4s var(--ease-out-quad), transform 0.7s var(--ease-sheet), visibility 0s linear 0.7s;
+  scrollbar-width: thin;
+}
+.mm-panel[data-open] { opacity: 1; visibility: visible; transform: none; transition-delay: 0.1s, 0.1s, 0s; }
+.mm-page-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 26px; }
+.mm-type { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--mm-grey); }
+.mm-type .mm-shape:not(.mm-shape--root) :is(path, circle, rect) { fill: none; }
+.mm-type .mm-shape text { display: none; }
+.mm-close {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--mm-grey);
+  cursor: pointer;
+  transition: background-color 0.2s var(--ease-out-quad), color 0.2s var(--ease-out-quad);
+}
+.mm-close:hover { background: #f4f3f0; color: var(--mm-ink); }
+.mm-close:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.mm-page-title { margin-top: 12px; font-size: 20px; font-weight: 400; line-height: 1.2; letter-spacing: -0.015em; }
+.mm-sub { margin-top: 6px; font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--mm-grey); line-height: 1.45; }
+.mm-text { margin-top: 14px; font-size: 14px; line-height: 1.45; color: #6b6b68; }
+.mm-text--ink { margin-top: 6px; color: var(--mm-ink); }
+.mm-tab { margin-top: 22px; }
+.mm-tab-title { font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--mm-grey); }
+.mm-list { display: grid; gap: 2px; margin-top: 8px; }
+.mm-list button {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  width: 100%;
+  padding: 7px 8px 7px 6px;
+  margin-left: -6px;
+  border: 0;
+  border-radius: 10px;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s var(--ease-out-quad);
+}
+.mm-list button:hover { background: #f4f3f0; }
+.mm-list button:focus-visible { outline: 2px solid var(--accent); outline-offset: 0; }
+.mm-list .mm-shape { flex: none; }
+.mm-list b { display: block; font-size: 14px; font-weight: 400; line-height: 1.3; letter-spacing: -0.01em; }
+.mm-list i { display: block; margin-top: 1px; font-size: 11px; font-style: normal; letter-spacing: 0.05em; text-transform: uppercase; color: var(--mm-grey); }
+.mm-page { animation: mm-page 0.5s var(--ease-sheet) both; }
+@keyframes mm-page { from { opacity: 0; transform: translateY(8px); } }
+
+/* On a phone the panel opens under the web instead */
+.mm-sheet { display: none; }
+@media (max-width: 759px) {
+  .mm-panel { display: none; }
+  .mm-sheet { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.6s var(--ease-sheet); }
+  .mm-sheet[data-open] { grid-template-rows: 1fr; }
+  .mm-sheet-in { min-height: 0; overflow: hidden; border-radius: var(--box-inner-radius); corner-shape: var(--box-corner); background: #fff; }
+  .mm-sheet[data-open] .mm-sheet-in { box-shadow: inset 0 0 0 0.5px rgb(26 26 26 / 0.1); }
+  .mm-sheet-in > div { padding: 16px 18px 20px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mm-panel, .mm-sheet, .mm-shape { transition: none; }
+  .mm-page { animation: none; }
+}
+
+@media (min-width:640px) and (max-width:1099px) { .mm-label { width: 116px; } .mm-label b { font-size: 12px; } .mm-stage { min-height: 820px; } }
