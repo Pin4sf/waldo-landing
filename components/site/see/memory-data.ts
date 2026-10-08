@@ -1,4 +1,4 @@
-// The graph behind the interactive map in "Longer he learns, smarter he gets." (components/site/memory-map.tsx).
+// The data behind the constellation map in "Longer he learns, smarter he gets." (components/site/memory-map.tsx).
 // Constellations and spots are the phone card's (PATTERNS in see-fixture.ts: same names, same wording for the
 // Tuesday Crash and its seven spots); the spots of the other five constellations, what he does about each
 // pattern, and which things turn up together are written here. Every person, day and detail is invented, like
@@ -17,6 +17,8 @@ export type MapSpot = {
   text: string;
   /** The week it was first seen */
   week: number;
+  /** key: responsible for the constellation (a medium dot, named when open). minor: contributes less (a small dot, no name) */
+  tier: "key" | "minor";
 };
 export type MapPattern = {
   id: string;
@@ -41,6 +43,8 @@ const crash = (id: string): MapSpot => ({
   signal: id,
   text: node(id).text,
   week: FIRST[id],
+  // the six in Suyash's design are key; Load contributes less
+  tier: id === "load" ? "minor" : "key",
 });
 
 export const MAP_PATTERNS: MapPattern[] = [
@@ -57,52 +61,52 @@ export const MAP_SPOTS: MapSpot[] = [
   ...["stress", "sleep", "caffeine", "form", "hrv", "weight", "load"].map(crash),
 
   // Cognitive Stress
-  { id: "cog-run", pattern: "cognitive", label: "Back to back, no gap", short: "No gap", signal: "stress", text: "Four meetings in a row with no break. Stress climbed after the second.", week: 2 },
-  { id: "cog-3pm", pattern: "cognitive", label: "Focus gone by 3pm", short: "3pm", signal: "form", text: "On days with six or more meetings, your focus was gone by mid-afternoon.", week: 3 },
-  { id: "cog-inbox", pattern: "cognitive", label: "Late-night inbox", short: "Inbox", signal: "stress", text: "Email after 10pm, then a slower start the next morning.", week: 5 },
-  { id: "cog-switch", pattern: "cognitive", label: "Eleven tool switches", short: "Switching", signal: "form", text: "Eleven jumps between tools before noon. Form dipped a little with each one.", week: 6 },
-  { id: "cog-deadline", pattern: "cognitive", label: "Deadline day", short: "Deadline", signal: "load", text: "Strain stayed high all day when a deadline landed, even with a light calendar.", week: 7 },
-  { id: "cog-quiet", pattern: "cognitive", label: "Quiet morning, clear head", short: "Quiet", signal: "form", text: "A meeting-free morning, and your best focus of the week.", week: 8 },
+  { id: "cog-run", pattern: "cognitive", label: "Back to back, no gap", short: "No gap", signal: "stress", text: "Four meetings in a row with no break. Stress climbed after the second.", week: 2, tier: "key" },
+  { id: "cog-3pm", pattern: "cognitive", label: "Focus gone by 3pm", short: "3pm", signal: "form", text: "On days with six or more meetings, your focus was gone by mid-afternoon.", week: 3, tier: "key" },
+  { id: "cog-inbox", pattern: "cognitive", label: "Late-night inbox", short: "Inbox", signal: "stress", text: "Email after 10pm, then a slower start the next morning.", week: 5, tier: "key" },
+  { id: "cog-switch", pattern: "cognitive", label: "Eleven tool switches", short: "Switching", signal: "form", text: "Eleven jumps between tools before noon. Form dipped a little with each one.", week: 6, tier: "key" },
+  { id: "cog-deadline", pattern: "cognitive", label: "Deadline day", short: "Deadline", signal: "load", text: "Strain stayed high all day when a deadline landed, even with a light calendar.", week: 7, tier: "key" },
+  { id: "cog-quiet", pattern: "cognitive", label: "Quiet morning, clear head", short: "Quiet", signal: "form", text: "A meeting-free morning, and your best focus of the week.", week: 8, tier: "key" },
 
   // Sleep Pattern
-  { id: "sp-bed", pattern: "pattern", label: "Bedtime drifting", short: "Bedtime", signal: "sleep", text: "Bedtime slid about 40 minutes later across three weeks.", week: 3 },
-  { id: "sp-weekend", pattern: "pattern", label: "Weekend catch-up", short: "Weekend", signal: "sleep", text: "Two extra hours on Saturday, then a short Sunday night.", week: 4 },
-  { id: "sp-screen", pattern: "pattern", label: "Late screen, light sleep", short: "Late screen", signal: "hrv", text: "HRV sat lower on the nights you were still up after midnight.", week: 5 },
-  { id: "sp-wake", pattern: "pattern", label: "Steady wake time", short: "Wake time", signal: "sleep", text: "Wake time held within 20 minutes for ten days straight, and mornings felt it.", week: 7 },
-  { id: "sp-travel", pattern: "pattern", label: "Short night after travel", short: "Travel", signal: "sleep", text: "A five-hour night after the flight home, and a flat day after it.", week: 9 },
-  { id: "sp-early", pattern: "pattern", label: "Early bed, long run", short: "Early bed", signal: "sleep", text: "You go to bed earlier the night before a long run, without being asked.", week: 10 },
+  { id: "sp-bed", pattern: "pattern", label: "Bedtime drifting", short: "Bedtime", signal: "sleep", text: "Bedtime slid about 40 minutes later across three weeks.", week: 3, tier: "key" },
+  { id: "sp-weekend", pattern: "pattern", label: "Weekend catch-up", short: "Weekend", signal: "sleep", text: "Two extra hours on Saturday, then a short Sunday night.", week: 4, tier: "key" },
+  { id: "sp-screen", pattern: "pattern", label: "Late screen, light sleep", short: "Late screen", signal: "hrv", text: "HRV sat lower on the nights you were still up after midnight.", week: 5, tier: "key" },
+  { id: "sp-wake", pattern: "pattern", label: "Steady wake time", short: "Wake time", signal: "sleep", text: "Wake time held within 20 minutes for ten days straight, and mornings felt it.", week: 7, tier: "key" },
+  { id: "sp-travel", pattern: "pattern", label: "Short night after travel", short: "Travel", signal: "sleep", text: "A five-hour night after the flight home, and a flat day after it.", week: 9, tier: "key" },
+  { id: "sp-early", pattern: "pattern", label: "Early bed, long run", short: "Early bed", signal: "sleep", text: "You go to bed earlier the night before a long run, without being asked.", week: 10, tier: "key" },
 
   // Meals
-  { id: "ml-breakfast", pattern: "meals", label: "Skipped breakfast", short: "Breakfast", signal: "caffeine", text: "When breakfast was skipped, your afternoon Form fell sooner.", week: 4 },
-  { id: "ml-lunch", pattern: "meals", label: "Late lunch", short: "Late lunch", signal: "caffeine", text: "Lunch after 2pm, then a slump around 4.", week: 6 },
-  { id: "ml-coffee", pattern: "meals", label: "Coffee before food", short: "Coffee first", signal: "caffeine", text: "Two coffees before eating, and stress ran higher until lunch.", week: 7 },
-  { id: "ml-dinner", pattern: "meals", label: "Late, heavy dinner", short: "Dinner", signal: "sleep", text: "A large dinner after 9pm, then lighter sleep.", week: 10 },
-  { id: "ml-steady", pattern: "meals", label: "Proper lunch by 1pm", short: "Lunch by 1", signal: "caffeine", text: "A real lunch by 1pm, and an even afternoon.", week: 11 },
+  { id: "ml-breakfast", pattern: "meals", label: "Skipped breakfast", short: "Breakfast", signal: "caffeine", text: "When breakfast was skipped, your afternoon Form fell sooner.", week: 4, tier: "key" },
+  { id: "ml-lunch", pattern: "meals", label: "Late lunch", short: "Late lunch", signal: "caffeine", text: "Lunch after 2pm, then a slump around 4.", week: 6, tier: "key" },
+  { id: "ml-coffee", pattern: "meals", label: "Coffee before food", short: "Coffee first", signal: "caffeine", text: "Two coffees before eating, and stress ran higher until lunch.", week: 7, tier: "key" },
+  { id: "ml-dinner", pattern: "meals", label: "Late, heavy dinner", short: "Dinner", signal: "sleep", text: "A large dinner after 9pm, then lighter sleep.", week: 10, tier: "key" },
+  { id: "ml-steady", pattern: "meals", label: "Proper lunch by 1pm", short: "Lunch by 1", signal: "caffeine", text: "A real lunch by 1pm, and an even afternoon.", week: 11, tier: "key" },
 
   // Work Flow
-  { id: "fl-best", pattern: "flow", label: "Best hours, 9 to 11", short: "9 to 11", signal: "form", text: "Your focus is highest between 9 and 11, most days.", week: 5 },
-  { id: "fl-monday", pattern: "flow", label: "Slow Monday start", short: "Monday", signal: "form", text: "The first hour of Monday runs about a third lower than the rest of the week.", week: 6 },
-  { id: "fl-calls", pattern: "flow", label: "Calls before 2pm", short: "Calls", signal: "stress", text: "Calls before 2pm cost you more than the same calls later.", week: 8 },
-  { id: "fl-friday", pattern: "flow", label: "Friday afternoon dip", short: "Friday", signal: "load", text: "Output falls off after 3pm on Fridays, every week.", week: 9 },
-  { id: "fl-walk", pattern: "flow", label: "A walk, then a clear hour", short: "Walk", signal: "form", text: "A ten-minute walk before a hard task, and a clearer hour after it.", week: 11 },
-  { id: "fl-ninety", pattern: "flow", label: "Deep work, 90 minutes", short: "90 minutes", signal: "form", text: "Blocks shorter than 90 minutes rarely held your focus.", week: 12 },
+  { id: "fl-best", pattern: "flow", label: "Best hours, 9 to 11", short: "9 to 11", signal: "form", text: "Your focus is highest between 9 and 11, most days.", week: 5, tier: "key" },
+  { id: "fl-monday", pattern: "flow", label: "Slow Monday start", short: "Monday", signal: "form", text: "The first hour of Monday runs about a third lower than the rest of the week.", week: 6, tier: "key" },
+  { id: "fl-calls", pattern: "flow", label: "Calls before 2pm", short: "Calls", signal: "stress", text: "Calls before 2pm cost you more than the same calls later.", week: 8, tier: "key" },
+  { id: "fl-friday", pattern: "flow", label: "Friday afternoon dip", short: "Friday", signal: "load", text: "Output falls off after 3pm on Fridays, every week.", week: 9, tier: "key" },
+  { id: "fl-walk", pattern: "flow", label: "A walk, then a clear hour", short: "Walk", signal: "form", text: "A ten-minute walk before a hard task, and a clearer hour after it.", week: 11, tier: "key" },
+  { id: "fl-ninety", pattern: "flow", label: "Deep work, 90 minutes", short: "90 minutes", signal: "form", text: "Blocks shorter than 90 minutes rarely held your focus.", week: 12, tier: "key" },
 
   // Training Style
-  { id: "tr-hard", pattern: "training", label: "Hard run, flat morning", short: "Hard run", signal: "load", text: "After a hard run, the next morning’s HRV runs low until about noon.", week: 5 },
-  { id: "tr-easy", pattern: "training", label: "Easy day, good recovery", short: "Easy day", signal: "hrv", text: "A light session the day before, and a high Recovery score the day after.", week: 6 },
-  { id: "tr-hills", pattern: "training", label: "Hills on Thursdays", short: "Hills", signal: "load", text: "Your hardest sessions land on Thursdays, when the week is already heavy.", week: 8 },
-  { id: "tr-two", pattern: "training", label: "Two hard days in a row", short: "Back to back", signal: "load", text: "A second hard day straight after the first, and Form drops for two days.", week: 9 },
-  { id: "tr-evening", pattern: "training", label: "Evening heavy lifting", short: "Evening lift", signal: "weight", text: "Heavy sessions late in the evening, then a slower wind-down.", week: 11 },
-  { id: "tr-rest", pattern: "training", label: "Rest day, deeper sleep", short: "Rest day", signal: "sleep", text: "Sleep runs deeper the night after a rest day.", week: 12 },
-  { id: "tr-sunday", pattern: "training", label: "Long run on Sunday", short: "Long run", signal: "load", text: "The long run is always Sunday, and Monday’s Recovery pays for it.", week: 13 },
-  { id: "tr-warm", pattern: "training", label: "Better after a warm-up", short: "Warm-up", signal: "form", text: "Sessions that start with a proper warm-up keep your heart rate steadier.", week: 14 },
+  { id: "tr-hard", pattern: "training", label: "Hard run, flat morning", short: "Hard run", signal: "load", text: "After a hard run, the next morning’s HRV runs low until about noon.", week: 5, tier: "key" },
+  { id: "tr-easy", pattern: "training", label: "Easy day, good recovery", short: "Easy day", signal: "hrv", text: "A light session the day before, and a high Recovery score the day after.", week: 6, tier: "key" },
+  { id: "tr-hills", pattern: "training", label: "Hills on Thursdays", short: "Hills", signal: "load", text: "Your hardest sessions land on Thursdays, when the week is already heavy.", week: 8, tier: "key" },
+  { id: "tr-two", pattern: "training", label: "Two hard days in a row", short: "Back to back", signal: "load", text: "A second hard day straight after the first, and Form drops for two days.", week: 9, tier: "key" },
+  { id: "tr-evening", pattern: "training", label: "Evening heavy lifting", short: "Evening lift", signal: "weight", text: "Heavy sessions late in the evening, then a slower wind-down.", week: 11, tier: "key" },
+  { id: "tr-rest", pattern: "training", label: "Rest day, deeper sleep", short: "Rest day", signal: "sleep", text: "Sleep runs deeper the night after a rest day.", week: 12, tier: "key" },
+  { id: "tr-sunday", pattern: "training", label: "Long run on Sunday", short: "Long run", signal: "load", text: "The long run is always Sunday, and Monday’s Recovery pays for it.", week: 13, tier: "key" },
+  { id: "tr-warm", pattern: "training", label: "Better after a warm-up", short: "Warm-up", signal: "form", text: "Sessions that start with a proper warm-up keep your heart rate steadier.", week: 14, tier: "key" },
 ];
 
 /** Things that turn up together across constellations, both ways round: a spot on one side and a spot on the other */
 const WITH: [string, string][] = [
   ["sleep", "sp-screen"], ["sleep", "sp-bed"], ["hrv", "sp-screen"], ["hrv", "tr-hard"],
-  ["stress", "cog-run"], ["stress", "fl-calls"], ["caffeine", "ml-coffee"], ["caffeine", "ml-lunch"],
-  ["form", "cog-3pm"], ["form", "fl-best"], ["weight", "cog-deadline"], ["load", "tr-hard"], ["load", "tr-two"],
+  ["stress", "cog-run"], ["form", "cog-3pm"], ["weight", "cog-deadline"], ["weight", "tr-evening"],
+  ["load", "tr-hard"], ["load", "tr-two"],
   ["cog-inbox", "sp-screen"], ["cog-switch", "fl-walk"], ["ml-breakfast", "cog-3pm"], ["ml-dinner", "sp-bed"],
   ["tr-evening", "sp-bed"], ["tr-rest", "sp-wake"], ["tr-sunday", "tr-easy"], ["fl-friday", "ml-lunch"], ["sp-early", "tr-sunday"],
 ];
@@ -112,18 +116,28 @@ for (const [a, b] of WITH) {
   (WITH_OF[b] ??= []).push(a);
 }
 
-/** Constellations that are close to each other. The Tuesday Crash is close to every one. */
-const NEAR: [string, string][] = [
-  ["crash", "cognitive"], ["crash", "pattern"], ["crash", "meals"], ["crash", "flow"], ["crash", "training"],
-  ["cognitive", "flow"], ["pattern", "training"], ["meals", "pattern"],
-];
-export const NEAR_OF: Record<string, string[]> = {};
-for (const [a, b] of NEAR) {
-  (NEAR_OF[a] ??= []).push(b);
-  (NEAR_OF[b] ??= []).push(a);
-}
+/** Key spots inside one constellation that turn up together: drawn as a line between them when it is open */
+export const INNER: Record<string, [string, string][]> = {
+  crash: [["stress", "caffeine"], ["stress", "sleep"], ["form", "caffeine"]],
+  cognitive: [["cog-run", "cog-3pm"], ["cog-inbox", "cog-quiet"]],
+  pattern: [["sp-bed", "sp-screen"], ["sp-weekend", "sp-wake"]],
+  meals: [["ml-breakfast", "ml-coffee"], ["ml-lunch", "ml-steady"]],
+  flow: [["fl-best", "fl-ninety"], ["fl-calls", "fl-monday"]],
+  training: [["tr-hard", "tr-two"], ["tr-easy", "tr-rest"], ["tr-sunday", "tr-hills"]],
+};
+
+/** Unnamed small spots in each clump, besides the named ones: they contribute, with less data behind them. Counts follow the design */
+export const MINOR_COUNT: Record<string, number> = { crash: 8, cognitive: 9, pattern: 3, meals: 1, flow: 4, training: 22 };
 
 export const SPOT_BY_ID: Record<string, MapSpot> = Object.fromEntries(MAP_SPOTS.map((s) => [s.id, s]));
 export const PATTERN_BY_ID: Record<string, MapPattern> = Object.fromEntries(MAP_PATTERNS.map((p) => [p.id, p]));
 export const SPOTS_OF: Record<string, MapSpot[]> = {};
 for (const s of MAP_SPOTS) (SPOTS_OF[s.pattern] ??= []).push(s);
+
+/** Which spots in other constellations feed this one: they show dark inside their own clumps while it is open */
+export const CONTRIBUTES: Record<string, string[]> = {};
+for (const p of MAP_PATTERNS) {
+  const out = new Set<string>();
+  for (const s of SPOTS_OF[p.id]) for (const o of WITH_OF[s.id] ?? []) if (SPOT_BY_ID[o].pattern !== p.id) out.add(o);
+  CONTRIBUTES[p.id] = [...out];
+}

@@ -1,229 +1,229 @@
-/* "Longer he learns, smarter he gets.": the interactive web (memory-map.tsx), after andrewtrousdale.com (his page and
-   styles read on 2026-10-05). The same few things he draws and nothing else: thin black outlines in four shapes with the
-   page's colour inside, one-pixel straight lines (dashed to the triangles, dotted and grey for what only turns up with
-   something), a name in small type under each node with a quiet grey line that comes up on hover, and one orange node
-   that turns slowly. No box, no shadow, no fill but the orange. The stage runs the full width of the window. */
+/* "Longer he learns, smarter he gets.": the constellation map (memory-map.tsx), after Suyash's design
+   (docs/website/constellation-clusters.md). Light: warm white stage, dots and lines in ink. Three sizes of dot.
+   The open constellation is strong, spots elsewhere that feed it are strong, everything else is faint.
+   Pills: a name with its icon, white, round, a hairline edge. In the dark theme the same tokens flip, which is the
+   design as drawn. */
 
 .mm {
-  --mm-ink: #1a1a1a;
-  --mm-grey: #8d8b86;
-  --mm-bg: var(--surface-t2);
   position: relative;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+  font-family: var(--font-body);
 }
-.mm :is(h3, p, ul) { margin: 0; }
-.mm ul { padding: 0; list-style: none; }
-.mm button { font: inherit; color: inherit; }
+.mm :where(button) { font: inherit; color: inherit; }
 
-/* ── The stage: the whole width of the window, with no edge drawn ── */
+/* ── The stage ── */
 .mm-stage {
   position: relative;
+  /* the whole width of the window, as the design is */
   width: 100vw;
-  height: clamp(620px, 84vh, 800px);
-  margin: clamp(8px, 2vw, 24px) calc(50% - 50vw) 0;
-  /* clip, not hidden: a hidden box can still be scrolled, and the browser scrolls it to bring a focused node into view */
+  margin-left: calc(50% - 50vw);
+  height: clamp(580px, 74vh, 720px);
+  margin-top: clamp(8px, 2vw, 24px);
   overflow: hidden;
   overflow: clip;
   user-select: none;
   -webkit-user-select: none;
   -webkit-touch-callout: none;
-  /* only a soft fade at the top and bottom, where it meets the page; the sides run off the window */
-  -webkit-mask-image: none;
-  mask-image: none;
+  touch-action: pan-y;
+  cursor: grab;
 }
-@media (max-width: 639px) { .mm-stage { height: 560px; } }
+.mm-stage:active { cursor: grabbing; }
+@media (max-width: 639px) { .mm-stage { height: 640px; } }
 
-/* ── Lines ── */
-.mm-links { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
-.mm-link { fill: none; stroke: var(--mm-ink); stroke-width: 1px; }
-.mm-link--dashed { stroke-dasharray: 5 5; }
-.mm-link--dotted { stroke: var(--mm-grey); stroke-width: 2px; stroke-dasharray: 2 10; }
+/* ── The canvas (dust that moves with the camera, and the open one's faint sphere), and the lines ── */
+.mm-globe { position: absolute; inset: 0; width: 100%; height: 100%; color: var(--ink); pointer-events: none; }
+.mm-lines { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+/* everything on the map, so the whole of it can pull back a touch while changing over */
+.mm-world { position: absolute; inset: 0; transform-origin: 50% 50%; will-change: transform; }
+.mm-line {
+  /* straight, hairline and barely there, as in Obsidian; they show properly only for what you point at */
+  fill: none;
+  stroke: color-mix(in srgb, var(--ink) 9%, transparent);
+  stroke-width: 0.75px;
+  /* --f: fainter round the back of the sphere; --lv: drawn in and out with its constellation */
+  opacity: calc((0.25 + 0.75 * var(--f, 1)) * var(--lv, 0));
+  transition: stroke 0.25s;
+}
+.mm-line--out { stroke: color-mix(in srgb, var(--ink) 5%, transparent); }
+.mm[data-hover] .mm-line:not([data-hl]) { stroke: color-mix(in srgb, var(--ink) 3%, transparent); }
+.mm[data-hover] .mm-line[data-hl] { stroke: color-mix(in srgb, var(--ink) 32%, transparent); }
 
-/* ── Nodes: a point the simulation moves, the shape on it, the name under it ── */
-.mm-nodes { position: absolute; inset: 0; pointer-events: none; }
-.mm-node { position: absolute; left: 0; top: 0; width: 0; height: 0; will-change: transform; }
+/* ── Dots: a point the loop moves, the dot on it, a pill beside it ── */
+.mm-dots { position: absolute; inset: 0; pointer-events: none; }
+.mm-n {
+  --p: 1;
+  --f: 1;
+  --dim: 1;
+  --r: 3px;
+  --ax: 1;
+  --ay: 0;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  will-change: transform;
+}
+.mm-dot {
+  --base: 0.22;
+  /* --r is set on every frame with everything else, so sizes never run behind the motion */
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: calc(var(--r) * 2);
+  height: calc(var(--r) * 2);
+  border-radius: 50%;
+  background: var(--ink);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0);
+  transition: opacity 0.4s ease;
+}
+.mm-n[data-on] .mm-dot {
+  opacity: calc(var(--base) * var(--dim) * var(--vis, 1) * (0.18 + 0.82 * var(--f)));
+  /* --p: nearer or further on the sphere; --pulse: a constellation's dot as it closes and arrives */
+  transform: translate(-50%, -50%) scale(calc(var(--p) * var(--pulse, 1)));
+  animation: mm-dot-in 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+}
+@keyframes mm-dot-in { from { scale: 0; } }
+/* strong: the open one's, and spots elsewhere that feed it. Faint: the rest */
+.mm-n[data-state="open"] .mm-dot { --base: 1; }
+.mm-n[data-state="open"][data-tier="minor"] .mm-dot { --base: 0.55; }
+.mm-n[data-state="lit"] .mm-dot { --base: 0.95; }
+.mm-n--hub[data-state="faint"] .mm-dot { --base: 0.3; }
+.mm[data-hover] .mm-n:not([data-hl]) { --dim: 0.3; }
+
+/* the hit area: a constellation's covers its whole clump, so the clump can be chosen */
 .mm-hit {
   position: absolute;
-  left: -22px;
-  top: -22px;
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
+  left: calc(var(--hit) / -2);
+  top: calc(var(--hit) / -2);
+  width: var(--hit);
+  height: var(--hit);
   padding: 0;
   border: 0;
   border-radius: 50%;
   background: none;
   cursor: pointer;
   pointer-events: auto;
-  touch-action: none;
   -webkit-tap-highlight-color: transparent;
 }
+.mm-hit:disabled { pointer-events: none; }
 .mm-hit:focus { outline: none; }
-.mm-hit:focus-visible { outline: 2px solid var(--accent); outline-offset: -4px; }
-.mm-shape { display: block; overflow: visible; pointer-events: none; transition: transform 0.1s ease-in-out; }
-.mm-hit:hover .mm-shape { transform: scale(1.1); }
-.mm-shape:not(.mm-shape--root) :is(path, circle, rect) { fill: var(--mm-bg); stroke: var(--mm-ink); stroke-width: 1px; stroke-linejoin: miter; }
-.mm-shape--root path { fill: currentColor; stroke: none; }
-.mm-shape text { fill: var(--mm-ink); stroke: none; font-size: 11px; letter-spacing: 0.05em; font-family: inherit; }
-.mm-node[data-connected] .mm-shape:not(.mm-shape--root) :is(path, circle, rect) { stroke: var(--mm-grey); }
-.mm-node[data-connected] .mm-shape text { fill: var(--mm-grey); }
-.mm-node[data-current] .mm-shape:not(.mm-shape--root) :is(path, circle, rect):not(.mm-x) { fill: var(--accent); }
-.mm-shape .mm-x { fill: none; stroke: var(--mm-ink); stroke-width: 1.2px; stroke-linecap: round; }
-/* the main node: the Waldo mark in orange, turning slowly (his turns too) */
-.mm-node[data-shape="root"] .mm-shape { color: var(--accent); width: 25px; height: 22px; }
-.mm-node[data-shape="root"] .mm-shape .mm-mark { transform-box: fill-box; transform-origin: center; }
+.mm-hit:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-.mm-label {
+/* ── Pills ── */
+.mm-pill {
   position: absolute;
   left: 0;
-  top: 17px;
-  width: 150px;
-  transform: translateX(-50%);
-  text-align: center;
-  pointer-events: none;
-  transition: opacity 0.2s;
-}
-.mm-node[data-shape="circle"] .mm-label,
-.mm-node[data-shape="square"] .mm-label { top: 15px; }
-.mm-label b {
-  display: inline;
-  padding: 1px 3px;
-  border-radius: 5px;
-  background: var(--mm-bg);
-  font-size: 13px;
-  font-weight: 400;
-  line-height: 1.45;
-  letter-spacing: -0.01em;
-  color: var(--mm-ink);
-  -webkit-box-decoration-break: clone;
-  box-decoration-break: clone;
-}
-.mm-label i {
-  display: block;
-  width: max-content;
-  margin: 1px auto 0;
-  padding: 1px 3px;
-  border-radius: 3px;
-  background: var(--mm-bg);
-  font-size: 11px;
-  font-style: normal;
-  line-height: 1.45;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--mm-grey);
-  opacity: 0;
-  transition: opacity 0.2s;
-}
-.mm-node[data-shape="root"] .mm-label i,
-.mm-node[data-current] .mm-label i,
-.mm-node:hover .mm-label i { opacity: 1; }
-.mm-node[data-connected] .mm-label b { color: var(--mm-grey); }
-.mm-node:hover { z-index: 3; }
-
-/* On a phone, names stay off the small shapes until you choose a constellation, so the web can breathe */
-@media (max-width: 639px) {
-  .mm-label { width: 104px; }
-  .mm-label b { font-size: 12px; }
-  .mm-node[data-shape="circle"] .mm-label,
-  .mm-node[data-shape="square"] .mm-label,
-  .mm-node[data-shape="triangle"] .mm-label { display: none; }
-  .mm[data-focus] .mm-label { display: block !important; }
-}
-
-/* ── Arriving: the web fades in once, the first time it is in view; lines a little after the nodes ── */
-.mm:not([data-ready]) :is(.mm-node, .mm-link) { opacity: 0; }
-@keyframes mm-in { from { opacity: 0; } }
-@keyframes mm-turn { to { transform: rotate(360deg); } }
-@media (prefers-reduced-motion: no-preference) {
-  .mm[data-ready] .mm-node { animation: mm-in 1s var(--ease-out-quad) var(--ed, 0ms) both; }
-  .mm[data-ready] .mm-link { animation: mm-in 1s var(--ease-out-quad) calc(var(--ed, 0ms) + 500ms) both; }
-  .mm-node[data-shape="root"] .mm-mark { animation: mm-turn 10s linear infinite; }
-}
-
-/* ── The panel: what the node you chose is (his page panel, quieter) ── */
-.mm-panel {
-  position: absolute;
-  top: 14px;
-  bottom: 14px;
-  right: calc(max(0px, (100vw - var(--site-max)) / 2) + var(--site-edge));
-  width: 296px;
-  box-sizing: border-box;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  padding: 18px 20px 22px;
-  border-radius: var(--box-inner-radius);
-  corner-shape: var(--box-corner);
-  background: #fff;
-  box-shadow: inset 0 0 0 0.5px rgb(26 26 26 / 0.1);
-  color: var(--mm-ink);
-  opacity: 0;
-  visibility: hidden;
-  transform: translateX(16px);
-  transition: opacity 0.4s var(--ease-out-quad), transform 0.7s var(--ease-sheet), visibility 0s linear 0.7s;
-  scrollbar-width: thin;
-}
-.mm-panel[data-open] { opacity: 1; visibility: visible; transform: none; transition-delay: 0.1s, 0.1s, 0s; }
-.mm-page-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 26px; }
-.mm-type { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--mm-grey); }
-.mm-type .mm-shape:not(.mm-shape--root) :is(path, circle, rect) { fill: none; }
-.mm-type .mm-shape text { display: none; }
-.mm-close {
-  display: grid;
-  place-items: center;
-  width: 26px;
-  height: 26px;
-  border: 0;
-  border-radius: 50%;
-  background: none;
-  color: var(--mm-grey);
-  cursor: pointer;
-  transition: background-color 0.2s var(--ease-out-quad), color 0.2s var(--ease-out-quad);
-}
-.mm-close:hover { background: #f4f3f0; color: var(--mm-ink); }
-.mm-close:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
-.mm-page-title { margin-top: 12px; font-size: 20px; font-weight: 400; line-height: 1.2; letter-spacing: -0.015em; }
-.mm-sub { margin-top: 6px; font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--mm-grey); line-height: 1.45; }
-.mm-text { margin-top: 14px; font-size: 14px; line-height: 1.45; color: #6b6b68; }
-.mm-text--ink { margin-top: 6px; color: var(--mm-ink); }
-.mm-tab { margin-top: 22px; }
-.mm-tab-title { font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--mm-grey); }
-.mm-list { display: grid; gap: 2px; margin-top: 8px; }
-.mm-list button {
-  display: flex;
+  top: 0;
+  display: inline-flex;
   align-items: center;
-  gap: 11px;
-  width: 100%;
-  padding: 7px 8px 7px 6px;
-  margin-left: -6px;
-  border: 0;
-  border-radius: 10px;
-  background: none;
-  text-align: left;
+  gap: 6px;
+  padding: 5px 11px 5px 8px;
+  border: 0.5px solid color-mix(in srgb, var(--ink) 12%, transparent);
+  border-radius: 999px;
+  /* see-through, frosted: the lines and dots behind a name still show faintly, so a pill never reads as a solid block */
+  background: color-mix(in srgb, var(--surface-t1) 62%, transparent);
+  -webkit-backdrop-filter: blur(6px) saturate(1.2);
+  backdrop-filter: blur(6px) saturate(1.2);
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--ink) 5%, transparent);
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.2;
+  white-space: nowrap;
   cursor: pointer;
-  transition: background-color 0.2s var(--ease-out-quad);
+  pointer-events: auto;
+  opacity: 0;
+  /* where it hangs off its dot, as a direction (--ax, --ay from -1 to 1) that the code eases from one side to another,
+     so a name glides round its dot instead of jumping */
+  transform: translate(var(--tx), var(--ty)) scale(0.9);
+  transition: opacity 0.18s ease;
+  --tx: calc((var(--ax) - 1) * 50% + var(--ax) * (var(--r) + 10px));
+  --ty: calc((var(--ay) - 1) * 50% + var(--ay) * (var(--r) + 9px));
 }
-.mm-list button:hover { background: #f4f3f0; }
-.mm-list button:focus-visible { outline: 2px solid var(--accent); outline-offset: 0; }
-.mm-list .mm-shape { flex: none; }
-.mm-list b { display: block; font-size: 14px; font-weight: 400; line-height: 1.3; letter-spacing: -0.01em; }
-.mm-list i { display: block; margin-top: 1px; font-size: 11px; font-style: normal; letter-spacing: 0.05em; text-transform: uppercase; color: var(--mm-grey); }
-.mm-page { animation: mm-page 0.5s var(--ease-sheet) both; }
-@keyframes mm-page { from { opacity: 0; transform: translateY(8px); } }
+.mm-pill:focus { outline: none; }
+.mm-pill:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.mm-n[data-on] .mm-pill { opacity: calc(var(--dim) * var(--vis, 1) * var(--pv, 1) * clamp(0, (var(--f) - 0.4) * 4, 1)); transform: translate(var(--tx), var(--ty)) scale(min(1, 0.85 + 0.15 * var(--pv, 1))); }
+/* round the back of the globe a name is hidden, and cannot be clicked */
+.mm-n[data-back] .mm-pill { pointer-events: none; }
 
-/* On a phone the panel opens under the web instead */
-.mm-sheet { display: none; }
-@media (max-width: 759px) {
-  .mm-panel { display: none; }
-  .mm-sheet { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.6s var(--ease-sheet); }
-  .mm-sheet[data-open] { grid-template-rows: 1fr; }
-  .mm-sheet-in { min-height: 0; overflow: hidden; border-radius: var(--box-inner-radius); corner-shape: var(--box-corner); background: #fff; }
-  .mm-sheet[data-open] .mm-sheet-in { box-shadow: inset 0 0 0 0.5px rgb(26 26 26 / 0.1); }
-  .mm-sheet-in > div { padding: 16px 18px 20px; }
+.mm-pill--hub {
+  gap: 8px;
+  padding: 7px 15px 7px 11px;
+  font-size: 16px;
+  font-weight: 400;
 }
+.mm-n--hub[data-side] .mm-pill--hub { transition-delay: 0s; }
+.mm-icon { flex: none; width: auto; height: 13px; }
+.mm-pill--hub .mm-icon { height: 15px; animation: mm-turn 14s linear infinite; }
+@keyframes mm-turn { to { transform: rotate(360deg); } }
+
+/* a note, under the pill that was clicked */
+.mm-note {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 2;
+  display: grid;
+  gap: 3px;
+  width: 230px;
+  padding: 10px 12px;
+  border: 0.5px solid color-mix(in srgb, var(--ink) 12%, transparent);
+  border-radius: 14px;
+  /* frosted like the pills, a little thicker so the words stay easy to read */
+  background: color-mix(in srgb, var(--surface-t1) 80%, transparent);
+  -webkit-backdrop-filter: blur(10px) saturate(1.2);
+  backdrop-filter: blur(10px) saturate(1.2);
+  box-shadow: var(--shadow-floating);
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.4;
+  white-space: normal;
+  pointer-events: auto;
+  transform: translate(-50%, calc(var(--r) + 46px));
+  animation: mm-note-in 0.25s ease-out;
+}
+.mm-n--hub .mm-note { transform: translate(-50%, calc(var(--r) + 54px)); }
+.mm-n[data-side="t"] .mm-note { transform: translate(-50%, calc(-100% - var(--r) - 46px)); }
+.mm-n:has(.mm-note) { z-index: 200 !important; }
+.mm-n:has(.mm-note) .mm-pill { opacity: 1; }
+.mm-note b { color: var(--ink); font-weight: 500; font-size: 12px; }
+@keyframes mm-note-in { from { opacity: 0; } }
+
+/* ── Week counter while it grows, and the hint under the stage ── */
+.mm-week {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  margin: 0;
+  transform: translateX(-50%);
+  color: var(--text-tertiary);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.mm-week[data-on] { opacity: 1; }
+.mm-hint {
+  margin: 10px 0 0;
+  text-align: center;
+  color: var(--text-tertiary);
+  font-size: 13px;
+  font-style: italic;
+  opacity: 0;
+  transition: opacity 0.6s;
+}
+.mm[data-grown] .mm-hint { opacity: 1; }
+
+@media (max-width: 639px) {
+  .mm-pill { font-size: 11.5px; padding: 4px 9px 4px 7px; gap: 5px; }
+  .mm-pill--hub { font-size: 13px; padding: 5px 11px 5px 8px; }
+  .mm-icon { height: 11px; }
+  .mm-pill--hub .mm-icon { height: 12px; }
+  .mm-note { width: 200px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .mm-panel, .mm-sheet, .mm-shape { transition: none; }
-  .mm-page { animation: none; }
+  .mm-dot, .mm-pill { transition: none; animation: none; }
+  .mm-pill--hub .mm-icon { animation: none; }
 }
-
-@media (min-width:640px) and (max-width:1099px) { .mm-label { width: 116px; } .mm-label b { font-size: 12px; } .mm-stage { min-height: 820px; } }
