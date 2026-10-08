@@ -4,6 +4,8 @@ Status: **Built. The live copy is at the top (v5: v4 plus the copy review's ★ 
 
 Layout (2026-10-04): made like the homepage (centred, endless carousels, the Stage box, white cards, one close). Words unchanged. See [../site-wide-pass.md](../site-wide-pass.md).
 
+Feature lists and side panels (2026-10-08): the "Also" lists are left-aligned like Linear's (the label on the left half, the names in two columns on the right half, with a hairline between). The side panels were rebuilt after Linear's sheets: no shadow (the page behind just dims), everything left-aligned, a wireframe per feature in place of the old screenshots, and new copy that leads with what each feature does for you. The panel copy is under "Side panels" below.
+
 Last updated: 2026-09-28
 URL: `/how-it-works` (the old `/features` redirects here)
 Replaces: v3 (2026-09-28), which is kept below as the full reference
@@ -136,151 +138,289 @@ Buttons: "Let Waldo in →"
 
 #### Side panels
 
-Each name in an "Also" row opens a panel from the right. The panel shows the section as its label, the name as its title, then a first line in dark medium text, the body, the status and, for some, a picture.
+Each name in an "Also" row opens a panel from the right, laid out like Linear's sheets (2026-10-08). Top to bottom: the section as its label, the name as its title, the status, a first line in dark medium text that says what it does for you, the body (how, and why that helps), a wireframe of where it shows up with a caption under it, then a short table under a heading in dark medium text. The wireframes are drawn in code (`components/site/feature-wires.tsx`), one per feature.
 
 ##### Health
 
 - **Sleep debt** (Working today)
-  - First line (dark, medium): Counted over two weeks, not one night. “Tonight’s the night to pay it back.”
-  - Body: Waldo keeps a running count of the sleep you’ve missed, weighted over the last 14 days, so one good night doesn’t hide a short week.
-  - Body: When the debt builds, it plans around it: an earlier wind-down, a lighter morning, the hard task moved to when you’re fresher.
-  - _Picture: `/figma-assets/waldo-cards/morning-phone-sleep-debt.webp`_
+  - First line (dark, medium): One good night doesn’t cancel a short week. Waldo keeps count, so your plans match the sleep you’ve actually had.
+  - Body: Most sleep apps grade last night and start again tomorrow. Waldo keeps a running count of the sleep you’ve missed, weighted over the last 14 days, so a Saturday lie-in doesn’t hide three short nights before it.
+  - Body: When the debt builds, it plans around it before you feel it: an earlier wind-down, a lighter morning, the hard task moved to when you’re fresher.
+  - _Wireframe (`sleep-debt`), caption:_ Fourteen nights against your usual, and what tonight is for
+  - Table: **How it helps** (When · What Waldo does)
+    - The debt is building · Suggests an earlier wind-down, and keeps tomorrow morning light.
+    - One long night · Counts it, without calling the debt paid. Two weeks say more than one night.
+    - Something hard is due · Moves it to when you’re fresher, and leaves the deadline where it is.
 
 - **Quiet flags** (Working today)
-  - First line (dark, medium): Blood oxygen, breathing and wrist temperature, flagged gently when they drift.
-  - Body: These sit in the background. Waldo compares each one with your own usual, and only mentions it when it drifts.
-  - Body: A gentle flag, never an alarm, and never a diagnosis. If something worries you, talk to a doctor.
-  - _Picture: `/figma-assets/waldo-cards/morning-phone-resting-state.webp`_
+  - First line (dark, medium): The signals you’d never think to check, checked for you, against your own usual.
+  - Body: Blood oxygen, breathing rate and wrist temperature sit in the background. Nobody reads them every morning, and you shouldn’t have to. Waldo compares each one with your own usual, not a stranger’s average, and stays quiet while they hold steady.
+  - Body: When one drifts, you get a gentle flag. Never an alarm, and never a diagnosis. If something worries you, talk to a doctor.
+  - _Wireframe (`quiet-flags`), caption:_ Three resting signals, each against your own usual range
+  - Table: **What it watches** (Signal · What Waldo does with it)
+    - Blood oxygen · Reads it overnight, and mentions it only if it drifts from your usual.
+    - Breathing rate · Steady for most people, most nights, so a drift is worth knowing about.
+    - Wrist temperature · Tracks it night to night, and flags it when it moves away from your usual.
 
 - **Training** (Working today)
-  - First line (dark, medium): Workouts and work share one calendar, so they get planned together.
-  - Body: Waldo sees your training next to your meetings. After a hard session it knows you may have a sharp 90 minutes, and it offers them to the hard task.
+  - First line (dark, medium): Workouts and work share one calendar, so they get planned together, not against each other.
+  - Body: Waldo sees your training next to your meetings. After a hard session it knows you may have a sharp 90 minutes, and offers them to the work that needs them most.
   - Body: It can tell a racing heart on a run from a racing heart in a meeting, so a good workout never gets mistaken for a bad day.
+  - _Wireframe (`training`), caption:_ A morning run, and the sharp stretch after it given to the hardest task
+  - Table: **How it helps** (When · What Waldo does)
+    - After a hard session · Offers the sharp stretch that follows to your hardest task.
+    - Your heart races on a run · Reads it as a workout, not stress. Nothing gets pulled.
+    - Your heart races at your desk · Reads it as stress, and The Fetch can step in.
 
 - **Weather and daylight** (Working today)
-  - First line (dark, medium): Heat, air quality and daylight where you are, factored into your day.
-  - Body: Heat, UV and air quality where you are, plus how much daylight you’ve had. Waldo factors them into your plan, and tells you when a walk outside would help.
-  - Body: There’s nothing to set up. It works from your rough location.
-  - _Picture: `/figma-assets/waldo-cards/edge-circadian-context.webp`_
+  - First line (dark, medium): Heat, air and daylight change how a day feels. Waldo plans with them, so you don’t have to check.
+  - Body: Heat, UV and air quality where you are, plus how much daylight you’ve had, all go into your plan. When a walk outside would help, Waldo tells you.
+  - Body: There’s nothing to set up and nothing to look up. It works from your rough location.
+  - _Wireframe (`weather`), caption:_ Today’s daylight and the conditions outside, folded into the plan
+  - Table: **What it reads** (Reading · How it’s used)
+    - Daylight so far · Counted through the day, so a walk gets suggested when it would help.
+    - Heat, UV and air · Read where you are, and weighed in before anything outdoors is suggested.
+    - Your location · Rough, not exact. It’s all Waldo needs, and there’s nothing to set up.
 
 - **Your history** (Working today)
-  - First line (dark, medium): Every past day as a coloured dot. Tap one to see it in full.
-  - Body: Look back 7, 30 or 90 days. Each day is a dot, coloured by how it went. Tap one to see how you slept, what the day asked of you, and what Waldo did about it.
+  - First line (dark, medium): Every past day as one coloured dot. Spot a rough patch at a glance, then tap in to see why.
+  - Body: Look back 7, 30 or 90 days. Each day is a dot, coloured by how it went, so the shape of the last few months shows without a single chart to read.
+  - Body: Tap a dot to see that day in full: how you slept, what the day asked of you, and what Waldo did about it.
+  - _Wireframe (`history`), caption:_ Ninety days as dots, with one day opened
+  - Table: **What you can do** (Do this · To see)
+    - Switch between 7, 30 and 90 days · This week, this month, or the whole season.
+    - Tap a dot · How you slept, what the day asked of you, and what Waldo changed.
+    - Look for runs of colour · The rough stretches, and what came just before them.
 
 - **Bring your past** (Working today)
-  - First line (dark, medium): Import your Apple Health history, so Waldo knows you from day one.
-  - Body: Your watch has been collecting for years. Import that history, and Waldo starts with your real usual instead of a blank page.
-  - Body: It knows you from day one, not week three.
+  - First line (dark, medium): Your watch has years of you on it. Import them, and Waldo starts from your real usual, not a blank page.
+  - Body: A new app usually needs weeks to learn what normal looks like for you. Import your Apple Health history, and Waldo has your usual from the first morning.
+  - Body: So the first Brief is already about you, not a guess. It knows you from day one, not week three.
+  - _Wireframe (`bring-past`), caption:_ Apple Health history coming across, one kind of data at a time
+  - Table: **Why it matters** (Without your history · With it)
+    - Weeks of learning what normal is · Your usual is known on day one.
+    - Early Briefs that hedge · Early Briefs that are about you.
+    - Last night compared with nothing · Last night compared with your own long-run usual.
 
 ##### Day to day
 
 - **Your best hours** (Coming next)
-  - First line (dark, medium): Learns when you’re sharpest, and keeps invites out of that window.
-  - Body: Waldo learns when you do your best work and when you need slack, then shapes your calendar around it.
-  - Body: When an invite lands in your sharpest window, it suggests another time. “This invite lands in your sharpest window. Suggest 3pm instead?”
+  - First line (dark, medium): Waldo learns when you’re sharpest, then keeps that time for the work that needs it.
+  - Body: Everyone has a stretch of the day when hard things feel easier, and most calendars give it away to whoever books first. Waldo learns yours, and shapes your calendar around it.
+  - Body: When an invite lands in that window, it suggests another time before you’ve said yes. “This invite lands in your sharpest window. Suggest 3pm instead?”
+  - _Wireframe (`best-hours`), caption:_ Your sharpest stretch, and an invite that lands in it
+  - Table: **How it helps** (When · What Waldo does)
+    - An invite lands in your best hours · Suggests another time, before you’ve accepted.
+    - Your week fills up · Holds your sharpest stretch for the work that needs it.
+    - Your rhythm changes · Keeps learning, so the window moves with you.
 
 - **The right task, at the right time** (Working today)
-  - First line (dark, medium): Hard things land when you’re fresh. Deadlines never slip.
-  - Body: Your list is ordered by what’s due and by how much you’ve got in you. The hardest thing goes to your sharpest hour.
-  - Body: On a low day, big tasks get broken into small chunks. Anything due today stays put, even on a rough one.
+  - First line (dark, medium): Your list, ordered by what’s due and by how much you’ve got in you, so the hard things land when you can handle them.
+  - Body: A to-do list doesn’t know you slept badly. Waldo does. The hardest thing goes to your sharpest hour, and on a low day, big tasks get broken into small chunks you can actually start.
+  - Body: Deadlines stay visible. Anything due today stays put, even on a rough day.
+  - _Wireframe (`right-task`), caption:_ Today’s list, reordered, with the reason beside each move
+  - Table: **How it helps** (On your list · What Waldo does)
+    - The hardest task · Moves it to your sharpest hour.
+    - A big task on a low day · Breaks it into small chunks, starting with the part you know.
+    - Anything due today · Leaves it where it is, whatever kind of day it is.
 
 - **Fewer pings** (Coming next)
-  - First line (dark, medium): Watches how much is coming at you, never what it says. Email in two blocks, Slack on Focus.
-  - Body: Waldo reads volume, timing and urgency, never the words. When messages spike and your stress climbs with them, it offers to go quiet for a while.
-  - Body: It can batch email into two blocks a day, and set Slack to Focus while you work.
+  - First line (dark, medium): Messages arrive all day. Waldo helps you read them in a couple of blocks, so the hours in between stay yours.
+  - Body: Constant pings break up the time you need most. Waldo can batch email into two blocks a day, and set Slack to Focus while you work, so messages wait for you instead of the other way round.
+  - Body: What Waldo can see and do depends on the service you connect and the permissions you give it. Final app data details are under review, and the screen here is an example.
+  - _Wireframe (`fewer-pings`), caption:_ An example day: email read in two blocks, Slack on Focus
+  - Table: **How it helps** (When · What Waldo can do)
+    - Email lands all day · Gathers it into two blocks, so you check it twice, not constantly.
+    - You’re in deep work · Sets Slack to Focus until the work block ends.
 
 - **Fixed first, mentioned after** (Working today)
-  - First line (dark, medium): The Patrol runs overnight too. It fixes what it can within your limits, and asks about the rest.
-  - Body: The Patrol runs around the clock. When something looks off, like two meetings overlapping, Waldo fixes it if your limits allow, and tells you after. With an undo.
-  - Body: If it can’t fix something, it comes to you with options. If something is only worth watching, it watches.
-  - _Picture: `/waldo-web-assets/agent-features/overnight-patrol.webp`_
+  - First line (dark, medium): Small problems get handled while you sleep. You hear about them after, with the reason.
+  - Body: The Patrol runs around the clock, overnight included. When something looks off, like two meetings overlapping, Waldo fixes it if your limits allow, and tells you after. Whether a fix can be reversed depends on the action.
+  - Body: If it can’t fix something, it comes to you with options. If something is only worth watching, it watches, and says nothing until it matters.
+  - _Wireframe (`fixed-first`), caption:_ One night of The Patrol: one fixed, one asked, one watched
+  - Table: **Three ways it ends** (What it finds · What happens)
+    - Something it can fix · Fixed within your limits, then mentioned in the morning.
+    - Something it can’t · Brought to you with options, not just a problem.
+    - Something worth watching · Watched quietly. You hear about it only if it builds.
 
 - **Patterns** (Coming next)
-  - First line (dark, medium): Single spots join into named patterns, like “The Tuesday Crash,” and what Waldo does about it.
-  - Body: One observation is a Spot: “Emails after 10pm, and your sleep is 8% worse.” Enough Spots join into a named pattern, along with what Waldo now does about it.
+  - First line (dark, medium): Some things only show over weeks. Waldo spots them, names them, and plans for the next one.
+  - Body: One observation is a Spot: “Emails after 10pm, and your sleep is 8% worse.” When enough Spots line up, they join into a named pattern, like “The Tuesday Crash,” along with what Waldo now does about it.
   - Body: Six weeks of Tuesdays that looked ordinary, until they didn’t. You were too close to see it. Waldo wasn’t.
-  - _Picture: `/waldo-web-assets/constellation/tuesday-crash-constellation.webp`_
+  - _Wireframe (`patterns`), caption:_ Spots joining into a named pattern
+  - Table: **From one night to a pattern** (Stage · What you get)
+    - A Spot · One link between two things, like late email and worse sleep.
+    - A pattern · Spots that keep lining up, given a name you’ll recognise.
+    - A plan · What Waldo now does differently, before the next one lands.
 
 - **The Slope** (Coming next)
-  - First line (dark, medium): Today against four weeks ago, across six dimensions.
-  - Body: Recovery, Form, Weight, your meeting load, message pressure and task pileup, each set against where it was a month ago. “Four of six are better than a month ago.”
+  - First line (dark, medium): Day to day, it’s hard to tell if things are getting better. The Slope sets today against four weeks ago.
+  - Body: Recovery, Form, Weight, your meeting load, message pressure and task pileup, each set against where it was a month ago. One look tells you which way you’re heading: “Four of six are better than a month ago.”
   - Body: When most of them slide at once, Waldo tells you it’s time to ease off.
+  - _Wireframe (`slope`), caption:_ Six measures, today against four weeks ago
+  - Table: **How to read it** (What you see · What it means)
+    - Recovery and Form up · You’re getting more back than a month ago.
+    - Weight, The Stack, Signal Pressure and Task Pileup down · Your days are asking less of you.
+    - Most of the six sliding · Waldo tells you it’s time to ease off.
 
 ##### Talk to Waldo
 
 - **Threads** (Working today)
-  - First line (dark, medium): Separate conversations for separate things, one tap to switch.
-  - Body: One thread for the week ahead, one for training, one for that trip. Each keeps its own context, and one tap moves between them.
+  - First line (dark, medium): Keep each part of life in its own conversation, so nothing gets buried under something else.
+  - Body: One thread for the week ahead, one for training, one for that trip. Each keeps its own context, so Waldo picks up where that conversation left off, not where the last one did.
+  - Body: One tap moves between them.
+  - _Wireframe (`threads`), caption:_ Three threads, each with its own context
+  - Table: **How it helps** (Without threads · With them)
+    - Training notes buried under work · Each topic has its own place.
+    - Explaining the background every time · Each thread remembers its own.
+    - Scrolling to find the trip plans · One tap to the thread.
 
 - **Follow up on anything** (Coming next)
-  - First line (dark, medium): “Tell me more” on any Brief opens a thread about that exact message.
-  - Body: Every Brief and every Fetch has a “Tell me more.” Tap it, and a thread opens about that message, with the context already there.
-  - _Picture: `/waldo-web-assets/agent-features/context-thread.webp`_
+  - First line (dark, medium): Every Brief and every Fetch can turn into a conversation, with the context already there.
+  - Body: Sometimes one line isn’t enough. Tap “Tell me more” on any Brief or Fetch, and a thread opens about that exact message. No copying, and no explaining what you mean.
+  - Body: Ask why it moved the 9am, or what else it could do, and the answer starts from what Waldo already knows.
+  - _Wireframe (`follow-up`), caption:_ “Tell me more” on a Brief, opening a thread about it
+  - Table: **Good things to ask** (Ask · And get)
+    - “Why did you move it?” · The reason, from the data behind the Brief.
+    - “What else could you do?” · Another way to handle it, for you to pick.
+    - “What should I do?” · One clear next step for the rest of the day.
 
 - **Quick replies** (Working today)
-  - First line (dark, medium): Suggested answers, so you tap instead of type.
+  - First line (dark, medium): Answer Waldo in one tap. Most replies don’t need typing.
   - Body: Under Waldo’s messages sit a few likely answers, like “Tell me more” or “What should I do?”. Tap one, or type your own.
+  - Body: Waldo tends to speak up between meetings, which is exactly when you don’t have time to type.
+  - _Wireframe (`quick-replies`), caption:_ A message from Waldo, with suggested replies under it
+  - Table: **How it helps** (When you want · Tap)
+    - The detail · “Tell me more”
+    - The next step · “What should I do?”
+    - To say it your way · Nothing. Type your own, as you would to anyone.
 
 - **Charts in replies** (Working today)
-  - First line (dark, medium): A small visual inside the answer when a number needs showing.
-  - Body: Ask how you slept, and the answer comes with a small chart inside it. A picture where it helps, never a dashboard to go and read.
+  - First line (dark, medium): When a number needs showing, the answer brings a small chart with it, right there in the message.
+  - Body: Ask how you slept, and the reply comes with a small chart inside it. You see the shape of the night without leaving the conversation or opening another app.
+  - Body: A picture where it helps, and plain words everywhere else.
+  - _Wireframe (`charts-in-replies`), caption:_ “How did I sleep?” answered with last night’s stages
+  - Table: **Where it shows up** (You ask · The reply might show)
+    - “How did I sleep?” · Last night’s stages, with the short part easy to see.
+    - “How’s my HRV?” · This week against your usual.
+    - “How heavy is this week?” · Each day’s load, side by side.
 
 - **Full history** (Working today)
-  - First line (dark, medium): Every conversation, kept and scrollable.
-  - Body: Everything you and Waldo have said is kept, so you can scroll back to what it told you last Tuesday, and why.
+  - First line (dark, medium): Everything Waldo has told you is kept, so “what did it say last Tuesday?” always has an answer.
+  - Body: Every conversation is kept and scrollable, including the reasons behind each move. Scroll back to what it told you last Tuesday, and why.
+  - Body: Useful when a day starts to feel familiar, or when you just want to check what changed.
+  - _Wireframe (`full-history`), caption:_ Scrolling back to last Tuesday’s Heads-Up
+  - Table: **How it helps** (When · Scroll back to)
+    - A day feels familiar · The last time it happened, and what Waldo did then.
+    - You missed a message · Every Brief, Fetch and Close, in order.
+    - You want the reason · The why behind each move, kept right next to it.
 
 - **Thumbs up, thumbs down** (Working today)
-  - First line (dark, medium): Every rating teaches Waldo what’s actually useful to you.
+  - First line (dark, medium): Tell Waldo what helped and what didn’t. You get more of the first, and less of the second.
   - Body: Rate any message. Waldo learns what’s worth telling you, and what to leave out next time.
+  - Body: No forms, and no settings to dig through. One tap, and the next Brief is a little more yours.
+  - _Wireframe (`thumbs`), caption:_ Rating two messages, and the note that follows
+  - Table: **What a rating changes** (You tap · Waldo learns)
+    - Thumbs up · This was worth saying. More like it.
+    - Thumbs down · Not useful. Less of it, or said differently.
+    - Nothing · That’s fine too. Ratings help, but they’re never required.
 
 ##### Your rules
 
 - **Three levels, per area** (Working today)
-  - First line (dark, medium): “Just do it” for your calendar. “Ask me” for anything that goes to other people.
-  - Body: Tell me, Ask me or Just do it, set separately for each part of your life. Waldo only acts as far as you’ve allowed in that area.
-  - Body: Change any of them whenever you like.
+  - First line (dark, medium): Decide how far Waldo goes, one part of your life at a time.
+  - Body: Tell me, Ask me or Just do it, set separately for each area. “Just do it” for your calendar. “Ask me” for anything that goes to other people. Waldo only acts as far as you’ve allowed in that area.
+  - Body: Start careful, and give it more room as it earns it. Change any of them whenever you like.
+  - _Wireframe (`levels`), caption:_ Each area with its own level
+  - Table: **The three levels** (Level · What Waldo does)
+    - Tell me · Says what it would do. Nothing changes.
+    - Ask me · Suggests the change, and waits for your yes.
+    - Just do it · Makes the change, then tells you what it did.
 
 - **Always comes back to you** (Working today)
-  - First line (dark, medium): A short list of things Waldo never does on its own.
-  - Body: Whatever level you’ve set, some things always come to you first.
+  - First line (dark, medium): Whatever level you’ve set, some things always come to you first.
+  - Body: Even on “Just do it,” a short list of things never happens on its own. Waldo brings them to you, says what it wants to do, and waits.
+  - Body: So giving Waldo more room never means giving up the final say on the things that matter most.
+  - _Wireframe (`always-asks`), caption:_ A request that waits for your answer
+  - Table: **How it works** (Your level · For anything on the list)
+    - Tell me · Waldo tells you. Nothing changes.
+    - Ask me · Waldo asks first.
+    - Just do it · Waldo still asks first.
 
 - **The activity log** (Working today)
-  - First line (dark, medium): Everything Waldo did, and chose not to do, with one-tap undo.
-  - Body: Every move is written down with the reason for it, including the things Waldo noticed and decided to leave alone.
-  - Body: Anything it changed can be undone with one tap.
+  - First line (dark, medium): Every move Waldo makes is written down with its reason, so nothing happens behind your back.
+  - Body: Review recorded actions and their outcomes. Each one carries the reason for it, including the things Waldo noticed and decided to leave alone.
+  - Body: Whether an action can be reversed depends on the service and the action.
+  - _Wireframe (`activity-log`), caption:_ A day of actions, each with its reason
+  - Table: **What each entry tells you** (Entry · Shows)
+    - What happened · The change, in plain words, and when.
+    - Why · The reason, from the data behind it.
+    - Left alone · What Waldo noticed, and chose not to act on.
 
 - **Say it once** (Working today)
-  - First line (dark, medium): People, preferences and corrections stick. See and change every one.
-  - Body: “Priya is your lead investor. Keep it short, send numbers first.” “No meetings before 10.” Tell Waldo once, and it remembers.
+  - First line (dark, medium): Tell Waldo something once, and it sticks. People, preferences and corrections, all remembered.
+  - Body: “Priya is your lead investor. Keep it short, send numbers first.” “No meetings before 10.” Tell Waldo once, and it remembers, so you never have to repeat yourself.
   - Body: Everything it knows about you is listed in one place, where you can change or remove any of it.
+  - _Wireframe (`say-it-once`), caption:_ What Waldo remembers, each line yours to change
+  - Table: **What it remembers** (Kind · For example)
+    - People · “Priya is your lead investor. Keep it short, send numbers first.”
+    - Preferences · “No meetings before 10.”
+    - Corrections · “That wasn’t stress. It was a workout.”
 
 - **Your schedule** (Working today)
-  - First line (dark, medium): Wake time, quiet hours, and which of The Brief, The Fetch and The Close run.
+  - First line (dark, medium): Waldo fits your hours, not the other way round. Pick when it speaks, and which messages you get.
   - Body: Set your wake time and when the evening check-in arrives. Turn The Brief, The Fetch or The Close on or off, one by one.
   - Body: Quiet hours, when Waldo stays silent, are coming next.
+  - _Wireframe (`schedule`), caption:_ Wake time, the evening check-in, and each message on or off
+  - Table: **What you can set** (Setting · What it changes)
+    - Wake time · When your morning starts, and The Brief with it.
+    - Evening check-in · When the day gets wrapped up.
+    - The Brief, The Fetch, The Close · Each one on or off, separately.
+    - Quiet hours · Coming next. Time when Waldo stays silent.
 
 - **Yours, always** (Working today)
   - First line (dark, medium): Export everything any time. Delete your account, and it’s gone.
-  - Body: Download everything Waldo holds about you, whenever you want. Delete your account, and your data goes with it.
-  - Body: It’s encrypted when stored and when it moves. The full detail is on the Privacy page.
+  - Body: That’s the aim. Export and deletion controls are still being reviewed, so treat the screen here as an example, not a promise of controls you can use today.
+  - Body: Final security and retention details have not been published here yet.
+  - _Wireframe (`yours-always`), caption:_ An example screen. These controls are still under review
+  - Table: **Where things stand** (Control · Status)
+    - Export everything · Under review
+    - Delete your account · Under review
+    - Security and retention details · Not published yet
 
 ##### What’s coming
 
 - **Voice** (Planned)
-  - First line (dark, medium): Ask out loud. Hear it back.
-  - Body: Hold the mic and ask. Waldo can read your Brief out loud too.
+  - First line (dark, medium): Ask out loud, and hear the answer back. For the moments typing isn’t an option.
+  - Body: Hold the mic and ask. Waldo can read your Brief out loud too, so the morning can start while you’re still getting ready.
+  - _Wireframe (`voice`), caption:_ Holding the mic to ask, with the Brief read out loud
+  - Table: **Where it would help** (Moment · With voice)
+    - Getting ready in the morning · The Brief, read out loud.
+    - Walking between meetings · Ask without stopping to type.
 
 - **Your own routines** (Planned)
-  - First line (dark, medium): Write a routine once, and Waldo runs it on schedule.
-  - Body: “Every Sunday evening, tell me how next week looks.” Write it once, and Waldo runs it on schedule.
+  - First line (dark, medium): The things you ask for every week, written once. Waldo runs them on schedule.
+  - Body: “Every Sunday evening, tell me how next week looks.” Write it once, in your own words, and Waldo runs it on schedule until you change it.
+  - _Wireframe (`routines`), caption:_ A weekly routine, written once
+  - Table: **For example** (When · You write)
+    - Every Sunday evening · “Tell me how next week looks.”
+    - Every Friday afternoon · “What can wait until Monday?”
 
 - **Tomorrow, today** (Planned)
-  - First line (dark, medium): Waldo forecasts how tomorrow looks tonight.
-  - Body: The night before, Waldo tells you how tomorrow is likely to feel, while there’s still time to change it.
+  - First line (dark, medium): Find out how tomorrow will feel tonight, while there’s still time to change it.
+  - Body: The night before, Waldo tells you how tomorrow is likely to feel. If it looks heavy, there’s still room to move things before the day begins.
+  - _Wireframe (`tomorrow-today`), caption:_ Tomorrow’s outlook, sent the evening before
+  - Table: **What you could do with it** (If tomorrow · You can)
+    - Looks heavy · Move something tonight, before the day starts.
+    - Looks fine · Nothing. Sleep on it.
 
 - **Other agents ask Waldo** (Planned)
-  - First line (dark, medium): The tools you use check how you’re doing before they act for you.
-  - Body: Your other agents will be able to ask Waldo how you’re doing, and plan around it, before they act on your behalf.
+  - First line (dark, medium): The other tools that act for you will check how you’re doing first.
+  - Body: Your other agents will be able to ask Waldo how you’re doing, and plan around it, before they act on your behalf. So a call gets booked for when you’re rested, not first thing after a short night.
+  - _Wireframe (`other-agents`), caption:_ Another agent checking with Waldo before it books
+  - Table: **For example** (The agent asks · Waldo answers)
+    - “Is 8am tomorrow a good time?” · “Short night likely. After 10:30 works better.”
+    - “Can this go on Friday afternoon?” · “Friday’s light. Go ahead.”
 
 > **Everything below this point is the earlier draft and the reasoning behind it, kept as a record.** Where it disagrees with the live copy above, the live copy wins.
 

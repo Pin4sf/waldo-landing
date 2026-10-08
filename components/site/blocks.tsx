@@ -179,20 +179,26 @@ export function Actions({
  */
 export function Stage({
   picture,
+  pile,
   narrow = false,
   children,
 }: {
-  picture: ReactNode;
+  picture?: ReactNode;
+  /** Instead of a picture: a layer that fills the whole box behind the title and heaps at its foot (ConnectorPile) */
+  pile?: ReactNode;
   /** For a tall picture: it rises at about half the box's width */
   narrow?: boolean;
   children: ReactNode;
 }) {
   return (
-    <div className="site-stage" data-narrow={narrow ? "" : undefined}>
+    <div className={pile ? "site-stage site-stage--pile" : "site-stage"} data-narrow={narrow ? "" : undefined}>
+      {pile}
       {children}
-      <div className="site-stage-picture" data-appear="rise">
-        {picture}
-      </div>
+      {picture ? (
+        <div className="site-stage-picture" data-appear="rise">
+          {picture}
+        </div>
+      ) : null}
     </div>
   );
 }

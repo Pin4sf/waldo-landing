@@ -17,6 +17,9 @@ const ROWS: string[][] = [
   ["openai", "spotify", "strava", "stripe", "trello", "vercel", "whatsapp", "youtube", "zoom", "clickup", "fitbit", "apple"],
 ];
 
+/** Every connector mark, flat: the pile in the Connectors teaser (connector-pile.tsx) drops these */
+export const CONNECTOR_MARKS: string[] = ROWS.flat();
+
 export function ConnectorRows() {
   return (
     <div className="site-tiles" aria-hidden="true">

@@ -1,0 +1,92 @@
+/*
+  Wireframes for the How it works side panels (feature-wires.tsx), after the figures in Linear's sheets: a
+  plain, faintly darker box, and a sketch of the feature drawn in hairlines. The edges of each window carry on
+  past it as construction lines, and the window runs off the box on one side or two, so it reads as a crop of
+  something bigger. Everything is grey except the few words that matter, which are ink.
+
+  One coordinate system (480 x 300) for every scene. Lines keep 1px at any size.
+*/
+
+.wf {
+  --wf-bg: color-mix(in srgb, var(--ink) 3.5%, var(--surface-t2));
+  --wf-guide: color-mix(in srgb, var(--ink) 7%, transparent);
+  --wf-window: #fff;
+  --wf-edge: color-mix(in srgb, var(--ink) 12%, transparent);
+  --wf-line: color-mix(in srgb, var(--ink) 9%, transparent);
+  --wf-fill: color-mix(in srgb, var(--ink) 4%, transparent);
+  --wf-skel: color-mix(in srgb, var(--ink) 7%, transparent);
+  --wf-ink: var(--ink);
+  --wf-mid: #6B6B68;
+  --wf-soft: #A3A29D;
+  --wf-paw: var(--accent);
+  overflow: hidden;
+  border-radius: var(--box-inner-radius);
+  corner-shape: var(--box-corner);
+  background: var(--wf-bg);
+}
+.wf svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  font-family: var(--font-body);
+  letter-spacing: 0.01em;
+}
+
+/* Construction lines and windows */
+.wf-guide { stroke: var(--wf-guide); stroke-width: 1; fill: none; vector-effect: non-scaling-stroke; shape-rendering: crispEdges; }
+.wf-win { fill: var(--wf-window); stroke: var(--wf-edge); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.wf-rule { stroke: var(--wf-line); stroke-width: 1; fill: none; vector-effect: non-scaling-stroke; }
+.wf-box { fill: var(--wf-window); stroke: var(--wf-edge); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.wf-box--fill { fill: var(--wf-fill); stroke: none; }
+.wf-box--ghost { fill: none; stroke: var(--wf-soft); stroke-dasharray: 3 3; }
+.wf-box--ink { fill: var(--wf-ink); stroke: none; }
+.wf-box--focus { stroke: var(--wf-ink); stroke-width: 1.25; }
+.wf-skel { fill: var(--wf-skel); }
+.wf-fill { fill: var(--wf-fill); }
+.wf-dash { stroke: var(--wf-soft); stroke-width: 1; stroke-dasharray: 3 3; fill: none; vector-effect: non-scaling-stroke; }
+.wf-stroke-ink { stroke: var(--wf-ink); stroke-width: 1.25; fill: none; vector-effect: non-scaling-stroke; stroke-linecap: round; stroke-linejoin: round; }
+.wf-stroke-soft { stroke: var(--wf-soft); stroke-width: 1; fill: none; vector-effect: non-scaling-stroke; stroke-linecap: round; stroke-linejoin: round; }
+.wf-dot-ink { fill: var(--wf-ink); }
+.wf-dot-soft { fill: var(--wf-soft); }
+.wf-dot-open { fill: var(--wf-window); stroke: var(--wf-ink); stroke-width: 1.25; vector-effect: non-scaling-stroke; }
+.wf-paw { fill: var(--wf-paw); }
+.wf-avatar { fill: var(--wf-window); stroke: var(--wf-edge); stroke-width: 1; vector-effect: non-scaling-stroke; }
+
+/* Text: three greys, and ink for what matters */
+.wf-t { fill: var(--wf-mid); }
+.wf-t--ink { fill: var(--wf-ink); }
+.wf-t--soft { fill: var(--wf-soft); }
+.wf-t--on { fill: var(--wf-window); }
+.wf-t--b { font-weight: 500; }
+
+/* Icons: 14 x 14, hairline */
+.wf-icon { fill: none; stroke: var(--wf-soft); stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round; }
+.wf-icon--ink { stroke: var(--wf-ink); }
+.wf-icon--on { stroke: var(--wf-window); }
+
+/* Toggles */
+.wf-toggle-track { fill: var(--wf-skel); }
+.wf-toggle[data-on] .wf-toggle-track { fill: var(--wf-ink); }
+.wf-toggle-knob { fill: var(--wf-window); }
+
+/* Day dots (Your history): four tones from a good day to a rough one. Rough days are the dark ones, so a
+   rough patch is what the eye finds first. */
+.wf-day-0 { fill: color-mix(in srgb, var(--ink) 12%, transparent); }
+.wf-day-1 { fill: color-mix(in srgb, var(--ink) 26%, transparent); }
+.wf-day-2 { fill: color-mix(in srgb, var(--ink) 52%, transparent); }
+.wf-day-3 { fill: var(--wf-ink); }
+
+/* A little life, only while the panel is open and only for people who don't mind motion */
+@media (prefers-reduced-motion: no-preference) {
+  .site-sheet[open] .wf-caret { animation: wf-blink 1.1s steps(1) infinite; }
+  .site-sheet[open] .wf-flow { animation: wf-flow 1.4s linear infinite; }
+  .site-sheet[open] .wf-pulse { transform-box: fill-box; transform-origin: center; animation: wf-pulse 2.4s var(--ease-out-quad) infinite; }
+  .site-sheet[open] .wf-wave rect { transform-box: fill-box; transform-origin: center; animation: wf-wave 1.2s var(--ease-in-out-quad) infinite alternate; }
+  .site-sheet[open] .wf-wave rect:nth-child(3n + 1) { animation-delay: -0.4s; }
+  .site-sheet[open] .wf-wave rect:nth-child(3n + 2) { animation-delay: -0.8s; }
+  .site-sheet[open] .wf-wave rect:nth-child(4n) { animation-duration: 0.9s; }
+  @keyframes wf-blink { 50% { opacity: 0; } }
+  @keyframes wf-flow { to { stroke-dashoffset: -12; } }
+  @keyframes wf-pulse { 0% { opacity: 0.5; transform: scale(1); } 70%, 100% { opacity: 0; transform: scale(var(--wf-pulse-to, 1.9)); } }
+  @keyframes wf-wave { from { transform: scaleY(0.35); } to { transform: scaleY(1); } }
+}

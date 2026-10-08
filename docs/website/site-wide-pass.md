@@ -26,7 +26,7 @@ Suyash, 2026-10-04: "now the homepage is made as per my needs, with proper layou
 | Page | Section | Picture | Code |
 |---|---|---|---|
 | How it works | Done before you're up | The table became a carousel of six lock screens: The Brief, The Window, Prep, The Heads-Up, The Close (evening, dark) and The Adjustment (Friday). Each is Waldo's message arriving at that time of day. Same words as the table. | `components/site/day-moments.tsx` |
-| How it works | Already fluent in your tools | The homepage's drifting tool tiles, rising out of a box | `connector-rows.tsx` (shared) |
+| How it works | Already fluent in your tools | Every connector mark drops into the box from the top, tumbles and settles in a heap at its foot, then stays put (plays once, on scroll into view; resize and reduced motion show the settled heap). No picture window. | `connector-pile.tsx` (matter-js), `Stage`'s `pile` prop |
 | Kennel | Three things stop being your job | Card 1: Kennel's work board (`many-hands.svg`). Card 2: a contract with its checks (`intent-contract.svg`). Card 3, drawn in code: a contract and the five agents, each through your own subscription or key; the choice settles, you approve, it goes. | `components/site/agent-picker.tsx` |
 | Connectors | Work Gmail. Personal Gmail. | Two Gmail cards, each with its day from 6am to midnight: work hours shaded, the blocks when Waldo works that inbox (two in work hours for work, only outside them for personal), and a marker running through the day. | `components/site/two-accounts.tsx` |
 | 404 | Opening | The mascot, smaller, centred above the links | |

@@ -1,7 +1,7 @@
 /*
   The rest of the site, made like the homepage (2026-10-04, docs/website/site-wide-pass.md).
   The homepage's own pieces live in site.css; these are the shared ones the other pages needed to look and move
-  the same way: the Stage box, the page opening, centred feature rows, white boxed cards, and the new pictures
+  the same way: the Stage box, the page opening, white boxed cards, and the new pictures
   drawn in code (How it works' lock screens, Connectors' two accounts, Kennel's agent picker).
 */
 
@@ -49,8 +49,28 @@
   background: #fff;
   box-shadow: 0 0 0 0.5px color-mix(in srgb, var(--ink) 10%, transparent);
 }
-/* The homepage's drifting tool tiles, at a fixed size here (their own --u would make them huge this wide) */
-.site-stage-scene .site-tiles { --u: clamp(0.62px, 100cqw / 900, 1.05px); height: calc(420 * var(--u)); padding-top: calc(24 * var(--u)); }
+/* Stage pile (connector-pile.tsx): no picture, the foot of the box is left open for a heap of tool tiles that
+   dropped in from the top. The layer fills the whole box behind the title; the tiles keep clear of the button. */
+.site-stage--pile { padding-bottom: clamp(230px, 27vw, 380px); }
+.site-stage--pile > .site-header-block { position: relative; z-index: 1; }
+.site-pile { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+.site-pile-tile {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: grid;
+  place-items: center;
+  width: var(--s);
+  height: var(--s);
+  /* hidden until the world lets it go, so none waits in the corner before the drop */
+  visibility: hidden;
+  border-radius: calc(var(--s) * 0.26);
+  border: 0.6px solid color-mix(in srgb, var(--ink) 9%, transparent);
+  background: #fafaf8;
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--ink) 8%, transparent);
+  will-change: transform;
+}
+.site-pile-tile img { width: 54%; height: 54%; object-fit: contain; user-select: none; }
 /* The close: the same box with only words and a button in it */
 .site-stage--close { padding-bottom: clamp(44px, 7vw, 92px); }
 .site-stage--close .site-header-block > .site-actions { margin-top: 31px; }
@@ -58,19 +78,6 @@
   .site-stage { padding-inline: 16px; }
   .site-stage-picture { width: calc(100% + 8px); margin-inline: -4px; }
 }
-
-/* ── Feature rows, centred under their title ───────────
-   The "+" rows on How it works: the label above, the names in two columns, the block in the middle of the page. */
-.site-features[data-center] {
-  grid-template-columns: minmax(0, 1fr);
-  row-gap: 14px;
-  max-width: 44rem;
-  margin-inline: auto;
-  text-align: center;
-}
-.site-features[data-center] .site-features-list { justify-items: center; }
-.site-features[data-center] .site-feature-button { text-align: center; }
-.site-body:has(> .site-features[data-center]) .site-note { max-width: 40rem; margin-inline: auto; text-align: center; }
 
 /* ── Boxed cards ───────────────────────────────────────
    A grid of short items as white boxes (the homepage's white card shape). When the item's title is a link, the
@@ -297,6 +304,11 @@
    left-aligned so it reads easily */
 .site-header-block[data-center] ~ .site-body :is(.site-list, .site-placeholder) { max-width: 48rem; margin-inline: auto; }
 .site-header-block[data-center] ~ .site-body > .site-note { max-width: 48rem; margin-inline: auto; text-align: center; }
+/* …except small print under a feature list, which lines up with the names in the right half (site.css) */
+.site-header-block[data-center] ~ .site-body > .site-features + .site-note { max-width: none; margin-inline: calc(50% + var(--site-col-gap) / 2) 0; text-align: left; }
+@media (max-width: 860px) {
+  .site-header-block[data-center] ~ .site-body > .site-features + .site-note { margin-inline: 0; }
+}
 
 /* ── Why Waldo: the letter is a centred column; its opening (label, title, line, byline) is centred, the letter
    itself reads left-aligned ── */
