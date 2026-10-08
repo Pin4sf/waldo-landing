@@ -56,7 +56,7 @@ export function ConnectorPile() {
     const measure = () => {
       const { width, height } = stage.getBoundingClientRect();
       const room = Math.max(0, parseFloat(getComputedStyle(stage).paddingBottom) - HEAP_GAP);
-      const size = Math.min(60, Math.max(32, width / 22));
+      const size = Math.min(60, Math.max(28, width / 22));
       // A tumbled heap fills about 60% of the room it lies in; a tile averages 0.85 of `size` squared
       const count = Math.round(Math.min(MAX_TILES, Math.max(24, (width * room * 0.6) / (size * size * 0.85))));
       tilesRef.current ??= dealTiles();
