@@ -49,8 +49,28 @@
   background: #fff;
   box-shadow: 0 0 0 0.5px color-mix(in srgb, var(--ink) 10%, transparent);
 }
-/* The homepage's drifting tool tiles, at a fixed size here (their own --u would make them huge this wide) */
-.site-stage-scene .site-tiles { --u: clamp(0.62px, 100cqw / 900, 1.05px); height: calc(420 * var(--u)); padding-top: calc(24 * var(--u)); }
+/* Stage pile (connector-pile.tsx): no picture, the foot of the box is left open for a heap of tool tiles that
+   dropped in from the top. The layer fills the whole box behind the title; the tiles keep clear of the button. */
+.site-stage--pile { padding-bottom: clamp(230px, 27vw, 380px); }
+.site-stage--pile > .site-header-block { position: relative; z-index: 1; }
+.site-pile { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+.site-pile-tile {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: grid;
+  place-items: center;
+  width: var(--s);
+  height: var(--s);
+  /* hidden until the world lets it go, so none waits in the corner before the drop */
+  visibility: hidden;
+  border-radius: calc(var(--s) * 0.26);
+  border: 0.6px solid color-mix(in srgb, var(--ink) 9%, transparent);
+  background: #fafaf8;
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--ink) 8%, transparent);
+  will-change: transform;
+}
+.site-pile-tile img { width: 54%; height: 54%; object-fit: contain; user-select: none; }
 /* The close: the same box with only words and a button in it */
 .site-stage--close { padding-bottom: clamp(44px, 7vw, 92px); }
 .site-stage--close .site-header-block > .site-actions { margin-top: 31px; }

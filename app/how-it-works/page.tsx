@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Body, Close, Grid, Header, Item, Section, Stage } from "@/components/site/blocks";
 import { type Feature, FeatureList } from "@/components/site/feature-sheet";
 import { Carousel } from "@/components/site/carousel";
-import { ConnectorRows } from "@/components/site/connector-rows";
+import { ConnectorPile } from "@/components/site/connector-pile";
 import { LockMoment } from "@/components/site/day-moments";
 import { SiteShell } from "@/components/site/site-shell";
 import { OG_IMAGE_URL, SITE_URL } from "@/lib/site-metadata";
@@ -382,15 +382,9 @@ export default function HowItWorksPage() {
         </Body>
       </Section>
 
-      {/* 3 · Connectors (teaser): in a Stage, with the homepage's drifting tool tiles rising out of it */}
+      {/* 3 · Connectors (teaser): in a Stage, with every tool dropping into the box and heaping at its foot */}
       <Section id="connectors" size="auto">
-        <Stage
-          picture={
-            <div className="site-stage-scene" data-visual="Every tool Waldo works with, drifting past in rows">
-              <ConnectorRows />
-            </div>
-          }
-        >
+        <Stage pile={<ConnectorPile />}>
           <Header
             label="Connectors"
             lines={["Already fluent", "in your tools."]}
