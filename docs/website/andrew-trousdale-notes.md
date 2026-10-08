@@ -1,6 +1,6 @@
 # andrewtrousdale.com: how his page works, and what we took
 
-Status: **Reference, written 2026-10-05.** Suyash asked for his page to be read from the start, code to code, and for the interactions to be copied: the main node, everything else round it, and everything moves when you drag the main node.
+Status: **Reference, written 2026-10-05. Replaced on the site on 2026-10-08** by Suyash's own design (see `constellation-clusters.md`); `see/force-sim.ts` and `see/memory-graph.ts` named below no longer exist. Suyash asked for his page to be read from the start, code to code, and for the interactions to be copied: the main node, everything else round it, and everything moves when you drag the main node.
 
 His live site was down (a 503, "the server is paused") on 2026-10-05, so this was read from the Internet Archive's copy of 2025-12-21: the page (`index.html`), `assets/js/app.min.js` (89 KB, readable once formatted) and `assets/css/app.css`. Nothing was copied word for word: his code and artwork are his. We took the way it works and wrote our own.
 

@@ -29,7 +29,8 @@ This folder is where the whole website gets planned before it gets built. Each p
 | [what-you-see-plan.md](what-you-see-plan.md) | The five-card "What you see of it" section after the hero: story, screens, carousel behaviour, fixture checks. Section 17: one kit for all the app screens | **Built, on the homepage (local)** |
 | [trust-carousel-review.md](trust-carousel-review.md) | The homepage Trust section as four privacy panels ("Your context. Your call."): copy, what each panel is backed by in the product code, and the open privacy and security questions | **Built locally for review, not published** |
 | [site-wide-pass.md](site-wide-pass.md) | Every other page made like the homepage: page colour, centred titles, endless carousels, the Stage box, white cards, new moving pictures, one close. Words unchanged | **Built locally for review, not published** |
-| [andrew-trousdale-notes.md](andrew-trousdale-notes.md) | How andrewtrousdale.com's web works (read from his page and script) and what the homepage's "Longer he learns" web took from it | **Reference** |
+| [andrew-trousdale-notes.md](andrew-trousdale-notes.md) | How andrewtrousdale.com's web works (read from his page and script) and what the homepage's "Longer he learns" web took from it | **Reference** (replaced on the site 2026-10-08) |
+| [constellation-clusters.md](constellation-clusters.md) | The "Longer he learns" constellation map, rebuilt from Suyash's design: clumps, three dot sizes, the turning ring | **Built** |
 | [sessions/](sessions/) | One log per working session: what was decided, what's open | Ongoing |
 
 ## Build status
