@@ -44,18 +44,19 @@ _2026-10-04: new title (was "Every tool, handled."), centred, and an endless car
 ---
 
 ### Same Waldo. / Different hats.
-Body: The same Waldo, in the place each of them already works.
+Body: The same Waldo, in the place each of them already works. He reads the tools they already use, and tells you where each answer came from.
 _Layout (2026-10-04): centred headline and an endless carousel with the card in the middle moving, the same as "You can't keep up with everything. Waldo can."_
+_Sources (2026-10-08): every answer in the five pictures now says where Waldo got it, then what he did because of it ("Google Calendar has the 9am with Priya, and Apple Health says you slept five hours. So the 9am moves to 11."). Tool names are set in bold, as plain text: no logos. They are tools from `connector-data.ts`, picked per job from "Pick your job" in `connectors.md`. He names what he read (volume, timing, what is open), never the words inside a message. The card lines under each picture name the tools too. Status check before launch: Granola, Stripe, HubSpot, Calendly, Notion, Oura, Vercel, GitHub, Linear and Figma are not "working today" in `connectors.md`; the pictures show them as if connected._
 
-- **Founders** — Three calls back to back, then the co-founder sync. Waldo puts ten minutes of air before it, so the snappy reply never happens.
+- **Founders** — Three calls back to back, then the co-founder sync. Waldo reads your sleep in Apple Health, your day in Google Calendar and what was said in Granola, then puts ten minutes of air before the sync, so the snappy reply never happens.
   - _Picture: a founder travelling, texting Waldo in WhatsApp (iOS look, edge to edge, no phone frame). Sends a photo of the departures board, a voice note and a clip of a hotel room (`components/site/hats-scenes.tsx`, FounderWhatsApp). Photos are from Unsplash (free licence, no credit needed): the departures board by Zulfugar Karimov, the hotel room by Wes Hicks (`/assets/home/hats/`)_
-- **Engineers** — Waldo finds the hour you're sharpest and gives it to the hard problem. Standup moves somewhere else.
+- **Engineers** — Waldo reads your wearable for the hour you're sharpest, and GitHub, Vercel and Linear for what is actually blocking you. That hour goes to the hard problem. Standup moves somewhere else.
   - _Picture: an engineer asking Waldo from a light-mode terminal. Attaches a screenshot of a red build and a screen recording (EngineerCli)_
-- **Investors** — Pitches spaced to what you can actually give. The founder at pitch five gets your pitch-one attention.
+- **Investors** — Waldo reads the day's pitches in Calendly and your recovery from your wearable, then spaces them to what you can actually give. He checks the deck against the latest numbers, so the founder at pitch five gets your pitch-one attention.
   - _Picture: an investor on the Apple Watch photo from "Your watch knows" (`/assets/home/hats/apple-watch.png`), screen animated in code. Records a voice note, then sends a slide (InvestorWatch)_
-- **Designers** — The crit is at 3 and the empty states aren't done. Waldo gives you the clearest hours before it and moves the review back.
+- **Designers** — The crit is at 3 and the empty states aren't done. Waldo reads your calendar, your client brief in Notion and your clearest hours, then gives you those hours before the crit and moves the review back.
   - _Picture: a designer in Figma (`DesignerFigma`): a frame on the grey canvas with a comment pin, and the comment thread open beside it. The designer types an @Waldo comment and drops in a screenshot; he answers under it. Two exchanges (the review moves, the icon set gets the morning)._
-- **Sales** — Your most important call lands in your best hour. The follow-up is drafted before you hang up.
+- **Sales** — Waldo reads your pipeline in HubSpot, your calendar and your best hours, and puts the most important call in the strongest one. The follow-up is drafted in Gmail before you hang up.
   - _Picture: a salesperson in a Slack DM with Waldo (`SalesSlack`). Sends a voice clip, then a screenshot of the pipeline. He replies with one line and an app card showing what he did: a Gmail draft (Draft · not sent, Review) and a calendar move (Moved, Undo), then a thumbs-up arrives. Names (Noor, Ria, Dana, Acme) are made up._
 
 ---

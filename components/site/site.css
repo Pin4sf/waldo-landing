@@ -1032,7 +1032,8 @@ button:not(:disabled):hover > .site-arrow { transform: translateX(2px); }
 .hats-cli-line[data-age="2"] { opacity: 0.55; filter: blur(0.6px); }
 .hats-msg[data-age="3"],
 .hats-cli-line[data-age="3"] { opacity: 0.25; filter: blur(1.4px); }
-.hats-agent { font-weight: 600; }
+.hats-agent,
+.hats-src { font-weight: 600; }
 
 /* Shared media: a photo or a clip (a thumbnail, a play button and its length), and a voice note */
 .hats-pic { display: block; width: 100%; height: auto; }
@@ -1147,7 +1148,8 @@ button:not(:disabled):hover > .site-arrow { transform: translateX(2px); }
 .hats-cli-prompt { flex: none; color: #8a8a86; }
 .hats-cli-dot { flex: none; color: #1a1a1a; }
 .hats-cli-cmd { color: #1a1a1a; font-weight: 600; }
-.hats-cli .hats-agent { color: #1a1a1a; }
+.hats-cli .hats-agent,
+.hats-cli .hats-src { color: #1a1a1a; }
 .hats-cli-chip { display: inline-flex; align-items: center; gap: calc(6 * var(--u)); margin-left: calc(8 * var(--u)); padding: 0 calc(8 * var(--u)); border-radius: calc(5 * var(--u)); background: #ecebe6; color: #4a4a47; font-size: 0.9em; vertical-align: baseline; white-space: nowrap; }
 .hats-cli-chip svg { width: calc(11 * var(--u)); height: calc(11 * var(--u)); fill: currentColor; stroke: none; }
 .hats-cli-chip svg rect { fill: none; stroke: currentColor; stroke-width: 1; }
