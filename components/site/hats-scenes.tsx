@@ -19,9 +19,16 @@ import { useLive } from "./use-live";
 // anyone who asks for less motion. Everything in them is invented (Priya, PR #212, pitch five are the
 // homepage story, Noor and Dana are made up), and nothing is a claim about what the product sends, books
 // or merges.
+//
+// Waldo says where he got it. Every answer names the tools it came from (set in bold, as plain text: no
+// logo) and then what he did because of them: "Google Calendar has the 9am, Apple Health says five
+// hours, so it moves to 11." The tools are the ones in components/connectors/connector-data.ts, picked
+// for the job (docs/website/pages/connectors.md, "Pick your job"). He names what he read (volume, timing,
+// what is open), never the words inside a message.
 
 type Agent = "Claude" | "Codex" | "Cursor";
-type Part = string | { agent: Agent };
+/** Plain words, an agent's name, or a tool he read from (`src`): the last two are set in bold */
+type Part = string | { agent: Agent } | { src: string };
 type Art = "board" | "room" | "slide" | "frame" | "pipeline";
 type Media =
   | { kind: "image"; art: Art }
@@ -29,6 +36,8 @@ type Media =
   | { kind: "voice"; secs: number; bars: number[] };
 
 const TYPE_MS = 34;
+/** How long his answer is left up before the next exchange starts: now it names its sources, it takes longer to read */
+const READ_MS = 5200;
 
 const sleep = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
 const clock = (s: number) => `0:${String(s).padStart(2, "0")}`;
@@ -52,16 +61,20 @@ function useLift(flow: RefObject<HTMLElement | null>, deps: unknown[]) {
   }, deps);
 }
 
-/** The words of a reply; an agent's name is set in bold, as plain text: no pill, no logo */
+/** The words of a reply; an agent's name or a tool he read from is set in bold, as plain text: no pill, no logo */
 function Parts({ parts }: { parts: Part[] }) {
   return (
     <>
       {parts.map((part, i) =>
         typeof part === "string" ? (
           part
-        ) : (
+        ) : "agent" in part ? (
           <b key={i} className="hats-agent">
             {part.agent}
+          </b>
+        ) : (
+          <b key={i} className="hats-src">
+            {part.src}
           </b>
         ),
       )}
@@ -167,25 +180,41 @@ const bars = (...heights: number[]) => heights;
 
 /* ── 1 · Founder, on WhatsApp ───────────────────────────────────────────────────────────────────── */
 
-const FOUNDER: { time: string; media: Media; waldo: string }[] = [
+const FOUNDER: { time: string; media: Media; waldo: Part[] }[] = [
   {
     time: "8:12",
     media: { kind: "image", art: "board" },
-    waldo: "Seven o’clock now. The 9am with Priya moves to 11, and a car’s booked for 9:40pm.",
+    waldo: [
+      "Seven o’clock now. ",
+      { src: "Google Calendar" },
+      " has the 9am with Priya, and ",
+      { src: "Apple Health" },
+      " says you slept five hours. So the 9am moves to 11, and a car’s booked for 9:40pm.",
+    ],
   },
   {
     time: "8:31",
     media: { kind: "voice", secs: 6, bars: bars(4, 9, 14, 8, 17, 11, 6, 15, 10, 5, 13, 8, 16, 7, 12, 6, 9, 4, 11, 5) },
-    waldo: "Held the quieter one, ten minutes on foot from the venue. It has a desk. Say the word and it’s yours.",
+    waldo: [
+      "Held the quieter one, ten minutes on foot from the venue. ",
+      { src: "Granola" },
+      " has you asking for a desk on Tuesday’s call, and ",
+      { src: "Gmail" },
+      " shows the other booking still waiting on you. Say the word and it’s yours.",
+    ],
   },
   {
     time: "8:47",
     media: { kind: "video", art: "room", secs: 12 },
-    waldo: "Not the one I held. That room has the desk and the window on the courtyard.",
+    waldo: [
+      "Not the one I held, and better. ",
+      { src: "Google Calendar" },
+      " has three calls back to back tomorrow, then the co-founder sync. This room has the desk and the window on the courtyard, so the hold moves here, with ten minutes of air before the sync.",
+    ],
   },
 ];
 
-type WaMessage = { id: number; side: "you" | "waldo"; text?: string; media?: Media; time: string; read?: boolean; fresh?: boolean };
+type WaMessage = { id: number; side: "you" | "waldo"; parts?: Part[]; media?: Media; time: string; read?: boolean; fresh?: boolean };
 
 const WA_TICK = (
   <svg viewBox="0 0 16 11" aria-hidden="true">
@@ -201,7 +230,7 @@ export function FounderWhatsApp() {
   const live = useLive(root);
   const [messages, setMessages] = useState<WaMessage[]>([
     { id: -2, side: "you", media: FOUNDER[0].media, time: FOUNDER[0].time, read: true },
-    { id: -1, side: "waldo", text: FOUNDER[0].waldo, time: FOUNDER[0].time },
+    { id: -1, side: "waldo", parts: FOUNDER[0].waldo, time: FOUNDER[0].time },
   ]);
   const [typing, setTyping] = useState(false);
   // What is in the field while it is being sent: a clip or photo picked, or a voice note being recorded
@@ -241,9 +270,9 @@ export function FounderWhatsApp() {
         await sleep(1700);
         if (!alive) return;
         setTyping(false);
-        push({ side: "waldo", text: waldo, time });
+        push({ side: "waldo", parts: waldo, time });
         scene.current += 1;
-        await sleep(3400);
+        await sleep(READ_MS);
       }
     })();
     return () => {
@@ -330,7 +359,7 @@ export function FounderWhatsApp() {
                 {m.media && m.media.kind !== "voice" ? (
                   <Still art={m.media.art} secs={m.media.kind === "video" ? m.media.secs : undefined} />
                 ) : null}
-                {m.text}
+                {m.parts ? <Parts parts={m.parts} /> : null}
                 <span className="hats-wa-meta">
                   {m.time}
                   {m.side === "you" ? (
@@ -397,12 +426,30 @@ const ENGINEER: { you: string; file: File; waldo: Part[] }[] = [
   {
     you: "pr 212 is red and standup ate my deep work",
     file: { kind: "image", name: "ci-red.png" },
-    waldo: [{ agent: "Codex" }, " takes the failing check. Standup moves to 11:30, so 9 to 11 is yours."],
+    waldo: [
+      { agent: "Codex" },
+      " takes the failing check; ",
+      { src: "GitHub" },
+      " shows one test red since last night. ",
+      { src: "Oura" },
+      " has 9 to 11 as your sharpest hours and ",
+      { src: "Google Calendar" },
+      " has standup in the middle of them. Standup moves to 11:30, so 9 to 11 is yours.",
+    ],
   },
   {
     you: "migration fails in staging. i slept 5 hours",
     file: { kind: "video", name: "repro.mov · 0:08" },
-    waldo: [{ agent: "Codex" }, " reruns it with the fix. The review moves to tomorrow, when you’ll be sharper."],
+    waldo: [
+      { agent: "Codex" },
+      " reruns it with the fix; ",
+      { src: "Vercel" },
+      " shows staging is the only deploy failing. ",
+      { src: "Apple Health" },
+      " has you at five hours and ",
+      { src: "Linear" },
+      " has two reviews due, so they move to tomorrow, when you’ll be sharper.",
+    ],
   },
 ];
 
@@ -469,7 +516,7 @@ export function EngineerCli() {
         setLines((all) => all.filter((l) => l.kind !== "work"));
         push({ kind: "waldo", parts: waldo });
         scene.current += 1;
-        await sleep(3400);
+        await sleep(READ_MS);
       }
     })();
     return () => {
@@ -537,18 +584,27 @@ export function EngineerCli() {
 
 /* ── 3 · Investor, on an Apple Watch ────────────────────────────────────────────────────────────── */
 
-const INVESTOR: { media: Media; waldo: string }[] = [
+// The watch screen is small, so these two are kept to a line or two: the tools, then the call.
+const INVESTOR: { media: Media; waldo: Part[] }[] = [
   {
     media: { kind: "voice", secs: 5, bars: bars(4, 9, 14, 8, 17, 11, 6, 15, 10, 5, 13, 8, 4) },
-    waldo: "Pitch five moves to Thursday. Pitch four keeps the full hour.",
+    waldo: [
+      { src: "Calendly" },
+      " has five pitches today, and ",
+      { src: "Oura" },
+      " has you flagging by three. Pitch five moves to Thursday.",
+    ],
   },
   {
     media: { kind: "image", art: "slide" },
-    waldo: "Slide six has last quarter’s number. Flagged before pitch five.",
+    waldo: [
+      { src: "Stripe" },
+      " has this quarter’s revenue, and slide six still shows last quarter’s. Flagged before pitch five.",
+    ],
   },
 ];
 
-type WatchMessage = { id: number; side: "you" | "waldo"; media?: Media; text?: string; fresh?: boolean; status?: "Delivered" | "Read" };
+type WatchMessage = { id: number; side: "you" | "waldo"; media?: Media; parts?: Part[]; fresh?: boolean; status?: "Delivered" | "Read" };
 /** The three screens a voice note goes through in watchOS Messages: the thread, the "+" menu, recording */
 type WatchView = "thread" | "menu" | "rec";
 type Press = "plus" | "audio" | "send" | null;
@@ -569,7 +625,7 @@ export function InvestorWatch() {
   const live = useLive(root);
   const [messages, setMessages] = useState<WatchMessage[]>([
     { id: -2, side: "you", media: INVESTOR[0].media, status: "Read" },
-    { id: -1, side: "waldo", text: INVESTOR[0].waldo },
+    { id: -1, side: "waldo", parts: INVESTOR[0].waldo },
   ]);
   const [view, setView] = useState<WatchView>("thread");
   const [press, setPress] = useState<Press>(null);
@@ -627,9 +683,9 @@ export function InvestorWatch() {
         await sleep(1500);
         if (!alive) return;
         setTyping(false);
-        push({ side: "waldo", text: waldo });
+        push({ side: "waldo", parts: waldo });
         scene.current += 1;
-        await sleep(3400);
+        await sleep(READ_MS);
       }
     })();
     return () => {
@@ -689,7 +745,7 @@ export function InvestorWatch() {
                         <Still art={m.media.art} secs={m.media.kind === "video" ? m.media.secs : undefined} />
                       </p>
                     ) : (
-                      <p className="hats-watch-bubble">{m.text}</p>
+                      <p className="hats-watch-bubble">{m.parts ? <Parts parts={m.parts} /> : null}</p>
                     )}
                     {m.status ? <small className="hats-watch-status">{m.status}</small> : null}
                   </div>
@@ -795,22 +851,34 @@ export function InvestorWatch() {
 
 /* ── 4 · Designer, in Figma ─────────────────────────────────────────────────────────────────────── */
 
-const DESIGNER: { you: string; art?: Art; file?: string; time: string; waldo: string }[] = [
+const DESIGNER: { you: string; art?: Art; file?: string; time: string; waldo: Part[] }[] = [
   {
     you: "@Waldo the review is at 3 and the empty states aren’t done",
     art: "frame",
     file: "empty-states.png",
     time: "9:12 AM",
-    waldo: "Review moves to 4:30. One to three is yours for the empty states, your clearest stretch today.",
+    waldo: [
+      "Review moves to 4:30. ",
+      { src: "Google Calendar" },
+      " is open from one and ",
+      { src: "Oura" },
+      " has your clearest hours there, so one to three is yours for the empty states.",
+    ],
   },
   {
     you: "@Waldo the client wants the icon set before lunch",
     time: "9:41 AM",
-    waldo: "Icons get nine to eleven. The 10am crit moves to Thursday, when you’ll have more to give.",
+    waldo: [
+      "Icons get nine to eleven. ",
+      { src: "Notion" },
+      " has the client brief due at noon, and the 10am crit in ",
+      { src: "Google Calendar" },
+      " sits inside that time, so the crit moves to Thursday.",
+    ],
   },
 ];
 
-type Comment = { id: number; who: "you" | "waldo"; text: string; time: string; art?: Art; fresh?: boolean };
+type Comment = { id: number; who: "you" | "waldo"; text?: string; parts?: Part[]; time: string; art?: Art; fresh?: boolean };
 
 /** "@Waldo" is set as a mention, while it is being typed too */
 function Mention({ text }: { text: string }) {
@@ -836,7 +904,7 @@ export function DesignerFigma() {
   const live = useLive(root);
   const [comments, setComments] = useState<Comment[]>([
     { id: -2, who: "you", text: DESIGNER[0].you, time: DESIGNER[0].time, art: DESIGNER[0].art },
-    { id: -1, who: "waldo", text: DESIGNER[0].waldo, time: DESIGNER[0].time },
+    { id: -1, who: "waldo", parts: DESIGNER[0].waldo, time: DESIGNER[0].time },
   ]);
   const [draft, setDraft] = useState<string | null>(null);
   const [attach, setAttach] = useState<{ art: Art; file: string } | null>(null);
@@ -875,9 +943,9 @@ export function DesignerFigma() {
         await sleep(1700);
         if (!alive) return;
         setTyping(false);
-        push({ who: "waldo", text: waldo, time });
+        push({ who: "waldo", parts: waldo, time });
         scene.current += 1;
-        await sleep(3400);
+        await sleep(READ_MS);
       }
     })();
     return () => {
@@ -953,9 +1021,7 @@ export function DesignerFigma() {
                       <b>{c.who === "waldo" ? "Waldo" : "Noor"}</b>
                       <time>{c.time}</time>
                     </p>
-                    <p className="hats-fig-text">
-                      <Mention text={c.text} />
-                    </p>
+                    <p className="hats-fig-text">{c.parts ? <Parts parts={c.parts} /> : <Mention text={c.text ?? ""} />}</p>
                     {c.art ? (
                       <span className="hats-fig-img">
                         <Pic art={c.art} />
@@ -1012,36 +1078,47 @@ export function DesignerFigma() {
 
 /* ── 5 · Sales, in Slack ────────────────────────────────────────────────────────────────────────── */
 
-/** What Waldo did, as a Slack app would attach it under his reply: where it happened, what it is, a button */
-type SlackCard = { logo: "gmail" | "google-calendar"; label: string; title: string; line: string; was?: string; action: string };
+/** What Waldo did, as a Slack app would attach it under his reply: where it happened (the tool's name, no logo), what it is, a button */
+type SlackCard = { app: "Gmail" | "Google Calendar"; label: string; title: string; line: string; was?: string; action: string };
 
-const SALES: { text?: string; media: Media; file?: string; time: string; waldo: string; card: SlackCard }[] = [
+const SALES: { text?: string; media: Media; file?: string; time: string; waldo: Part[]; card: SlackCard }[] = [
   {
     media: { kind: "voice", secs: 7, bars: bars(4, 9, 14, 8, 17, 11, 6, 15, 10, 5, 13, 8, 16, 7, 12, 6, 9, 4, 11, 5) },
     time: "9:14 AM",
-    waldo: "Held Thursday, ten to twelve, your sharpest hours, for the proposal. The note to Dana is ready when you are.",
-    card: { logo: "gmail", label: "Draft · not sent", title: "To Dana Reyes", line: "Great talking today. The proposal lands Friday.", action: "Review" },
+    waldo: [
+      "Held Thursday, ten to twelve, for the proposal. ",
+      { src: "Oura" },
+      " has those as your sharpest hours, and ",
+      { src: "HubSpot" },
+      " has Dana’s deal as the first to close. The note to Dana is ready when you are.",
+    ],
+    card: { app: "Gmail", label: "Draft, not sent", title: "To Dana Reyes", line: "Great talking today. The proposal lands Friday.", action: "Review" },
   },
   {
     text: "where do we stand this week",
     media: { kind: "image", art: "pipeline" },
     file: "pipeline.png",
     time: "11:02 AM",
-    waldo: "Three deals close this week. The Acme call moves to 2pm, your best hour. The rest can wait.",
-    card: { logo: "google-calendar", label: "Moved", title: "Acme renewal call", line: "Today, 2:00 PM", was: "11:00 AM", action: "Undo" },
+    waldo: [
+      { src: "HubSpot" },
+      " has three deals closing this week, and ",
+      { src: "Google Calendar" },
+      " has the Acme call at 11, before you’re at your best. ",
+      { src: "Apple Health" },
+      " has two to three as your strongest hour, so it moves to 2pm. The rest can wait.",
+    ],
+    card: { app: "Google Calendar", label: "Moved", title: "Acme renewal call", line: "Today, 2:00 PM", was: "11:00 AM", action: "Undo" },
   },
 ];
 
-type SlackMessage = { id: number; who: "you" | "waldo"; text?: string; media?: Media; card?: SlackCard; time: string; fresh?: boolean; react?: boolean };
+type SlackMessage = { id: number; who: "you" | "waldo"; text?: string; parts?: Part[]; media?: Media; card?: SlackCard; time: string; fresh?: boolean; react?: boolean };
 
 function SlackCardView({ card }: { card: SlackCard }) {
   return (
     <div className="hats-slk-card">
       <div className="hats-slk-card-text">
         <p className="hats-slk-card-label">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={`/assets/connectors/${card.logo}.svg`} alt="" />
-          {card.label}
+          {card.app} · {card.label}
         </p>
         <b>{card.title}</b>
         <p className="hats-slk-card-line">
@@ -1061,7 +1138,7 @@ export function SalesSlack() {
   const live = useLive(root);
   const [messages, setMessages] = useState<SlackMessage[]>([
     { id: -2, who: "you", media: SALES[0].media, time: SALES[0].time },
-    { id: -1, who: "waldo", text: SALES[0].waldo, card: SALES[0].card, time: SALES[0].time, react: true },
+    { id: -1, who: "waldo", parts: SALES[0].waldo, card: SALES[0].card, time: SALES[0].time, react: true },
   ]);
   const [draft, setDraft] = useState<string | null>(null);
   const [attach, setAttach] = useState<{ art: Art; file: string } | null>(null);
@@ -1105,13 +1182,13 @@ export function SalesSlack() {
         await sleep(1700);
         if (!alive) return;
         setTyping(false);
-        push({ who: "waldo", text: waldo, card, time });
+        push({ who: "waldo", parts: waldo, card, time });
         scene.current += 1;
         // Ria gives it a thumbs up
         await sleep(1500);
         if (!alive) return;
         setMessages((all) => all.map((m, i) => (i === all.length - 1 ? { ...m, react: true } : m)));
-        await sleep(2400);
+        await sleep(READ_MS - 1000);
       }
     })();
     return () => {
@@ -1173,6 +1250,11 @@ export function SalesSlack() {
                   <time>{m.time}</time>
                 </p>
                 {m.text ? <p className="hats-slk-body">{m.text}</p> : null}
+                {m.parts ? (
+                  <p className="hats-slk-body">
+                    <Parts parts={m.parts} />
+                  </p>
+                ) : null}
                 {m.media?.kind === "voice" ? (
                   <span className="hats-slk-clip">
                     <span className="hats-slk-play">{PLAY}</span>
