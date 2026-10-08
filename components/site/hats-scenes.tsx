@@ -1078,8 +1078,8 @@ export function DesignerFigma() {
 
 /* ── 5 · Sales, in Slack ────────────────────────────────────────────────────────────────────────── */
 
-/** What Waldo did, as a Slack app would attach it under his reply: where it happened, what it is, a button */
-type SlackCard = { logo: "gmail" | "google-calendar"; label: string; title: string; line: string; was?: string; action: string };
+/** What Waldo did, as a Slack app would attach it under his reply: where it happened (the tool's name, no logo), what it is, a button */
+type SlackCard = { app: "Gmail" | "Google Calendar"; label: string; title: string; line: string; was?: string; action: string };
 
 const SALES: { text?: string; media: Media; file?: string; time: string; waldo: Part[]; card: SlackCard }[] = [
   {
@@ -1092,7 +1092,7 @@ const SALES: { text?: string; media: Media; file?: string; time: string; waldo: 
       { src: "HubSpot" },
       " has Dana’s deal as the first to close. The note to Dana is ready when you are.",
     ],
-    card: { logo: "gmail", label: "Draft · not sent", title: "To Dana Reyes", line: "Great talking today. The proposal lands Friday.", action: "Review" },
+    card: { app: "Gmail", label: "Draft, not sent", title: "To Dana Reyes", line: "Great talking today. The proposal lands Friday.", action: "Review" },
   },
   {
     text: "where do we stand this week",
@@ -1107,7 +1107,7 @@ const SALES: { text?: string; media: Media; file?: string; time: string; waldo: 
       { src: "Apple Health" },
       " has two to three as your strongest hour, so it moves to 2pm. The rest can wait.",
     ],
-    card: { logo: "google-calendar", label: "Moved", title: "Acme renewal call", line: "Today, 2:00 PM", was: "11:00 AM", action: "Undo" },
+    card: { app: "Google Calendar", label: "Moved", title: "Acme renewal call", line: "Today, 2:00 PM", was: "11:00 AM", action: "Undo" },
   },
 ];
 
@@ -1118,9 +1118,7 @@ function SlackCardView({ card }: { card: SlackCard }) {
     <div className="hats-slk-card">
       <div className="hats-slk-card-text">
         <p className="hats-slk-card-label">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={`/assets/connectors/${card.logo}.svg`} alt="" />
-          {card.label}
+          {card.app} · {card.label}
         </p>
         <b>{card.title}</b>
         <p className="hats-slk-card-line">

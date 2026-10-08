@@ -57,7 +57,7 @@ _Sources (2026-10-08): every answer in the five pictures now says where Waldo go
 - **Designers** — The crit is at 3 and the empty states aren't done. Waldo reads your calendar, your client brief in Notion and your clearest hours, then gives you those hours before the crit and moves the review back.
   - _Picture: a designer in Figma (`DesignerFigma`): a frame on the grey canvas with a comment pin, and the comment thread open beside it. The designer types an @Waldo comment and drops in a screenshot; he answers under it. Two exchanges (the review moves, the icon set gets the morning)._
 - **Sales** — Waldo reads your pipeline in HubSpot, your calendar and your best hours, and puts the most important call in the strongest one. The follow-up is drafted in Gmail before you hang up.
-  - _Picture: a salesperson in a Slack DM with Waldo (`SalesSlack`). Sends a voice clip, then a screenshot of the pipeline. He replies with one line and an app card showing what he did: a Gmail draft (Draft · not sent, Review) and a calendar move (Moved, Undo), then a thumbs-up arrives. Names (Noor, Ria, Dana, Acme) are made up._
+  - _Picture: a salesperson in a Slack DM with Waldo (`SalesSlack`). Sends a voice clip, then a screenshot of the pipeline. He replies with one line and an app card showing what he did: a Gmail draft ("Gmail · Draft, not sent", Review) and a calendar move ("Google Calendar · Moved", Undo). The card names the tool in text; no logos (2026-10-08), then a thumbs-up arrives. Names (Noor, Ria, Dana, Acme) are made up._
 
 ---
 
