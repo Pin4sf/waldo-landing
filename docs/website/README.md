@@ -10,7 +10,7 @@ This folder is where the whole website gets planned before it gets built. Each p
 | [pages/home.md](pages/home.md) | Home page: live copy at the top, then the drafts behind it | **Built — copy review applied** |
 | [pages/how-it-works.md](pages/how-it-works.md) | How it works (features) page: live copy at the top, then v4 notes and the full feature index | **Built — copy review applied** |
 | [pages/kennel.md](pages/kennel.md) | Kennel for Mac page: live copy at the top | **Built — new hero from the copy review** |
-| [pages/connectors.md](pages/connectors.md) | Connectors page: live copy at the top, plus the tool status list | **Built — copy review applied** |
+| [pages/connectors.md](pages/connectors.md) | Connectors page: live copy at the top, plus the tool status list | **Rebuilt 2026-10-09: one morning, use cases as tools before and after, jobs as a day band after claude.com** |
 | [pages/blog.md](pages/blog.md) | Blog index (live copy at the top) + article template + content plan + Motto reference | **Built** |
 | [blog-system.md](blog-system.md) | How a post goes from idea to live, the writing guide, art spec, review checklist | **Live — in use** |
 | [blog-backlog.md](blog-backlog.md) | Post ideas and their status | Ongoing — waiting on Shivansh's topics |

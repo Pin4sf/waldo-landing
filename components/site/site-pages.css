@@ -206,48 +206,6 @@
   .lock[data-live] .lock-stack { animation: lock-arrive 9s var(--ease-sheet) infinite; }
 }
 
-/* ── Connectors · "Work Gmail. Personal Gmail.": one account, and the hours Waldo handles it (two-accounts.tsx) ── */
-.acct {
-  --u: calc(100cqw / 480);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: calc(14 * var(--u));
-  height: 100%;
-  box-sizing: border-box;
-  padding: calc(28 * var(--u));
-  background: #fff;
-  color: #1a1a1a;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
-  font-size: max(12px, calc(16 * var(--u)));
-  line-height: 1.3;
-  text-align: left;
-  user-select: none;
-}
-.acct p { margin: 0; }
-.acct-row { display: flex; align-items: center; gap: calc(12 * var(--u)); padding: calc(14 * var(--u)) calc(16 * var(--u)); border-radius: calc(16 * var(--u)); box-shadow: inset 0 0 0 0.5px rgb(26 26 26 / 0.1); }
-.acct-row img { flex: none; width: calc(30 * var(--u)); height: calc(30 * var(--u)); }
-.acct-who { min-width: 0; flex: 1; }
-.acct-who b { display: block; font-weight: 600; }
-.acct-who span { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #6b6b68; font-size: max(11px, calc(14 * var(--u))); }
-.acct-chip { flex: none; display: inline-flex; align-items: center; gap: calc(6 * var(--u)); padding: calc(4 * var(--u)) calc(10 * var(--u)); border-radius: 999px; background: #f4f3f0; font-size: max(11px, calc(13 * var(--u))); font-weight: 500; }
-.acct-chip i { width: calc(7 * var(--u)); height: calc(7 * var(--u)); border-radius: 50%; background: #22c55e; }
-.acct-day { padding: calc(16 * var(--u)) calc(16 * var(--u)) calc(14 * var(--u)); border-radius: calc(16 * var(--u)); background: #f4f3f0; }
-.acct-day-head { display: flex; justify-content: space-between; font-size: max(11px, calc(13.5 * var(--u))); color: #6b6b68; }
-.acct-day-head b { color: #1a1a1a; font-weight: 600; }
-.acct-bar { position: relative; height: calc(34 * var(--u)); margin-top: calc(12 * var(--u)); border-radius: calc(9 * var(--u)); background: #fff; box-shadow: inset 0 0 0 0.5px rgb(26 26 26 / 0.08); }
-/* Work hours, shaded; where Waldo works this inbox, in ink */
-.acct-work { position: absolute; top: 0; bottom: 0; left: calc(3 / 18 * 100%); width: 50%; /* 9am to 6pm, on a 6am-to-midnight bar */ background: repeating-linear-gradient(135deg, rgb(26 26 26 / 0.05) 0 4px, transparent 4px 8px); }
-.acct-slot { position: absolute; top: calc(5 * var(--u)); bottom: calc(5 * var(--u)); border-radius: calc(6 * var(--u)); background: #1a1a1a; transition: background-color 0.4s var(--ease-out-quad), box-shadow 0.4s var(--ease-out-quad); }
-.acct-slot[data-on] { background: #f97316; box-shadow: 0 0 0 calc(3 * var(--u)) rgb(249 115 22 / 0.2); }
-.acct-now { position: absolute; top: calc(-4 * var(--u)); bottom: calc(-4 * var(--u)); width: 1.5px; margin-left: -0.75px; background: #f97316; }
-.acct-now::before { content: ""; position: absolute; top: calc(-3 * var(--u)); left: 50%; width: calc(7 * var(--u)); height: calc(7 * var(--u)); margin-left: calc(-3.5 * var(--u)); border-radius: 50%; background: #f97316; }
-.acct-hours { display: flex; justify-content: space-between; margin-top: calc(7 * var(--u)); font-size: max(10px, calc(12 * var(--u))); color: #8d8b86; font-variant-numeric: tabular-nums; }
-.acct-log { min-height: 2.6em; font-size: max(11.5px, calc(14.5 * var(--u))); color: #6b6b68; }
-.acct-log b { color: #1a1a1a; font-weight: 500; }
-.acct-log[data-fresh] { animation: lock-fade 0.5s var(--ease-sheet) both; }
-@keyframes lock-fade { from { opacity: 0; transform: translateY(calc(6 * var(--u))); } }
-
 /* ── Kennel · "Gets the best out of what you have.": a contract, and the agent you approve for it (agent-picker.tsx) ──
    Kennel's own look: dark, hairlines at 8%, the orange only for the one being chosen. */
 .pick {
