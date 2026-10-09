@@ -33,11 +33,15 @@ How to read it (the three text levels are in [../type.md](../type.md)):
 Body: Everything Waldo does, from reading last night's sleep to moving tomorrow's meeting.
 Buttons: "Let Waldo in →"
 
-- **Health** — Knows how you're doing.
-- **Day to day** — Runs your day around it.
-- **Connectors** — Works with everything you use.
-- **Talk to Waldo** — Ask anything, anywhere.
-- **Your rules** — You decide how far it goes.
+_Picture (`components/site/how-map.tsx`, 2026-10-09), replacing the five jump cards, after "See what Claude can do" on claude.com/product/overview: Waldo in the middle (the paw mark, in orange), the page's five parts around him in the headline face, each a link down to its section, and every feature hanging off its part by the name it has further down the page. Features that aren't out yet carry "Soon". Pointing at a part lights its lines and features. It draws itself out from the middle on load. On phones and narrow tablets it becomes a list: each part with its features under it._
+
+- **Health**: Recovery · Form · Weight · Sleep debt · Quiet flags · Training · Your history · Bring your past
+- **Day to day**: The Brief · The Window · Your best hours · Fewer pings · Patterns · The Slope · Fixed first, mentioned after · Tomorrow, today (Soon)
+- **Connectors**: Your watch · Calendar · Inbox and messages · Tasks · Your agents · 200+ tools · Agents ask Waldo (Soon)
+- **Talk to Waldo**: Threads · Follow up on anything · Quick replies · Charts in replies · Full history · Voice (Soon)
+- **Your rules**: Yours, always · Three levels, per area · The activity log · Your own routines (Soon) · Say it once · Your schedule · Always comes back to you
+
+_The five one-liners from the old cards (Knows how you're doing. · Runs your day around it. · Works with everything you use. · Ask anything, anywhere. · You decide how far it goes.) are no longer on the page._
 
 ---
 

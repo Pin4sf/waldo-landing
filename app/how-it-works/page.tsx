@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 
-import { Body, Close, Grid, Header, Item, Section, Stage } from "@/components/site/blocks";
+import { Body, Close, Header, Item, Section, Stage } from "@/components/site/blocks";
 import { type Feature, FeatureList } from "@/components/site/feature-sheet";
 import { Carousel } from "@/components/site/carousel";
 import { ConnectorPile } from "@/components/site/connector-pile";
 import { LockMoment } from "@/components/site/day-moments";
+import { HowMap } from "@/components/site/how-map";
 import { SiteShell } from "@/components/site/site-shell";
 import { OG_IMAGE_URL, SITE_URL } from "@/lib/site-metadata";
 
@@ -575,15 +576,9 @@ export default function HowItWorksPage() {
           actions={{ primary: { label: "Let Waldo in →", href: "/waitlist" } }}
           center
         />
-        <Body>
-          <Grid cols={5} boxed>
-            <Item title="Health" href="#health">Knows how you&apos;re doing.</Item>
-            <Item title="Day to day" href="#day">Runs your day around it.</Item>
-            <Item title="Connectors" href="#connectors">Works with everything you use.</Item>
-            <Item title="Talk to Waldo" href="#talk">Ask anything, anywhere.</Item>
-            <Item title="Your rules" href="#rules">You decide how far it goes.</Item>
-          </Grid>
-        </Body>
+        {/* Was five jump cards. Now a map of everything below, after claude.com/product/overview: Waldo in the
+            middle, the five parts around him (each a link to its section), every feature on its part */}
+        <HowMap />
       </Section>
 
       {/* 1 · Health */}

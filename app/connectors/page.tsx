@@ -1,14 +1,24 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 
-import { Body, Close, Grid, Header, Item, Section, Stage, StageImage, Table } from "@/components/site/blocks";
-import { ConnectorCounts, ConnectorDirectory } from "@/components/site/connector-directory";
+import { AgentHandoff } from "@/components/site/agent-handoff";
+import { AccountsSplit } from "@/components/site/accounts-split";
+import { Body, Header, Item, Section, Stage } from "@/components/site/blocks";
+import { Carousel } from "@/components/site/carousel";
+import { ConnectorMorning } from "@/components/site/connector-morning";
 import { ConnectorRequestForm } from "@/components/site/connector-request-form";
+import { ConnectorStatusList } from "@/components/site/connector-status-list";
+import { availability, countOf } from "@/components/site/connector-tools";
+import { UseBody, UseCalendar, UseInbox, UseNotes, UseTasks, UseWeather, UseWork } from "@/components/site/connector-uses";
+import { KeyWindow } from "@/components/site/key-window";
+import { PutToWork } from "@/components/site/put-to-work";
 import { SiteShell } from "@/components/site/site-shell";
-import { AccountDay } from "@/components/site/two-accounts";
+import { ToolTalk } from "@/components/site/tool-talk";
 import { OG_IMAGE_URL, SITE_URL } from "@/lib/site-metadata";
 
 // Copy: docs/website/pages/connectors.md ("Live copy" at the top)
-// Layout, pictures and motion follow the homepage (docs/website/site-wide-pass.md).
+// Rebuilt 2026-10-09 (docs/website/sessions/2026-10-09.md): one idea per section, each shown as the tools
+// themselves before and after Waldo. The jobs section follows claude.com/product/overview's "Put Claude to work".
 
 const DESCRIPTION = "Every tool Waldo works with, what it reads from each, and what it can change. Honest status for every one.";
 
@@ -24,26 +34,36 @@ export const metadata: Metadata = {
   },
 };
 
+/** A use case's words: the first line in ink, the rest in grey, then which tools it works with, in plain words */
+function Use({ strong, children, tools, extra }: { strong: string; children: ReactNode; tools: string[]; extra?: string }) {
+  return (
+    <>
+      <p>
+        <strong>{strong}</strong> {children}
+      </p>
+      <p className="cn-works">
+        {availability(tools)}
+        {extra ? ` ${extra}` : null}
+      </p>
+    </>
+  );
+}
+
 export default function ConnectorsPage() {
   return (
     <SiteShell>
-      {/* 0 · Hero */}
+      {/* 0 · Opening, and one morning: what Waldo read, and what he did about it */}
       <Section size="open">
         <Header
           as="h1"
           lines={["Connect it once.", "Waldo takes it from there."]}
-          subtitle="Your watch, your calendar, your inbox, your tasks, and the agents you already use. Here's everything Waldo works with, and what it does with each."
-          body={[<ConnectorCounts key="counts" />, "Start with one. Add the rest when you're ready."]}
+          subtitle="Your watch, your calendar, your inbox, your tasks, and the agents you already use. Connect them once, and Waldo reads what each one knows about your day, then acts on it."
           center
         />
+        <ConnectorMorning />
       </Section>
 
-      {/* 1 · Directory */}
-      <Section size="auto">
-        <ConnectorDirectory />
-      </Section>
-
-      {/* 2 · What Waldo does with them */}
+      {/* 1 · What Waldo does with each kind of tool: the tool itself, before and after */}
       <Section size="auto">
         <Header
           lines={["Reads what it needs.", "Nothing more."]}
@@ -51,23 +71,56 @@ export default function ConnectorsPage() {
           center
         />
         <Body>
-          <Table
-            columns={["Type of tool", "Waldo reads", "Waldo does"]}
-            rows={[
-              ["Body", "Sleep, heart rate, HRV, stress, movement", "Works out Recovery, Form and Weight. Spots when you're running low."],
-              ["Calendar", "Meetings, gaps, back-to-backs, late nights", "Moves, blocks and protects time, within your limits"],
-              ["Mail & messages", "Email access details under review.", "Batches your inbox, goes quiet when it's too much, flags what needs you"],
-              ["Tasks & projects", "Due dates, overdue items, what's piling up", "Reorders by deadline and energy, breaks big tasks down"],
-              ["Notes & files", "Documents you point it to", "Pulls context together, so you don't re-explain"],
-              ["Engineering", "Reviews waiting on you, ticket load", "Batches reviews into your focus time, updates tickets"],
-              ["Design", "Comments waiting on you", "Sorts feedback before crit"],
-              ["Sales & support", "Pipeline and queue pressure", "Spaces your calls, flags what's urgent"],
-              ["Money", "Business numbers. Read only.", "Drafts your investor update"],
-              ["Music", "The mood of what you play, not a list of songs", "Adds one more clue to how you're doing"],
-              ["Agents", "Their work and results", "Gives them your context, checks their work (via Kennel)"],
-              ["Automatic", "Weather, air quality, your location", "Factors heat, light and travel into your day. No setup."],
-            ]}
-          />
+          <Carousel label="What Waldo does with each kind of tool" loop>
+            <Item meta="Your watch" visual="Last night's sleep in Apple Health, and Waldo's read on it" scene={<UseBody />}>
+              <Use strong="It knows how you slept. Waldo acts on it." tools={["Apple Watch", "Health Connect", "Oura", "WHOOP", "Garmin"]}>
+                Waldo reads sleep, heart rate, HRV, stress and movement, works out Recovery, Form and Weight, and spots when you&apos;re running low.
+              </Use>
+            </Item>
+            <Item meta="Your calendar" visual="A Tuesday in Google Calendar: the design review moves from 9:30 to 11:30" scene={<UseCalendar />}>
+              <Use strong="Your day bends around how you are." tools={["Google Calendar", "Outlook", "Apple Calendar", "Calendly"]}>
+                Waldo reads meetings, gaps, back-to-backs and late nights, then moves, blocks and protects time, within your limits.
+              </Use>
+            </Item>
+            <Item meta="Your inbox and messages" visual="A Gmail inbox: two messages come through, 36 fold into a batch for 11:30" scene={<UseInbox />}>
+              <Use strong="Your inbox waits for a better moment." tools={["Gmail", "Telegram", "Slack", "WhatsApp"]}>
+                Waldo batches your inbox, goes quiet when it&apos;s too much, and flags what needs you. Email access depends on the permissions you grant.
+              </Use>
+            </Item>
+            <Item meta="Your tasks" visual="Today's task list reorders: the proposal first, three tasks move to Thursday" scene={<UseTasks />}>
+              <Use strong="Your list, in an order you can actually do." tools={["Google Tasks", "Todoist", "Microsoft To Do", "Linear", "Asana"]}>
+                Waldo reads due dates and what&apos;s piling up, then reorders by deadline and energy and breaks big tasks down.
+              </Use>
+            </Item>
+            <Item meta="Your notes and files" visual="Two documents become three lines before a 2pm client call" scene={<UseNotes />}>
+              <Use strong="The context, before you ask for it." tools={["Notion", "Google Drive", "Dropbox", "Granola"]}>
+                Waldo reads the documents you point it to and pulls them together before you need them, so you don&apos;t re-explain.
+              </Use>
+            </Item>
+            <Item meta="Your work tools" visual="Reviews, comments and issues scattered through the day gather into one hour at 4pm" scene={<UseWork />}>
+              <Use strong="What waits on you, in one sitting." tools={["GitHub", "Figma", "Linear", "HubSpot", "Jira"]}>
+                Waldo reads reviews, comments and pipeline pressure, then batches them into your focus time instead of scattering them across the day.
+              </Use>
+            </Item>
+            <Item meta="Weather and travel" visual="Tomorrow's heat peaks at 1pm, so the 12:30 run moves to 7am" scene={<UseWeather />}>
+              <Use strong="Heat, light and travel, with nothing to set up." tools={["Weather", "Location"]} extra="Nothing to connect.">
+                Waldo reads the weather, air quality and roughly where you are, and factors them into your day.
+              </Use>
+            </Item>
+          </Carousel>
+        </Body>
+      </Section>
+
+      {/* 2 · Built for your work: a job's day, moment by moment (after claude.com/product/overview) */}
+      <Section size="auto">
+        <Header
+          lines={["Pick your job.", "The tools follow."]}
+          subtitle="Pick your profession and Waldo starts with the tools and routines people like you rely on, then adjusts to you."
+          body="Starts where you already are."
+          center
+        />
+        <Body>
+          <PutToWork />
         </Body>
       </Section>
 
@@ -80,86 +133,59 @@ export default function ConnectorsPage() {
           center
         />
         <Body>
-          <Grid cols={2}>
-            <Item
-              title="Work"
-              visual="Gmail card: Connected as you@work.com, and the two blocks a day Waldo works it"
-              scene={<AccountDay kind="work" />}
-              strong="Connected as you@work.com"
-            >
-              Handled during work hours, batched into two blocks a day.
-            </Item>
-            <Item
-              title="Personal"
-              visual="Gmail card: Connected as you@gmail.com, and the hours Waldo works it, all outside work"
-              scene={<AccountDay kind="personal" />}
-              strong="Connected as you@gmail.com"
-            >
-              Never touched during work hours.
-            </Item>
-          </Grid>
+          <AccountsSplit />
+          <div className="ax-rules">
+            <p>
+              <strong>Work.</strong> Handled during work hours, batched into two blocks a day.
+            </p>
+            <p>
+              <strong>Personal.</strong> Never touched during work hours.
+            </p>
+          </div>
         </Body>
       </Section>
 
-      {/* 4 · Built for your work */}
+      {/* 4 · Agents are tools too */}
       <Section size="auto">
-        <Stage narrow picture={<StageImage label="Professions, each with the tools that light up for it" src="/build/professions-illustration.svg" />}>
+        <Stage picture={<AgentHandoff />}>
           <Header
-            lines={["Pick your job.", "The tools follow."]}
-            subtitle="Pick your profession and Waldo starts with the tools and routines people like you rely on, then adjusts to you."
-            body="Starts where you already are."
+            lines={["Your agents,", "on the same team."]}
+            subtitle="Codex, Claude Code, Cursor and the rest do the work. Waldo gives them your context and checks what they deliver. Working today, in Kennel's open beta."
+            body="Soon, your agents will be able to ask Waldo how you're doing before they act for you."
+            actions={{ secondary: { label: "See how Kennel runs them", href: "/kennel" } }}
             center
           />
         </Stage>
-        <Body>
-          <Table
-            columns={["Profession", "Tools that light up", "Example routine"]}
-            rows={[
-              ["Founders", "Slack, Linear, Gmail, Stripe, HubSpot", "“Friday investor update, drafted from your numbers, Linear and your calendar.”"],
-              ["Engineers", "GitHub, Linear, Jira, Vercel, Slack", "“Reviews waiting on you, batched into your morning focus block.”"],
-              ["Investors", "Gmail, Calendar, Zoom, Calendly", "“Notes pulled together before every founder call.”"],
-              ["Designers", "Figma, Notion, Slack", "“Figma comments sorted before crit.”"],
-              ["Consultants", "Outlook, Zoom, Asana, Calendly", "“Client calls spaced so none gets the tired you.”"],
-              ["Athletes", "Strava, Garmin, WHOOP, Oura", "“Training load and work load, balanced on one calendar.”"],
-            ]}
-          />
-        </Body>
       </Section>
 
-      {/* 5 · Agents are tools too */}
-      <Section size="auto">
-        <Header
-          lines={["Your agents,", "on the same team."]}
-          subtitle="Codex, Claude Code, Cursor and the rest do the work. Waldo gives them your context and checks what they deliver. Working today, in Kennel's open beta."
-          body="Soon, your agents will be able to ask Waldo how you're doing before they act for you."
-          actions={{ secondary: { label: "See how Kennel runs them", href: "/kennel" } }}
-          center
-        />
-      </Section>
-
-      {/* 6 · You hold the keys */}
+      {/* 5 · You hold the keys */}
       <Section size="auto">
         <Header lines={["Connect anything.", "Disconnect anytime."]} body="Your keys. Your call." actions={{ secondary: { label: "Full detail", href: "/privacy" } }} center />
         <Body>
-          <Grid cols={4} boxed>
-            <Item strong="You approve every tool.">Nothing connects on its own.</Item>
-            <Item strong="Read only, unless you say so.">Each tool shows whether Waldo can change anything there.</Item>
-            <Item strong="Review access first.">Email access depends on the permissions you grant. App data details are under review.</Item>
-            <Item strong="One tap to disconnect.">What Waldo learned from that tool goes with it.</Item>
-          </Grid>
+          <KeyWindow />
         </Body>
       </Section>
 
-      {/* 7 · Missing a tool? */}
+      {/* 6 · Missing a tool? With every tool's status folded away above the form */}
       <Section id="request" size="auto">
-        <Header lines={["Don’t see yours?", "Tell us."]} body="The most-asked get built first." center />
+        <Header
+          lines={["Don’t see yours?", "Tell us."]}
+          body={`${countOf("today")} tools work today and ${countOf("next")} are coming next, growing to 200+ across 27 categories. The most-asked get built first.`}
+          center
+        />
         <Body>
+          <ConnectorStatusList />
           <ConnectorRequestForm />
         </Body>
       </Section>
 
-      {/* 9 · Close */}
-      <Close lines={["Your tools don’t talk", "to each other. Waldo does."]} actions={{ primary: { label: "Let Waldo in →", href: "/waitlist" } }} />
+      {/* 7 · Close: the shared close box, with the tools talking only through Waldo under the button */}
+      <Section size="auto">
+        <div className="site-stage site-stage--close">
+          <Header lines={["Your tools don’t talk", "to each other. Waldo does."]} actions={{ primary: { label: "Let Waldo in →", href: "/waitlist" } }} center />
+          <ToolTalk />
+        </div>
+      </Section>
     </SiteShell>
   );
 }
