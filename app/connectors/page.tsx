@@ -112,7 +112,7 @@ export default function ConnectorsPage() {
       </Section>
 
       {/* 2 · Built for your work: a job's day, moment by moment (after claude.com/product/overview) */}
-      <Section size="auto">
+      <Section id="jobs" size="auto">
         <Header
           lines={["Pick your job.", "The tools follow."]}
           subtitle="Pick your profession and Waldo starts with the tools and routines people like you rely on, then adjusts to you."
