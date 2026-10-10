@@ -67,18 +67,30 @@ Small print: Waldo uses health signals as context for planning your day. It isn'
 
 ---
 
-Label: Day to day
 ### Done before / you’re up.
 Body: Waldo reads your night, then rebuilds the day around it. The hard meeting moves, your best hours stay protected, and the inbox waits its turn. Most of it, you'll never see happen.
 
-| When | What Waldo does | What it looks like |
-|---|---|---|
-| Morning | The Brief | “Rough night, about 5h 40m. Nudged your 9am to 10:30. The afternoon looks fine.” |
-| Morning | The Window | “10:30–12:30 is your sharpest stretch. Blocked it.” |
-| Before a big meeting | Prep | “Board call in 35 minutes. You're running lower than usual. Here are last time's open items.” |
-| Afternoon | The Heads-Up | “This Tuesday is shaping up like the last three. Moved your 4pm before it lands.” |
-| Evening | The Close | “Today: 3 things moved, 1 protected. Tomorrow looks lighter.” |
-| End of week | The Adjustment | “22 hours of meetings this week. Friday afternoon cleared. Retro moved to Monday.” |
+_No eyebrow on this section (2026-10-10, Suyash: "remove the eyebrows")._
+
+_Picture (`components/site/day-moments.tsx`, v2 2026-10-10), after "A day with your dot" on chatgpt.com/features/dots: a few days (Tuesday, Wednesday morning, Friday) on a timeline. Above it, the thread at that moment as you'd have it: Waldo's messages and voice notes, the tool cards he shows (the calendar event he moved, the chart he read, tonight's sleep window, the Slack post he sent), the photo or voice note you sent, and your reaction on the corner of his message. Waldo (the mascot) walks the timeline with the flag. Per the brand rules he never gets a speech bubble and is only in content moods (no rough or flagging Waldo). The flag is ink; the one orange is his paw beside his messages. Under the timeline: the moment's name and one line, no label above it. Motion is quiet: messages fade in a few pixels apart, the flag eases, Waldo follows a beat behind; nothing bounces or tilts. Plays on its own until touched. On phones the flag stays in the middle and the timeline slides under it. Everything in the threads is invented (Priya, Sam, Maya)._
+
+v3 (2026-10-10, Suyash: "should appear like iMessages, not the colour but the motion … and UI"): each thread now plays out as an iMessage conversation in Waldo's colours. A "Tuesday 6:58 AM" stamp sits over it. (A contact header with Waldo's paw was tried and removed the same day as redundant.) Waldo types (three dots, with two little trailing circles) before each of his messages. His bubbles grow out of the tail corner, and yours rise in from below. The thread eases up to make room. Bubbles from one side group tight, with a tail only on the last one in a run. Your tapback, light like his bubbles (white with a hairline), pops onto the top corner of his message, and "Read" sits under your last message. The next moment comes once the thread has played and had about 3.6s to be read. While you drag, or for anyone who asks for less motion, the thread shows whole.
+
+v2 changes: Prep and The Close were left out to make room for a wider spread of situations (a run, a voice note mid-day, a recital, bedtime, a delayed flight). The Brief, The Window, The Heads-Up and The Adjustment keep their old words.
+
+| Flag | Name | The thread (you → right, Waldo → left) | Line under the name |
+|---|---|---|---|
+| 6:58 AM | The Brief | Waldo: voice note 0:24 · “Short night, about 5h 40m. Your 9am design review is now at 10:30. The afternoon looks fine.” (you react 🙏) · Google Calendar card: Design review, ~~9:00 AM~~ → 10:30 AM | Before your alarm, Waldo reads last night and tells you what it means for today, and what it already changed. |
+| 7:40 AM | Before the run | You: “Still on for intervals?” · Apple Health card: HRV, last 7 mornings, “Today is 12% under your usual” · Waldo: “Not today. An easy 5k instead, and the intervals are on Thursday in **Strava**, when you’re fresher.” (👍) | Waldo checks what last night left you before you push, and moves the hard session to a day that can take it. |
+| 10:30 AM | The Window | Waldo: “10:30 to 12:30 is your sharpest stretch. It’s blocked, and **Slack** is on Focus until then.” · Google Calendar card: Focus, held by Waldo, 10:30 AM – 12:30 PM | Waldo finds the hours you’ll be sharpest and keeps them clear for the work that needs you. |
+| 1:20 PM | The Fetch | You: voice note 0:07 · Waldo: “Heard you. Stress has been climbing since noon, so your 3pm is on Thursday now. Sam has a note in **Slack**.” (❤️) | When the day gets to you, say so however you like. Waldo clears what can wait. |
+| 2:40 PM | The Heads-Up | Apple Health card: Form, the last three Tuesdays, “Each one dropped hard around 5” · Waldo: “Today is shaping up the same way. Your 4pm moved to tomorrow morning, before it lands.” | Waldo sees a bad afternoon forming from the ones before it, and steps in before it lands. |
+| 4:45 PM | Outside work | Waldo: “Maya’s recital is at 6. The weekly sync runs over most weeks, so today it ends at 5:15.” (🙌) · Google Calendar card: Weekly sync, ~~4:30 – 5:45 PM~~ → 4:30 – 5:15 PM | Your calendar has a life in it too. Waldo looks after that as carefully as your focus. |
+| 10:40 PM | Wind-down | Waldo: “Early flight tomorrow. Lights out by 11 still gets you six and a half hours. Alarm’s set for 5:30.” (😴) · Tonight card: 11:00 PM → 5:30 AM, “6h 30m · 40 minutes under your usual. Fine for one night.” | Waldo works back from tomorrow to tell you when tonight should end. |
+| Wed 9:15 AM | On the road | You: photo of a departures board · “Delayed two hours.” · Waldo: “Saw it. The 1pm with Priya is a video call now, and she has a note from you in **Gmail**.” (👍) | Send Waldo whatever you’re looking at. It rearranges the day around it. |
+| Fri 4:10 PM | The Adjustment | Waldo: “22 hours of meetings this week, your most since March. Friday afternoon is cleared, and the retro moved to Monday.” · Slack card, #design-team: “Moving retro to Monday 10:00 so we start the week with it. Same link.” Sent for you by Waldo | Once a week, Waldo looks at the whole week and lightens the next one where it can. |
+
+New words (2026-10-10, still to be approved): every line under a name, the moments Before the run, The Fetch, Outside work, Wind-down and On the road, and the new Brief, Window and Adjustment wording.
 
 Also (each name has a "+" and opens a side panel; the panels are listed under "Side panels" below):
 - Your best hours +

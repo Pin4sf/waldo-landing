@@ -19,6 +19,7 @@ import {
   Section,
 } from "@/components/site/blocks";
 import { Carousel } from "@/components/site/carousel";
+import { HatsTabs } from "@/components/site/hats-tabs";
 import { SeeSection } from "@/components/site/see/see-section";
 import { SiteShell } from "@/components/site/site-shell";
 import { LiveClose } from "@/components/site/live-close";
@@ -160,7 +161,8 @@ export default function Home() {
         <SeeSection />
       </Section>
 
-      {/* 4 · Who it's for */}
+      {/* 4 · Who it's for: one picture at a time under a row of pills, and "More" to every job on Connectors,
+          after "Right where you need it" on chatgpt.com/features/dots (2026-10-10, components/site/hats-tabs.tsx) */}
       <Section>
         <Header
           lines={["Same Waldo.", "Different hats."]}
@@ -168,56 +170,83 @@ export default function Home() {
           center
         />
         <Body>
-          <Carousel label="Who Waldo works for" loop>
-            <Item
-              title="Founders"
-              visual="A founder travelling, sending Waldo a photo, a voice note and a clip in WhatsApp, and Waldo answering with the tools he read: Google Calendar, Apple Health, Granola and Gmail"
-              scene={<FounderWhatsApp />}
-            >
-              Three calls back to back, then the co-founder sync. Waldo reads
-              your sleep in Apple Health, your day in Google Calendar and what
-              was said in Granola, then puts ten minutes of air before the sync,
-              so the snappy reply never happens.
-            </Item>
-            <Item
-              title="Engineers"
-              visual="An engineer asking Waldo from the terminal, with a screenshot and a screen recording, and Waldo answering with the tools he read: GitHub, Oura, Vercel and Linear"
-              scene={<EngineerCli />}
-            >
-              Waldo reads your wearable for the hour you&apos;re sharpest, and
-              GitHub, Vercel and Linear for what is actually blocking you. That
-              hour goes to the hard problem. Standup moves somewhere else.
-            </Item>
-            <Item
-              title="Investors"
-              visual="An investor sending Waldo a voice note and a slide from an Apple Watch, and Waldo answering with the tools he read: Calendly, Oura and Stripe"
-              scene={<InvestorWatch />}
-            >
-              Waldo reads the day&apos;s pitches in Calendly and your recovery
-              from your wearable, then spaces them to what you can actually
-              give. He checks the deck against the latest numbers, so the
-              founder at pitch five gets your pitch-one attention.
-            </Item>
-            <Item
-              title="Designers"
-              visual="A designer leaving Waldo a comment on a frame in Figma, with a screenshot, and him answering under it with the tools he read: Google Calendar, Oura and Notion"
-              scene={<DesignerFigma />}
-            >
-              The crit is at 3 and the empty states aren&apos;t done. Waldo
-              reads your calendar, your client brief in Notion and your clearest
-              hours, then gives you those hours before the crit and moves the
-              review back.
-            </Item>
-            <Item
-              title="Sales"
-              visual="A salesperson sending Waldo a voice clip and a screenshot of the pipeline in a Slack message, and Waldo answering with the tools he read: Oura, HubSpot, Google Calendar and Apple Health"
-              scene={<SalesSlack />}
-            >
-              Waldo reads your pipeline in HubSpot, your calendar and your best
-              hours, and puts the most important call in the strongest one. The
-              follow-up is drafted in Gmail before you hang up.
-            </Item>
-          </Carousel>
+          <HatsTabs
+            label="Who Waldo works for"
+            more={{ label: "More", href: "/connectors#jobs" }}
+            hats={[
+              {
+                tab: "Founders",
+                title: "Founders",
+                visual:
+                  "A founder travelling, sending Waldo a photo, a voice note and a clip in WhatsApp, and Waldo answering with the tools he read: Google Calendar, Apple Health, Granola and Gmail",
+                scene: <FounderWhatsApp />,
+                children: (
+                  <>
+                    Three calls back to back, then the co-founder sync. Waldo reads your sleep in
+                    Apple Health, your day in Google Calendar and what was said in Granola, then
+                    puts ten minutes of air before the sync, so the snappy reply never happens.
+                  </>
+                ),
+              },
+              {
+                tab: "Engineers",
+                title: "Engineers",
+                visual:
+                  "An engineer asking Waldo from the terminal, with a screenshot and a screen recording, and Waldo answering with the tools he read: GitHub, Oura, Vercel and Linear",
+                scene: <EngineerCli />,
+                children: (
+                  <>
+                    Waldo reads your wearable for the hour you&apos;re sharpest, and GitHub,
+                    Vercel and Linear for what is actually blocking you. That hour goes to the
+                    hard problem. Standup moves somewhere else.
+                  </>
+                ),
+              },
+              {
+                tab: "Investors",
+                title: "Investors",
+                visual:
+                  "An investor sending Waldo a voice note and a slide from an Apple Watch, and Waldo answering with the tools he read: Calendly, Oura and Stripe",
+                scene: <InvestorWatch />,
+                children: (
+                  <>
+                    Waldo reads the day&apos;s pitches in Calendly and your recovery from your
+                    wearable, then spaces them to what you can actually give. He checks the deck
+                    against the latest numbers, so the founder at pitch five gets your pitch-one
+                    attention.
+                  </>
+                ),
+              },
+              {
+                tab: "Designers",
+                title: "Designers",
+                visual:
+                  "A designer leaving Waldo a comment on a frame in Figma, with a screenshot, and him answering under it with the tools he read: Google Calendar, Oura and Notion",
+                scene: <DesignerFigma />,
+                children: (
+                  <>
+                    The crit is at 3 and the empty states aren&apos;t done. Waldo reads your
+                    calendar, your client brief in Notion and your clearest hours, then gives you
+                    those hours before the crit and moves the review back.
+                  </>
+                ),
+              },
+              {
+                tab: "Sales",
+                title: "Sales",
+                visual:
+                  "A salesperson sending Waldo a voice clip and a screenshot of the pipeline in a Slack message, and Waldo answering with the tools he read: Oura, HubSpot, Google Calendar and Apple Health",
+                scene: <SalesSlack />,
+                children: (
+                  <>
+                    Waldo reads your pipeline in HubSpot, your calendar and your best hours, and
+                    puts the most important call in the strongest one. The follow-up is drafted in
+                    Gmail before you hang up.
+                  </>
+                ),
+              },
+            ]}
+          />
         </Body>
       </Section>
 

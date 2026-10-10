@@ -2,7 +2,7 @@
   The rest of the site, made like the homepage (2026-10-04, docs/website/site-wide-pass.md).
   The homepage's own pieces live in site.css; these are the shared ones the other pages needed to look and move
   the same way: the Stage box, the page opening, white boxed cards, and the new pictures
-  drawn in code (How it works' lock screens, Connectors' two accounts, Kennel's agent picker).
+  drawn in code (Connectors' two accounts, Kennel's agent picker).
 */
 
 /* ── Page opening ──────────────────────────────────────
@@ -118,92 +118,6 @@
   html[data-motion] .site [data-appear="rise"]:not([data-inview]) { opacity: 0; transform: translateY(56px); }
   html[data-motion] .site [data-appear="rise"][data-inview] { animation: site-stage-rise 1s var(--ease-sheet) 120ms both; }
   html[data-motion]:not([data-motion-ready]) .site [data-appear="rise"] { animation: site-stage-rise 1ms 3s both; }
-}
-
-/* ── How it works · "Done before you're up": Waldo's message arriving on the lock screen (day-moments.tsx) ──
-   The card is the phone's lock screen, edge to edge, no phone frame (like the homepage's hats). In units of 1/480
-   of the frame's width, so it scales with the card. SF Pro, as the phone draws it. */
-.lock {
-  --u: calc(100cqw / 480);
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 100%;
-  overflow: hidden;
-  padding: calc(56 * var(--u)) calc(22 * var(--u)) 0;
-  box-sizing: border-box;
-  background: linear-gradient(180deg, #f1efea 0%, #e9e6df 100%);
-  color: #1a1a1a;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
-  text-align: center;
-  user-select: none;
-}
-.lock[data-tone="evening"] { background: linear-gradient(180deg, #2a2b33 0%, #1c1d22 100%); color: #f4f3f0; }
-.lock p { margin: 0; }
-.lock-date { font-size: max(12px, calc(19 * var(--u))); font-weight: 600; opacity: 0.72; }
-.lock-time { margin-top: calc(-2 * var(--u)); font-size: calc(92 * var(--u)); font-weight: 600; line-height: 1.05; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
-.lock-note {
-  display: flex;
-  gap: calc(12 * var(--u));
-  width: 100%;
-  margin-top: auto;
-  margin-bottom: calc(26 * var(--u));
-  box-sizing: border-box;
-  padding: calc(14 * var(--u)) calc(16 * var(--u)) calc(15 * var(--u));
-  border-radius: calc(24 * var(--u));
-  background: rgb(255 255 255 / 0.78);
-  -webkit-backdrop-filter: blur(20px);
-  backdrop-filter: blur(20px);
-  text-align: left;
-  font-size: max(12.5px, calc(16.5 * var(--u)));
-  line-height: 1.3;
-  color: #1a1a1a;
-}
-.lock[data-tone="evening"] .lock-note { background: rgb(255 255 255 / 0.14); color: #f4f3f0; }
-.lock-icon {
-  display: grid;
-  place-items: center;
-  flex: none;
-  width: calc(40 * var(--u));
-  height: calc(40 * var(--u));
-  border-radius: calc(10 * var(--u));
-  background: #fff;
-  box-shadow: inset 0 0 0 0.5px rgb(26 26 26 / 0.1);
-}
-.lock-icon img { display: block; width: 62%; height: auto; }
-.lock-text { min-width: 0; flex: 1; }
-.lock-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
-.lock-head b { font-weight: 600; }
-.lock-head span { font-size: max(11px, calc(14 * var(--u))); opacity: 0.55; }
-.lock-body { margin-top: calc(2 * var(--u)); opacity: 0.86; }
-/* The ones that came before, tucked under it as iOS stacks them */
-.lock-stack { position: relative; width: 100%; margin-top: auto; }
-.lock-stack .lock-note { margin-top: 0; }
-.lock-stack::before,
-.lock-stack::after {
-  content: "";
-  position: absolute;
-  left: calc(10 * var(--u));
-  right: calc(10 * var(--u));
-  bottom: calc(18 * var(--u));
-  height: calc(30 * var(--u));
-  border-radius: 0 0 calc(20 * var(--u)) calc(20 * var(--u));
-  background: rgb(255 255 255 / 0.5);
-  z-index: -1;
-}
-.lock-stack::after { left: calc(22 * var(--u)); right: calc(22 * var(--u)); bottom: calc(10 * var(--u)); background: rgb(255 255 255 / 0.32); }
-.lock[data-tone="evening"] .lock-stack::before { background: rgb(255 255 255 / 0.08); }
-.lock[data-tone="evening"] .lock-stack::after { background: rgb(255 255 255 / 0.05); }
-.lock-stack { isolation: isolate; }
-@keyframes lock-arrive {
-  0% { opacity: 0; transform: translateY(calc(70 * var(--u))) scale(0.96); }
-  9% { opacity: 1; transform: translateY(0) scale(1); }
-  88% { opacity: 1; transform: translateY(0) scale(1); }
-  96%, 100% { opacity: 0; transform: translateY(calc(-8 * var(--u))) scale(0.98); }
-}
-@media (prefers-reduced-motion: no-preference) {
-  .lock[data-live] .lock-stack { animation: lock-arrive 9s var(--ease-sheet) infinite; }
 }
 
 /* ── Kennel · "Gets the best out of what you have.": a contract, and the agent you approve for it (agent-picker.tsx) ──

@@ -4,7 +4,7 @@ import { Body, Close, Header, Item, Section, Stage } from "@/components/site/blo
 import { type Feature, FeatureList } from "@/components/site/feature-sheet";
 import { Carousel } from "@/components/site/carousel";
 import { ConnectorPile } from "@/components/site/connector-pile";
-import { LockMoment } from "@/components/site/day-moments";
+import { DayScrubber } from "@/components/site/day-moments";
 import { HowMap } from "@/components/site/how-map";
 import { SiteShell } from "@/components/site/site-shell";
 import { OG_IMAGE_URL, SITE_URL } from "@/lib/site-metadata";
@@ -618,53 +618,16 @@ export default function HowItWorksPage() {
       {/* 2 · Day to day */}
       <Section id="day" size="auto">
         <Header
-          label="Day to day"
           lines={["Done before", "you’re up."]}
           subtitle="Waldo reads your night, then rebuilds the day around it. The hard meeting moves, your best hours stay protected, and the inbox waits its turn."
           body="Most of it, you'll never see happen."
           center
         />
         <Body>
-          {/* Was a table (When / What Waldo does / What it looks like). Same words: each one is now the message
-              arriving on the lock screen at that time (components/site/day-moments.tsx). */}
-          <Carousel label="Waldo through a day" loop>
-            <Item
-              meta="Morning"
-              visual="The Brief arriving on the lock screen at 7:02"
-              scene={<LockMoment day="Tuesday 6 October" time="7:02" title="The Brief" text="Rough night, about 5h 40m. Nudged your 9am to 10:30. The afternoon looks fine." />}
-              strong="The Brief"
-            />
-            <Item
-              meta="Morning"
-              visual="The Window arriving on the lock screen at 7:15"
-              scene={<LockMoment day="Tuesday 6 October" time="7:15" title="The Window" text="10:30–12:30 is your sharpest stretch. Blocked it." />}
-              strong="The Window"
-            />
-            <Item
-              meta="Before a big meeting"
-              visual="Prep arriving on the lock screen at 1:25, before a board call"
-              scene={<LockMoment day="Tuesday 6 October" time="1:25" title="Prep" text="Board call in 35 minutes. You're running lower than usual. Here are last time's open items." />}
-              strong="Prep"
-            />
-            <Item
-              meta="Afternoon"
-              visual="The Heads-Up arriving on the lock screen at 2:40"
-              scene={<LockMoment day="Tuesday 6 October" time="2:40" title="The Heads-Up" text="This Tuesday is shaping up like the last three. Moved your 4pm before it lands." />}
-              strong="The Heads-Up"
-            />
-            <Item
-              meta="Evening"
-              visual="The Close arriving on the evening lock screen at 6:48"
-              scene={<LockMoment day="Tuesday 6 October" time="6:48" title="The Close" text="Today: 3 things moved, 1 protected. Tomorrow looks lighter." evening />}
-              strong="The Close"
-            />
-            <Item
-              meta="End of week"
-              visual="The Adjustment arriving on the lock screen on Friday at 4:10"
-              scene={<LockMoment day="Friday 9 October" time="4:10" title="The Adjustment" text="22 hours of meetings this week. Friday afternoon cleared. Retro moved to Monday." />}
-              strong="The Adjustment"
-            />
-          </Carousel>
+          {/* Was a table, then six lock-screen cards in a carousel. Now a few days on a timeline, after "A day with
+              your dot" on chatgpt.com/features/dots: the thread at each moment above, Waldo walking the line
+              (components/site/day-moments.tsx). No eyebrow on this section (2026-10-10). */}
+          <DayScrubber />
         </Body>
         <Body>
           <FeatureList section="Day to day" features={DAY} />
