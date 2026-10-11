@@ -73,7 +73,7 @@ It also prints gentle **style notes** (without blocking anything) if the title, 
 - **No exclamation marks.**
 - **No medical claims.** Waldo doesn't diagnose, treat or promise health results.
 - **Numbers only from AGENTS.md Part 3,** or with a real external source listed.
-- **Messages and email:** Waldo reads metadata (volume, timing), never content. Never imply otherwise.
+- **Messages and email:** with Gmail connected, Waldo reads subjects and message text, and sends nothing without the person's yes. Never imply it reads less, or acts without asking.
 - **Spelling:** British (optimise, prioritise, summarise).
 
 ### Sources

@@ -751,7 +751,7 @@ timing.
 - **Batch it:** "Email in two blocks today, 11 and 4, not all day." (Next)
 - **Status set:** "Slack set to Focus until 12:30." (Next)
 
-**Line under the cards:** Waldo reads volume, timing and urgency, never the words.
+**Line under the cards:** Waldo reads what you connect, and nothing is sent or moved without your yes.
 
 **Aside:** *the inbox can wait. it usually can.*
 
