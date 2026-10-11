@@ -21,8 +21,8 @@ import "./trust-window.css";
 //
 // Every line is one the product code backs (docs/website/trust-carousel-review.md): Gmail reads and can send, and
 // a send or any other change is a proposal that waits for approval; a saved note is written by Waldo, replaced by
-// saving the same note again, and is background, not an instruction; the data sits with Supabase, Anthropic
-// writes his replies and Telegram carries his messages. What the code can't back (retention, deletion,
+// saving the same note again, and is background, not an instruction; the data sits with Supabase and Anthropic
+// writes his replies. What the code can't back (retention, deletion,
 // encryption, "never trained on") is not in it. It is a drawing: nothing here connects to anything. The people
 // and meetings are made up.
 
@@ -385,7 +385,6 @@ export function TrustWindow() {
                 {[
                   { key: "supabase", logo: "supabase", name: "Supabase", text: "Example storage provider. App data details are under review." },
                   { key: "anthropic", logo: "claude", name: "Anthropic", text: "Example model provider. Final provider list is pending." },
-                  { key: "telegram", logo: "telegram", name: "Telegram", text: "Example messaging service, where enabled." },
                 ].map((s, i) => (
                   <li key={s.key} style={{ "--i": i } as CSSProperties}>
                     <Logo name={s.logo} />

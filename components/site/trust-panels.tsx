@@ -279,7 +279,6 @@ export function DataPanel() {
   const services: { key: string; logo: string; name: string; text: string }[] = [
     { key: "supabase", logo: "supabase", name: "Supabase", text: "Stores your account, readings, calendar and message timing, notes and chats." },
     { key: "anthropic", logo: "claude", name: "Anthropic", text: "Writes Waldo’s replies from the context each message needs." },
-    { key: "telegram", logo: "telegram", name: "Telegram", text: "Carries his messages, if you chat there." },
   ];
   return (
     <Frame tone="data">

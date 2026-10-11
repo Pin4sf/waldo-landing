@@ -375,7 +375,7 @@ The current `connector-data.ts` list, with a proposed status for each tool (from
 | Health Connect | Body | Working today | |
 | Google Calendar | Calendar | Working today | |
 | Gmail | Mail & messages | Working today | Reads subjects and text; sends on your yes |
-| Telegram | Mail & messages | Working today | Also where Waldo talks to you |
+| Telegram | Mail & messages | Not offered | A test surface for the team, not a channel for people |
 | Oura · WHOOP · Garmin | Body | Coming next | |
 | Fitbit | Body | Coming next | ⚠️ The ecosystem doc says Fitbit's own API ends in Sep 2026. Connect through Health Connect instead. Confirm. |
 | Outlook | Mail · Calendar | Coming next | |

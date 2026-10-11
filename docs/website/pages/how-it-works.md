@@ -99,7 +99,7 @@ Buttons: "See every tool →"
 
 Label: Talk to Waldo
 ### You don’t have to talk to it. / But you can.
-Body: Waldo speaks first, but ask it anything, any time: “How did I sleep?” “When should I do the hard thing today?” Talk to it on Telegram and the web today. WhatsApp and iPhone notifications are coming next.
+Body: Waldo speaks first, but ask it anything, any time: “How did I sleep?” “When should I do the hard thing today?” Talk to it in the Waldo app or on the web. WhatsApp comes later.
 
 Also (each name has a "+" and opens a side panel; the panels are listed under "Side panels" below):
 - Threads +
