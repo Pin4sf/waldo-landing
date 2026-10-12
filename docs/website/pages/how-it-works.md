@@ -45,16 +45,14 @@ _The five one-liners from the old cards (Knows how you're doing. · Runs your da
 
 ---
 
-Label: Health
 ### Your health, / without the homework.
-Body: Health apps hand you charts and a score, then leave the reading to you. Waldo does the reading. It even knows a racing heart on a morning run from a racing heart in a board call. You have better things to memorise.
+Body: Other apps hand you numbers. Waldo hands you a better day.
 
-- **Recovery** — *What did last night give you?* Set each morning, from Sleep, HRV and Resting State. 63: “Short night, HRV 12% below your usual. Take the morning easy.”
-  - _Picture: Last night on iPhone: sleep, HRV and resting state (`/figma-assets/waldo-cards/morning-overview.webp`)_
-- **Form** — *What can you handle right now?* Live all day, from Circadian, Motion and Stress. 76: “Steady. Stress rising since 1pm.”
-  - _Picture: Stress climbing on iPhone (`/figma-assets/waldo-cards/edge-phone-stress.webp`)_
-- **Weight** — *What is today asking of you?* Live all day. Higher means heavier: meetings, messages, tasks and Load. 84: “Six meetings and a full inbox. A heavy one.”
-  - _Picture: A full calendar, with Waldo's changes marked (`/figma-assets/waldo-cards/edge-waldo-action-calendar.webp`)_
+_Picture (`components/site/health-reading.tsx`, v2 2026-10-12). Suyash rejected the steps-and-window version ("to complex, i dont want text to do the work here"), so the picture now tells it with almost no words: one white box that plays three beats by itself, with dots under it to pick one. No eyebrow._
+1. _"Summary · Tue 14 Oct · synced 7:02", tagged "A typical health app": 12 tiles, each with a colour key, its own chart (sleep stages, line against your average, weekly bars, gauge) and its change: Sleep 5h 12m (1h 34m under), HRV 38 ms (12% vs avg), Resting HR 61, Readiness 68 (Fair), Sleep score 71, Blood oxygen 96%, Breathing 15.2, Wrist temp +0.4°C, Stress 58 (Rising), Energy 42, Strain 14.2, Steps 3,214._
+2. _"Waldo · Tue 7:02 AM", tagged "With Waldo": the tiles shrink and fly into three coloured rings. Recovery 63 Fair (Sleep 5h 12m · HRV −12% · RHR +4), Form 76 Steady (Circadian on time · Motion low · Stress rising), Weight 84 Heavy (6 meetings · 41 unread · Load 14.2)._
+3. _"Tuesday 14 · 2:41 PM" with the Google Calendar mark: the rings rise and a calendar day appears (7 AM to 6 PM, a red now-line at 2:41). Morning run, Standup, Lunch, Board call and 1:1 with Priya stay. The design review slides from 9:30 to 11:30 and leaves a dashed "Moved to 11:30". The weekly sync slides off and leaves "Moved to Thu, 3:30". A Breather drops in after the board call. Waldo's paw marks what he touched. A note rises at the foot: "2 moved, 1 added. Short night, heavy afternoon. Undo"._
+
 Also (each name has a "+" and opens a side panel; the panels are listed under "Side panels" below):
 - Sleep debt +
 - Quiet flags +

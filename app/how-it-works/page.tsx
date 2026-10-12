@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 
-import { Body, Header, Item, Section, Stage } from "@/components/site/blocks";
+import { Body, Header, Section, Stage } from "@/components/site/blocks";
 import { ComingClose } from "@/components/site/coming-close";
 import { type Feature, FeatureList } from "@/components/site/feature-sheet";
-import { Carousel } from "@/components/site/carousel";
 import { ConnectorPile } from "@/components/site/connector-pile";
 import { DayScrubber } from "@/components/site/day-moments";
+import { HealthReading } from "@/components/site/health-reading";
 import { HowMap } from "@/components/site/how-map";
 import { SiteShell } from "@/components/site/site-shell";
 import { OG_IMAGE_URL, SITE_URL } from "@/lib/site-metadata";
@@ -582,30 +582,17 @@ export default function HowItWorksPage() {
         <HowMap />
       </Section>
 
-      {/* 1 · Health */}
+      {/* 1 · Health. Was the Recovery / Form / Weight phone carousel; now one picture that plays by itself: a typical
+          health app's numbers fold into Waldo's three rings, then today's calendar changes under them
+          (components/site/health-reading.tsx, 2026-10-12). No eyebrow. */}
       <Section id="health" size="auto">
         <Header
-          label="Health"
           lines={["Your health,", "without the homework."]}
-          subtitle="Health apps hand you charts and a score, then leave the reading to you. Waldo does the reading. It even knows a racing heart on a morning run from a racing heart in a board call."
-          body="You have better things to memorise."
+          subtitle="Other apps hand you numbers. Waldo hands you a better day."
           center
         />
         <Body>
-          <Carousel label="Recovery, Form and Weight" loop>
-            <Item title="Recovery" visual="Last night on iPhone: sleep, HRV and resting state" image="/figma-assets/waldo-cards/morning-overview.webp" plain strong="What did last night give you?">
-              <p>Set each morning, from Sleep, HRV and Resting State.</p>
-              <p>63: &ldquo;Short night, HRV 12% below your usual. Take the morning easy.&rdquo;</p>
-            </Item>
-            <Item title="Form" visual="Stress climbing on iPhone" image="/figma-assets/waldo-cards/edge-phone-stress.webp" plain strong="What can you handle right now?">
-              <p>Live all day, from Circadian, Motion and Stress.</p>
-              <p>76: &ldquo;Steady. Stress rising since 1pm.&rdquo;</p>
-            </Item>
-            <Item title="Weight" visual="A full calendar, with Waldo's changes marked" image="/figma-assets/waldo-cards/edge-waldo-action-calendar.webp" plain strong="What is today asking of you?">
-              <p>Live all day. Higher means heavier: meetings, messages, tasks and Load.</p>
-              <p>84: &ldquo;Six meetings and a full inbox. A heavy one.&rdquo;</p>
-            </Item>
-          </Carousel>
+          <HealthReading />
         </Body>
         <Body>
           <FeatureList section="Health" features={HEALTH} />
