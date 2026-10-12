@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
-import { Body, Close, Header, Item, Section, Stage } from "@/components/site/blocks";
+import { Body, Header, Item, Section, Stage } from "@/components/site/blocks";
+import { ComingClose } from "@/components/site/coming-close";
 import { type Feature, FeatureList } from "@/components/site/feature-sheet";
 import { Carousel } from "@/components/site/carousel";
 import { ConnectorPile } from "@/components/site/connector-pile";
@@ -676,20 +677,16 @@ export default function HowItWorksPage() {
         </Body>
       </Section>
 
-      {/* 6 · What's coming */}
+      {/* 6 · Close. Was "New tricks, coming soon." (four names in a list) and then this box on its own; now one section,
+          the planned features as cards that open the same panels (coming-close.tsx) */}
       <Section size="auto">
-        <Header lines={["New tricks,", "coming soon."]} center />
-        <Body>
-          <FeatureList label="Coming later" section="What's coming" features={COMING} />
-        </Body>
+        <ComingClose
+          lines={["Now you know.", "Let it work."]}
+          body="You'll notice the difference, not the work. And Waldo keeps learning. Here's what's coming soon."
+          action={{ label: "Let Waldo in →", href: "/waitlist" }}
+          features={COMING}
+        />
       </Section>
-
-      {/* 7 · Close */}
-      <Close
-        lines={["Now you know.", "Let it work."]}
-        body="You'll notice the difference, not the work."
-        actions={{ primary: { label: "Let Waldo in →", href: "/waitlist" } }}
-      />
     </SiteShell>
   );
 }
