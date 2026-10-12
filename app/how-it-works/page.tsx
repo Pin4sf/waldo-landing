@@ -565,6 +565,16 @@ const COMING: Feature[] = [
   },
 ];
 
+// The line on a feature's card in the opening map: each feature's own one-line explanation from its side panel,
+// plus the three Health scores' questions (above) and the one feature the map shortens ("Agents ask Waldo").
+const MAP_NOTES: Record<string, string> = {
+  ...Object.fromEntries([...HEALTH, ...DAY, ...TALK, ...RULES, ...COMING].map((f) => [f.name, f.line])),
+  Recovery: "What did last night give you?",
+  Form: "What can you handle right now?",
+  Weight: "What is today asking of you?",
+  "Agents ask Waldo": COMING.find((f) => f.name === "Other agents ask Waldo")?.line ?? "",
+};
+
 export default function HowItWorksPage() {
   return (
     <SiteShell>
@@ -579,7 +589,7 @@ export default function HowItWorksPage() {
         />
         {/* Was five jump cards. Now a map of everything below, after claude.com/product/overview: Waldo in the
             middle, the five parts around him (each a link to its section), every feature on its part */}
-        <HowMap />
+        <HowMap notes={MAP_NOTES} />
       </Section>
 
       {/* 1 · Health. Was the Recovery / Form / Weight phone carousel; now one picture that plays by itself: a typical

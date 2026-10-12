@@ -49,9 +49,17 @@
   background: #fff;
   box-shadow: 0 0 0 0.5px color-mix(in srgb, var(--ink) 10%, transparent);
 }
-/* Stage pile (connector-pile.tsx): no picture, the foot of the box is left open for a heap of tool tiles that
-   dropped in from the top. The layer fills the whole box behind the title; the tiles keep clear of the button. */
-.site-stage--pile { padding-bottom: clamp(230px, 27vw, 380px); }
+/* Stage pile (connector-pile.tsx): no picture, the foot is left open for a heap of tool tiles that dropped in from
+   the top. The layer fills the whole stage behind the title; the tiles keep clear of the button.
+   No box (2026-10-12, Suyash: "remove this box, let the connectors take up the space"): no fill, hairline or
+   corners, and the stage runs the full width of the window, so the heap lies across the whole page. */
+.site-stage--pile {
+  margin-inline: calc(50% - 50vw);
+  padding: clamp(24px, 4vw, 56px) var(--site-edge) clamp(300px, 30vw, 440px);
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
 .site-stage--pile > .site-header-block { position: relative; z-index: 1; }
 .site-pile { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
 .site-pile-tile {
