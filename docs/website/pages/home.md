@@ -115,6 +115,13 @@ No buttons.
 
 ---
 
+### Things worth / noticing.
+Body: Plain-language notes about agents, your body, and the patterns hiding inside an ordinary day.
+Button: "All notes" (to `/blogs`)
+_Added 2026-10-12, after Suyash's screen recording of an arc of cards turned by scroll. Every published post rides one big wheel (`components/site/notes-wheel.tsx`). The wheel pins to the screen and scrolling turns it one note at a time, newest first; the picture at the top is the note named under the wheel (its title, then category and reading time in grey). After the last turn the wheel is back on the newest note, the other cards fade and that one stays a little larger, then the page moves on. Clicking any card opens the note, and the card's picture grows into the article's picture (a view transition; a plain link where the browser has none or reduced motion is on). Tabbing to a card turns the wheel to it. The words come from each post's frontmatter, so a new post joins the wheel with no edit here._
+
+---
+
 ### You’re going to / ask these.
 
 - **How is Waldo different from ChatGPT or Claude?**

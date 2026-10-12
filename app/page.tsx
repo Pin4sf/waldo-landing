@@ -24,8 +24,10 @@ import { SeeSection } from "@/components/site/see/see-section";
 import { SiteShell } from "@/components/site/site-shell";
 import { LiveClose } from "@/components/site/live-close";
 import { MemoryMap } from "@/components/site/memory-map";
+import { NotesWheel } from "@/components/site/notes-wheel";
 import { TrustWindow } from "@/components/site/trust-window";
 import { WaldoLoop } from "@/components/site/waldo-loop";
+import { getBlogWheelNotes } from "@/lib/blog-posts";
 import {
   OG_DESCRIPTION,
   OG_IMAGE_URL,
@@ -66,6 +68,8 @@ const announcement = (
 );
 
 export default function Home() {
+  const notes = getBlogWheelNotes();
+
   return (
     <SiteShell home announcement={announcement}>
       {/* 2 · Hero. One screen: the phone with the Overview card is what you find below it. */}
@@ -275,6 +279,18 @@ export default function Home() {
           />
         </MemoryMap>
       </Section>
+
+      {/* 5c · Notes: every blog post on one wheel that scroll turns, newest first; a card opens its note and grows
+          into the article's picture (components/site/notes-wheel.tsx, docs/website/pages/home.md "Notes") */}
+      <Section size="auto">
+        <Header
+          lines={["Things worth", "noticing."]}
+          subtitle="Plain-language notes about agents, your body, and the patterns hiding inside an ordinary day."
+          actions={{ secondary: { label: "All notes", href: "/blogs" } }}
+          center
+        />
+      </Section>
+      <NotesWheel notes={notes} />
 
       {/* 6 · Questions */}
       <Section size="auto">
