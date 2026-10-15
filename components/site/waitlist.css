@@ -52,7 +52,9 @@
 
 @media (max-width: 560px) {
   .wl-form { flex-direction: column; align-items: stretch; border-radius: 26px; padding: 6px; }
-  .wl-input { height: 46px; padding: 0 8px; font-size: 14px; text-align: center; }
+  /* In a column, flex: 1 means a basis of 0 on the vertical axis and the field collapsed to its text
+     height (17px), so it keeps its own height here. 16px stops iOS Safari zooming the page on focus. */
+  .wl-input { flex: none; height: 46px; padding: 0 8px; font-size: 16px; text-align: center; }
   .wl-submit { width: 100%; justify-content: center; }
 }
 
