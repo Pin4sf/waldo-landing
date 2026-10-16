@@ -51,11 +51,24 @@
 .wl-act .site-note { max-width: 30rem; margin: 16px auto 0; text-align: center; text-wrap: balance; }
 
 @media (max-width: 560px) {
-  .wl-form { flex-direction: column; align-items: stretch; border-radius: 26px; padding: 6px; }
+  /* On phones the field and the button are two boxes, one above the other, not one shared pill */
+  .wl-form { flex-direction: column; align-items: stretch; gap: 10px; padding: 0; border: 0; border-radius: 0; background: none; }
   /* In a column, flex: 1 means a basis of 0 on the vertical axis and the field collapsed to its text
      height (17px), so it keeps its own height here. 16px stops iOS Safari zooming the page on focus. */
-  .wl-input { flex: none; height: 46px; padding: 0 8px; font-size: 16px; text-align: center; }
-  .wl-submit { width: 100%; justify-content: center; }
+  .wl-input {
+    flex: none;
+    height: 48px;
+    padding: 0 18px;
+    border: 1px solid var(--site-line);
+    border-radius: 999px;
+    background: var(--surface-t1);
+    font-size: 16px;
+    text-align: center;
+    transition: border-color var(--motion-button) var(--ease-out-quad);
+  }
+  .wl-input:hover:not(:focus) { border-color: color-mix(in srgb, var(--ink) 18%, transparent); }
+  .wl-input:focus { border-color: color-mix(in srgb, var(--ink) 35%, transparent); }
+  .wl-submit { width: 100%; min-height: 48px; justify-content: center; }
 }
 
 /* The italic aside, under the cards below the phone */
