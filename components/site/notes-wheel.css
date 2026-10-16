@@ -1,0 +1,142 @@
+/* The homepage's notes wheel (components/site/notes-wheel.tsx).
+   The section is tall and its stage sticks to the screen while the wheel turns: one stretch
+   of scroll per note, then a short settle. The script places every card; this file only sizes
+   them and sets the caption. */
+
+.nw {
+  --nw-card: clamp(112px, 9.4vw, 168px);
+  --nw-turn: 46svh;
+  position: relative;
+  /* The stage keeps the top card a third of the way down; pull it up under the heading. */
+  margin-top: -10svh;
+  height: calc(100svh + var(--nw-count) * var(--nw-turn) + 0.9 * var(--nw-turn));
+}
+
+.nw-stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: clip;
+}
+
+.nw-ring {
+  position: absolute;
+  inset: 0 auto auto 50%;
+  width: 0;
+  height: 0;
+}
+
+.nw-card {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--nw-card);
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #F8F6F3; /* the illustrations' own paper colour */
+  outline: 1px solid var(--border-default);
+  outline-offset: -1px;
+  will-change: transform, opacity;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Before the script has placed them, the cards wait out of sight. */
+.nw:not([data-ready]) .nw-card { opacity: 0; }
+
+.nw-card img {
+  object-fit: cover;
+  transition: transform 0.4s ease;
+  user-select: none;
+}
+
+.nw-card:hover img { transform: scale(1.03); }
+.nw-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.nw-captions {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(32px, 9svh, 96px);
+  display: grid;
+  width: min(560px, calc(100% - 40px));
+  translate: -50% 0;
+  text-align: center;
+}
+
+.nw-caption {
+  grid-area: 1 / 1;
+  align-self: end;
+  opacity: 0;
+  translate: 0 6px;
+  pointer-events: none;
+  transition:
+    opacity 0.35s var(--ease-out-quad),
+    translate 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.nw-caption[data-active] {
+  opacity: 1;
+  translate: 0 0;
+  pointer-events: auto;
+  transition-delay: 0.08s;
+}
+
+.nw-title {
+  display: block;
+  margin: 0 auto;
+  color: var(--ink);
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.35;
+  text-decoration: none;
+  text-wrap: balance;
+}
+
+.nw-title span { display: block; }
+.nw-title:hover { text-decoration: underline; text-decoration-color: var(--border-focus); text-underline-offset: 4px; }
+
+.nw-meta {
+  margin: 6px 0 0;
+  color: var(--text-tertiary);
+  font-size: var(--site-tiny, 14.4px);
+  line-height: 1.4;
+}
+
+@media (max-width: 767px) {
+  .nw { --nw-card: clamp(92px, 26vw, 116px); --nw-turn: 40svh; }
+  /* On a phone the caption sits under the arc's lowest cards, clear of the cookie notice
+     (the script centres the top card at 44% of the screen height). */
+  .nw-captions { bottom: auto; top: calc(44svh + var(--nw-card) * 0.625 + 128px); }
+  .nw-card { border-radius: 10px; }
+  .nw-title { font-size: 16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nw-caption { transition: none; translate: 0 0; }
+  .nw-card img { transition: none; }
+}
+
+/* Opening a note: the card's picture grows into the article's picture while the pages
+   cross-fade behind it. Only while a note is opening, so other navigations keep their own. */
+:root[data-note-transition]::view-transition-group(note-art) {
+  animation-duration: 0.6s;
+  animation-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+:root[data-note-transition]::view-transition-old(note-art),
+:root[data-note-transition]::view-transition-new(note-art) {
+  animation-duration: 0.6s;
+  height: 100%;
+  object-fit: cover;
+}
+
+:root[data-note-transition]::view-transition-old(root) {
+  animation: 0.25s var(--ease-out-quad) both nw-out;
+}
+
+:root[data-note-transition]::view-transition-new(root) {
+  animation: 0.45s var(--ease-out-quad) 0.15s both nw-in;
+}
+
+@keyframes nw-out { to { opacity: 0; } }
+@keyframes nw-in { from { opacity: 0; translate: 0 8px; } }

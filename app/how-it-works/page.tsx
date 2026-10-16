@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 
-import { Body, Close, Header, Item, Section, Stage } from "@/components/site/blocks";
+import { Body, Header, Section, Stage } from "@/components/site/blocks";
+import { ComingClose } from "@/components/site/coming-close";
 import { type Feature, FeatureList } from "@/components/site/feature-sheet";
-import { Carousel } from "@/components/site/carousel";
 import { ConnectorPile } from "@/components/site/connector-pile";
-import { LockMoment } from "@/components/site/day-moments";
+import { DayScrubber } from "@/components/site/day-moments";
+import { HealthReading } from "@/components/site/health-reading";
 import { HowMap } from "@/components/site/how-map";
 import { SiteShell } from "@/components/site/site-shell";
 import { OG_IMAGE_URL, SITE_URL } from "@/lib/site-metadata";
@@ -564,6 +565,16 @@ const COMING: Feature[] = [
   },
 ];
 
+// The line on a feature's card in the opening map: each feature's own one-line explanation from its side panel,
+// plus the three Health scores' questions (above) and the one feature the map shortens ("Agents ask Waldo").
+const MAP_NOTES: Record<string, string> = {
+  ...Object.fromEntries([...HEALTH, ...DAY, ...TALK, ...RULES, ...COMING].map((f) => [f.name, f.line])),
+  Recovery: "What did last night give you?",
+  Form: "What can you handle right now?",
+  Weight: "What is today asking of you?",
+  "Agents ask Waldo": COMING.find((f) => f.name === "Other agents ask Waldo")?.line ?? "",
+};
+
 export default function HowItWorksPage() {
   return (
     <SiteShell>
@@ -578,33 +589,20 @@ export default function HowItWorksPage() {
         />
         {/* Was five jump cards. Now a map of everything below, after claude.com/product/overview: Waldo in the
             middle, the five parts around him (each a link to its section), every feature on its part */}
-        <HowMap />
+        <HowMap notes={MAP_NOTES} />
       </Section>
 
-      {/* 1 · Health */}
+      {/* 1 · Health. Was the Recovery / Form / Weight phone carousel; now one picture that plays by itself: a typical
+          health app's numbers fold into Waldo's three rings, then today's calendar changes under them
+          (components/site/health-reading.tsx, 2026-10-12). No eyebrow. */}
       <Section id="health" size="auto">
         <Header
-          label="Health"
           lines={["Your health,", "without the homework."]}
-          subtitle="Health apps hand you charts and a score, then leave the reading to you. Waldo does the reading. It even knows a racing heart on a morning run from a racing heart in a board call."
-          body="You have better things to memorise."
+          subtitle="Other apps hand you numbers. Waldo hands you a better day."
           center
         />
         <Body>
-          <Carousel label="Recovery, Form and Weight" loop>
-            <Item title="Recovery" visual="Last night on iPhone: sleep, HRV and resting state" image="/figma-assets/waldo-cards/morning-overview.webp" plain strong="What did last night give you?">
-              <p>Set each morning, from Sleep, HRV and Resting State.</p>
-              <p>63: &ldquo;Short night, HRV 12% below your usual. Take the morning easy.&rdquo;</p>
-            </Item>
-            <Item title="Form" visual="Stress climbing on iPhone" image="/figma-assets/waldo-cards/edge-phone-stress.webp" plain strong="What can you handle right now?">
-              <p>Live all day, from Circadian, Motion and Stress.</p>
-              <p>76: &ldquo;Steady. Stress rising since 1pm.&rdquo;</p>
-            </Item>
-            <Item title="Weight" visual="A full calendar, with Waldo's changes marked" image="/figma-assets/waldo-cards/edge-waldo-action-calendar.webp" plain strong="What is today asking of you?">
-              <p>Live all day. Higher means heavier: meetings, messages, tasks and Load.</p>
-              <p>84: &ldquo;Six meetings and a full inbox. A heavy one.&rdquo;</p>
-            </Item>
-          </Carousel>
+          <HealthReading />
         </Body>
         <Body>
           <FeatureList section="Health" features={HEALTH} />
@@ -618,53 +616,16 @@ export default function HowItWorksPage() {
       {/* 2 · Day to day */}
       <Section id="day" size="auto">
         <Header
-          label="Day to day"
           lines={["Done before", "you’re up."]}
           subtitle="Waldo reads your night, then rebuilds the day around it. The hard meeting moves, your best hours stay protected, and the inbox waits its turn."
           body="Most of it, you'll never see happen."
           center
         />
         <Body>
-          {/* Was a table (When / What Waldo does / What it looks like). Same words: each one is now the message
-              arriving on the lock screen at that time (components/site/day-moments.tsx). */}
-          <Carousel label="Waldo through a day" loop>
-            <Item
-              meta="Morning"
-              visual="The Brief arriving on the lock screen at 7:02"
-              scene={<LockMoment day="Tuesday 6 October" time="7:02" title="The Brief" text="Rough night, about 5h 40m. Nudged your 9am to 10:30. The afternoon looks fine." />}
-              strong="The Brief"
-            />
-            <Item
-              meta="Morning"
-              visual="The Window arriving on the lock screen at 7:15"
-              scene={<LockMoment day="Tuesday 6 October" time="7:15" title="The Window" text="10:30–12:30 is your sharpest stretch. Blocked it." />}
-              strong="The Window"
-            />
-            <Item
-              meta="Before a big meeting"
-              visual="Prep arriving on the lock screen at 1:25, before a board call"
-              scene={<LockMoment day="Tuesday 6 October" time="1:25" title="Prep" text="Board call in 35 minutes. You're running lower than usual. Here are last time's open items." />}
-              strong="Prep"
-            />
-            <Item
-              meta="Afternoon"
-              visual="The Heads-Up arriving on the lock screen at 2:40"
-              scene={<LockMoment day="Tuesday 6 October" time="2:40" title="The Heads-Up" text="This Tuesday is shaping up like the last three. Moved your 4pm before it lands." />}
-              strong="The Heads-Up"
-            />
-            <Item
-              meta="Evening"
-              visual="The Close arriving on the evening lock screen at 6:48"
-              scene={<LockMoment day="Tuesday 6 October" time="6:48" title="The Close" text="Today: 3 things moved, 1 protected. Tomorrow looks lighter." evening />}
-              strong="The Close"
-            />
-            <Item
-              meta="End of week"
-              visual="The Adjustment arriving on the lock screen on Friday at 4:10"
-              scene={<LockMoment day="Friday 9 October" time="4:10" title="The Adjustment" text="22 hours of meetings this week. Friday afternoon cleared. Retro moved to Monday." />}
-              strong="The Adjustment"
-            />
-          </Carousel>
+          {/* Was a table, then six lock-screen cards in a carousel. Now a few days on a timeline, after "A day with
+              your dot" on chatgpt.com/features/dots: the thread at each moment above, Waldo walking the line
+              (components/site/day-moments.tsx). No eyebrow on this section (2026-10-10). */}
+          <DayScrubber />
         </Body>
         <Body>
           <FeatureList section="Day to day" features={DAY} />
@@ -713,20 +674,16 @@ export default function HowItWorksPage() {
         </Body>
       </Section>
 
-      {/* 6 · What's coming */}
+      {/* 6 · Close. Was "New tricks, coming soon." (four names in a list) and then this box on its own; now one section,
+          the planned features as cards that open the same panels (coming-close.tsx) */}
       <Section size="auto">
-        <Header lines={["New tricks,", "coming soon."]} center />
-        <Body>
-          <FeatureList label="Coming later" section="What's coming" features={COMING} />
-        </Body>
+        <ComingClose
+          lines={["Now you know.", "Let it work."]}
+          body="You'll notice the difference, not the work. And Waldo keeps learning. Here's what's coming soon."
+          action={{ label: "Let Waldo in →", href: "/waitlist" }}
+          features={COMING}
+        />
       </Section>
-
-      {/* 7 · Close */}
-      <Close
-        lines={["Now you know.", "Let it work."]}
-        body="You'll notice the difference, not the work."
-        actions={{ primary: { label: "Let Waldo in →", href: "/waitlist" } }}
-      />
     </SiteShell>
   );
 }
