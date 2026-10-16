@@ -10,7 +10,7 @@ import { useLive } from "./use-live";
 // same three parts: the app's own bar on top, the app in the middle, and Waldo's one line at the foot once he's
 // done. Only the card in the middle of the carousel plays (use-live.ts): it shows the before, then what changed,
 // and holds the after. At rest, and with less motion, every card shows its after, so a still card still makes sense.
-// Everything in them (names, times, numbers) is illustrative. Mail shows senders and times, never what's written.
+// Everything in them (names, times, numbers) is illustrative.
 
 function Scene({ name, after, children }: { name: string; after: boolean; children: ReactNode }) {
   return (
