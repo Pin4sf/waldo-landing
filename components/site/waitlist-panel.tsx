@@ -157,8 +157,8 @@ export function WaitlistPanel({ variant }: { variant: Variant }) {
         </form>
 
         <p className="site-note">
-          Your email goes to Loops for waitlist updates. By joining, you request those updates. App terms and privacy details are still under review.{" "}
-          <Link href="/privacy">Read the current information</Link>.
+          Your email goes to Loops for waitlist updates. By joining, you request those updates.{" "}
+          <Link href="/privacy">Read our Privacy Policy</Link>.
         </p>
       </div>
     </div>
