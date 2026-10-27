@@ -98,7 +98,7 @@ A few things I hold us to:
 And a few things we won't do:
 
 - We won't sell your data, or use it for ads.
-- We won't read the words in your messages. The pattern is enough.
+- We read the email you connect, subjects and text included, and send nothing without your yes.
 - We won't pretend to be your doctor.
 - We won't build streaks, badges or anything designed to keep you staring at an app.
 
@@ -272,7 +272,7 @@ A few things I hold us to:
 And a few things we won't do:
 
 - We won't sell your data, or use it for ads.
-- We won't read the words in your messages. The pattern is enough.
+- We read the email you connect, subjects and text included, and send nothing without your yes.
 - We won't pretend to be your doctor.
 - We won't build streaks, badges or anything designed to keep you staring at an app.
 

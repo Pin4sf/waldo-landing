@@ -690,7 +690,7 @@ export default function HowItWorksPage() {
           label="Talk to Waldo"
           lines={["You don’t have to talk to it.", "But you can."]}
           subtitle="Waldo speaks first, but ask it anything, any time: “How did I sleep?” “When should I do the hard thing today?”"
-          body="Talk to it on Telegram and the web today. WhatsApp and iPhone notifications are coming next."
+          body="Talk to it in the Waldo app or on the web. WhatsApp comes later."
           center
         />
         <Body>

@@ -46,7 +46,7 @@ _2026-10-04: new title (was "Every tool, handled."), centred, and an endless car
 ### Same Waldo. / Different hats.
 Body: The same Waldo, in the place each of them already works. He reads the tools they already use, and tells you where each answer came from.
 _Layout (2026-10-04): centred headline and an endless carousel with the card in the middle moving, the same as "You can't keep up with everything. Waldo can."_
-_Sources (2026-10-08): every answer in the five pictures now says where Waldo got it, then what he did because of it ("Google Calendar has the 9am with Priya, and Apple Health says you slept five hours. So the 9am moves to 11."). Tool names are set in bold, as plain text: no logos. They are tools from `connector-data.ts`, picked per job from "Pick your job" in `connectors.md`. He names what he read (volume, timing, what is open), never the words inside a message. The card lines under each picture name the tools too. Status check before launch: Granola, Stripe, HubSpot, Calendly, Notion, Oura, Vercel, GitHub, Linear and Figma are not "working today" in `connectors.md`; the pictures show them as if connected._
+_Sources (2026-10-08): every answer in the five pictures now says where Waldo got it, then what he did because of it ("Google Calendar has the 9am with Priya, and Apple Health says you slept five hours. So the 9am moves to 11."). Tool names are set in bold, as plain text: no logos. They are tools from `connector-data.ts`, picked per job from "Pick your job" in `connectors.md`. He names the tool and what he read there. The card lines under each picture name the tools too. Status check before launch: Granola, Stripe, HubSpot, Calendly, Notion, Oura, Vercel, GitHub, Linear and Figma are not "working today" in `connectors.md`; the pictures show them as if connected._
 
 - **Founders** — Three calls back to back, then the co-founder sync. Waldo reads your sleep in Apple Health, your day in Google Calendar and what was said in Granola, then puts ten minutes of air before the sync, so the snappy reply never happens.
   - _Picture: a founder travelling, texting Waldo in WhatsApp (iOS look, edge to edge, no phone frame). Sends a photo of the departures board, a voice note and a clip of a hotel room (`components/site/hats-scenes.tsx`, FounderWhatsApp). Photos are from Unsplash (free licence, no credit needed): the departures board by Zulfugar Karimov, the hotel room by Wes Hicks (`/assets/home/hats/`)_
@@ -68,7 +68,7 @@ _2026-10-03 (local review, not published): replaces the "Waldo does as much as y
 Body: What he can access. What he can do. What he keeps.
 
 - **What can he see?** — Each connection shows what Waldo can read, and where to take that access back.
-  - _Picture: one Google connection: can read Calendar, Gmail, Tasks (`calendar.readonly`, `gmail.readonly`, `tasks.readonly`); can change nothing, editing is a separate permission; "How to take access back" opens the route in the Google Account._
+  - _Picture: one Google connection: can read Calendar, Gmail (subjects and text included) and Tasks; sending an email or moving an event waits for your yes; "How to take access back" opens the route in the Google Account._
 - **What can he do?** — Waldo prepares a change and waits. Nothing moves until you approve it.
   - _Picture: a permission request: move Design review to Thursday, 11:00 (Google Calendar, one event), waits for your yes, expires after 4 hours; the Northstar reply is held, prepared, not sent. "Review the change" shows now and proposed._
 - **What does he remember?** — A saved note shows when it last changed. To correct it, tell Waldo.
@@ -92,7 +92,7 @@ Body: Start with Waldo only telling you what it would do. Hand over more when yo
 **Your controls** (side panels)
 - **Autonomy** — Three stages. Pick one, and move it anytime. **Tell me.** Waldo says what it would do, and waits. Nothing changes until you say so. **Ask me.** Waldo drafts the move, you approve it. Skip one and nothing is sent. **Just do it.** Waldo acts, logs what it did, and you can undo anything in one tap.
 - **Only what you connect** — Waldo reaches the tools you allow, and nothing else. Every connection is listed in the console, with what Waldo can reach through it.
-- **Metadata, not messages** — Volume, timing and urgency. Never what your messages say. Waldo uses how many, how often and how urgent to plan your day. The words in your messages stay private.
+- **Your email, read to help** — With Gmail connected, Waldo reads subjects and message text to find what needs you, and uses how many, how often and how urgent to plan your day. It sends nothing without your yes.
 - **Health is context** — It shapes your day. It never makes medical decisions. Sleep and stress help Waldo decide what to move and what to protect. They feed a plan for your day, not a diagnosis, and Waldo gives no medical advice.
 - **Never sold, never trained on** — Your data stays yours. Waldo does not sell your data, train on it or share it with third parties. It is encrypted at rest and in transit.
 
@@ -357,7 +357,7 @@ as you let it.
 
 **Four quiet lines** below it:
 - Only what you connect. Only what you allow.
-- Reads message metadata (volume, timing, urgency), never what your messages say.
+- Reads your email, subjects and text included, and sends nothing without your yes.
 - Health is context for planning your day. Never medical decisions.
 - Never sells your data. Never trains on it.
 
