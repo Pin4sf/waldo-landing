@@ -73,17 +73,17 @@ export default function ConnectorsPage() {
         <Body>
           <Carousel label="What Waldo does with each kind of tool" loop>
             <Item meta="Your watch" visual="Last night's sleep in Apple Health, and Waldo's read on it" scene={<UseBody />}>
-              <Use strong="It knows how you slept. Waldo acts on it." tools={["Apple Watch", "Health Connect", "Oura", "WHOOP", "Garmin"]}>
+              <Use strong="It knows how you slept. Waldo acts on it." tools={["Apple Watch", "WHOOP", "Oura", "Garmin", "Fitbit"]}>
                 Waldo reads sleep, heart rate, HRV, stress and movement, works out Recovery, Form and Weight, and spots when you&apos;re running low.
               </Use>
             </Item>
             <Item meta="Your calendar" visual="A Tuesday in Google Calendar: the design review moves from 9:30 to 11:30" scene={<UseCalendar />}>
               <Use strong="Your day bends around how you are." tools={["Google Calendar", "Outlook", "Apple Calendar", "Calendly"]}>
-                Waldo reads meetings, gaps, back-to-backs and late nights, then moves, blocks and protects time, within your limits.
+                Waldo reads meetings, gaps, back-to-backs and late nights, then blocks and protects your time. A meeting with other people in it moves only with your yes.
               </Use>
             </Item>
             <Item meta="Your inbox and messages" visual="A Gmail inbox: two messages come through, 36 fold into a batch for 11:30" scene={<UseInbox />}>
-              <Use strong="Your inbox waits for a better moment." tools={["Gmail", "Telegram", "Slack", "WhatsApp"]}>
+              <Use strong="Your inbox waits for a better moment." tools={["Gmail", "iMessage", "Slack", "WhatsApp"]}>
                 Waldo batches your inbox, goes quiet when it&apos;s too much, and flags what needs you. Email access depends on the permissions you grant.
               </Use>
             </Item>
@@ -115,7 +115,7 @@ export default function ConnectorsPage() {
       <Section size="auto">
         <Header
           lines={["Pick your job.", "The tools follow."]}
-          subtitle="Pick your profession and Waldo starts with the tools and routines people like you rely on, then adjusts to you."
+          subtitle="Pick your profession and Waldo starts with the tools and routines people like you rely on, then adjusts to you. Each day here is an example. Which tools work today is at the foot of the page."
           body="Starts where you already are."
           center
         />
@@ -150,7 +150,7 @@ export default function ConnectorsPage() {
         <Stage picture={<AgentHandoff />}>
           <Header
             lines={["Your agents,", "on the same team."]}
-            subtitle="Codex, Claude Code, Cursor and the rest do the work. Waldo gives them your context and checks what they deliver. Working today, in Kennel's open beta."
+            subtitle="Codex, Claude Code, Cursor and the rest do the work. Waldo gives them your context and checks what they deliver. Kennel for Mac runs them today, in a small beta."
             body="Soon, your agents will be able to ask Waldo how you're doing before they act for you."
             actions={{ secondary: { label: "See how Kennel runs them", href: "/kennel" } }}
             center
@@ -170,7 +170,7 @@ export default function ConnectorsPage() {
       <Section id="request" size="auto">
         <Header
           lines={["Don’t see yours?", "Tell us."]}
-          body={`${countOf("today")} tools work today and ${countOf("next")} are coming next, growing to 200+ across 27 categories. The most-asked get built first.`}
+          body={`${countOf("live")} tools work today, ${countOf("beta")} are in beta and ${countOf("coming next")} are coming next. Many other apps can be connected from chat. The most-asked get built first.`}
           center
         />
         <Body>

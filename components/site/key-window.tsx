@@ -14,8 +14,8 @@ import { useLive } from "./use-live";
 const PROMISES = [
   { strong: "You approve every tool.", text: "Nothing connects on its own." },
   { strong: "Read only, unless you say so.", text: "Each tool shows whether Waldo can change anything there." },
-  { strong: "Review access first.", text: "Email access depends on the permissions you grant. App data details are under review." },
-  { strong: "One tap to disconnect.", text: "What Waldo learned from that tool goes with it." },
+  { strong: "Review access first.", text: "Email access depends on the permissions you grant. The Privacy Policy lists what each one lets Waldo see." },
+  { strong: "One tap to disconnect.", text: "Its access goes with it. Anything already in your chats stays until you delete it." },
 ];
 
 const TURN_MS = 3600;

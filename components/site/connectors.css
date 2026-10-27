@@ -22,12 +22,12 @@
 
 /* A status dot, and a status in words with its dot */
 .cn-dot { display: inline-block; flex: none; width: 7px; height: 7px; border-radius: 50%; background: #c4c3bf; }
-.cn-dot[data-status="today"] { background: #22c55e; }
-.cn-dot[data-status="next"] { background: #f59e0b; }
+.cn-dot[data-status="live"] { background: #22c55e; }
+.cn-dot[data-status="beta"] { background: #f59e0b; }
 .cn-status { display: inline-flex; align-items: center; gap: 6px; margin: 0; font-size: 13px; color: var(--text-secondary); }
 .cn-status::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #c4c3bf; }
-.cn-status[data-status="today"]::before { background: #22c55e; }
-.cn-status[data-status="next"]::before { background: #f59e0b; }
+.cn-status[data-status="live"]::before { background: #22c55e; }
+.cn-status[data-status="beta"]::before { background: #f59e0b; }
 
 @keyframes cn-rise {
   from { opacity: 0; transform: translateY(10px); }

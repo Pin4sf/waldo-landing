@@ -6,6 +6,7 @@ import { titleFit } from "@/lib/title-fit";
 
 import { Status } from "./blocks";
 import { Wire, type WireName } from "./feature-wires";
+import type { Status as StatusValue } from "./status";
 
 // Smaller features, after Linear's "Features" row: a label on the left, the names in two columns on the
 // right, each with a "+". Clicking one slides a panel in from the right, laid out like Linear's sheets: the
@@ -21,7 +22,8 @@ export type Feature = {
   line: string;
   /** How it does it, and why that helps. One paragraph each. */
   detail: ReactNode[];
-  status?: "today" | "next" | "planned";
+  /** Where it stands (status.ts). Left out for the "What's coming" list, whose label says it */
+  status?: StatusValue;
   /** The wireframe (feature-wires.tsx), and the line under it, which also describes it to screen readers */
   wire?: { name: WireName; caption: string };
   /** A short table: a heading, its two column names, then rows of [first column, second column] */
