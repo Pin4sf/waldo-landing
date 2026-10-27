@@ -41,7 +41,7 @@ We don't collect your device's precise location or any payment details.
 
 **Your phone number.** Waldo keeps the phone number you give it with your account, to check that the number is yours and to link the chat channels you use from it. Waldo treats it as checked the first time you text your link code to Waldo from that number on iMessage or WhatsApp, or when you enter a code Waldo texted to it at your request.
 
-To text that code, Twilio receives your number and checks the code you enter; Waldo doesn't store the code. Texted codes are offered only for Indian (+91) numbers for now. If you set up iMessage, the number also goes to Photon (section 5).
+To text that code, Twilio receives your number and checks the code you enter; Waldo doesn't store the code. Texted codes are offered only for numbers in India, the United States and Australia for now. If you set up iMessage, the number also goes to Photon (section 5).
 
 ## 3. Health information
 
