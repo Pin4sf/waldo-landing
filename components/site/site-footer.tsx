@@ -74,6 +74,13 @@ export function SiteFooter() {
             <span>© {new Date().getFullYear()} Waldo</span>
             <Link href="/waitlist">Let Waldo in →</Link>
           </div>
+          {/* The legal entity the Privacy Policy and Terms of Use name. The name and address must match the LLP
+              certificate exactly, so each line stays one literal string. */}
+          <address className="site-footer-company">
+            <p>Waldo is a product of ECOFRESH GREENSYNC LLP (LLPIN: ACS-9260)</p>
+            <p>FN202 SrN1202/7FPN567/3/7, Arc Maestro ShivajiNagar, Deccan Gymkhana, Deccan Police Station, Pune City, Pune- 411004, Maharashtra, India</p>
+            <p>Contact: <a href="mailto:woof@heywaldo.in">woof@heywaldo.in</a></p>
+          </address>
         </div>
       </div>
       {/* The footer scene from the older build: Waldo resting on a dock at sunset. It is the last thing on the

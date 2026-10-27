@@ -1809,8 +1809,10 @@ html:has(.site-sheet[open]) { overflow: hidden; }
 .site-footer li { font-size: var(--type-label); }
 .site-footer li a { color: var(--text-secondary); transition: color var(--motion-quick) var(--ease-out-quad); }
 .site-footer li a:hover,
-.site-footer-base a:hover { color: var(--ink); }
-.site-footer-base a { transition: color var(--motion-quick) var(--ease-out-quad); }
+.site-footer-base a:hover,
+.site-footer-company a:hover { color: var(--ink); }
+.site-footer-base a,
+.site-footer-company a { transition: color var(--motion-quick) var(--ease-out-quad); }
 .site-footer-base {
   display: flex;
   flex-wrap: wrap;
@@ -1821,6 +1823,18 @@ html:has(.site-sheet[open]) { overflow: hidden; }
   font-size: var(--site-tiny);
   color: var(--text-tertiary);
 }
+/* The company lines under the © row: same size and colour, never re-cased */
+.site-footer-company {
+  display: grid;
+  gap: 8px;
+  padding-bottom: 20px;
+  font-size: var(--site-tiny);
+  line-height: 1.5;
+  font-style: normal;
+  text-transform: none;
+  color: var(--text-tertiary);
+}
+.site-footer-company p { margin: 0; }
 @media (max-width: 860px) {
   .site-footer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .site-footer-brand { grid-column: 1 / -1; }
