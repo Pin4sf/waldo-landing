@@ -28,6 +28,8 @@ Label: Waldo notes
 ### Things worth / noticing.
 Body: Plain-language notes about agents, your body, and the patterns hiding inside an ordinary day. A quiet place for the things Waldo noticed.
 
+_Picture (2026-10-12): the notes wheel from the homepage ("Things worth / noticing." in home.md): every post on one arc that scroll turns, the top card's title and category under it, and a click that grows the card into the article's picture. Since 2026-10-12 this is the whole page: Suyash asked to drop "Latest", the "All notes" carousel and the closing band ("no need for these sections now, keep 1 section only"). RSS stays in the footer and the page metadata. The copy below for those sections is no longer on the page._
+
 Label: Latest
 
 - (Privacy / Aug 1, 2026) **What we actually do with your data, explained to your grandmother** — A plain-language account of what Waldo may access, what stays private, and what you control.

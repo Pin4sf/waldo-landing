@@ -35,6 +35,8 @@ Buttons: "Let Waldo in →"
 
 _Picture (`components/site/how-map.tsx`, 2026-10-09), replacing the five jump cards, after "See what Claude can do" on claude.com/product/overview: Waldo in the middle (the paw mark, in orange), the page's five parts around him in the headline face, each a link down to its section, and every feature hanging off its part by the name it has further down the page. Features that aren't out yet carry "Soon". Pointing at a part lights its lines and features. It draws itself out from the middle on load. On phones and narrow tablets it becomes a list: each part with its features under it._
 
+_Map v2 (2026-10-12, Suyash: "refer to how claude is making the graph more responsive and implement it … study how theirs looks more dynamic"), rebuilt the way claude.com/product/overview builds theirs: three fixed-size canvases scaled to the width they are in. Wide (1200 x 800): the star, Waldo in the middle. Middle, for tablets (700 x 640): the same star, tighter, labels wrapped. Tall, for phones (340 x 1080): the five parts one under the other, zigzagging down a thread that starts at Waldo, their features fanned out either side. It replaces the list that used to stand in for the map under 860px; the list stays for screen readers and for no scripting. On the smaller canvases each label is measured and pushed off the others, and off the lines, so none touch. Lines run from the edge of one label to the edge of the next. Dynamic: drag any label with a mouse (the line follows, what it is joined to leans after it, then it all settles back), a slow drift of a pixel or two when left alone, pointing at a part brings its features forward and dims the rest, and pointing at a feature opens a small card with that feature's own one-line explanation (from its side panel; Recovery, Form and Weight use their questions; features without a line, like The Brief and the Connectors ones, have no card). It draws itself out when it scrolls into view. With less motion: no drag, drift or drawing._
+
 - **Health**: Recovery · Form · Weight · Sleep debt · Quiet flags · Training · Your history · Bring your past
 - **Day to day**: The Brief · The Window · Your best hours · Fewer pings · Patterns · The Slope · Fixed first, mentioned after · Tomorrow, today (Soon)
 - **Connectors**: Your watch · Calendar · Inbox and messages · Tasks · Your agents · 200+ tools · Agents ask Waldo (Soon)
@@ -45,16 +47,14 @@ _The five one-liners from the old cards (Knows how you're doing. · Runs your da
 
 ---
 
-Label: Health
 ### Your health, / without the homework.
-Body: Health apps hand you charts and a score, then leave the reading to you. Waldo does the reading. It even knows a racing heart on a morning run from a racing heart in a board call. You have better things to memorise.
+Body: Other apps hand you numbers. Waldo hands you a better day.
 
-- **Recovery** — *What did last night give you?* Set each morning, from Sleep, HRV and Resting State. 63: “Short night, HRV 12% below your usual. Take the morning easy.”
-  - _Picture: Last night on iPhone: sleep, HRV and resting state (`/figma-assets/waldo-cards/morning-overview.webp`)_
-- **Form** — *What can you handle right now?* Live all day, from Circadian, Motion and Stress. 76: “Steady. Stress rising since 1pm.”
-  - _Picture: Stress climbing on iPhone (`/figma-assets/waldo-cards/edge-phone-stress.webp`)_
-- **Weight** — *What is today asking of you?* Live all day. Higher means heavier: meetings, messages, tasks and Load. 84: “Six meetings and a full inbox. A heavy one.”
-  - _Picture: A full calendar, with Waldo's changes marked (`/figma-assets/waldo-cards/edge-waldo-action-calendar.webp`)_
+_Picture (`components/site/health-reading.tsx`, v2 2026-10-12). Suyash rejected the steps-and-window version ("to complex, i dont want text to do the work here"), so the picture now tells it with almost no words: one white box that plays three beats by itself, with dots under it to pick one. No eyebrow._
+1. _"Summary · Tue 14 Oct · synced 7:02", tagged "A typical health app": 12 tiles, each with a colour key, its own chart (sleep stages, line against your average, weekly bars, gauge) and its change: Sleep 5h 12m (1h 34m under), HRV 38 ms (12% vs avg), Resting HR 61, Readiness 68 (Fair), Sleep score 71, Blood oxygen 96%, Breathing 15.2, Wrist temp +0.4°C, Stress 58 (Rising), Energy 42, Strain 14.2, Steps 3,214._
+2. _"Waldo · Tue 7:02 AM", tagged "With Waldo": the tiles shrink and fly into three coloured rings. Recovery 63 Fair (Sleep 5h 12m · HRV −12% · RHR +4), Form 76 Steady (Circadian on time · Motion low · Stress rising), Weight 84 Heavy (6 meetings · 41 unread · Load 14.2)._
+3. _"Tuesday 14 · 2:41 PM" with the Google Calendar mark: the rings rise and a calendar day appears (7 AM to 6 PM, a red now-line at 2:41). Morning run, Standup, Lunch, Board call and 1:1 with Priya stay. The design review slides from 9:30 to 11:30 and leaves a dashed "Moved to 11:30". The weekly sync slides off and leaves "Moved to Thu, 3:30". A Breather drops in after the board call. Waldo's paw marks what he touched. A note rises at the foot: "2 moved, 1 added. Short night, heavy afternoon. Undo"._
+
 Also (each name has a "+" and opens a side panel; the panels are listed under "Side panels" below):
 - Sleep debt +
 - Quiet flags +
@@ -67,18 +67,30 @@ Small print: Waldo uses health signals as context for planning your day. It isn'
 
 ---
 
-Label: Day to day
 ### Done before / you’re up.
 Body: Waldo reads your night, then rebuilds the day around it. The hard meeting moves, your best hours stay protected, and the inbox waits its turn. Most of it, you'll never see happen.
 
-| When | What Waldo does | What it looks like |
-|---|---|---|
-| Morning | The Brief | “Rough night, about 5h 40m. Nudged your 9am to 10:30. The afternoon looks fine.” |
-| Morning | The Window | “10:30–12:30 is your sharpest stretch. Blocked it.” |
-| Before a big meeting | Prep | “Board call in 35 minutes. You're running lower than usual. Here are last time's open items.” |
-| Afternoon | The Heads-Up | “This Tuesday is shaping up like the last three. Moved your 4pm before it lands.” |
-| Evening | The Close | “Today: 3 things moved, 1 protected. Tomorrow looks lighter.” |
-| End of week | The Adjustment | “22 hours of meetings this week. Friday afternoon cleared. Retro moved to Monday.” |
+_No eyebrow on this section (2026-10-10, Suyash: "remove the eyebrows")._
+
+_Picture (`components/site/day-moments.tsx`, v2 2026-10-10), after "A day with your dot" on chatgpt.com/features/dots: a few days (Tuesday, Wednesday morning, Friday) on a timeline. Above it, the thread at that moment as you'd have it: Waldo's messages and voice notes, the tool cards he shows (the calendar event he moved, the chart he read, tonight's sleep window, the Slack post he sent), the photo or voice note you sent, and your reaction on the corner of his message. Waldo (the mascot) walks the timeline with the flag. Per the brand rules he never gets a speech bubble and is only in content moods (no rough or flagging Waldo). The flag is ink; the one orange is his paw beside his messages. Under the timeline: the moment's name and one line, no label above it. Motion is quiet: messages fade in a few pixels apart, the flag eases, Waldo follows a beat behind; nothing bounces or tilts. Plays on its own until touched. On phones the flag stays in the middle and the timeline slides under it. Everything in the threads is invented (Priya, Sam, Maya)._
+
+v3 (2026-10-10, Suyash: "should appear like iMessages, not the colour but the motion … and UI"): each thread now plays out as an iMessage conversation in Waldo's colours. A "Tuesday 6:58 AM" stamp sits over it. (A contact header with Waldo's paw was tried and removed the same day as redundant.) Waldo types (three dots, with two little trailing circles) before each of his messages. His bubbles grow out of the tail corner, and yours rise in from below. The thread eases up to make room. Bubbles from one side group tight, with a tail only on the last one in a run. Your tapback, light like his bubbles (white with a hairline), pops onto the top corner of his message, and "Read" sits under your last message. The next moment comes once the thread has played and had about 3.6s to be read. While you drag, or for anyone who asks for less motion, the thread shows whole.
+
+v2 changes: Prep and The Close were left out to make room for a wider spread of situations (a run, a voice note mid-day, a recital, bedtime, a delayed flight). The Brief, The Window, The Heads-Up and The Adjustment keep their old words.
+
+| Flag | Name | The thread (you → right, Waldo → left) | Line under the name |
+|---|---|---|---|
+| 6:58 AM | The Brief | Waldo: voice note 0:24 · “Short night, about 5h 40m. Your 9am design review is now at 10:30. The afternoon looks fine.” (you react 🙏) · Google Calendar card: Design review, ~~9:00 AM~~ → 10:30 AM | Before your alarm, Waldo reads last night and tells you what it means for today, and what it already changed. |
+| 7:40 AM | Before the run | You: “Still on for intervals?” · Apple Health card: HRV, last 7 mornings, “Today is 12% under your usual” · Waldo: “Not today. An easy 5k instead, and the intervals are on Thursday in **Strava**, when you’re fresher.” (👍) | Waldo checks what last night left you before you push, and moves the hard session to a day that can take it. |
+| 10:30 AM | The Window | Waldo: “10:30 to 12:30 is your sharpest stretch. It’s blocked, and **Slack** is on Focus until then.” · Google Calendar card: Focus, held by Waldo, 10:30 AM – 12:30 PM | Waldo finds the hours you’ll be sharpest and keeps them clear for the work that needs you. |
+| 1:20 PM | The Fetch | You: voice note 0:07 · Waldo: “Heard you. Stress has been climbing since noon, so your 3pm is on Thursday now. Sam has a note in **Slack**.” (❤️) | When the day gets to you, say so however you like. Waldo clears what can wait. |
+| 2:40 PM | The Heads-Up | Apple Health card: Form, the last three Tuesdays, “Each one dropped hard around 5” · Waldo: “Today is shaping up the same way. Your 4pm moved to tomorrow morning, before it lands.” | Waldo sees a bad afternoon forming from the ones before it, and steps in before it lands. |
+| 4:45 PM | Outside work | Waldo: “Maya’s recital is at 6. The weekly sync runs over most weeks, so today it ends at 5:15.” (🙌) · Google Calendar card: Weekly sync, ~~4:30 – 5:45 PM~~ → 4:30 – 5:15 PM | Your calendar has a life in it too. Waldo looks after that as carefully as your focus. |
+| 10:40 PM | Wind-down | Waldo: “Early flight tomorrow. Lights out by 11 still gets you six and a half hours. Alarm’s set for 5:30.” (😴) · Tonight card: 11:00 PM → 5:30 AM, “6h 30m · 40 minutes under your usual. Fine for one night.” | Waldo works back from tomorrow to tell you when tonight should end. |
+| Wed 9:15 AM | On the road | You: photo of a departures board · “Delayed two hours.” · Waldo: “Saw it. The 1pm with Priya is a video call now, and she has a note from you in **Gmail**.” (👍) | Send Waldo whatever you’re looking at. It rearranges the day around it. |
+| Fri 4:10 PM | The Adjustment | Waldo: “22 hours of meetings this week, your most since March. Friday afternoon is cleared, and the retro moved to Monday.” · Slack card, #design-team: “Moving retro to Monday 10:00 so we start the week with it. Same link.” Sent for you by Waldo | Once a week, Waldo looks at the whole week and lightens the next one where it can. |
+
+New words (2026-10-10, still to be approved): every line under a name, the moments Before the run, The Fetch, Outside work, Wind-down and On the road, and the new Brief, Window and Adjustment wording.
 
 Also (each name has a "+" and opens a side panel; the panels are listed under "Side panels" below):
 - Your best hours +
@@ -94,6 +106,8 @@ Label: Connectors
 ### Already fluent / in your tools.
 Body: Your watch, your calendar, your inbox, your tasks, and the agents you already pay for. Growing to 200+ tools across 27 categories.
 Buttons: "See every tool →"
+
+_Picture (`components/site/connector-pile.tsx`, 2026-10-12): no box any more (Suyash: "remove this box, let the connectors take up the space, include all of the connectors that we could support"). Tool tiles drop in and heap across the full width of the window, under the button. The heap draws from 211 marks: the 45 full-colour marks we had, plus 166 one-colour brand marks from Simple Icons (v16.30.0, CC0; in each brand's colour, with GitBook, Paddle, Snapchat and Mailchimp set in ink because they're near-white), all in `public/assets/connectors`. The new marks cover wearables and health, calendar and meetings, mail and messaging, tasks, notes, docs, design, engineering, AI, sales, commerce and finance, social, music and media, and travel and life. On a wide screen every mark lands once (about 40px tiles at 1440). On a phone the heap is a random sample of about 100. Each tile freezes where it lies once it has been nearly still for a moment, so the heap stops completely about 3 to 4 seconds after it starts (before, a dense heap kept shimmering for up to ten). These are tools Waldo could connect to, not a promise that each is built: the statuses are on the Connectors page._
 
 ---
 

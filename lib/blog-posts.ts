@@ -329,3 +329,16 @@ export function readBlogMarkdown(post: BlogPost) {
     readingTime: Math.max(1, Math.ceil(wordCount / 220)),
   };
 }
+
+// What the notes wheel (components/site/notes-wheel.tsx) needs from each post, newest first.
+export function getBlogWheelNotes() {
+  return getBlogPosts().map((post) => ({
+    slug: post.slug,
+    title: post.title,
+    titleLines: post.titleLines,
+    category: post.category,
+    image: post.image,
+    imageAlt: post.imageAlt,
+    readingTime: readBlogMarkdown(post).readingTime,
+  }));
+}

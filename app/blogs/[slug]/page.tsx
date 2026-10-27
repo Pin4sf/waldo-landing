@@ -179,6 +179,8 @@ export default async function BlogArticlePage({ params }: PageProps) {
             height={1024}
             priority
             sizes="(max-width: 767px) 100vw, 1120px"
+            data-note-art={post.slug}
+            style={{ viewTransitionName: "note-art" }}
           />
           <figcaption>{post.artCredit}</figcaption>
         </figure>

@@ -1,98 +1,202 @@
 /*
   How it works, the opening map (how-map.tsx), after "See what Claude can do" on claude.com/product/overview, in
-  Waldo's light look: Waldo in the middle, the five parts of the page around him in the headline face, their
-  features in small grey type, joined by hairlines. Labels sit on the page colour, so each line stops short of its
-  words. Wider than the page column, like the jobs band on Connectors.
+  Waldo's light look: Waldo, the five parts of the page in the headline face, their features in small grey type,
+  joined by hairlines that stop short of the words.
+
+  Three fixed-size canvases (wide 1200 x 800, middle 700 x 640, tall 340 x 1080 for phones), each scaled to the width
+  it is in (--s, set by the component). Sizes below are in canvas px, so they scale with it. The stage is wider than
+  the page column on the wide and middle ones, like the jobs band on Connectors.
 */
 
-.hm { margin-top: clamp(40px, 6vw, 72px); }
+.hm { --w: 1200; --h: 800; margin-top: clamp(40px, 6vw, 72px); }
 
-.hm-map {
+.hm-frame {
+  --s: 1;
   position: relative;
   width: min(1200px, calc(100vw - 48px));
-  aspect-ratio: 1200 / 800;
+  aspect-ratio: var(--w) / var(--h);
   margin-inline: calc((100% - min(1200px, 100vw - 48px)) / 2);
   letter-spacing: 0;
 }
-.hm-lines { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+@media (max-width: 999px) {
+  .hm { --w: 700; --h: 640; }
+  .hm-frame { width: min(860px, calc(100vw - 48px)); margin-inline: calc((100% - min(860px, 100vw - 48px)) / 2); }
+}
+@media (max-width: 639px) {
+  .hm { --w: 340; --h: 1080; }
+  .hm-frame { width: min(400px, 100%); margin-inline: auto; }
+}
+
+.hm-stage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
+  transform: scale(var(--s));
+  /* Nothing shows until the labels have been measured and placed */
+  visibility: hidden;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.hm[data-ready] .hm-stage { visibility: visible; }
+
+/* Lines ─────────────────────────────────────────────────────────────── */
+.hm-lines { position: absolute; inset: 0; overflow: visible; pointer-events: none; }
 .hm-lines line {
   stroke: color-mix(in srgb, var(--ink) 16%, transparent);
   stroke-width: 1;
-  vector-effect: non-scaling-stroke;
-  transition: stroke 0.3s var(--ease-out-quad), opacity 0.3s var(--ease-out-quad);
+  stroke-linecap: round;
+  transition: stroke 0.3s var(--ease-out-quad), opacity 0.3s var(--ease-out-quad), stroke-dashoffset 0.9s cubic-bezier(0.25, 0.1, 0.25, 1) var(--d, 0ms);
 }
-.hm-lines .hm-trunk { stroke: color-mix(in srgb, var(--ink) 24%, transparent); }
-.hm[data-active] .hm-lines g:not([data-on]) line { opacity: 0.35; }
-.hm-lines g[data-on] line { stroke: var(--ink); }
+.hm-lines line[data-trunk] { stroke: color-mix(in srgb, var(--ink) 26%, transparent); stroke-width: 1.2; }
+.hm-lines line[data-on] { stroke: var(--ink); }
+.hm[data-focus] .hm-lines line:not([data-on]) { opacity: 0.3; }
+/* Drawn out when it first scrolls into view */
+.hm-lines line { stroke-dasharray: 1; stroke-dashoffset: 1; }
+.hm[data-in] .hm-lines line { stroke-dashoffset: 0; }
 
-.hm-centre,
-.hm-branch,
-.hm-leaf {
+/* Labels ────────────────────────────────────────────────────────────── */
+/* Where a label is, is written by the script as a transform; its own rise-in is on the text inside it */
+.hm-node {
   position: absolute;
-  transform: translate(-50%, -50%);
-  white-space: nowrap;
-  background: var(--surface-t3);
+  top: 0;
+  left: 0;
+  display: block;
+  color: var(--text-secondary);
+  text-decoration: none;
+  will-change: transform;
+  transition: opacity 0.3s var(--ease-out-quad), color 0.3s var(--ease-out-quad);
+  touch-action: pan-y;
 }
-.hm-centre {
+.hm-txt {
   display: inline-flex;
   align-items: center;
+  gap: 6px;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s ease var(--d, 0ms), transform 1.1s var(--ease-premium, cubic-bezier(0.19, 1, 0.22, 1)) var(--d, 0ms);
+}
+.hm[data-in] .hm-txt { opacity: 1; transform: none; }
+
+.hm-centre { cursor: default; color: var(--ink); }
+.hm-centre .hm-txt {
   gap: 12px;
   padding: 6px 14px;
   font-family: var(--font-headline);
   font-weight: var(--mottle-display-weight);
-  font-size: clamp(32px, 4vw, 54px);
+  font-size: 54px;
   line-height: 1;
   letter-spacing: -0.02em;
-  color: var(--ink);
+  white-space: nowrap;
 }
 .hm-mark { display: inline-flex; color: var(--accent); }
-.hm-mark svg { width: clamp(26px, 3vw, 40px); height: auto; }
-.hm-branch {
+.hm-mark svg { width: 40px; height: auto; }
+
+.hm-branch { cursor: pointer; color: var(--ink); }
+.hm-branch .hm-txt {
   padding: 4px 10px;
   font-family: var(--font-headline);
   font-weight: var(--mottle-display-weight);
-  font-size: clamp(19px, 2.1vw, 28px);
+  font-size: 28px;
   line-height: 1.1;
   letter-spacing: -0.015em;
-  color: var(--ink);
-  text-decoration: none;
-  border-radius: 8px;
-  transition: opacity 0.3s var(--ease-out-quad);
+  white-space: nowrap;
 }
-.hm-leaf {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 3px 8px;
-  font-size: clamp(12px, 1.2vw, 15px);
-  line-height: 1.2;
-  color: var(--text-secondary);
-  text-decoration: none;
-  border-radius: 6px;
-  transition: color 0.3s var(--ease-out-quad), opacity 0.3s var(--ease-out-quad);
-}
+
+.hm-leaf { cursor: grab; }
+.hm[data-drag] .hm-node { cursor: grabbing; }
+.hm-leaf .hm-txt { padding: 3px 8px; font-size: 15px; line-height: 1.25; white-space: nowrap; }
 .hm-leaf i,
-.hm-list i { padding: 1px 6px; border-radius: 99px; background: color-mix(in srgb, var(--ink) 7%, transparent); font-size: 11px; font-style: normal; color: var(--text-tertiary); }
-.hm[data-active] .hm-group:not([data-on]) :is(.hm-branch, .hm-leaf) { opacity: 0.35; }
+.hm-list i { flex: none; padding: 1px 6px; border-radius: 99px; background: color-mix(in srgb, var(--ink) 7%, transparent); font-size: 11px; font-style: normal; color: var(--text-tertiary); }
+
+/* Pointing at a part: its features come forward, the rest step back */
+.hm[data-focus] .hm-group:not([data-on]) .hm-node { opacity: 0.32; }
 .hm-group[data-on] .hm-leaf { color: var(--ink); }
 
-/* It draws itself out from the middle: the trunks, the five parts, then the features */
-@media (prefers-reduced-motion: no-preference) {
-  .hm-lines line { stroke-dasharray: 1; animation: hm-draw 0.7s var(--ease-in-out-quad) var(--d) backwards; }
-  .hm-centre { animation: hm-in 0.6s var(--ease-sheet) backwards; }
-  .hm-branch,
-  .hm-leaf { animation: hm-in 0.5s var(--ease-sheet) var(--d) backwards; }
+/* The card on a feature that has a line of explanation (wide and middle only) */
+.hm-card {
+  position: absolute;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 240px;
+  box-sizing: border-box;
+  padding: 14px 16px 16px;
+  border-radius: 16px;
+  background: var(--surface-t1);
+  box-shadow: inset 0 0 0 1px var(--border-default);
+  text-align: left;
+  font-size: 13.5px;
+  line-height: 1.4;
+  color: var(--text-secondary);
+  opacity: 0;
+  pointer-events: none;
+  translate: -50% 0;
+  transform: translateY(6px);
+  transition: opacity 0.2s ease, transform 0.25s var(--ease-premium, cubic-bezier(0.19, 1, 0.22, 1));
 }
-@keyframes hm-draw {
-  from { stroke-dashoffset: 1; }
-  to { stroke-dashoffset: 0; }
+.hm-card[data-below] { transform: translateY(-6px); }
+.hm-card:not([data-below]) { translate: -50% -100%; }
+.hm-card[data-show] { opacity: 1; transform: none; }
+.hm-card b { font-size: 14px; font-weight: 600; color: var(--ink); }
+
+/* The middle canvas: smaller type, labels wrapped */
+@media (max-width: 999px) {
+  .hm-centre .hm-txt { font-size: 40px; }
+  .hm-mark svg { width: 30px; }
+  .hm-branch .hm-txt { font-size: 22px; }
+  .hm-leaf .hm-txt { display: inline-block; max-width: 124px; font-size: 13.5px; line-height: 1.22; white-space: normal; }
+  .hm-leaf .hm-txt i { margin-left: 6px; }
 }
-@keyframes hm-in {
-  from { opacity: 0; transform: translate(-50%, calc(-50% + 6px)); }
+/* The tall one, for phones */
+@media (max-width: 639px) {
+  .hm-centre .hm-txt { font-size: 34px; }
+  .hm-mark svg { width: 26px; }
+  .hm-branch .hm-txt { font-size: 20px; }
+  .hm-leaf { cursor: pointer; }
+  .hm-leaf .hm-txt { max-width: 112px; padding: 2px 6px; font-size: 13px; line-height: 1.2; }
+  .hm-card { display: none; }
 }
 
-/* Narrow screens: a list, each part with its features under it */
-.hm-list { display: none; margin: 0; padding: 0; list-style: none; text-align: left; }
+/* Reduced motion: it is all there at once, and it holds still */
+@media (prefers-reduced-motion: reduce) {
+  .hm-txt { opacity: 1; transform: none; transition: none; }
+  .hm-lines line { stroke-dashoffset: 0; transition: stroke 0.3s, opacity 0.3s; }
+  .hm-leaf { cursor: pointer; }
+}
+
+/* The list: kept for a screen reader (clipped away), shown in place of the map without scripting, and in front of
+   the map while a keyboard is in it */
+.hm-list {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  list-style: none;
+  text-align: left;
+}
+.hm { position: relative; }
+.hm-list:focus-within {
+  inset: 0 0 auto;
+  z-index: 5;
+  width: auto;
+  height: auto;
+  margin: 0;
+  padding: 0 16px;
+  overflow: visible;
+  clip-path: none;
+  white-space: normal;
+  background: var(--surface-t3);
+}
+@media (scripting: none) {
+  .hm-frame { display: none; }
+  .hm-list { position: static; width: auto; height: auto; margin: 0; overflow: visible; clip-path: none; white-space: normal; }
+}
 .hm-list li { padding: 18px 0; border-top: 0.5px solid color-mix(in srgb, var(--ink) 10%, transparent); }
 .hm-list li:last-child { border-bottom: 0.5px solid color-mix(in srgb, var(--ink) 10%, transparent); }
 .hm-list a {
@@ -108,7 +212,3 @@
 .hm-list a span { font-family: var(--font-body); font-size: 16px; color: var(--text-tertiary); }
 .hm-list p { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 10px 0 0; font-size: 14.5px; color: var(--text-secondary); }
 .hm-list p span { display: inline-flex; align-items: center; gap: 6px; }
-@media (max-width: 860px) {
-  .hm-map { display: none; }
-  .hm-list { display: block; }
-}

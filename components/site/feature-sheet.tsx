@@ -25,7 +25,11 @@ export type Feature = {
   /** The wireframe (feature-wires.tsx), and the line under it, which also describes it to screen readers */
   wire?: { name: WireName; caption: string };
   /** A short table: a heading, its two column names, then rows of [first column, second column] */
-  helps?: { heading: string; columns: [string, string]; rows: [string, string][] };
+  helps?: {
+    heading: string;
+    columns: [string, string];
+    rows: [string, string][];
+  };
 };
 
 /** Long names go over two lines (at a comma, or the space nearest the middle), so the title stays large. */
@@ -39,20 +43,7 @@ function titleLines(name: string) {
 }
 
 export function FeatureList({ label = "Also", section, features }: { label?: string; section: string; features: Feature[] }) {
-  const dialog = useRef<HTMLDialogElement>(null);
-  const body = useRef<HTMLDivElement>(null);
-  const titleId = useId();
-  // Keeps the last feature after closing, so the panel still has its content while it slides out
-  const [active, setActive] = useState(0);
-  const feature = features[active];
-  const lines = titleLines(feature.name);
-
-  function open(index: number) {
-    setActive(index);
-    // Each feature starts at the top, even if the last one was scrolled
-    body.current?.scrollTo({ top: 0 });
-    dialog.current?.showModal();
-  }
+  const { open, sheet } = useFeatureSheet(section, features);
 
   return (
     <div className="site-features">
@@ -70,76 +61,99 @@ export function FeatureList({ label = "Also", section, features }: { label?: str
           </li>
         ))}
       </ul>
-
-      <dialog
-        ref={dialog}
-        className="site-sheet"
-        aria-labelledby={titleId}
-        onClick={(event) => {
-          // A click on the dimmed page behind the panel lands on the dialog itself
-          if (event.target === event.currentTarget) event.currentTarget.close();
-        }}
-      >
-        <div className="site-sheet-inner">
-          <header className="site-sheet-header">
-            <p className="site-label">{section}</p>
-            <button type="button" className="site-sheet-close" aria-label="Close" onClick={() => dialog.current?.close()}>
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-              </svg>
-            </button>
-          </header>
-          <div ref={body} className="site-sheet-body">
-            <h2 id={titleId} className="site-heading" style={titleFit(lines)}>
-              {lines.map((line) => (
-                <span key={line}>{line}</span>
-              ))}
-            </h2>
-            {feature.status ? (
-              <p className="site-sheet-meta">
-                <Status value={feature.status} />
-              </p>
-            ) : null}
-            <p className="site-text">
-              <strong>{feature.line}</strong>
-            </p>
-            {feature.detail.map((paragraph, index) => (
-              <p key={index} className="site-text">
-                {paragraph}
-              </p>
-            ))}
-            {feature.wire ? (
-              <figure className="site-sheet-figure">
-                <Wire key={feature.wire.name} name={feature.wire.name} label={feature.wire.caption} />
-                <figcaption className="site-label">{feature.wire.caption}</figcaption>
-              </figure>
-            ) : null}
-            {feature.helps ? (
-              <section className="site-sheet-facts" aria-label={feature.helps.heading}>
-                <p className="site-text">
-                  <strong>{feature.helps.heading}</strong>
-                </p>
-                <table className="site-sheet-table">
-                  <thead>
-                    <tr>
-                      <th scope="col">{feature.helps.columns[0]}</th>
-                      <th scope="col">{feature.helps.columns[1]}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {feature.helps.rows.map(([first, second]) => (
-                      <tr key={first}>
-                        <td>{first}</td>
-                        <td>{second}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </section>
-            ) : null}
-          </div>
-        </div>
-      </dialog>
+      {sheet}
     </div>
   );
+}
+
+/** The side panel on its own, for anything else that opens a feature (the How it works close's cards) */
+export function useFeatureSheet(section: string, features: Feature[]) {
+  const dialog = useRef<HTMLDialogElement>(null);
+  const body = useRef<HTMLDivElement>(null);
+  const titleId = useId();
+  // Keeps the last feature after closing, so the panel still has its content while it slides out
+  const [active, setActive] = useState(0);
+  const feature = features[active];
+  const lines = titleLines(feature.name);
+
+  function open(index: number) {
+    setActive(index);
+    // Each feature starts at the top, even if the last one was scrolled
+    body.current?.scrollTo({ top: 0 });
+    dialog.current?.showModal();
+  }
+
+  const sheet = (
+    <dialog
+      ref={dialog}
+      className="site-sheet"
+      aria-labelledby={titleId}
+      onClick={(event) => {
+        // A click on the dimmed page behind the panel lands on the dialog itself
+        if (event.target === event.currentTarget) event.currentTarget.close();
+      }}
+    >
+      <div className="site-sheet-inner">
+        <header className="site-sheet-header">
+          <p className="site-label">{section}</p>
+          <button type="button" className="site-sheet-close" aria-label="Close" onClick={() => dialog.current?.close()}>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+            </svg>
+          </button>
+        </header>
+        <div ref={body} className="site-sheet-body">
+          <h2 id={titleId} className="site-heading" style={titleFit(lines)}>
+            {lines.map((line) => (
+              <span key={line}>{line}</span>
+            ))}
+          </h2>
+          {feature.status ? (
+            <p className="site-sheet-meta">
+              <Status value={feature.status} />
+            </p>
+          ) : null}
+          <p className="site-text">
+            <strong>{feature.line}</strong>
+          </p>
+          {feature.detail.map((paragraph, index) => (
+            <p key={index} className="site-text">
+              {paragraph}
+            </p>
+          ))}
+          {feature.wire ? (
+            <figure className="site-sheet-figure">
+              <Wire key={feature.wire.name} name={feature.wire.name} label={feature.wire.caption} />
+              <figcaption className="site-label">{feature.wire.caption}</figcaption>
+            </figure>
+          ) : null}
+          {feature.helps ? (
+            <section className="site-sheet-facts" aria-label={feature.helps.heading}>
+              <p className="site-text">
+                <strong>{feature.helps.heading}</strong>
+              </p>
+              <table className="site-sheet-table">
+                <thead>
+                  <tr>
+                    <th scope="col">{feature.helps.columns[0]}</th>
+                    <th scope="col">{feature.helps.columns[1]}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {feature.helps.rows.map(([first, second]) => (
+                    <tr key={first}>
+                      <td>{first}</td>
+                      <td>{second}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </section>
+          ) : null}
+        </div>
+      </div>
+    </dialog>
+  );
+
+  return { open, sheet };
 }
