@@ -50,7 +50,7 @@ export default function KennelPage() {
             label="Kennel for Mac"
             lines={["Your agents finish.", "Kennel gets it done."]}
             subtitle="Tell Kennel what should be true when you're done. It splits the work across Codex, Claude Code, Cursor and the rest, checks every result, and shows you the proof."
-            body="It's free, open source and in open beta, and it runs on your Mac."
+            body="It's free, open source and in a small beta, and it runs on your Mac."
             actions={{
               primary: { label: "Try the beta on GitHub", href: KENNEL_REPO },
               secondary: { label: "Get the Mac app first →", href: KENNEL_WAITLIST },
@@ -216,8 +216,8 @@ export default function KennelPage() {
                     a: "Kennel keeps its records on your Mac. Your agents work through your own accounts, just as they do without Kennel.",
                   },
                   {
-                    q: "What does “open beta” mean?",
-                    a: "It works, and people are using it, but it's still being finished. Today you build it from source. A packaged Mac app is coming. Join the list to hear first.",
+                    q: "What does “beta” mean?",
+                    a: "It works, and a small group is using it, but it's still being finished. Today you build it from source. A packaged Mac app is coming. Join the list to hear first.",
                   },
                 ],
               },

@@ -28,12 +28,12 @@ export const SCENES: { you: string; react: Reaction; waldo: Part[] }[] = [
   {
     you: "release is stuck and the notes aren’t written",
     react: "up",
-    waldo: [{ agent: "Codex" }, " takes the blocker, ", { agent: "Claude" }, " the notes. I’ll chase Priya."],
+    waldo: [{ agent: "Codex" }, " takes the blocker, ", { agent: "Claude" }, " the notes. A note to Priya is drafted."],
   },
   {
     you: "pr 184 is green but nobody’s read it. also i’m double booked at 3",
     react: "haha",
-    waldo: [{ agent: "Cursor" }, " reads the PR. The 3pm is mine: the review moves to Thursday."],
+    waldo: [{ agent: "Cursor" }, " reads the PR. The 3pm is mine: say yes and the review moves to Thursday."],
   },
   {
     you: "maya wants the quote today. the maths feels off. i slept 5 hours",

@@ -88,7 +88,7 @@ export function WaitlistPanel({ variant }: { variant: Variant }) {
             </li>
             <li>
               <Link className="wl-wait-link" href="/kennel">
-                <ArrowLabel label="Try Kennel for Mac, in open beta →" />
+                <ArrowLabel label="Try Kennel for Mac, in beta →" />
               </Link>
             </li>
             <li>

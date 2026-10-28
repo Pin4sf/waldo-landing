@@ -11,7 +11,7 @@ import { ArrowLabel } from "./blocks";
 
 // The one menu for every page. Only pages that exist get a link (see docs/website/sitemap.md).
 const PRODUCTS = [
-  { label: "Kennel for Mac", note: "Open beta", href: "/kennel", icon: "/build/kennel-icon.svg" },
+  { label: "Kennel for Mac", note: "Beta", href: "/kennel", icon: "/build/kennel-icon.svg" },
   { label: "Waldo for iPhone", note: "Coming soon", icon: "/build/ios-icon.svg" },
   { label: "Connectors", note: "Everything Waldo works with", href: "/connectors", icon: "/build/plugins-icon.svg" },
 ] as const;

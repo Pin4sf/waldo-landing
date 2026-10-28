@@ -1,15 +1,15 @@
-// Every tool on the Connectors page and its status (docs/website/pages/connectors.md). The statuses are the ones
-// proposed in the copy doc's TOOL LIST, still to be confirmed before launch: the counts in the request section and
-// the "Works with" lines under each use case follow this list.
+// Every tool on the Connectors page and where it stands (docs/website/pages/connectors.md). Statuses come from
+// status.ts, as of the owner's list of 27 October 2026: the counts in the request section and the "works today" lines
+// under each use case follow this list. Tools nobody has started on are "later": listed so people can ask for them,
+// never shown as coming. Telegram is internal and test only, so it isn't listed.
 
-export type ToolStatus = "today" | "next" | "planned";
+import { type Status, STATUS_LABEL as LABEL, STATUS_SLUG as SLUG } from "./status";
+
+export type ToolStatus = Status | "later";
 export type Tool = { name: string; status: ToolStatus };
 
-export const STATUS_LABEL: Record<ToolStatus, string> = {
-  today: "Working today",
-  next: "Coming next",
-  planned: "Planned",
-};
+export const STATUS_LABEL: Record<ToolStatus, string> = { ...LABEL, later: "Not built yet" };
+export const STATUS_SLUG: Record<ToolStatus, string> = { ...SLUG, later: "later" };
 
 // Marks in public/assets/connectors. Tools without one get their first letter.
 const LOGOS: Record<string, string> = {
@@ -26,7 +26,6 @@ const LOGOS: Record<string, string> = {
   Zoom: "/assets/connectors/zoom.svg",
   Calendly: "/assets/connectors/calendly.svg",
   Gmail: "/assets/connectors/gmail.svg",
-  Telegram: "/assets/connectors/telegram.svg",
   Slack: "/assets/connectors/slack.svg",
   WhatsApp: "/assets/connectors/whatsapp.svg",
   Linear: "/assets/connectors/linear.svg",
@@ -42,6 +41,7 @@ const LOGOS: Record<string, string> = {
   "Claude Code": "/assets/connectors/claude.svg",
   Granola: "/assets/connectors/granola.svg",
   Kennel: "/build/kennel-icon.svg",
+  Waldo: "/logodots.svg",
 };
 
 export const logoOf = (name: string): string | undefined => LOGOS[name];
@@ -49,37 +49,29 @@ export const logoOf = (name: string): string | undefined => LOGOS[name];
 const list = (status: ToolStatus, names: string[]): Tool[] => names.map((name) => ({ name, status }));
 
 export const TOOLS: Tool[] = [
-  ...list("today", [
-    "Apple Watch",
-    "Health Connect",
-    "Google Calendar",
-    "Gmail",
-    "Telegram",
-    "Google Tasks",
-    "Codex",
-    "Claude Code",
-    "Cursor",
-    "OpenCode",
-    "Pi",
-    "Weather",
-    "Location",
-  ]),
-  ...list("next", [
+  ...list("live", ["Apple Watch", "Apple Health", "Google Calendar", "Gmail", "Google Drive", "Google Tasks", "iMessage"]),
+  // WHOOP connects, but isn't proven yet. The agents run in Kennel for Mac, which is a narrow beta.
+  ...list("beta", ["WHOOP", "Codex", "Claude Code", "Cursor", "OpenCode", "Pi"]),
+  ...list("coming next", [
     "Oura",
-    "WHOOP",
     "Garmin",
     "Fitbit",
-    "Galaxy Watch",
+    // Waiting on Meta's verification
+    "WhatsApp",
     "Outlook",
     "Slack",
-    "WhatsApp",
     "Todoist",
     "Microsoft To Do",
     "Linear",
     "Notion",
     "Spotify",
+    "Weather",
+    "Location",
   ]),
-  ...list("planned", [
+  ...list("later", [
+    // Android comes later, and these with it
+    "Health Connect",
+    "Galaxy Watch",
     "Strava",
     "Apple Calendar",
     "Zoom",
@@ -89,7 +81,6 @@ export const TOOLS: Tool[] = [
     "Trello",
     "ClickUp",
     "Airtable",
-    "Google Drive",
     "Dropbox",
     "GitHub",
     "Jira",
@@ -121,11 +112,13 @@ export function joinNames(names: string[]) {
 export function availability(names: string[]) {
   const by = (status: ToolStatus) => names.filter((name) => statusOf(name) === status);
   const parts: string[] = [];
-  const today = by("today");
-  const next = by("next");
-  const later = by("planned");
-  if (today.length) parts.push(`${joinNames(today)} ${today.length > 1 ? "work" : "works"} today.`);
+  const live = by("live");
+  const beta = by("beta");
+  const next = by("coming next");
+  const later = by("later");
+  if (live.length) parts.push(`${joinNames(live)} ${live.length > 1 ? "work" : "works"} today.`);
+  if (beta.length) parts.push(`${joinNames(beta)} ${beta.length > 1 ? "are" : "is"} in beta.`);
   if (next.length) parts.push(`${joinNames(next)} ${next.length > 1 ? "are" : "is"} next.`);
-  if (later.length) parts.push(`${joinNames(later)} ${later.length > 1 ? "are" : "is"} planned.`);
+  if (later.length) parts.push(`${joinNames(later)} ${later.length > 1 ? "aren’t" : "isn’t"} built yet.`);
   return parts.join(" ");
 }

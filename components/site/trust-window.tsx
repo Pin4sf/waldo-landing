@@ -21,10 +21,9 @@ import "./trust-window.css";
 //
 // Every line is one the product code backs (docs/website/trust-carousel-review.md): the three Google permissions
 // are read-only; a change is a proposal that waits for approval; a saved note is written by Waldo, replaced by
-// saving the same note again, and is background, not an instruction; the data sits with Supabase, Anthropic
-// writes his replies and Telegram carries his messages. What the code can't back (retention, deletion,
-// encryption, "never trained on") is not in it. It is a drawing: nothing here connects to anything. The people
-// and meetings are made up.
+// saving the same note again, and is background, not an instruction. Where it goes follows the published Privacy
+// Policy (content/legal/privacy.md, sections 6 and 8): Supabase stores it, OpenAI writes his replies and Anthropic
+// answers when OpenAI can't. It is a drawing: nothing here connects to anything. The people and meetings are made up.
 
 const sleep = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
 const TYPE_MS = 34;
@@ -53,8 +52,8 @@ const BEATS = [
   },
   {
     rail: "Where it goes",
-    title: "Data handling needs a clear explanation.",
-    text: "These are example services, not a complete provider list or a privacy guarantee. Final app data practices are still under review.",
+    title: "Where your data goes is written down.",
+    text: "These are some of the services involved, not the full list. The Privacy Policy names every one, and what each receives.",
   },
 ] as const;
 
@@ -379,13 +378,13 @@ export function TrustWindow() {
             <div key="goes" className="tw-card tw-pop">
               <div className="tw-card-top">
                 <span className="tw-card-kind">Where it goes</span>
-                <span className="tw-chip">Example services</span>
+                <span className="tw-chip">Some of them</span>
               </div>
               <ul className="tw-services">
                 {[
-                  { key: "supabase", logo: "supabase", name: "Supabase", text: "Example storage provider. App data details are under review." },
-                  { key: "anthropic", logo: "claude", name: "Anthropic", text: "Example model provider. Final provider list is pending." },
-                  { key: "telegram", logo: "telegram", name: "Telegram", text: "Example messaging service, where enabled." },
+                  { key: "supabase", logo: "supabase", name: "Supabase", text: "Stores your account and health data. Connected-account tokens sit in an encrypted vault." },
+                  { key: "openai", logo: "openai", name: "OpenAI", text: "Writes Waldo’s replies." },
+                  { key: "anthropic", logo: "claude", name: "Anthropic", text: "Answers when OpenAI can’t." },
                 ].map((s, i) => (
                   <li key={s.key} style={{ "--i": i } as CSSProperties}>
                     <Logo name={s.logo} />

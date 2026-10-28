@@ -42,4 +42,4 @@ export const SITE_KEYWORDS = [
   "recovery signals",
 ];
 
-export const LAST_CONTENT_UPDATE = "2026-07-07";
+export const LAST_CONTENT_UPDATE = "2026-10-27";
