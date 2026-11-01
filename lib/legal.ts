@@ -5,7 +5,7 @@ import path from "node:path";
 // (APP_PRIVACY_NOTICE_VERSION_V1 and APP_TERMS_VERSION_V1 in waldo-backend): a new text gets a new version, so an
 // acceptance always points at the copy that was published.
 export const LEGAL_DOCUMENTS = {
-  privacy: { title: "Privacy Policy", file: "privacy.md", version: 1, effective: "27 October 2026" },
+  privacy: { title: "Privacy Policy", file: "privacy.md", version: 2, effective: "8 November 2026" },
   terms: { title: "Terms of Use", file: "terms.md", version: 1, effective: "27 October 2026" },
 } as const;
 

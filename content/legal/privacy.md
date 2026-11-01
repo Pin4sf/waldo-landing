@@ -1,4 +1,4 @@
-ECOFRESH GREENSYNC LLP ("Ecofresh", "we", "us") runs Waldo, a personal assistant that plans around your day and, if you choose, your health data. This policy explains what Waldo collects, why, who receives it, and the choices you have. It takes effect on 27 October 2026.
+ECOFRESH GREENSYNC LLP ("Ecofresh", "we", "us") runs Waldo, a personal assistant that plans around your day and, if you choose, your health data. This policy explains what Waldo collects, why, who receives it, and the choices you have. This is version 2. It takes effect on 8 November 2026 and replaces version 1, which took effect on 27 October 2026.
 
 Waldo is in beta. During the beta we record the full text of testers' conversations to find and fix problems. Section 10 explains what that covers and how long we keep it.
 
@@ -50,10 +50,12 @@ Sharing health data with Waldo is optional, and you choose each source separatel
 - **Sources.** With your permission, Waldo reads the health readings listed in section 2 from Apple Health on your iPhone. If we add other sources, we will update this policy first. Our servers receive summaries over short periods and single readings, not beat-to-beat heart data or your continuous heart-rate stream.
 - **Two permissions, per source.** One lets Waldo store and process your readings. The other lets the AI that writes Waldo's replies use them. You can withdraw either at any time in the Waldo app. To turn on health sharing, you confirm that you are 18 or over.
 - **How Waldo uses it.** To work out daily summaries and scores, and to plan around your sleep and your day, for example by suggesting a lighter morning after a short night. If you allow AI use, the model that writes Waldo's replies sees a short summary of your health in broad bands (such as "below your usual") with every reply and check-in, and can look up the readings it needs (section 6). When you finish setting up Waldo, and only if you allow AI use, the model also reads up to 30 days of your daily readings once, to describe a few patterns in words, without numbers, for your welcome picture (section 4). Waldo's memory may also hold health-related notes from your conversations, which you can ask it to forget.
-- **Where it appears.** In Waldo's replies to you, in the app, the console or a channel you've linked. If you use Waldo on WhatsApp or Telegram, replies that mention your health pass through that service. Waldo doesn't put your health data into emails or messages to other people unless you ask it to.
+- **Your sleep need.** You can set how much sleep you need in the app's health settings, or tell Waldo in a message. Waldo stores it with your health data and uses it to work out your sleep scores and plan around your sleep. It's something you told Waldo, not a reading from a source, so it stays until you change or clear it, or delete your account. Withdrawing a source's permissions, turning off health sharing, and the time limits below don't delete it.
+- **Wind-down blocks on your calendar.** Waldo may suggest a block on your calendar for winding down before bed. It times the block from your sleep need, your recent sleep and your first commitment the next day. Waldo adds a block only after you approve that block. The block has a neutral title, with no health numbers, no reason and no description. Once added, it's an ordinary event in your calendar: people who can see your calendar can see it, and people who can see your free and busy times see that time as busy, like any other event, and your calendar provider keeps it under its own terms. Waldo stops suggesting blocks when you turn off health sharing. A block already added stays in your calendar after you turn off health sharing or delete your account, until you delete it there.
+- **Where it appears.** In Waldo's replies to you, in the app, the console or a channel you've linked. If you use Waldo on WhatsApp or Telegram, replies that mention your health pass through that service. Waldo doesn't put your health data into emails or messages to other people unless you ask it to. A wind-down block you approve goes on your calendar, timed from your sleep but without any health detail in it (above).
 - **What we never do with it.** We don't sell your health data, and we don't use or share it for advertising, marketing or data mining.
 - **Beta diagnostics.** During the beta, our diagnostic records include the full text of every tester's conversations (section 10). Before a record is kept, Waldo removes the health readings it looked up and health numbers in the text, such as a heart rate, a blood pressure or hours of sleep. Health details you mention in words, such as a symptom or a medicine, can still be recorded.
-- **How long we keep it.** Readings for up to 90 days, and daily summaries and scores for up to 24 months while your account is open. Withdrawing storage permission, or deleting your account, deletes them (section 10).
+- **How long we keep it.** Readings for up to 90 days, and daily summaries and scores for up to 24 months while your account is open. Withdrawing storage permission, or deleting your account, deletes them (section 10). Your sleep need is kept until you change or clear it, or delete your account.
 
 Waldo is not a medical device and doesn't diagnose or treat any condition.
 
@@ -196,6 +198,7 @@ We keep your data while your account is open, within these limits:
 | --- | --- |
 | Health readings | Up to 90 days |
 | Daily health summaries and scores | Up to 24 months while your account is open |
+| Your sleep need, if you tell Waldo | Until you change or clear it, or delete your account |
 | Conversations, threads, memory and files | Until you delete them or your account |
 | Meals and workouts you log in chat | Until you delete your account |
 | Results of actions on your Mac | Until you delete your account |
@@ -213,7 +216,7 @@ We keep your data while your account is open, within these limits:
 - Delete a conversation thread to erase its messages and the results Waldo gathered for it.
 - Ask Waldo to forget something, and it removes it from its memory and tells you what it removed.
 - Remove a file in the console.
-- Withdraw health storage permission for a source, and we delete that source's readings and all your daily health summaries and scores. Withdrawing only the AI permission stops Waldo using your health data in replies but deletes nothing.
+- Withdraw health storage permission for a source, and we delete that source's readings and all your daily health summaries and scores. Your sleep need stays until you change or clear it. Withdrawing only the AI permission stops Waldo using your health data in replies but deletes nothing.
 - Disconnect Google in the console, and we delete the tokens that let Waldo reach your Google account (section 4).
 - Disconnect another app in Connections, and we delete the sign-in that lets Waldo reach it (section 4).
 - Forget a note in your welcome picture, or a look-up finding, in the app.
@@ -224,6 +227,7 @@ We keep your data while your account is open, within these limits:
 - service logs and diagnostic records, until they expire;
 - copies held by WhatsApp or Telegram under their own policies; for example, media Waldo sends you on WhatsApp stays on Meta's servers for up to 30 days;
 - your iMessage registration at Photon, which we remove by hand for now;
+- wind-down blocks you approved, which stay in your calendar until you delete them there (section 3);
 - a record of sign-in events kept by our sign-in provider, Supabase, for as long as it keeps them;
 - backups, until they are replaced in the normal backup cycle;
 - a few technical records that account deletion doesn't reach yet. Write to woof@heywaldo.in and we will delete them by hand.
@@ -244,7 +248,7 @@ You have the right to:
 - **access** a summary of the personal data we hold about you, how we process it, and who we have shared it with;
 - **correct, complete or update** your data;
 - **erase** your data, by deleting items or your whole account yourself (section 10) or by asking us;
-- **withdraw consent** at any time, as easily as you gave it, by turning off health sharing in the app, taking back your yes to being looked up in the app, unlinking a channel, disconnecting Google in the console or another app in Connections, or deleting your account. Your acceptance of the Terms of Use and this policy ends when you delete your account. Withdrawing consent doesn't undo processing that has already happened, and features that need the data stop working;
+- **withdraw consent** at any time, as easily as you gave it, by turning off health sharing in the app, taking back your yes to being looked up in the app, unlinking a channel, disconnecting Google in the console or another app in Connections, or deleting your account. Your acceptance of the Terms of Use and this policy ends when you delete your account. Withdrawing consent doesn't undo processing that has already happened, and features that need the data stop working. Turning off health sharing doesn't clear your sleep need or remove wind-down blocks already in your calendar (section 3);
 - **nominate** someone to exercise these rights for you if you die or become unable to, by emailing us your nominee's name and contact details;
 - **complain** to us, and then to the Data Protection Board of India (section 16).
 
@@ -261,7 +265,7 @@ If you are in the European Economic Area or the UK, you also have the right to r
 - Health data is stored separately, and the database checks every request to read or change it.
 - Tokens for your connected accounts are kept in an encrypted vault.
 - Waldo checks that messages from WhatsApp, Telegram and Google really come from them before acting on them.
-- Waldo asks for your approval before it sends an email, changes your calendar or Google Tasks, submits a form on a website, runs a command on your Mac, or changes or sends something in another app you connect, unless you have allowed that action to run without asking (Terms of Use, section 5).
+- Waldo asks for your approval before it sends an email, changes your calendar or Google Tasks, submits a form on a website, runs a command on your Mac, or changes or sends something in another app you connect, unless you have allowed that action to run without asking (Terms of Use, section 5). A wind-down block always needs your approval of that block (section 3).
 - We limit repeated sign-in attempts and other requests, to protect accounts from abuse.
 - Only the Ecofresh team members who run, support or secure Waldo can access personal data, and only when they need to.
 
