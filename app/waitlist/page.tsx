@@ -77,7 +77,7 @@ export default async function WaitlistRoute({
                   },
                   {
                     q: "Which watches work?",
-                    a: "Apple Watch works best. Oura, WHOOP, Garmin and Fitbit are coming. The full list is on the Connectors page.",
+                    a: "Today, Apple Health on iPhone, which carries Apple Watch and anything else that syncs to it, plus WHOOP. Android Health Connect is coming.",
                   },
                   { q: "Is there an Android app?", a: "iPhone comes first. Android follows. Join the list to hear when." },
                   {

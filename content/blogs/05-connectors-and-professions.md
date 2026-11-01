@@ -61,7 +61,7 @@ What it buys you is less explaining. Waldo does not need to ask what kind of wee
 
 The forms disappear. That is the pitch. There is no profile to maintain, because the profile is your actual working life, arriving live.
 
-One thing worth being precise about, because it sounds worse than it is: communication connectors use metadata, not the contents of your private messages. Waldo works from the shape of your day. A long meeting coincided with an elevated signal. A burst of email activity continued after work. The shape is where the useful context is, and it costs you far less to hand over.
+One thing worth being precise about: Waldo reads your email in full, including bodies, threads and attachments. It cannot act for you from a subject line. Drafting and sending go through your approval, and each connector shows what it can read and whether it can change anything. You can take access back at any time. Reading the whole message is what lets it see the shape of your day: a long meeting that coincided with an elevated signal, a burst of email that carried on after work.
 
 ## Different jobs, different shapes
 

@@ -63,9 +63,9 @@ You can connect your Google accounts and other apps to Waldo. Each service shows
 
 **Google.** You can connect one or more Google accounts, and Waldo reads from each one you connect.
 
-- **What Waldo can access.** With your permission: your calendar (events and free or busy times), Gmail (reading, drafting and sending email), Google Tasks, your saved contacts and the people you've emailed (read only), files in Google Drive, Docs, Sheets and Slides (read only), and the name and phone number on your Google profile.
+- **What Waldo can access.** With your permission: your calendar (events and free or busy times), Gmail (reading your email in full, including message bodies, threads and attachments, and drafting and sending email, which waits for your approval), Google Tasks, your saved contacts and the people you've emailed (read only), files in Google Drive, Docs, Sheets and Slides (read only), and the name and phone number on your Google profile.
 - **How Waldo uses it.** Only for the features you use: answering your questions, preparing you for meetings, following up on email, planning your day, and the actions you approve (Terms of Use, section 5). For example, Waldo reads an email thread when you ask about it, and your calendar's busy time feeds your daily scores.
-- **AI processing.** To answer you, Waldo sends the relevant part of this data, such as one email thread or the day's calendar, to the AI model provider that writes its reply (section 6). We don't use it to train AI models.
+- **AI processing.** To answer you, Waldo sends the relevant part of this data, such as one email thread with its attachments or the day's calendar, to the AI model provider that writes its reply (section 6). We don't use it to train AI models.
 - **What we keep.** Waldo doesn't keep a copy of your mailbox or files. It keeps the results of its last few lookups so it can follow up, and anything quoted in your conversation stays in your history until you delete it. The tokens that let Waldo reach your Google account are kept in an encrypted vault.
 - **Disconnecting.** Disconnect Google in the Waldo console, and we delete those tokens. To remove Waldo's access completely, also remove Waldo from your Google Account's third-party connections.
 
@@ -84,7 +84,7 @@ During the beta, our diagnostic records include the Google content Waldo read to
 
 - **Health**, only if you share it and allow AI use: up to 30 days of your daily readings.
 - **Calendar and Google Tasks:** the titles, times and repeats of your events from the last 60 days and the next 14, how many people each event has, and your tasks. Not event descriptions, and not who the attendees are.
-- **Email:** for the last 90 days, leaving out promotions and social mail, who each email is from (name and domain), its subject line and its date. Never the body of an email.
+- **Email:** for this first picture only, and for the last 90 days, leaving out promotions and social mail: who each email is from (name and domain), its subject line and its date, not the body of the email. Once you are set up, Waldo reads full emails to answer you and act for you (above).
 
 Waldo keeps only the notes the model writes, in words and without numbers, and pointers to the events and email threads they rest on. You can confirm, correct or forget each note in the app, and a note you forget or correct isn't added again. Things Waldo found on the public web appear only as look-up findings (below).
 

@@ -20,7 +20,7 @@ Waldo is not a medical device and does not give medical advice, diagnosis or tre
 
 Readings from phones and wearables can be wrong or incomplete, and Waldo can misread them.
 
-Waldo is not an emergency service and may not notice an emergency. If you think you or someone else needs urgent help, call your local emergency number (112 in India) straight away.
+Waldo is not an emergency service and may not notice an emergency. If you think you or someone else needs urgent help, call your local emergency number straight away.
 
 ## 4. Waldo is an AI, and AI makes mistakes
 

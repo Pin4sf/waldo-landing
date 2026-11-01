@@ -182,13 +182,13 @@ export function AccessPanel() {
               </ul>
             ),
           },
-          { key: "change", label: "Can change", value: "Nothing. Editing is a separate permission." },
+          { key: "change", label: "Can change", value: "Nothing, until you approve it. Drafting and sending email are separate permissions." },
         ]}
         control="How to take access back"
         detail={
           <ol className="tp-steps">
             <li>In your Google Account, open Security, then your connections to third-party apps and services. Choose Waldo, then Remove access.</li>
-            <li>Gmail access is read-only. Waldo reads when messages arrive and their labels, not subjects or text.</li>
+            <li>Waldo reads your email in full, including bodies, threads and attachments, so it can act for you. Drafting and sending are separate permissions, and each send goes through your approval.</li>
             <li>Removing access stops new reads. What Waldo already saved is a separate step.</li>
           </ol>
         }
