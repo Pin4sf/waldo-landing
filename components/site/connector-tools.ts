@@ -50,7 +50,7 @@ const list = (status: ToolStatus, names: string[]): Tool[] => names.map((name) =
 export const TOOLS: Tool[] = [
   ...list("today", [
     "Apple Watch",
-    "WHOOP",
+    "Health Connect",
     "Google Calendar",
     "Gmail",
     "WhatsApp",
@@ -66,10 +66,10 @@ export const TOOLS: Tool[] = [
   ]),
   ...list("next", [
     "Oura",
+    "WHOOP",
     "Garmin",
     "Fitbit",
     "Galaxy Watch",
-    "Health Connect",
     "Outlook",
     "Slack",
     "Todoist",
