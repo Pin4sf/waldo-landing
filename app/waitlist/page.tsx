@@ -77,7 +77,7 @@ export default async function WaitlistRoute({
                   },
                   {
                     q: "Which watches work?",
-                    a: "Today, Apple Health on iPhone, which carries Apple Watch and anything else that syncs to it, plus WHOOP. Android Health Connect is coming.",
+                    a: "Today that means Apple Health on iPhone and Health Connect on Android, which carry Apple Watch, Galaxy Watch and anything else that syncs to them. WHOOP is coming next.",
                   },
                   { q: "Is there an Android app?", a: "iPhone comes first. Android follows. Join the list to hear when." },
                   {

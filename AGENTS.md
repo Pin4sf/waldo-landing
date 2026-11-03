@@ -473,7 +473,7 @@ Q: "Is my health data safe?"
 A: "Your biometric data stays on-device and in your private Waldo instance. Waldo doesn't sell data, doesn't train on your data, doesn't share it with third parties. Full encryption at rest and in transit."
 
 Q: "Do I need an Apple Watch?"
-A: "Today that means Apple Health on iPhone, which carries Apple Watch and anything else that syncs to it, plus WHOOP as a direct connector. Android Health Connect is coming. Oura, Garmin and Fitbit are not direct connectors yet."
+A: "Today that means Apple Health on iPhone and Health Connect on Android, which carry Apple Watch, Galaxy Watch and anything else that syncs to them. WHOOP is coming next. Do not claim Oura, Garmin or Fitbit works until it is confirmed live."
 
 ---
 
