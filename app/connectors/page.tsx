@@ -83,7 +83,7 @@ export default function ConnectorsPage() {
               </Use>
             </Item>
             <Item meta="Your inbox and messages" visual="A Gmail inbox: two messages come through, 36 fold into a batch for 11:30" scene={<UseInbox />}>
-              <Use strong="Your inbox waits for a better moment." tools={["Gmail", "Telegram", "Slack", "WhatsApp"]}>
+              <Use strong="Your inbox waits for a better moment." tools={["Gmail", "WhatsApp", "Slack"]}>
                 Waldo batches your inbox, goes quiet when it&apos;s too much, and flags what needs you. Email access depends on the permissions you grant.
               </Use>
             </Item>

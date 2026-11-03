@@ -126,13 +126,6 @@ export const connectors: Connector[] = [
     profiles: ["athletes", "consultants"],
   },
   {
-    id: "telegram",
-    name: "Telegram",
-    src: "/assets/connectors/telegram.svg",
-    categories: ["communication"],
-    profiles: ["athletes", "founders"],
-  },
-  {
     id: "asana",
     name: "Asana",
     src: "/assets/connectors/asana.svg",

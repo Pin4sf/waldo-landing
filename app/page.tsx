@@ -277,7 +277,7 @@ export default function Home() {
                   },
                   {
                     q: "What can I use today?",
-                    a: "Kennel for Mac is in open beta now. iPhone and messaging come next, and people on the list get in first.",
+                    a: "The Waldo app is on iPhone and Android, and you can talk to Waldo on WhatsApp, on iMessage and by email. Kennel for Mac is in open beta. People on the list get in first.",
                   },
                 ],
               },

@@ -13,7 +13,7 @@ import Image from "next/image";
 const ROWS: string[][] = [
   ["apple-health", "asana", "atlassian", "calendly", "airtable", "claude", "dropbox", "discord", "intercom", "jira", "linkedin"],
   ["figma", "granola", "github", "gmail", "google-fit", "google-calendar", "hubspot", "linear", "microsoft-outlook", "oura", "quickbooks"],
-  ["google-drive", "notion", "whoop", "garmin", "google-health-connect", "salesforce", "shopify", "slack", "supabase", "telegram", "zendesk"],
+  ["google-drive", "notion", "whoop", "garmin", "google-health-connect", "salesforce", "shopify", "slack", "supabase", "zendesk"],
   ["openai", "spotify", "strava", "stripe", "trello", "vercel", "whatsapp", "youtube", "zoom", "clickup", "fitbit", "apple"],
 ];
 

@@ -385,7 +385,7 @@ export function TrustWindow() {
                 {[
                   { key: "supabase", logo: "supabase", name: "Supabase", text: "Example storage provider. App data details are under review." },
                   { key: "anthropic", logo: "claude", name: "Anthropic", text: "Example model provider. Final provider list is pending." },
-                  { key: "telegram", logo: "telegram", name: "Telegram", text: "Example messaging service, where enabled." },
+                  { key: "whatsapp", logo: "whatsapp", name: "WhatsApp", text: "Example messaging service, where enabled." },
                 ].map((s, i) => (
                   <li key={s.key} style={{ "--i": i } as CSSProperties}>
                     <Logo name={s.logo} />
