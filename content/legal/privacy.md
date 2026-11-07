@@ -63,9 +63,9 @@ You can connect your Google accounts and other apps to Waldo. Each service shows
 
 **Google.** You can connect one or more Google accounts, and Waldo reads from each one you connect.
 
-- **What Waldo can access.** With your permission: your calendar (events and free or busy times), Gmail (reading, drafting and sending email), Google Tasks, your saved contacts and the people you've emailed (read only), files in Google Drive, Docs, Sheets and Slides (read only), and the name and phone number on your Google profile.
+- **What Waldo can access.** With your permission: your calendar (events and free or busy times), Gmail (reading your email in full, including message bodies, threads and attachments, and drafting and sending email, which waits for your approval), Google Tasks, your saved contacts and the people you've emailed (read only), files in Google Drive, Docs, Sheets and Slides (read only), and the name and phone number on your Google profile.
 - **How Waldo uses it.** Only for the features you use: answering your questions, preparing you for meetings, following up on email, planning your day, and the actions you approve (Terms of Use, section 5). For example, Waldo reads an email thread when you ask about it, and your calendar's busy time feeds your daily scores.
-- **AI processing.** To answer you, Waldo sends the relevant part of this data, such as one email thread or the day's calendar, to the AI model provider that writes its reply (section 6). We don't use it to train AI models.
+- **AI processing.** To answer you, Waldo sends the relevant part of this data, such as one email thread with its attachments or the day's calendar, to the AI model provider that writes its reply (section 6). We don't use it to train AI models.
 - **What we keep.** Waldo doesn't keep a copy of your mailbox or files. It keeps the results of its last few lookups so it can follow up, and anything quoted in your conversation stays in your history until you delete it. The tokens that let Waldo reach your Google account are kept in an encrypted vault.
 - **Disconnecting.** Disconnect Google in the Waldo console, and we delete those tokens. To remove Waldo's access completely, also remove Waldo from your Google Account's third-party connections.
 
@@ -84,7 +84,7 @@ During the beta, our diagnostic records include the Google content Waldo read to
 
 - **Health**, only if you share it and allow AI use: up to 30 days of your daily readings.
 - **Calendar and Google Tasks:** the titles, times and repeats of your events from the last 60 days and the next 14, how many people each event has, and your tasks. Not event descriptions, and not who the attendees are.
-- **Email:** for the last 90 days, leaving out promotions and social mail, who each email is from (name and domain), its subject line and its date. Never the body of an email.
+- **Email:** for this first picture only, and for the last 90 days, leaving out promotions and social mail: who each email is from (name and domain), its subject line and its date, not the body of the email. Once you are set up, Waldo reads full emails to answer you and act for you (above).
 
 Waldo keeps only the notes the model writes, in words and without numbers, and pointers to the events and email threads they rest on. You can confirm, correct or forget each note in the app, and a note you forget or correct isn't added again. Things Waldo found on the public web appear only as look-up findings (below).
 
@@ -111,12 +111,12 @@ Waldo is an AI assistant. Its replies are written by AI models, and no person re
 
 To answer you, Waldo sends an AI model provider what it needs for that reply: your message, recent conversation, relevant things Waldo remembers about you, and, where they help and you've allowed it, your health data and content from your connected accounts.
 
-- **Replies:** OpenAI's models write Waldo's replies and do supporting work such as titling threads, updating memory and building your welcome picture. When OpenAI can't answer, Anthropic's models answer instead.
+- **Replies:** Anthropic's models write Waldo's replies and do supporting work such as titling threads, updating memory and building your welcome picture. When Anthropic can't answer, OpenAI's models answer instead.
 - **Voice notes:** transcribed into text by ElevenLabs, smallest.ai or OpenAI.
 - **Web search:** your search queries go to OpenAI's web search or Brave Search, with your approximate location (your country, or your time zone if you're outside India) so results are local. If you said yes to being looked up, Brave Search also receives the searches about you (section 4).
 - **Websites:** when Waldo looks at or fills in a website for you, a browser service (Cloudflare or Browserbase) loads the page, and an AI model reads what's on it.
 
-These providers process the data to provide their service to us. Under their terms for business use, OpenAI and Anthropic don't use what we send them to train their models. OpenAI keeps records of requests for up to 30 days to monitor for abuse, and longer only where the law requires it or to prevent harm.
+These providers process the data to provide their service to us. Under their terms for business use, Anthropic and OpenAI don't use what we send them to train their models. OpenAI keeps records of requests for up to 30 days to monitor for abuse, and longer only where the law requires it or to prevent harm.
 
 **Reaching a person.** You can reach someone at Ecofresh any time at woof@heywaldo.in.
 
@@ -151,8 +151,8 @@ We don't sell your personal data, and we don't share it with advertisers. We sha
 | --- | --- | --- |
 | Cloudflare | Everything Waldo holds for you: conversations, memory, files and service logs | Runs Waldo's servers and storage; loads websites for Waldo |
 | Supabase | Account details, health data, settings, and connected-account and notification tokens kept in an encrypted vault | Database and sign-in; sends sign-in codes by email |
-| OpenAI | What a reply needs (section 6), voice notes, and search queries | Writes replies; transcribes voice; web search |
-| Anthropic | What a reply needs (section 6), when OpenAI can't answer | Writes replies |
+| OpenAI | What a reply needs (section 6) when Anthropic can't answer, voice notes, search queries, and the pages Waldo reads on a website for you | Answers when Anthropic can't; transcribes voice; web search; reads websites |
+| Anthropic | What a reply needs (section 6) | Writes replies and does supporting work |
 | ElevenLabs, smallest.ai | Voice notes | Turn voice notes into text |
 | Brave | Search queries, including the searches about you if you said yes to being looked up | Web search |
 | Browserbase | Pages Waldo opens for you, and forms you approve | Completes website tasks |
@@ -184,7 +184,7 @@ We may also disclose personal data:
 
 ## 9. Where your data is stored, and transfers outside India
 
-Waldo runs on cloud services with servers in several countries, so your data may be stored and processed outside India, including in the United States. For example, OpenAI, which writes Waldo's replies, and Cloudflare, which runs Waldo on its global network, can process data outside India.
+Waldo runs on cloud services with servers in several countries, so your data may be stored and processed outside India, including in the United States. For example, Anthropic, which writes Waldo's replies, and Cloudflare, which runs Waldo on its global network, can process data outside India.
 
 India's Digital Personal Data Protection Act allows transfers outside India except to countries the Government restricts, and we will follow any such restriction. We rely on our providers' contractual commitments to protect data we transfer. If the GDPR applies to you, we use the safeguards it requires for transfers, such as the European Commission's standard contractual clauses.
 

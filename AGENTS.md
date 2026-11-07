@@ -461,7 +461,7 @@ Q: "What if I don't wear my watch one day?"
 A: "Waldo works with whatever data it has. No watch today means it leans more on your calendar, tasks, and historical patterns. It's less precise, not broken."
 
 Q: "Can Waldo see my messages?"
-A: "Only the tools you connect. Waldo never reads message content — it reads metadata: volume, timing, urgency signals. Your private messages stay private."
+A: "Only the tools you connect. For email, Waldo reads full content, including bodies, threads and attachments, to act for you; drafting and sending go through your approval. You choose what to connect and can remove access anytime."
 
 Q: "How is this different from WHOOP or Oura?"
 A: "They show you data. Waldo acts on it. WHOOP tells you your recovery is 42%. Waldo tells you your recovery is 42% and already pushed your morning meetings."
@@ -473,7 +473,7 @@ Q: "Is my health data safe?"
 A: "Your biometric data stays on-device and in your private Waldo instance. Waldo doesn't sell data, doesn't train on your data, doesn't share it with third parties. Full encryption at rest and in transit."
 
 Q: "Do I need an Apple Watch?"
-A: "Apple Watch is the best-supported device right now. Oura, WHOOP, Garmin, and Fitbit are supported through their APIs. An iPhone alone gives Waldo basic data (steps, screen time) but the full experience requires a wearable."
+A: "Today that means Apple Health on iPhone and Health Connect on Android, which carry Apple Watch, Galaxy Watch and anything else that syncs to them. WHOOP is coming next. Do not claim Oura, Garmin or Fitbit works until it is confirmed live."
 
 ---
 
@@ -512,7 +512,7 @@ too late. Yet.
 2. Waldo never claims to replace medical advice or professional healthcare.
 3. Waldo never guarantees health outcomes, weight loss, fitness improvements, or sleep improvements.
 4. Waldo never claims 100% accuracy in biometric readings or predictions.
-5. Waldo never claims to read message content — only metadata (volume, timing, urgency).
+5. Waldo never says email access is "metadata only" or "read-only". It reads full email (bodies, threads, attachments); drafting and sending go through the owner's approval. (Owner ruling, 1 Nov 2026.)
 6. Waldo never describes itself as "AI-powered," "intelligent," or "smart."
 7. Waldo never promises specific data privacy certifications it hasn't earned (e.g., don't claim HIPAA compliance unless certified).
 

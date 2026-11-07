@@ -31,8 +31,9 @@ const securityCards = [
   },
   {
     icon: "file",
-    headline: "Metadata only for email.",
-    description: "Waldo reads headers: sender, timestamp, thread depth. Never message body content. Hard line.",
+    headline: "Reads your email in full.",
+    description:
+      "Waldo reads message bodies, threads and attachments, so it can act for you and not just guess from a subject line. Drafting and sending go through your approval.",
   },
   {
     icon: "check",

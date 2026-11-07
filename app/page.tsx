@@ -273,7 +273,7 @@ export default function Home() {
                   },
                   {
                     q: "Do I need a smartwatch?",
-                    a: "It helps, since that's how Waldo knows how you're doing. Apple Watch, Oura, WHOOP, Garmin and Fitbit all work. Without one, Waldo leans on your calendar, work and patterns.",
+                    a: "It helps, since that's how Waldo knows how you're doing. Today that means Apple Health on iPhone and Health Connect on Android, which carry Apple Watch, Galaxy Watch and anything else that syncs to them. WHOOP is coming next. Without a wearable, Waldo leans on your calendar, work and patterns.",
                   },
                   {
                     q: "What can I use today?",
