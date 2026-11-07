@@ -1,9 +1,9 @@
-import { STATUS_LABEL, TOOLS, type ToolStatus } from "./connector-tools";
+import { STATUS_LABEL, STATUS_SLUG, TOOLS, type ToolStatus } from "./connector-tools";
 
 // Connectors, "Don't see yours? Tell us." (docs/website/pages/connectors.md): every tool and its honest status, as
-// three plain lines folded away under one link, so it's there for anyone checking without filling the page with logos.
+// four plain lines folded away under one link, so it's there for anyone checking without filling the page with logos.
 
-const ORDER: ToolStatus[] = ["today", "next", "planned"];
+const ORDER: ToolStatus[] = ["live", "beta", "coming next", "later"];
 
 export function ConnectorStatusList() {
   return (
@@ -19,7 +19,7 @@ export function ConnectorStatusList() {
           const names = TOOLS.filter((tool) => tool.status === status).map((tool) => tool.name);
           return (
             <div key={status}>
-              <dt className="cn-status" data-status={status}>
+              <dt className="cn-status" data-status={STATUS_SLUG[status]}>
                 {STATUS_LABEL[status]} ({names.length})
               </dt>
               <dd>{names.join(", ")}</dd>

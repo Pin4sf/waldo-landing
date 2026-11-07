@@ -5,6 +5,9 @@
 //
 // The routines from the old professions table are kept word for word as titles where they fit. Everything in the
 // pictures (names, times, numbers) is illustrative. Mail is only ever metadata: who, when, how much, never the words.
+// The days keep to the rule that holds today: anything that reaches other people (a meeting with them in it, a note,
+// an issue with an owner) waits for your yes, and drafts wait in the Waldo app, not in Gmail. Messages to you come
+// on iMessage, a working channel today (Telegram is test only).
 
 export type Trigger = { kind: "ask"; text: string } | { kind: "noticed"; tool: string; text: string };
 
@@ -35,19 +38,19 @@ export const JOBS: Job[] = [
       {
         time: "7:30 AM",
         title: "Start the day you actually have",
-        body: "Waldo reads last night from [[Apple Watch]], weighs it against today in [[Google Calendar]], and moves what can move before you're up. Board prep stays put.",
+        body: "Waldo reads last night from [[Apple Watch]], weighs it against today in [[Google Calendar]], and has what can move ready for your yes before you're up. Board prep stays put.",
         trigger: { kind: "noticed", tool: "Apple Watch", text: "Slept 5h 12m. Heart rate variability is 12% below your usual." },
         thinking: "Checking what can move without anyone waiting",
         steps: [
           { tool: "Google Calendar", text: "Read today: 4 calls before noon" },
-          { tool: "Google Calendar", text: "Moved the 9:00 hiring sync to Thursday" },
-          { tool: "Telegram", text: "Sent you the plan at 7:30" },
+          { tool: "Google Calendar", text: "Hiring sync to Thursday, waiting on your yes" },
+          { tool: "iMessage", text: "Sent you the plan at 7:30" },
         ],
         result: {
           app: "chat",
-          tool: "Telegram",
+          tool: "iMessage",
           title: "Waldo",
-          messages: ["Short night. The hiring sync is on Thursday now, and your first call is at 10.", "Board prep stays at 2. Lunch is protected."],
+          messages: ["Short night. Say yes and the hiring sync moves to Thursday, so your first call is at 10.", "Board prep stays at 2. Lunch is protected."],
         },
       },
       {
@@ -76,17 +79,17 @@ export const JOBS: Job[] = [
       {
         time: "Fri 4:00 PM",
         title: "Friday investor update, drafted for you",
-        body: "Every Friday, Waldo drafts your update from your numbers in [[Stripe]], what shipped in [[Linear]] and your calendar, and leaves it in [[Gmail]] to send.",
+        body: "Every Friday, Waldo drafts your update from your numbers in [[Stripe]], what shipped in [[Linear]] and your calendar, and holds it in the Waldo app until you say send.",
         trigger: { kind: "ask", text: "Every Friday at 4, draft my investor update from this month's numbers and what shipped." },
         thinking: "Checking the numbers against last month first",
         steps: [
           { tool: "Stripe", text: "Read October revenue and churn" },
           { tool: "Linear", text: "Read 14 issues shipped" },
-          { tool: "Gmail", text: "Saved a draft to Investors" },
+          { tool: "Waldo", text: "Held the draft for your yes" },
         ],
         result: {
           app: "doc",
-          tool: "Gmail",
+          tool: "Waldo",
           title: "October update",
           meta: "Draft",
           blocks: [
@@ -107,12 +110,12 @@ export const JOBS: Job[] = [
       {
         time: "8:30 AM",
         title: "Put the hard problem in your best hours",
-        body: "Waldo learns when you're clearest from [[Apple Watch]], blocks it in [[Google Calendar]], and moves standup out of the way.",
+        body: "Waldo learns when you're clearest from [[Apple Watch]], blocks it in [[Google Calendar]], and asks to move standup out of the way.",
         trigger: { kind: "noticed", tool: "Apple Watch", text: "Slept well. You're usually sharpest from 9 to 11." },
         thinking: "Looking for your two clearest hours",
         steps: [
           { tool: "Google Calendar", text: "Blocked 9:00 to 11:00 for focus" },
-          { tool: "Google Calendar", text: "Moved standup to 11:15" },
+          { tool: "Google Calendar", text: "Standup to 11:15, with your yes" },
           { tool: "Slack", text: "Set your status to heads-down" },
         ],
         result: {
@@ -164,7 +167,7 @@ export const JOBS: Job[] = [
         ],
         result: {
           app: "chat",
-          tool: "Telegram",
+          tool: "iMessage",
           title: "Waldo",
           messages: ["Claude Code finished the retry queue. Tests pass and it does what the issue asks.", "One file it shouldn't have touched is flagged for the morning."],
         },
@@ -184,7 +187,7 @@ export const JOBS: Job[] = [
         thinking: "Finding room before the 3pm crit",
         steps: [
           { tool: "Google Calendar", text: "Blocked 10:00 to 1:00 for the empty states" },
-          { tool: "Google Calendar", text: "Moved the review to Thursday" },
+          { tool: "Google Calendar", text: "Review to Thursday, with your yes" },
           { tool: "Slack", text: "Status set until 1" },
         ],
         result: {
@@ -258,17 +261,17 @@ export const JOBS: Job[] = [
       {
         time: "8:45 AM",
         title: "Walk into standup knowing what moved",
-        body: "Waldo reads what changed overnight in [[Linear]] and sends you three lines in [[Telegram]] before standup.",
+        body: "Waldo reads what changed overnight in [[Linear]] and sends you three lines on [[iMessage]] before standup.",
         trigger: { kind: "ask", text: "Every morning before standup, tell me what moved in Linear overnight." },
         thinking: "Skipping the noise, keeping what changed plans",
         steps: [
           { tool: "Linear", text: "Read 18 updates since 6pm" },
           { tool: "Linear", text: "2 slipped, 1 is blocked" },
-          { tool: "Telegram", text: "Sent at 8:45" },
+          { tool: "iMessage", text: "Sent at 8:45" },
         ],
         result: {
           app: "chat",
-          tool: "Telegram",
+          tool: "iMessage",
           title: "Waldo",
           messages: ["Two issues slipped to next cycle. Search is blocked on the API change.", "Everything else is on track."],
         },
@@ -276,13 +279,13 @@ export const JOBS: Job[] = [
       {
         time: "1:00 PM",
         title: "Customer calls become issues, with owners",
-        body: "Waldo reads your call notes in [[Granola]] and adds the follow-ups to [[Linear]], each with an owner.",
+        body: "Waldo reads your call notes in [[Granola]] and drafts the follow-ups for [[Linear]], each with an owner, for your yes.",
         trigger: { kind: "ask", text: "After each customer call, turn the notes into Linear issues with owners." },
         thinking: "Separating requests from passing comments",
         steps: [
           { tool: "Granola", text: "Read notes from the 12:00 call" },
-          { tool: "Linear", text: "Created 3 issues" },
-          { tool: "Slack", text: "Told #product they're in" },
+          { tool: "Linear", text: "Drafted 3 issues" },
+          { tool: "Slack", text: "A note to #product, ready to send" },
         ],
         result: {
           app: "list",
@@ -299,11 +302,11 @@ export const JOBS: Job[] = [
       {
         time: "4:30 PM",
         title: "Keep the hour for the spec",
-        body: "When the day runs long, Waldo moves the low-stakes meeting in [[Google Calendar]] so the spec in [[Notion]] still gets written.",
+        body: "When the day runs long, Waldo asks to move the low-stakes meeting in [[Google Calendar]] so the spec in [[Notion]] still gets written.",
         trigger: { kind: "noticed", tool: "Apple Watch", text: "Stress has been climbing since 2pm." },
         thinking: "Finding what can move without hurting anyone",
         steps: [
-          { tool: "Google Calendar", text: "Moved the 5pm sync to tomorrow" },
+          { tool: "Google Calendar", text: "5pm sync to tomorrow, with your yes" },
           { tool: "Notion", text: "Opened the spec where you left off" },
           { tool: "Slack", text: "Status set to focusing" },
         ],
@@ -334,11 +337,11 @@ export const JOBS: Job[] = [
         steps: [
           { tool: "Google Calendar", text: "Read 6 calls today" },
           { tool: "HubSpot", text: "Pulled each deal's stage and last touch" },
-          { tool: "Telegram", text: "Briefs arrive 10 minutes before each" },
+          { tool: "iMessage", text: "Briefs arrive 10 minutes before each" },
         ],
         result: {
           app: "doc",
-          tool: "Telegram",
+          tool: "iMessage",
           title: "Before your 10:30 with Acme",
           meta: "10:20 AM",
           blocks: [
@@ -356,8 +359,8 @@ export const JOBS: Job[] = [
         thinking: "Finding the call worth your best hour",
         steps: [
           { tool: "Salesforce", text: "Acme is the biggest renewal this week" },
-          { tool: "Google Calendar", text: "Moved it to 10:30" },
-          { tool: "Google Calendar", text: "Spaced the demos 15 minutes apart" },
+          { tool: "Google Calendar", text: "Moved it to 10:30, with your yes" },
+          { tool: "Google Calendar", text: "Demos 15 minutes apart, with your yes" },
         ],
         result: {
           app: "calendar",
@@ -374,17 +377,17 @@ export const JOBS: Job[] = [
       {
         time: "4:00 PM",
         title: "Follow-ups drafted before you hang up",
-        body: "Waldo reads your call notes in [[Granola]], drafts each follow-up in [[Gmail]], and logs next steps in [[HubSpot]].",
+        body: "Waldo reads your call notes in [[Granola]], drafts each follow-up and holds it in the Waldo app for your yes, and logs next steps in [[HubSpot]].",
         trigger: { kind: "ask", text: "After each call, draft the follow-up from my notes. I'll send them." },
         thinking: "Pulling the promises out of the notes",
         steps: [
           { tool: "Granola", text: "Read notes from 3 calls" },
-          { tool: "Gmail", text: "Drafted 3 follow-ups" },
+          { tool: "Waldo", text: "Drafted 3 follow-ups" },
           { tool: "HubSpot", text: "Logged next steps" },
         ],
         result: {
           app: "list",
-          tool: "Gmail",
+          tool: "Waldo",
           title: "Drafts",
           meta: "3 ready",
           rows: [
@@ -404,12 +407,12 @@ export const JOBS: Job[] = [
       {
         time: "8:00 AM",
         title: "Five pitches, each one fresh",
-        body: "Waldo spaces today's [[Calendly]] bookings around how you're doing, so the founder at pitch five gets your pitch-one attention.",
+        body: "Waldo offers to space today's [[Calendly]] bookings around how you're doing, so the founder at pitch five gets your pitch-one attention.",
         trigger: { kind: "noticed", tool: "Apple Watch", text: "Recovered well. Your best hours are 9 to 12." },
         thinking: "Putting the pitches that matter where you're best",
         steps: [
           { tool: "Calendly", text: "Read 5 pitches booked today" },
-          { tool: "Google Calendar", text: "Put the two that matter in the morning" },
+          { tool: "Google Calendar", text: "The two that matter to the morning, with your yes" },
           { tool: "Google Calendar", text: "Added 15 minutes after each" },
         ],
         result: {
@@ -437,7 +440,7 @@ export const JOBS: Job[] = [
         ],
         result: {
           app: "doc",
-          tool: "Telegram",
+          tool: "iMessage",
           title: "Before your 10am with Northwind",
           meta: "9:50 AM",
           blocks: [
@@ -456,11 +459,11 @@ export const JOBS: Job[] = [
         steps: [
           { tool: "Zoom", text: "Read 5 calls, 2 ran over" },
           { tool: "Notion", text: "Read today's notes" },
-          { tool: "Telegram", text: "Sent at 6:00" },
+          { tool: "iMessage", text: "Sent at 6:00" },
         ],
         result: {
           app: "chat",
-          tool: "Telegram",
+          tool: "iMessage",
           title: "Waldo",
           messages: ["Five pitches today. Two follow-ups to send.", "One to sleep on: Northwind's pricing."],
         },
@@ -475,12 +478,12 @@ export const JOBS: Job[] = [
       {
         time: "8:00 AM",
         title: "Client calls spaced so none gets the tired you",
-        body: "Waldo reads your day in [[Outlook]] and your energy from [[Apple Watch]], then spaces the calls and closes late slots in [[Calendly]].",
+        body: "Waldo reads your day in [[Outlook]] and your energy from [[Apple Watch]], then asks to space the calls and closes late slots in [[Calendly]].",
         trigger: { kind: "noticed", tool: "Apple Watch", text: "Short night. You usually fade after 2pm." },
         thinking: "Making room between calls",
         steps: [
           { tool: "Outlook", text: "Read 4 client calls" },
-          { tool: "Outlook", text: "Added 20 minutes between each" },
+          { tool: "Outlook", text: "20 minutes between each, with your yes" },
           { tool: "Calendly", text: "Closed new bookings after 3pm" },
         ],
         result: {
@@ -560,7 +563,7 @@ export const JOBS: Job[] = [
         ],
         result: {
           app: "chat",
-          tool: "Telegram",
+          tool: "iMessage",
           title: "Waldo",
           messages: ["Recovery's low. Easy 40 minutes today.", "Intervals move to Thursday, your light work day."],
         },
@@ -598,11 +601,11 @@ export const JOBS: Job[] = [
         steps: [
           { tool: "Strava", text: "Tomorrow: race-pace session" },
           { tool: "Google Calendar", text: "First meeting at 9" },
-          { tool: "Telegram", text: "A wind-down nudge at 10" },
+          { tool: "iMessage", text: "A wind-down nudge at 10" },
         ],
         result: {
           app: "chat",
-          tool: "Telegram",
+          tool: "iMessage",
           title: "Waldo",
           messages: ["Race pace tomorrow, and three short nights behind you.", "Lights out by 10:30 gives you eight hours."],
         },

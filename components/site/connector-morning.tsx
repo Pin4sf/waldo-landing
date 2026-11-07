@@ -23,7 +23,7 @@ const READ: Read[] = [
 ];
 
 const DID: Did[] = [
-  { text: "Moved the 9:30 design review to 11:30", where: "Google Calendar", from: ["watch", "cal"] },
+  { text: "Moved the 9:30 design review to 11:30, with your yes", where: "Google Calendar", from: ["watch", "cal"] },
   { text: "Moved 3 tasks to Thursday", where: "Google Tasks", from: ["watch", "tasks"] },
   { text: "Kept 12 to 1 free for lunch", where: "Google Calendar", from: ["cal"] },
 ];

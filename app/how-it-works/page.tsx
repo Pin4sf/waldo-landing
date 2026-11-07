@@ -7,12 +7,13 @@ import { ConnectorPile } from "@/components/site/connector-pile";
 import { LockMoment } from "@/components/site/day-moments";
 import { HowMap } from "@/components/site/how-map";
 import { SiteShell } from "@/components/site/site-shell";
+import { STATUS_LABEL } from "@/components/site/status";
 import { OG_IMAGE_URL, SITE_URL } from "@/lib/site-metadata";
 
 // Copy: docs/website/pages/how-it-works.md ("Live copy" at the top). One section per part: a headline, one main
-// block, then the smaller features as a "+" row that opens a side panel. Only "Live" and "Next" features
-// appear as working; "Later" features live in the "What's coming" section. Statuses are the product docs'
-// (April 2026), still to be confirmed.
+// block, then the smaller features as a "+" row that opens a side panel. Each feature's status comes from
+// components/site/status.ts (the owner's list of what ships, 27 October 2026): "Live" and "Beta" read as working,
+// "Coming next" is labelled as such, and features further out live in the "What's coming" section with no status.
 // Layout, pictures and motion follow the homepage (docs/website/site-wide-pass.md): centred titles, centred
 // endless carousels, the Stage box, a centred close.
 
@@ -39,7 +40,7 @@ const HEALTH: Feature[] = [
       "Most sleep apps grade last night and start again tomorrow. Waldo keeps a running count of the sleep you’ve missed, weighted over the last 14 days, so a Saturday lie-in doesn’t hide three short nights before it.",
       "When the debt builds, it plans around it before you feel it: an earlier wind-down, a lighter morning, the hard task moved to when you’re fresher.",
     ],
-    status: "today",
+    status: "live",
     wire: { name: "sleep-debt", caption: "Fourteen nights against your usual, and what tonight is for" },
     helps: {
       heading: "How it helps",
@@ -58,7 +59,7 @@ const HEALTH: Feature[] = [
       "Blood oxygen, breathing rate and wrist temperature sit in the background. Nobody reads them every morning, and you shouldn’t have to. Waldo compares each one with your own usual, not a stranger’s average, and stays quiet while they hold steady.",
       "When one drifts, you get a gentle flag. Never an alarm, and never a diagnosis. If something worries you, talk to a doctor.",
     ],
-    status: "today",
+    status: "coming next",
     wire: { name: "quiet-flags", caption: "Three resting signals, each against your own usual range" },
     helps: {
       heading: "What it watches",
@@ -77,7 +78,7 @@ const HEALTH: Feature[] = [
       "Waldo sees your training next to your meetings. After a hard session it knows you may have a sharp 90 minutes, and offers them to the work that needs them most.",
       "It can tell a racing heart on a run from a racing heart in a meeting, so a good workout never gets mistaken for a bad day.",
     ],
-    status: "today",
+    status: "coming next",
     wire: { name: "training", caption: "A morning run, and the sharp stretch after it given to the hardest task" },
     helps: {
       heading: "How it helps",
@@ -96,7 +97,7 @@ const HEALTH: Feature[] = [
       "Heat, UV and air quality where you are, plus how much daylight you’ve had, all go into your plan. When a walk outside would help, Waldo tells you.",
       "There’s nothing to set up and nothing to look up. It works from your rough location.",
     ],
-    status: "today",
+    status: "coming next",
     wire: { name: "weather", caption: "Today’s daylight and the conditions outside, folded into the plan" },
     helps: {
       heading: "What it reads",
@@ -115,7 +116,7 @@ const HEALTH: Feature[] = [
       "Look back 7, 30 or 90 days. Each day is a dot, coloured by how it went, so the shape of the last few months shows without a single chart to read.",
       "Tap a dot to see that day in full: how you slept, what the day asked of you, and what Waldo did about it.",
     ],
-    status: "today",
+    status: "live",
     wire: { name: "history", caption: "Ninety days as dots, with one day opened" },
     helps: {
       heading: "What you can do",
@@ -134,7 +135,7 @@ const HEALTH: Feature[] = [
       "A new app usually needs weeks to learn what normal looks like for you. Import your Apple Health history, and Waldo has your usual from the first morning.",
       "So the first Brief is already about you, not a guess. It knows you from day one, not week three.",
     ],
-    status: "today",
+    status: "coming next",
     wire: { name: "bring-past", caption: "Apple Health history coming across, one kind of data at a time" },
     helps: {
       heading: "Why it matters",
@@ -156,7 +157,7 @@ const DAY: Feature[] = [
       "Everyone has a stretch of the day when hard things feel easier, and most calendars give it away to whoever books first. Waldo learns yours, and shapes your calendar around it.",
       "When an invite lands in that window, it suggests another time before you’ve said yes. “This invite lands in your sharpest window. Suggest 3pm instead?”",
     ],
-    status: "next",
+    status: "coming next",
     wire: { name: "best-hours", caption: "Your sharpest stretch, and an invite that lands in it" },
     helps: {
       heading: "How it helps",
@@ -175,7 +176,7 @@ const DAY: Feature[] = [
       "A to-do list doesn’t know you slept badly. Waldo does. The hardest thing goes to your sharpest hour, and on a low day, big tasks get broken into small chunks you can actually start.",
       "Deadlines stay visible. Anything due today stays put, even on a rough day.",
     ],
-    status: "today",
+    status: "coming next",
     wire: { name: "right-task", caption: "Today’s list, reordered, with the reason beside each move" },
     helps: {
       heading: "How it helps",
@@ -192,9 +193,9 @@ const DAY: Feature[] = [
     line: "Messages arrive all day. Waldo helps you read them in a couple of blocks, so the hours in between stay yours.",
     detail: [
       "Constant pings break up the time you need most. Waldo can batch email into two blocks a day, and set Slack to Focus while you work, so messages wait for you instead of the other way round.",
-      "What Waldo can see and do depends on the service you connect and the permissions you give it. Final app data details are under review, and the screen here is an example.",
+      "What Waldo can see and do depends on the service you connect and the permissions you give it. The Privacy Policy sets out what each one lets Waldo see, and the screen here is an example.",
     ],
-    status: "next",
+    status: "coming next",
     wire: { name: "fewer-pings", caption: "An example day: email read in two blocks, Slack on Focus" },
     helps: {
       heading: "How it helps",
@@ -206,19 +207,19 @@ const DAY: Feature[] = [
     },
   },
   {
-    name: "Fixed first, mentioned after",
-    line: "Small problems get handled while you sleep. You hear about them after, with the reason.",
+    name: "Found overnight, ready by morning",
+    line: "Small problems get found while you sleep. By morning the fix is ready, with the reason, waiting for your yes.",
     detail: [
-      "The Patrol runs around the clock, overnight included. When something looks off, like two meetings overlapping, Waldo fixes it if your limits allow, and tells you after. Whether a fix can be reversed depends on the action.",
-      "If it can’t fix something, it comes to you with options. If something is only worth watching, it watches, and says nothing until it matters.",
+      "The Patrol runs around the clock, overnight included. When something looks off, like two meetings overlapping, Waldo works out the fix and has it ready when you wake. Anything that touches other people or costs money waits for your exact yes, every time. Having said yes to the same fix before doesn’t count.",
+      "If there’s no clean fix, it comes to you with options. If something is only worth watching, it watches, and says nothing until it matters.",
     ],
-    status: "today",
-    wire: { name: "fixed-first", caption: "One night of The Patrol: one fixed, one asked, one watched" },
+    status: "coming next",
+    wire: { name: "fixed-first", caption: "One night of The Patrol: one fix ready, one question, one watched" },
     helps: {
       heading: "Three ways it ends",
       columns: ["What it finds", "What happens"],
       rows: [
-        ["Something it can fix", "Fixed within your limits, then mentioned in the morning."],
+        ["Something it can fix", "The fix is ready in the morning, and waits for your yes."],
         ["Something it can’t", "Brought to you with options, not just a problem."],
         ["Something worth watching", "Watched quietly. You hear about it only if it builds."],
       ],
@@ -230,8 +231,9 @@ const DAY: Feature[] = [
     detail: [
       "One observation is a Spot: “Emails after 10pm, and your sleep is 8% worse.” When enough Spots line up, they join into a named pattern, like “The Tuesday Crash,” along with what Waldo now does about it.",
       "Six weeks of Tuesdays that looked ordinary, until they didn’t. You were too close to see it. Waldo wasn’t.",
+      "Your first constellation, drawn from what you connect, is live today. Patterns named over weeks come next.",
     ],
-    status: "next",
+    status: "coming next",
     wire: { name: "patterns", caption: "Spots joining into a named pattern" },
     helps: {
       heading: "From one night to a pattern",
@@ -250,7 +252,7 @@ const DAY: Feature[] = [
       "Recovery, Form, Weight, your meeting load, message pressure and task pileup, each set against where it was a month ago. One look tells you which way you’re heading: “Four of six are better than a month ago.”",
       "When most of them slide at once, Waldo tells you it’s time to ease off.",
     ],
-    status: "next",
+    status: "coming next",
     wire: { name: "slope", caption: "Six measures, today against four weeks ago" },
     helps: {
       heading: "How to read it",
@@ -272,7 +274,7 @@ const TALK: Feature[] = [
       "One thread for the week ahead, one for training, one for that trip. Each keeps its own context, so Waldo picks up where that conversation left off, not where the last one did.",
       "One tap moves between them.",
     ],
-    status: "today",
+    status: "live",
     wire: { name: "threads", caption: "Three threads, each with its own context" },
     helps: {
       heading: "How it helps",
@@ -291,7 +293,7 @@ const TALK: Feature[] = [
       "Sometimes one line isn’t enough. Tap “Tell me more” on any Brief or Fetch, and a thread opens about that exact message. No copying, and no explaining what you mean.",
       "Ask why it moved the 9am, or what else it could do, and the answer starts from what Waldo already knows.",
     ],
-    status: "next",
+    status: "coming next",
     wire: { name: "follow-up", caption: "“Tell me more” on a Brief, opening a thread about it" },
     helps: {
       heading: "Good things to ask",
@@ -310,7 +312,7 @@ const TALK: Feature[] = [
       "Under Waldo’s messages sit a few likely answers, like “Tell me more” or “What should I do?”. Tap one, or type your own.",
       "Waldo tends to speak up between meetings, which is exactly when you don’t have time to type.",
     ],
-    status: "today",
+    status: "coming next",
     wire: { name: "quick-replies", caption: "A message from Waldo, with suggested replies under it" },
     helps: {
       heading: "How it helps",
@@ -329,7 +331,7 @@ const TALK: Feature[] = [
       "Ask how you slept, and the reply comes with a small chart inside it. You see the shape of the night without leaving the conversation or opening another app.",
       "A picture where it helps, and plain words everywhere else.",
     ],
-    status: "today",
+    status: "coming next",
     wire: { name: "charts-in-replies", caption: "“How did I sleep?” answered with last night’s stages" },
     helps: {
       heading: "Where it shows up",
@@ -348,7 +350,7 @@ const TALK: Feature[] = [
       "Every conversation is kept and scrollable, including the reasons behind each move. Scroll back to what it told you last Tuesday, and why.",
       "Useful when a day starts to feel familiar, or when you just want to check what changed.",
     ],
-    status: "today",
+    status: "live",
     wire: { name: "full-history", caption: "Scrolling back to last Tuesday’s Heads-Up" },
     helps: {
       heading: "How it helps",
@@ -367,7 +369,7 @@ const TALK: Feature[] = [
       "Rate any message. Waldo learns what’s worth telling you, and what to leave out next time.",
       "No forms, and no settings to dig through. One tap, and the next Brief is a little more yours.",
     ],
-    status: "today",
+    status: "coming next",
     wire: { name: "thumbs", caption: "Rating two messages, and the note that follows" },
     helps: {
       heading: "What a rating changes",
@@ -386,10 +388,10 @@ const RULES: Feature[] = [
     name: "Three levels, per area",
     line: "Decide how far Waldo goes, one part of your life at a time.",
     detail: [
-      "Tell me, Ask me or Just do it, set separately for each area. “Just do it” for your calendar. “Ask me” for anything that goes to other people. Waldo only acts as far as you’ve allowed in that area.",
+      "Tell me, Ask me or Just do it, set separately for each area. “Just do it” for blocking your own focus time. “Ask me” for the rest. Anything that reaches other people or costs money waits for your yes, whatever the level.",
       "Start careful, and give it more room as it earns it. Change any of them whenever you like.",
     ],
-    status: "today",
+    status: "coming next",
     wire: { name: "levels", caption: "Each area with its own level" },
     helps: {
       heading: "The three levels",
@@ -397,26 +399,27 @@ const RULES: Feature[] = [
       rows: [
         ["Tell me", "Says what it would do. Nothing changes."],
         ["Ask me", "Suggests the change, and waits for your yes."],
-        ["Just do it", "Makes the change, then tells you what it did."],
+        ["Just do it", "Makes changes that touch only you, then tells you what it did."],
       ],
     },
   },
   {
     name: "Always comes back to you",
-    line: "Whatever level you’ve set, some things always come to you first.",
+    line: "Anything that reaches other people or spends money waits for your exact yes. Every time.",
     detail: [
-      "Even on “Just do it,” a short list of things never happens on its own. Waldo brings them to you, says what it wants to do, and waits.",
-      "So giving Waldo more room never means giving up the final say on the things that matter most.",
+      "Before Waldo sends an email, moves a meeting with other people in it, or spends anything, it shows you exactly what it will do, and waits. You see the words, the time or the amount, not a summary of them.",
+      "A habit it has learned is never permission. Said yes to the same move last week? It still asks this week.",
     ],
-    status: "today",
+    status: "live",
     wire: { name: "always-asks", caption: "A request that waits for your answer" },
     helps: {
-      heading: "How it works",
-      columns: ["Your level", "For anything on the list"],
+      heading: "What waits for you",
+      columns: ["When Waldo wants to", "You see first"],
       rows: [
-        ["Tell me", "Waldo tells you. Nothing changes."],
-        ["Ask me", "Waldo asks first."],
-        ["Just do it", "Waldo still asks first."],
+        ["Send an email or a message", "The exact draft, held in the app until you say yes."],
+        ["Move a meeting with other people in it", "The exact new time, before anyone is asked."],
+        ["Spend money", "The exact amount, before anything is paid."],
+        ["Do what you said yes to last time", "The same question. A learned preference is never permission."],
       ],
     },
   },
@@ -427,7 +430,7 @@ const RULES: Feature[] = [
       "Review recorded actions and their outcomes. Each one carries the reason for it, including the things Waldo noticed and decided to leave alone.",
       "Whether an action can be reversed depends on the service and the action.",
     ],
-    status: "today",
+    status: "coming next",
     wire: { name: "activity-log", caption: "A day of actions, each with its reason" },
     helps: {
       heading: "What each entry tells you",
@@ -446,7 +449,7 @@ const RULES: Feature[] = [
       "“Priya is your lead investor. Keep it short, send numbers first.” “No meetings before 10.” Tell Waldo once, and it remembers, so you never have to repeat yourself.",
       "Everything it knows about you is listed in one place, where you can change or remove any of it.",
     ],
-    status: "today",
+    status: "live",
     wire: { name: "say-it-once", caption: "What Waldo remembers, each line yours to change" },
     helps: {
       heading: "What it remembers",
@@ -462,38 +465,38 @@ const RULES: Feature[] = [
     name: "Your schedule",
     line: "Waldo fits your hours, not the other way round. Pick when it speaks, and which messages you get.",
     detail: [
-      "Set your wake time and when the evening check-in arrives. Turn The Brief, The Fetch or The Close on or off, one by one.",
+      "Set your wake time and when the Check-in arrives. Turn The Brief, the Check-in or The Close on or off, one by one.",
       "Quiet hours, when Waldo stays silent, are coming next.",
     ],
-    status: "today",
-    wire: { name: "schedule", caption: "Wake time, the evening check-in, and each message on or off" },
+    status: "coming next",
+    wire: { name: "schedule", caption: "Wake time, the Check-in, and each message on or off" },
     helps: {
       heading: "What you can set",
       columns: ["Setting", "What it changes"],
       rows: [
         ["Wake time", "When your morning starts, and The Brief with it."],
-        ["Evening check-in", "When the day gets wrapped up."],
-        ["The Brief, The Fetch, The Close", "Each one on or off, separately."],
+        ["The Check-in", "When it arrives."],
+        ["The Brief, the Check-in, The Close", "Each one on or off, separately."],
         ["Quiet hours", "Coming next. Time when Waldo stays silent."],
       ],
     },
   },
   {
     name: "Yours, always",
-    line: "Export everything any time. Delete your account, and it’s gone.",
+    line: "Delete your account from the app, and it’s gone. Want a copy first? Ask, and we’ll send it.",
     detail: [
-      "That’s the aim. Export and deletion controls are still being reviewed, so treat the screen here as an example, not a promise of controls you can use today.",
-      "Final security and retention details have not been published here yet.",
+      "Delete your account in the Waldo app or the console, and your conversations, memory, files, health data and connected accounts go from our main systems. A few copies, like backups and short-lived logs, run out on their own schedule. The Privacy Policy lists each one.",
+      "There’s no download button yet. Until there is, write to woof@heywaldo.in and we’ll send you a copy of your data.",
     ],
-    status: "today",
-    wire: { name: "yours-always", caption: "An example screen. These controls are still under review" },
+    status: "live",
+    wire: { name: "yours-always", caption: "An example screen: delete it yourself, or ask us for a copy" },
     helps: {
       heading: "Where things stand",
       columns: ["Control", "Status"],
       rows: [
-        ["Export everything", "Under review"],
-        ["Delete your account", "Under review"],
-        ["Security and retention details", "Not published yet"],
+        ["Delete your account", "Live, in the app or the console"],
+        ["A copy of your data", "By email for now, to woof@heywaldo.in"],
+        ["Security and retention details", "Published, in the Privacy Policy"],
       ],
     },
   },
@@ -504,7 +507,6 @@ const COMING: Feature[] = [
     name: "Voice",
     line: "Ask out loud, and hear the answer back. For the moments typing isn’t an option.",
     detail: ["Hold the mic and ask. Waldo can read your Brief out loud too, so the morning can start while you’re still getting ready."],
-    status: "planned",
     wire: { name: "voice", caption: "Holding the mic to ask, with the Brief read out loud" },
     helps: {
       heading: "Where it would help",
@@ -519,7 +521,6 @@ const COMING: Feature[] = [
     name: "Your own routines",
     line: "The things you ask for every week, written once. Waldo runs them on schedule.",
     detail: ["“Every Sunday evening, tell me how next week looks.” Write it once, in your own words, and Waldo runs it on schedule until you change it."],
-    status: "planned",
     wire: { name: "routines", caption: "A weekly routine, written once" },
     helps: {
       heading: "For example",
@@ -534,7 +535,6 @@ const COMING: Feature[] = [
     name: "Tomorrow, today",
     line: "Find out how tomorrow will feel tonight, while there’s still time to change it.",
     detail: ["The night before, Waldo tells you how tomorrow is likely to feel. If it looks heavy, there’s still room to move things before the day begins."],
-    status: "planned",
     wire: { name: "tomorrow-today", caption: "Tomorrow’s outlook, sent the evening before" },
     helps: {
       heading: "What you could do with it",
@@ -551,7 +551,6 @@ const COMING: Feature[] = [
     detail: [
       "Your other agents will be able to ask Waldo how you’re doing, and plan around it, before they act on your behalf. So a call gets booked for when you’re rested, not first thing after a short night.",
     ],
-    status: "planned",
     wire: { name: "other-agents", caption: "Another agent checking with Waldo before it books" },
     helps: {
       heading: "For example",
@@ -619,9 +618,9 @@ export default function HowItWorksPage() {
       <Section id="day" size="auto">
         <Header
           label="Day to day"
-          lines={["Done before", "you’re up."]}
-          subtitle="Waldo reads your night, then rebuilds the day around it. The hard meeting moves, your best hours stay protected, and the inbox waits its turn."
-          body="Most of it, you'll never see happen."
+          lines={["Ready before", "you’re up."]}
+          subtitle="Waldo reads your night, then has the day ready around it. The move for the hard meeting waits for your yes, your best hours get held, and the inbox waits its turn."
+          body="Most of it is ready before you are."
           center
         />
         <Body>
@@ -630,26 +629,26 @@ export default function HowItWorksPage() {
           <Carousel label="Waldo through a day" loop>
             <Item
               meta="Morning"
-              visual="The Brief arriving on the lock screen at 7:02"
-              scene={<LockMoment day="Tuesday 6 October" time="7:02" title="The Brief" text="Rough night, about 5h 40m. Nudged your 9am to 10:30. The afternoon looks fine." />}
+              visual="A notification at 7:02 saying your Brief is ready, with nothing about your health on the lock screen"
+              scene={<LockMoment day="Tuesday 6 October" time="7:02" title="Waldo" text="Your Brief is ready." />}
               strong="The Brief"
             />
             <Item
-              meta="Morning"
+              meta={`Morning · ${STATUS_LABEL["coming next"]}`}
               visual="The Window arriving on the lock screen at 7:15"
               scene={<LockMoment day="Tuesday 6 October" time="7:15" title="The Window" text="10:30–12:30 is your sharpest stretch. Blocked it." />}
               strong="The Window"
             />
             <Item
-              meta="Before a big meeting"
+              meta={`Before a big meeting · ${STATUS_LABEL["coming next"]}`}
               visual="Prep arriving on the lock screen at 1:25, before a board call"
-              scene={<LockMoment day="Tuesday 6 October" time="1:25" title="Prep" text="Board call in 35 minutes. You're running lower than usual. Here are last time's open items." />}
+              scene={<LockMoment day="Tuesday 6 October" time="1:25" title="Prep" text="Board call in 35 minutes. Last time's open items are ready." />}
               strong="Prep"
             />
             <Item
-              meta="Afternoon"
+              meta={`Afternoon · ${STATUS_LABEL["coming next"]}`}
               visual="The Heads-Up arriving on the lock screen at 2:40"
-              scene={<LockMoment day="Tuesday 6 October" time="2:40" title="The Heads-Up" text="This Tuesday is shaping up like the last three. Moved your 4pm before it lands." />}
+              scene={<LockMoment day="Tuesday 6 October" time="2:40" title="The Heads-Up" text="This Tuesday is shaping up like the last three. Move your 4pm before it lands?" />}
               strong="The Heads-Up"
             />
             <Item
@@ -659,9 +658,9 @@ export default function HowItWorksPage() {
               strong="The Close"
             />
             <Item
-              meta="End of week"
+              meta={`End of week · ${STATUS_LABEL["coming next"]}`}
               visual="The Adjustment arriving on the lock screen on Friday at 4:10"
-              scene={<LockMoment day="Friday 9 October" time="4:10" title="The Adjustment" text="22 hours of meetings this week. Friday afternoon cleared. Retro moved to Monday." />}
+              scene={<LockMoment day="Friday 9 October" time="4:10" title="The Adjustment" text="22 hours of meetings this week. Clear Friday afternoon and move the retro to Monday?" />}
               strong="The Adjustment"
             />
           </Carousel>
@@ -677,7 +676,7 @@ export default function HowItWorksPage() {
           <Header
             label="Connectors"
             lines={["Already fluent", "in your tools."]}
-            subtitle="Your watch, your calendar, your inbox, your tasks, and the agents you already pay for. Growing to 200+ tools across 27 categories."
+            subtitle="Your watch, your calendar, your inbox, your tasks, and the agents you already pay for. Apple Health and Google work today, and more apps connect from chat."
             actions={{ primary: { label: "See every tool →", href: "/connectors" } }}
             center
           />
@@ -690,7 +689,7 @@ export default function HowItWorksPage() {
           label="Talk to Waldo"
           lines={["You don’t have to talk to it.", "But you can."]}
           subtitle="Waldo speaks first, but ask it anything, any time: “How did I sleep?” “When should I do the hard thing today?”"
-          body="Talk to it on Telegram and the web today. WhatsApp and iPhone notifications are coming next."
+          body="Talk to it in the Waldo app on iPhone, or on iMessage, today. WhatsApp follows once Meta has verified us."
           center
         />
         <Body>
@@ -703,8 +702,8 @@ export default function HowItWorksPage() {
         <Header
           label="Your rules"
           lines={["Review actions", "before they count."]}
-          subtitle="You choose how far Waldo goes, area by area, and you can change it whenever you like."
-          body="Every move is logged. One tap takes it back."
+          subtitle="Anything that reaches other people or costs money waits for your exact yes, every time. A habit Waldo has learned is never permission."
+          body="Nothing goes out on a guess."
           actions={{ secondary: { label: "How we handle your data", href: "/privacy" } }}
           center
         />

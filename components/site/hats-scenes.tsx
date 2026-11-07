@@ -18,7 +18,10 @@ import { useLive } from "./use-live";
 // Each one plays by itself, only while it is on screen, and holds its first exchange (finished) for
 // anyone who asks for less motion. Everything in them is invented (Priya, PR #212, pitch five are the
 // homepage story, Noor and Dana are made up), and nothing is a claim about what the product sends, books
-// or merges.
+// or merges. They show where Waldo is heading: the page labels each one an example, with which of its tools
+// work today (connector-tools.ts). So the scenes keep to the rule that holds today: anything that reaches
+// other people or costs money waits for an exact yes, and a draft waits in the Waldo app, not in Gmail.
+// The wearable they read is Apple Health, the one that works today.
 //
 // Waldo says where he got it. Every answer names the tools it came from (set in bold, as plain text: no
 // logo) and then what he did because of them: "Google Calendar has the 9am, Apple Health says five
@@ -189,27 +192,27 @@ const FOUNDER: { time: string; media: Media; waldo: Part[] }[] = [
       { src: "Google Calendar" },
       " has the 9am with Priya, and ",
       { src: "Apple Health" },
-      " says you slept five hours. So the 9am moves to 11, and a car’s booked for 9:40pm.",
+      " says you slept five hours. The 9am can move to 11, and a car for 9:40pm is ready to book. Both wait for your yes.",
     ],
   },
   {
     time: "8:31",
     media: { kind: "voice", secs: 6, bars: bars(4, 9, 14, 8, 17, 11, 6, 15, 10, 5, 13, 8, 16, 7, 12, 6, 9, 4, 11, 5) },
     waldo: [
-      "Held the quieter one, ten minutes on foot from the venue. ",
+      "Found the quieter one, ten minutes on foot from the venue. ",
       { src: "Granola" },
       " has you asking for a desk on Tuesday’s call, and ",
       { src: "Gmail" },
-      " shows the other booking still waiting on you. Say the word and it’s yours.",
+      " shows the other booking still waiting on you. Say the word and I’ll book it.",
     ],
   },
   {
     time: "8:47",
     media: { kind: "video", art: "room", secs: 12 },
     waldo: [
-      "Not the one I held, and better. ",
+      "Not the one I found, and better. ",
       { src: "Google Calendar" },
-      " has three calls back to back tomorrow, then the co-founder sync. This room has the desk and the window on the courtyard, so the hold moves here, with ten minutes of air before the sync.",
+      " has three calls back to back tomorrow, then the co-founder sync. This room has the desk and the window on the courtyard. Book this one instead, and ask to start the sync ten minutes later?",
     ],
   },
 ];
@@ -431,10 +434,10 @@ const ENGINEER: { you: string; file: File; waldo: Part[] }[] = [
       " takes the failing check; ",
       { src: "GitHub" },
       " shows one test red since last night. ",
-      { src: "Oura" },
+      { src: "Apple Health" },
       " has 9 to 11 as your sharpest hours and ",
       { src: "Google Calendar" },
-      " has standup in the middle of them. Standup moves to 11:30, so 9 to 11 is yours.",
+      " has standup in the middle of them. Move standup to 11:30, so 9 to 11 is yours?",
     ],
   },
   {
@@ -448,7 +451,7 @@ const ENGINEER: { you: string; file: File; waldo: Part[] }[] = [
       { src: "Apple Health" },
       " has you at five hours and ",
       { src: "Linear" },
-      " has two reviews due, so they move to tomorrow, when you’ll be sharper.",
+      " has two reviews due. Push them to tomorrow, when you’ll be sharper?",
     ],
   },
 ];
@@ -591,8 +594,8 @@ const INVESTOR: { media: Media; waldo: Part[] }[] = [
     waldo: [
       { src: "Calendly" },
       " has five pitches today, and ",
-      { src: "Oura" },
-      " has you flagging by three. Pitch five moves to Thursday.",
+      { src: "Apple Health" },
+      " has you flagging by three. Move pitch five to Thursday?",
     ],
   },
   {
@@ -858,10 +861,10 @@ const DESIGNER: { you: string; art?: Art; file?: string; time: string; waldo: Pa
     file: "empty-states.png",
     time: "9:12 AM",
     waldo: [
-      "Review moves to 4:30. ",
+      "Move the review to 4:30? ",
       { src: "Google Calendar" },
       " is open from one and ",
-      { src: "Oura" },
+      { src: "Apple Health" },
       " has your clearest hours there, so one to three is yours for the empty states.",
     ],
   },
@@ -873,7 +876,7 @@ const DESIGNER: { you: string; art?: Art; file?: string; time: string; waldo: Pa
       { src: "Notion" },
       " has the client brief due at noon, and the 10am crit in ",
       { src: "Google Calendar" },
-      " sits inside that time, so the crit moves to Thursday.",
+      " sits inside that time. Move the crit to Thursday?",
     ],
   },
 ];
@@ -1078,8 +1081,8 @@ export function DesignerFigma() {
 
 /* ── 5 · Sales, in Slack ────────────────────────────────────────────────────────────────────────── */
 
-/** What Waldo did, as a Slack app would attach it under his reply: where it happened (the tool's name, no logo), what it is, a button */
-type SlackCard = { app: "Gmail" | "Google Calendar"; label: string; title: string; line: string; was?: string; action: string };
+/** What Waldo has ready, as a Slack app would attach it under his reply: where it waits (a name, no logo), what it is, a button that names the effect */
+type SlackCard = { app: "Waldo" | "Google Calendar"; label: string; title: string; line: string; was?: string; action: string };
 
 const SALES: { text?: string; media: Media; file?: string; time: string; waldo: Part[]; card: SlackCard }[] = [
   {
@@ -1087,12 +1090,12 @@ const SALES: { text?: string; media: Media; file?: string; time: string; waldo: 
     time: "9:14 AM",
     waldo: [
       "Held Thursday, ten to twelve, for the proposal. ",
-      { src: "Oura" },
+      { src: "Apple Health" },
       " has those as your sharpest hours, and ",
       { src: "HubSpot" },
       " has Dana’s deal as the first to close. The note to Dana is ready when you are.",
     ],
-    card: { app: "Gmail", label: "Draft, not sent", title: "To Dana Reyes", line: "Great talking today. The proposal lands Friday.", action: "Review" },
+    card: { app: "Waldo", label: "Draft, waiting for your yes", title: "To Dana Reyes", line: "Great talking today. The proposal lands Friday.", action: "Review and send" },
   },
   {
     text: "where do we stand this week",
@@ -1105,9 +1108,9 @@ const SALES: { text?: string; media: Media; file?: string; time: string; waldo: 
       { src: "Google Calendar" },
       " has the Acme call at 11, before you’re at your best. ",
       { src: "Apple Health" },
-      " has two to three as your strongest hour, so it moves to 2pm. The rest can wait.",
+      " has two to three as your strongest hour. Move it to 2pm? The rest can wait.",
     ],
-    card: { app: "Google Calendar", label: "Moved", title: "Acme renewal call", line: "Today, 2:00 PM", was: "11:00 AM", action: "Undo" },
+    card: { app: "Google Calendar", label: "Waiting for your yes", title: "Acme renewal call", line: "Today, 2:00 PM", was: "11:00 AM", action: "Move to 2pm" },
   },
 ];
 

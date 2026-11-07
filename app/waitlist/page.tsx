@@ -69,7 +69,7 @@ export default async function WaitlistRoute({
                   },
                   {
                     q: "What can I use today?",
-                    a: "Kennel for Mac is in open beta now. iPhone and messaging come next, and people on the list get in first.",
+                    a: "The Waldo app for iPhone, and iMessage. We're letting people in from the list a few at a time. Kennel for Mac is in a small beta.",
                   },
                   {
                     q: "How much will Waldo cost?",
@@ -77,7 +77,7 @@ export default async function WaitlistRoute({
                   },
                   {
                     q: "Which watches work?",
-                    a: "Apple Watch works best. Oura, WHOOP, Garmin and Fitbit are coming. The full list is on the Connectors page.",
+                    a: "Apple Watch works today, through Apple Health. WHOOP is in beta. Oura, Garmin and Fitbit are coming next. The full list is on the Connectors page.",
                   },
                   { q: "Is there an Android app?", a: "iPhone comes first. Android follows. Join the list to hear when." },
                   {

@@ -4,6 +4,8 @@ import { type CSSProperties, Fragment, type ReactNode } from "react";
 
 import { titleFit } from "@/lib/title-fit";
 
+import { type Status as StatusValue, STATUS_LABEL, STATUS_SLUG } from "./status";
+
 // The building blocks every page is assembled from. Layout, spacing and motion live in site.css,
 // so pages only choose blocks and supply words. See docs/website/sitemap.md.
 
@@ -447,9 +449,8 @@ export function Questions({ groups }: { groups: { title?: string; items: Questio
   );
 }
 
-export function Status({ value }: { value: "today" | "next" | "planned" }) {
-  const label = value === "today" ? "Working today" : value === "next" ? "Coming next" : "Planned";
-  return <span className={`site-status site-status--${value}`}>{label}</span>;
+export function Status({ value }: { value: StatusValue }) {
+  return <span className={`site-status site-status--${STATUS_SLUG[value]}`}>{STATUS_LABEL[value]}</span>;
 }
 
 /** A visible gap for content only Suyash can supply. Scaffold only. */

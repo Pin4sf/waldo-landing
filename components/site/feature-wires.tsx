@@ -759,12 +759,12 @@ const FixedFirst: Scene = ({ label }) => {
         2:14am
       </T>
       <T x={96} y={114} tone="ink">
-        Two meetings overlapped at 3pm.
+        Two meetings overlap at 3pm.
       </T>
       <T x={96} y={129} size={10.5}>
-        Moved the internal one to 3:30.
+        Internal one to 3:30? Waits for your yes.
       </T>
-      <Pill x={350} y={86} w={60} h={20} label="Fixed" kind="ink" size={9.5} />
+      <Pill x={350} y={86} w={60} h={20} label="Ready" kind="ink" size={9.5} />
       <circle className="wf-dot-open" cx={80} cy={156} r={4} />
       <T x={96} y={160} tone="soft" size={9.5}>
         3:40am
@@ -1167,7 +1167,7 @@ const AlwaysAsks: Scene = ({ label }) => {
         Always comes to you
       </T>
       <T x={418} y={58} tone="soft" size={10} anchor="end">
-        At every level
+        Every time
       </T>
       <Rule x1={40} x2={440} y={72} />
       {[170, 128, 150].map((w, index) => {
@@ -1346,9 +1346,9 @@ const Schedule: Scene = ({ label }) => {
 const YoursAlways: Scene = ({ label }) => {
   const win = { x: 56, y: 36, w: 368, h: 300 };
   const rows = [
-    { icon: "download", name: "Export everything", note: "Under review", action: "Export" },
-    { icon: "trash", name: "Delete your account", note: "Under review", action: "Delete" },
-    { icon: "lock", name: "Security and retention", note: "Details not published yet" },
+    { icon: "trash", name: "Delete your account", note: "In the app or the console", action: "Delete" },
+    { icon: "download", name: "A copy of your data", note: "By email for now", action: "Ask us" },
+    { icon: "lock", name: "Security and retention", note: "In the Privacy Policy" },
   ] as const;
   return (
     <Frame label={label} wins={[win]}>

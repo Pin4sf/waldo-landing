@@ -27,7 +27,7 @@ export default function NotFound() {
           <Grid cols={4} boxed>
             <Item title="Home" href="/">Start from the top.</Item>
             <Item title="How it works" href="/how-it-works">Everything Waldo does.</Item>
-            <Item title="Kennel for Mac" href="/kennel">In open beta now.</Item>
+            <Item title="Kennel for Mac" href="/kennel">In a small beta now.</Item>
             <Item title="Blog" href="/blogs">Things worth noticing.</Item>
           </Grid>
         </Body>

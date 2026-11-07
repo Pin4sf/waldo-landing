@@ -19,6 +19,7 @@ import {
   Section,
 } from "@/components/site/blocks";
 import { Carousel } from "@/components/site/carousel";
+import { availability } from "@/components/site/connector-tools";
 import { SeeSection } from "@/components/site/see/see-section";
 import { SiteShell } from "@/components/site/site-shell";
 import { LiveClose } from "@/components/site/live-close";
@@ -63,6 +64,11 @@ const announcement = (
     </p>
   </div>
 );
+
+/** Under each hat: which of its tools work today and which are coming, from the one status list (status.ts) */
+function Works({ tools }: { tools: string[] }) {
+  return <p className="site-works">Example. {availability(tools)}</p>;
+}
 
 export default function Home() {
   return (
@@ -141,7 +147,7 @@ export default function Home() {
               lets you take access back.
             </Item>
             <Item
-              visual="The same Tuesday over three weeks: Waldo asks, then suggests, then just does it, as he learns you"
+              visual="The same Tuesday over three weeks: each week Waldo knows the answer sooner, and each week the move still waits for your yes"
               scene={<LearningWeeks />}
               strong="Everyone’s day has its own rhythm."
             >
@@ -164,7 +170,7 @@ export default function Home() {
       <Section>
         <Header
           lines={["Same Waldo.", "Different hats."]}
-          subtitle="The same Waldo, in the place each of them already works. He reads the tools they already use, and tells you where each answer came from."
+          subtitle="Where Waldo is heading: the same Waldo, in the place each of them already works, naming where each answer came from. Every scene is an example. Under each, what works today."
           center
         />
         <Body>
@@ -174,48 +180,65 @@ export default function Home() {
               visual="A founder travelling, sending Waldo a photo, a voice note and a clip in WhatsApp, and Waldo answering with the tools he read: Google Calendar, Apple Health, Granola and Gmail"
               scene={<FounderWhatsApp />}
             >
-              Three calls back to back, then the co-founder sync. Waldo reads
-              your sleep in Apple Health, your day in Google Calendar and what
-              was said in Granola, then puts ten minutes of air before the sync,
-              so the snappy reply never happens.
+              <p>
+                Three calls back to back, then the co-founder sync. Waldo reads
+                your sleep in Apple Health, your day in Google Calendar and what
+                was said in Granola, then offers ten minutes of air before the
+                sync, so the snappy reply never happens.
+              </p>
+              <Works tools={["Apple Health", "Google Calendar", "Gmail", "Granola", "WhatsApp"]} />
             </Item>
             <Item
               title="Engineers"
-              visual="An engineer asking Waldo from the terminal, with a screenshot and a screen recording, and Waldo answering with the tools he read: GitHub, Oura, Vercel and Linear"
+              visual="An engineer asking Waldo from the terminal, with a screenshot and a screen recording, and Waldo answering with the tools he read: GitHub, Apple Health, Vercel and Linear"
               scene={<EngineerCli />}
             >
-              Waldo reads your wearable for the hour you&apos;re sharpest, and
-              GitHub, Vercel and Linear for what is actually blocking you. That
-              hour goes to the hard problem. Standup moves somewhere else.
+              <p>
+                Waldo reads your wearable for the hour you&apos;re sharpest, and
+                GitHub, Vercel and Linear for what is actually blocking you. That
+                hour goes to the hard problem, and moving standup waits for your
+                yes.
+              </p>
+              <Works tools={["Apple Health", "Google Calendar", "Codex", "GitHub", "Vercel", "Linear"]} />
             </Item>
             <Item
               title="Investors"
-              visual="An investor sending Waldo a voice note and a slide from an Apple Watch, and Waldo answering with the tools he read: Calendly, Oura and Stripe"
+              visual="An investor sending Waldo a voice note and a slide from an Apple Watch on iMessage, and Waldo answering with the tools he read: Calendly, Apple Health and Stripe"
               scene={<InvestorWatch />}
             >
-              Waldo reads the day&apos;s pitches in Calendly and your recovery
-              from your wearable, then spaces them to what you can actually
-              give. He checks the deck against the latest numbers, so the
-              founder at pitch five gets your pitch-one attention.
+              <p>
+                Waldo reads the day&apos;s pitches in Calendly and your recovery
+                from your wearable, then offers to space them to what you can
+                actually give. He checks the deck against the latest numbers, so
+                the founder at pitch five gets your pitch-one attention.
+              </p>
+              <Works tools={["iMessage", "Apple Health", "Calendly", "Stripe"]} />
             </Item>
             <Item
               title="Designers"
-              visual="A designer leaving Waldo a comment on a frame in Figma, with a screenshot, and him answering under it with the tools he read: Google Calendar, Oura and Notion"
+              visual="A designer leaving Waldo a comment on a frame in Figma, with a screenshot, and him answering under it with the tools he read: Google Calendar, Apple Health and Notion"
               scene={<DesignerFigma />}
             >
-              The crit is at 3 and the empty states aren&apos;t done. Waldo
-              reads your calendar, your client brief in Notion and your clearest
-              hours, then gives you those hours before the crit and moves the
-              review back.
+              <p>
+                The crit is at 3 and the empty states aren&apos;t done. Waldo
+                reads your calendar, your client brief in Notion and your clearest
+                hours, then holds those hours before the crit, and asks before
+                moving the review back.
+              </p>
+              <Works tools={["Google Calendar", "Apple Health", "Notion", "Figma"]} />
             </Item>
             <Item
               title="Sales"
-              visual="A salesperson sending Waldo a voice clip and a screenshot of the pipeline in a Slack message, and Waldo answering with the tools he read: Oura, HubSpot, Google Calendar and Apple Health"
+              visual="A salesperson sending Waldo a voice clip and a screenshot of the pipeline in a Slack message, and Waldo answering with the tools he read: Apple Health, HubSpot and Google Calendar"
               scene={<SalesSlack />}
             >
-              Waldo reads your pipeline in HubSpot, your calendar and your best
-              hours, and puts the most important call in the strongest one. The
-              follow-up is drafted in Gmail before you hang up.
+              <p>
+                Waldo reads your pipeline in HubSpot, your calendar and your best
+                hours, and offers the strongest one to the most important call.
+                The follow-up is drafted before you hang up, and waits in the
+                Waldo app for your yes.
+              </p>
+              <Works tools={["Google Calendar", "Apple Health", "Gmail", "HubSpot", "Slack"]} />
             </Item>
           </Carousel>
         </Body>
@@ -261,7 +284,7 @@ export default function Home() {
                   },
                   {
                     q: "How is it different from WHOOP or Oura?",
-                    a: "They show you your data. Waldo does something with it. WHOOP tells you your recovery is low. Waldo already moved your morning.",
+                    a: "They show you your data. Waldo does something with it. WHOOP tells you your recovery is low. Waldo already has a lighter morning lined up, waiting for your yes.",
                   },
                   {
                     q: "Do I have to set everything up?",
@@ -269,15 +292,15 @@ export default function Home() {
                   },
                   {
                     q: "What if Waldo gets it wrong?",
-                    a: "Undo it in one tap. Waldo learns from every correction, and the first week is mostly it learning you.",
+                    a: "Anything that reaches other people or costs money waits for your yes, so you catch most of it first. Correct it, and the correction sticks. The first week is mostly it learning you.",
                   },
                   {
                     q: "Do I need a smartwatch?",
-                    a: "It helps, since that's how Waldo knows how you're doing. Apple Watch, Oura, WHOOP, Garmin and Fitbit all work. Without one, Waldo leans on your calendar, work and patterns.",
+                    a: "It helps, since that's how Waldo knows how you're doing. Apple Watch works today, through Apple Health. WHOOP is in beta. Oura, Garmin and Fitbit are coming next. Without a watch, Waldo leans on your calendar, inbox and patterns.",
                   },
                   {
                     q: "What can I use today?",
-                    a: "Kennel for Mac is in open beta now. iPhone and messaging come next, and people on the list get in first.",
+                    a: "The Waldo app for iPhone, and iMessage. We're letting people in from the list a few at a time. Kennel for Mac is in a small beta.",
                   },
                 ],
               },

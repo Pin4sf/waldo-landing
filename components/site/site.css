@@ -1385,14 +1385,14 @@ button:not(:disabled):hover > .site-arrow { transform: translateX(2px); }
   .site-cal-daycell[data-day="2"] b { animation: site-cal-today 0.4s both; animation-delay: var(--move, 2.9s); }
   .site-cal-daycell[data-day="4"] b { animation: site-cal-thu 0.4s both; animation-delay: var(--move, 2.9s); }
   .site-cal-event--moved { animation: site-cal-drop 0.5s var(--ease-out-quad) both; animation-delay: calc(var(--move, 2.9s) + 0.35s); }
-  /* Waldo speaks, and the buttons are what is left to do about it: two, then one, then none */
+  /* Waldo speaks, and asks every week: he learns the answer, never the permission */
   .site-cal-waldo { animation: site-cal-drop 0.5s var(--ease-out-quad) both; animation-delay: var(--say, 1s); }
   .site-cal-actions { animation: site-fade-in 0.4s both; animation-delay: calc(var(--say, 1s) + 0.35s); }
   .site-cal-ticked path { animation: site-cal-draw 0.5s both; animation-delay: calc(var(--say, 1s) + 0.5s); }
   .site-cal-button[data-pressed] { animation: site-cal-press 0.6s 2.2s ease-out both; }
   .site-cal[data-week="1"] { --say: 1s; --move: 2.9s; }
-  .site-cal[data-week="2"] { --say: 0.7s; --move: 1.6s; }
-  .site-cal[data-week="3"] { --say: 1.9s; --move: 1.3s; }
+  .site-cal[data-week="2"] { --say: 0.7s; --move: 2.9s; }
+  .site-cal[data-week="3"] { --say: 0.5s; --move: 2.9s; }
   @keyframes site-cal-drop { from { opacity: 0; transform: translateY(-8px); } }
   @keyframes site-cal-slide { from { transform: translateX(0); } to { transform: translateX(-50%); } }
   @keyframes site-cal-select { from { transform: none; background: var(--cal-red); } to { transform: translateX(calc(2 * var(--col))); background: #000; } }
@@ -1776,8 +1776,10 @@ html:has(.site-sheet[open]) { overflow: hidden; }
 .site-chip[aria-pressed="true"] { background: var(--ink); color: var(--surface-t2); border-color: var(--ink); }
 .site-status { display: inline-flex; align-items: center; gap: 6px; font-size: var(--site-tiny); color: var(--text-secondary); }
 .site-status::before { content: ""; width: 7px; height: 7px; border-radius: 999px; background: var(--dot, var(--text-disabled)); }
-.site-status--today { --dot: #22C55E; }
-.site-status--next { --dot: #F59E0B; }
+.site-status--live { --dot: #22C55E; }
+.site-status--beta { --dot: #F59E0B; }
+/* "Works today" under an example (the homepage hats), as the Connectors page sets it (connectors.css, .cn-works) */
+.site-item-text .site-works { margin-top: 12px; font-size: 14px; color: var(--text-tertiary); }
 
 /* ── Footer ─────────────────────────────────────────── */
 .site-footer { margin-top: clamp(24px, 4vw, 64px); }

@@ -11,8 +11,9 @@ import { useLive } from "./use-live";
 // one. Waldo has no screen of his own here. What he does shows up as the calendar changing.
 //
 //   Week 1  Tuesday: Form is low, and he asks. He is told yes, and the Weekly Sync is on Thursday.
-//   Week 2  he has moved it by the time you look, and says so, with an Undo.
-//   Week 3  Tuesday is already clear: he moved it first, and says nothing but a tick.
+//   Week 2  he knows the answer you gave, and asks again, sooner.
+//   Week 3  he names the pattern and has the move ready, and still asks. Team Sync has other people in it,
+//           so it waits for an exact yes every week: a learned preference is never permission.
 //
 // The week strip is the clock: each week the dates turn over (Wk 41, 42, 43), and the day the strip
 // has selected slides from Tuesday to Thursday when the meeting does. It plays only while on screen
@@ -33,8 +34,8 @@ type Week = {
 
 const WEEKS: Week[] = [
   { wk: 41, sun: 4, onTuesday: true, form: 41, line: "Form is low. Move Team Sync to Thursday?", buttons: ["Yes", "No"], ms: 5600 },
-  { wk: 42, sun: 11, onTuesday: true, form: 38, line: "Moved Team Sync to Thursday, like last week.", buttons: ["Undo"], ms: 4600 },
-  { wk: 43, sun: 18, onTuesday: false, form: 40, line: "Team Sync is on Thursday.", buttons: [], ms: 5000 },
+  { wk: 42, sun: 11, onTuesday: true, form: 38, line: "Low again. Thursday, like last week?", buttons: ["Yes", "No"], ms: 5600 },
+  { wk: 43, sun: 18, onTuesday: true, form: 40, line: "Tuesdays run low for you. Team Sync to Thursday?", buttons: ["Yes", "No"], ms: 5600 },
 ];
 
 const DAYS = ["S", "M", "T", "W", "T", "F", "S"];
