@@ -1,0 +1,389 @@
+/* ── How it works · "Done before you're up": a few days on a timeline (day-moments.tsx) ──
+   After "A day with your dot" on chatgpt.com/features/dots, in Waldo's own look: white boxes and hairlines,
+   ink for the flag. Motion is quiet: things fade and rise a few
+   pixels, nothing bounces. JS writes three variables as the flag moves: --flag and --dog (0 … 1 along the
+   timeline) and --flag-at (the same in moments, for the phone ruler). */
+
+.day {
+  --flag: 0;
+  --flag-at: 0;
+  --dog: 0;
+  --ease: var(--ease-premium, cubic-bezier(0.19, 1, 0.22, 1));
+  position: relative;
+  width: 100%;
+  max-width: 880px;
+  margin-inline: auto;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* The conversation, made like iMessage (its shapes and motion, Waldo's colours) ───────────────────── */
+.day-threads { display: grid; width: 100%; max-width: 440px; margin-inline: auto; }
+.day-thread {
+  grid-area: 1 / 1;
+  align-self: end;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.42s cubic-bezier(0.25, 0.9, 0.3, 1);
+}
+.day-thread--ghost { visibility: hidden; pointer-events: none; }
+.day-thread--ghost * { animation: none !important; }
+
+/* "Tuesday 6:58 AM" */
+.day-stamp { margin: 0 0 10px; text-align: center; font-size: 11.5px; color: var(--text-tertiary); }
+.day-stamp b { font-weight: 600; }
+
+/* A run of bubbles from the same side sits close; a new side gets air */
+.day-row { position: relative; display: flex; flex-direction: column; align-items: flex-start; margin-top: 10px; }
+.day-row[data-from="you"] { align-items: flex-end; }
+.day-stamp + .day-row { margin-top: 0; }
+.day-row[data-from="waldo"] + .day-row[data-from="waldo"],
+.day-row[data-from="you"] + .day-row[data-from="you"] { margin-top: 3px; }
+.day-row[data-react] { margin-top: 26px; }
+
+.day-msg {
+  position: relative;
+  max-width: 82%;
+  padding: 9px 14px 10px;
+  border-radius: 19px;
+  font-size: 15px;
+  line-height: 1.36;
+  letter-spacing: -0.005em;
+  text-align: left;
+}
+.day-msg p { margin: 0; }
+.day-msg b { font-weight: 600; }
+.day-row[data-from="waldo"] .day-msg {
+  background: var(--surface-t1);
+  box-shadow: inset 0 0 0 1px var(--border-default);
+  color: var(--ink);
+  transform-origin: 0 100%;
+}
+.day-row[data-from="you"] .day-msg {
+  background: #1a1a1a;
+  color: #fafaf8;
+  transform-origin: 100% 100%;
+}
+
+/* The tail, on the last bubble of a run. It covers the bubble's corner and carries its hairline round */
+.day-row[data-tail][data-from="waldo"] .day-msg { border-bottom-left-radius: 6px; }
+.day-row[data-tail][data-from="you"] .day-msg { border-bottom-right-radius: 6px; }
+.day-tail { position: absolute; bottom: 0; left: -5px; width: 20px; height: 20px; overflow: visible; pointer-events: none; }
+.day-tail-fill { fill: var(--surface-t1); }
+.day-tail-line { fill: none; stroke: var(--border-default); stroke-width: 1; }
+.day-row[data-from="you"] .day-tail { left: auto; right: -5px; transform: scaleX(-1); }
+.day-row[data-from="you"] .day-tail-fill { fill: #1a1a1a; }
+.day-row[data-from="you"] .day-tail-line { stroke: none; }
+
+/* Your tapback: a small round bubble on the top corner of his message, with two little circles trailing to it.
+   Light, like his bubbles: white with a hairline */
+.day-react {
+  position: absolute;
+  top: -26px;
+  right: -14px;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 30px;
+  border-radius: 999px;
+  background: var(--surface-t1);
+  box-shadow: inset 0 0 0 1px var(--border-default), 0 0 0 2px var(--color-surface, #fafaf8);
+  font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+  font-size: 15px;
+  line-height: 1;
+  transform-origin: 30% 90%;
+}
+.day-react::before,
+.day-react::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  background: var(--surface-t1);
+  box-shadow: inset 0 0 0 1px var(--border-default);
+}
+.day-react::before { width: 9px; height: 9px; left: -1px; bottom: -6px; }
+.day-react::after { width: 5px; height: 5px; left: -6px; bottom: -11px; }
+.day-row[data-from="you"] .day-react { right: auto; left: -18px; }
+
+/* "Read 7:40 AM", under your last message */
+.day-receipt { margin-top: 3px; padding-right: 4px; font-size: 11px; color: var(--text-tertiary); }
+
+/* Waldo typing */
+.day-typing {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 36px;
+  padding: 0 13px;
+  border-radius: 18px;
+  background: var(--surface-t1);
+  box-shadow: inset 0 0 0 1px var(--border-default);
+  transform-origin: 0 100%;
+}
+.day-typing::before,
+.day-typing::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  background: var(--surface-t1);
+  box-shadow: inset 0 0 0 1px var(--border-default);
+}
+.day-typing::before { width: 11px; height: 11px; left: -2px; bottom: -2px; }
+.day-typing::after { width: 5px; height: 5px; left: -7px; bottom: -6px; }
+.day-typing i { width: 7px; height: 7px; border-radius: 50%; background: var(--ink); opacity: 0.3; }
+
+/* A voice note: play, the shape of what was said, how long it ran */
+.day-msg[data-kind="voice"] { width: 236px; padding: 8px 14px 8px 8px; }
+.day-voice { display: flex; align-items: center; gap: 10px; }
+.day-voice-play {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #1a1a1a;
+}
+.day-voice-play svg { width: 9px; height: 11px; margin-left: 2px; fill: #fafaf8; }
+.day-row[data-from="you"] .day-voice-play { background: #fafaf8; }
+.day-row[data-from="you"] .day-voice-play svg { fill: #1a1a1a; }
+.day-voice-bars { display: flex; align-items: center; flex: 1; gap: 2px; height: 22px; }
+.day-voice-bars i { flex: 1; min-width: 1.5px; border-radius: 2px; background: currentColor; opacity: 0.32; }
+.day-voice small { font-size: 12px; font-variant-numeric: tabular-nums; opacity: 0.6; }
+
+/* A photo you sent */
+.day-row .day-msg[data-kind="photo"] { padding: 0; border-radius: 18px; background: none; overflow: hidden; }
+.day-photo { display: block; width: 200px; aspect-ratio: 4 / 3; object-fit: cover; }
+
+/* What Waldo shows from a tool */
+.day-msg[data-kind="card"] {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 268px;
+  padding: 12px 14px 13px;
+  border-radius: 19px;
+}
+.day-app { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-tertiary); }
+.day-app img { display: block; width: 14px; height: 14px; }
+.day-card-title { font-size: 14px; }
+.day-card-read { font-size: 13px; line-height: 1.35; color: var(--text-secondary); }
+.day-card-read b { color: var(--ink); font-weight: 600; }
+
+.day-event {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: var(--surface-t3);
+  box-shadow: inset 2px 0 0 #1a1a1a;
+}
+.day-event b { font-size: 14px; }
+.day-event-time { display: flex; align-items: center; gap: 6px; font-size: 13px; font-variant-numeric: tabular-nums; }
+.day-event-time s { color: var(--text-tertiary); text-decoration-thickness: 1px; }
+.day-event-time svg { width: 13px; height: 13px; fill: none; stroke: var(--text-tertiary); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+
+.day-bars { display: flex; align-items: flex-end; gap: 6px; height: 44px; }
+.day-bars i { flex: 1; border-radius: 3px; background: color-mix(in srgb, var(--ink) 12%, transparent); }
+.day-bars i[data-on] { background: var(--ink); }
+
+.day-lines { display: block; width: 100%; height: auto; overflow: visible; }
+.day-lines path { fill: none; stroke: color-mix(in srgb, var(--ink) 16%, transparent); stroke-width: 1.5; stroke-linecap: round; }
+.day-lines path.day-lines-now { stroke: var(--ink); stroke-width: 2; }
+.day-lines circle.day-lines-now { fill: var(--ink); }
+.day-lines text { font-size: 10px; fill: var(--text-tertiary); }
+
+.day-sleep { display: flex; align-items: center; gap: 8px; font-size: 13px; font-variant-numeric: tabular-nums; }
+.day-sleep-bar { position: relative; flex: 1; height: 8px; border-radius: 999px; background: color-mix(in srgb, var(--ink) 10%, transparent); }
+.day-sleep-bar i { position: absolute; inset: 0 10% 0 0; border-radius: inherit; background: var(--ink); }
+.day-sleep-bar em { position: absolute; top: -4px; bottom: -4px; right: 0; width: 1.5px; border-radius: 1px; background: var(--text-tertiary); }
+
+.day-post { font-size: 14px; line-height: 1.4; }
+
+/* Waldo, walking the day ─────────────────────────────────────────────── */
+.day-walk { position: relative; height: 64px; margin-top: 28px; }
+.day-dog {
+  position: absolute;
+  bottom: 0;
+  left: calc(var(--flag-w) / 2 + var(--dog) * (100% - var(--flag-w)));
+  width: 76px;
+  height: 60px;
+  translate: -50% 0;
+}
+.day-dog img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: 50% 100%;
+  opacity: 0;
+  pointer-events: none;
+}
+.day-dog img[data-on] { opacity: 1; }
+
+/* The timeline ───────────────────────────────────────────────────────── */
+.day-rail {
+  position: relative;
+  height: 80px;
+  margin-top: 6px;
+  cursor: grab;
+  touch-action: pan-y;
+}
+.day[data-dragging] .day-rail { cursor: grabbing; }
+.day-ruler-window { position: absolute; inset: 52px 0 auto; height: 12px; pointer-events: none; }
+.day-ruler { position: absolute; inset: 0 calc(var(--flag-w) / 2); }
+.day-tick-major,
+.day-tick-minor {
+  position: absolute;
+  left: calc(var(--at) / var(--last) * 100%);
+  translate: -50% 0;
+}
+.day-tick-major {
+  top: 1px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--ink) 18%, transparent);
+  transition: background-color 0.3s var(--ease);
+}
+.day-tick-major[data-on] { background: var(--ink); }
+.day-tick-minor {
+  top: 2px;
+  width: 1px;
+  height: 8px;
+  border-radius: 1px;
+  background: color-mix(in srgb, var(--ink) 12%, transparent);
+}
+
+/* The flag: the time, with a step back and a step forward. Ink, like the site's primary button */
+.day-flag {
+  position: absolute;
+  top: 0;
+  left: calc(var(--flag) * (100% - var(--flag-w)));
+  z-index: 2;
+  width: var(--flag-w);
+  height: 72px;
+  color: #fafaf8;
+  font-size: 14px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  outline: none;
+}
+.day-flag-shape { position: absolute; inset: 0; color: #1a1a1a; overflow: visible; }
+.day-flag:focus-visible .day-flag-row { box-shadow: 0 0 0 2px var(--surface-t1), 0 0 0 4px color-mix(in srgb, var(--ink) 40%, transparent); border-radius: 12px; }
+.day-flag-row { position: relative; display: flex; align-items: center; height: 36px; padding-inline: 5px; }
+.day-flag-step {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: 0 0 24px;
+  height: 26px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+.day-flag-step::before { content: ""; position: absolute; inset: -9px -4px; } /* a bigger target */
+.day-flag-step:hover:not([aria-disabled="true"]) { background: rgb(255 255 255 / 0.12); }
+.day-flag-step[aria-disabled="true"] { opacity: 0.3; cursor: default; }
+.day-flag-step svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.day-time { display: grid; flex: 1; place-items: center; white-space: nowrap; }
+
+/* The name of the moment ─────────────────────────────────────────────── */
+.day-caption { display: grid; margin-top: 36px; text-align: center; }
+.day-caption-item { grid-area: 1 / 1; visibility: hidden; }
+.day-caption-item[data-on] { visibility: visible; }
+.day-caption-name {
+  margin: 0;
+  font-family: var(--font-headline);
+  font-weight: var(--mottle-display-weight);
+  font-size: 32px;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+.day-caption-line {
+  max-width: 32rem;
+  margin: 12px auto 0;
+  font-size: var(--type-body);
+  line-height: var(--body-leading);
+  letter-spacing: 0.02em;
+  color: #6B6B68;
+  text-wrap: balance;
+}
+
+/* Motion, as iMessage does it ────────────────────────────────────────────
+   His bubbles (and the typing dots) grow out of the tail corner; yours rise in from below; the thread eases up
+   to make room (useLift); a tapback pops on with a small settle. Gentle: a 2–3% overshoot at most. */
+@keyframes day-recv {
+  0% { opacity: 0; transform: scale(0.55); }
+  55% { opacity: 1; transform: scale(1.025); }
+  100% { opacity: 1; transform: none; }
+}
+@keyframes day-send {
+  0% { opacity: 0; transform: translateY(16px) scale(0.92); }
+  60% { opacity: 1; transform: translateY(-1px) scale(1.01); }
+  100% { opacity: 1; transform: none; }
+}
+@keyframes day-tap {
+  0% { opacity: 0; transform: scale(0.3); }
+  60% { opacity: 1; transform: scale(1.1); }
+  100% { opacity: 1; transform: none; }
+}
+@keyframes day-dot {
+  0%, 60%, 100% { opacity: 0.3; transform: none; }
+  30% { opacity: 0.75; transform: translateY(-2px); }
+}
+@keyframes day-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes day-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .day-row[data-from="waldo"] .day-msg,
+  .day-typing { animation: day-recv 0.42s cubic-bezier(0.3, 0.7, 0.4, 1) both; }
+  .day-row[data-from="you"] .day-msg { animation: day-send 0.42s cubic-bezier(0.3, 0.7, 0.4, 1) both; }
+  .day-react { animation: day-tap 0.36s cubic-bezier(0.3, 0.7, 0.4, 1) both; }
+  .day-receipt { animation: day-fade 0.3s ease 0.25s both; }
+  .day-stamp { animation: day-fade 0.3s ease both; }
+  .day-typing i { animation: day-dot 1.2s ease-in-out infinite; }
+  .day-typing i:nth-child(2) { animation-delay: 0.15s; }
+  .day-typing i:nth-child(3) { animation-delay: 0.3s; }
+  .day-dog img { transition: opacity 0.3s var(--ease); }
+  .day-caption-item[data-on] { animation: day-in 0.5s var(--ease) both; }
+  .day-time > span { animation: day-fade 0.3s var(--ease) both; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .day-thread { transition: none; }
+}
+
+/* Phones: the flag stays in the middle and the timeline slides under it ───── */
+@media (max-width: 767px) {
+  .day-msg { font-size: 14.5px; }
+  .day-msg[data-kind="card"] { width: 252px; }
+  .day-walk { margin-top: 20px; }
+  .day-dog { left: 50%; }
+  .day-ruler-window {
+    inset-inline: -16px;
+    mask-image: linear-gradient(90deg, transparent, #000 32px, #000 calc(100% - 32px), transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 32px, #000 calc(100% - 32px), transparent);
+  }
+  .day-ruler {
+    inset: 0 auto;
+    left: 50%;
+    width: calc(var(--last) * var(--step));
+    translate: calc(-1 * var(--flag-at) * var(--step)) 0;
+  }
+  .day-flag { left: calc(50% - var(--flag-w) / 2); }
+  .day-caption { margin-top: 28px; }
+  .day-caption-name { font-size: 26px; }
+}

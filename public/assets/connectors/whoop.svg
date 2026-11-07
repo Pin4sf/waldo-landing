@@ -1,7 +1,7 @@
-<svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<svg role="img" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
   <title>WHOOP</title>
-  <rect x="3" y="5" width="3.2" height="14" rx="1.6" fill="#111111"/>
-  <rect x="7.9" y="3" width="3.2" height="18" rx="1.6" fill="#111111"/>
-  <rect x="12.8" y="5" width="3.2" height="14" rx="1.6" fill="#111111"/>
-  <rect x="17.7" y="7" width="3.2" height="10" rx="1.6" fill="#00F060"/>
+  <rect width="30" height="30" rx="15" fill="black"/>
+  <path d="M6 9.5L8.55057 17.3372H10.1478L7.59855 9.5H6Z" fill="white"/>
+  <path d="M22.4015 9.50004L19.1006 19.6442L17.3481 14.2602H15.7509L18.3015 22.1H19.9L24 9.50004H22.4015Z" fill="white"/>
+  <path d="M10.1 22.1L14.2014 9.50004H15.7986L11.6986 22.1H10.1Z" fill="white"/>
 </svg>

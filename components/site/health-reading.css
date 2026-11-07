@@ -1,0 +1,271 @@
+/*
+  How it works, Health (health-reading.tsx): one box that plays three beats. A health app's summary folds into
+  Waldo's three rings, then the rings rise and today's calendar changes under them. White box, hairlines; colour only
+  inside the charts and calendar, as the real apps have it. Quiet eased moves, nothing bounces.
+*/
+
+.hv { width: min(920px, 100%); margin: 0 auto; letter-spacing: 0; }
+.hv p { margin: 0; }
+.hv ul { margin: 0; padding: 0; list-style: none; }
+
+.hv-stage {
+  --ring: 132px;
+  position: relative;
+  overflow: hidden;
+  height: 720px;
+  border-radius: var(--box-radius);
+  corner-shape: var(--box-corner);
+  background: #fff;
+  box-shadow: inset 0 0 0 0.5px color-mix(in srgb, var(--ink) 10%, transparent);
+  text-align: left;
+}
+
+/* The bar along the top: which app this is, and when */
+.hv-top { position: absolute; top: 0; left: 0; right: 0; z-index: 4; height: 58px; border-bottom: 0.5px solid color-mix(in srgb, var(--ink) 8%, transparent); }
+.hv-who {
+  position: absolute;
+  top: 0;
+  left: 22px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 100%;
+  font-size: 14px;
+  color: var(--ink);
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.35s var(--ease-out-quad), transform 0.5s var(--ease-sheet);
+}
+.hv-who[data-on] { opacity: 1; transform: none; transition-delay: 0.15s; }
+.hv-who b { font-weight: 600; }
+.hv-who span { font-size: 12.5px; color: var(--text-tertiary); }
+.hv-kind {
+  position: absolute;
+  top: 50%;
+  right: 18px;
+  padding: 4px 10px;
+  border-radius: 99px;
+  background: #f4f3f0;
+  font-size: 12px;
+  color: var(--text-secondary);
+  transform: translateY(-50%);
+}
+
+/* 0 · The summary */
+.hv-wall {
+  position: absolute;
+  inset: 72px 18px 18px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-rows: 1fr;
+  gap: 8px;
+}
+.hv-tile {
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  min-width: 0;
+  padding: 12px 13px 11px;
+  border-radius: 14px;
+  background: #f7f6f3;
+  transition: transform 0.9s var(--ease-sheet), opacity 0.55s var(--ease-out-quad);
+  transition-delay: var(--d);
+}
+.hv-tile small { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; color: var(--text-secondary); white-space: nowrap; overflow: hidden; }
+.hv-tile small i { flex: none; width: 7px; height: 7px; border-radius: 2px; background: var(--hue); }
+.hv-tile b { margin-top: 6px; font-size: 23px; font-weight: 500; line-height: 1.1; font-variant-numeric: tabular-nums; color: var(--ink); white-space: nowrap; }
+.hv-tile em { margin-left: 2px; font-size: 12px; font-style: normal; font-weight: 400; color: var(--text-tertiary); }
+.hv-chart { align-self: center; width: 100%; height: 28px; margin: 6px 0; overflow: visible; }
+.hv-chart--gauge { justify-self: start; width: 46px; height: 25px; }
+.hv-base { stroke: color-mix(in srgb, var(--ink) 18%, transparent); stroke-width: 1; stroke-dasharray: 2 2; vector-effect: non-scaling-stroke; }
+.hv-delta { font-size: 11.5px; color: var(--text-tertiary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hv-delta::before { content: "↑ "; }
+.hv-delta[data-down]::before { content: "↓ "; }
+.hv-stage:not([data-beat="0"]) .hv-tile { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0.22); }
+.hv-stage[data-beat="0"] .hv-tile { transition-delay: calc(var(--d) + 150ms); }
+
+/* 1 · Three rings */
+.hv-rings {
+  position: absolute;
+  top: calc(50% + 29px);
+  left: 0;
+  right: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  gap: clamp(16px, 6vw, 64px);
+  transform: translateY(-50%);
+  transform-origin: 50% 0;
+  transition: top 0.8s var(--ease-sheet), transform 0.8s var(--ease-sheet);
+  pointer-events: none;
+}
+.hv-ring-wrap {
+  display: grid;
+  justify-items: center;
+  width: max(var(--ring), 150px);
+  opacity: 0;
+  transform: scale(0.94);
+  transition: opacity 0.4s var(--ease-out-quad), transform 0.6s var(--ease-sheet);
+}
+.hv-ring { position: relative; display: grid; place-content: center; justify-items: center; width: var(--ring); height: var(--ring); }
+.hv-ring svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+.hv-track { fill: none; stroke: color-mix(in srgb, var(--hue) 14%, transparent); stroke-width: 6; }
+.hv-arc { fill: none; stroke: var(--hue); stroke-width: 6; stroke-linecap: round; stroke-dashoffset: var(--c); transition: stroke-dashoffset 1s var(--ease-sheet); }
+.hv-ring b { font-size: calc(var(--ring) * 0.28); font-weight: 500; line-height: 1; font-variant-numeric: tabular-nums; color: var(--ink); }
+.hv-ring small { margin-top: 4px; font-size: 12px; color: var(--text-tertiary); }
+.hv-ring-name { margin-top: 14px !important; font-size: 15px; font-weight: 500; color: var(--ink); }
+.hv-ring-from { display: grid; gap: 4px; margin-top: 10px !important; text-align: center; transition: opacity 0.3s var(--ease-out-quad); }
+.hv-ring-from li { font-size: 12.5px; color: var(--text-secondary); }
+.hv-stage:not([data-beat="0"]) .hv-ring-wrap { opacity: 1; transform: none; transition-delay: calc(var(--d) + 450ms); }
+.hv-stage:not([data-beat="0"]) .hv-arc { stroke-dashoffset: var(--off); transition-delay: calc(var(--d) + 600ms); }
+.hv-stage[data-beat="2"] .hv-rings { top: 70px; transform: translateY(0) scale(0.6); }
+.hv-stage[data-beat="2"] .hv-ring-from { opacity: 0; }
+.hv-stage[data-beat="2"] .hv-ring-name { font-size: 20px; }
+
+/* 2 · Today, as a calendar day */
+.hv-day {
+  position: absolute;
+  top: 196px;
+  bottom: 74px;
+  left: 50%;
+  width: min(560px, calc(100% - 36px));
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.4s var(--ease-out-quad);
+  container-type: size;
+}
+.hv-stage[data-beat="2"] .hv-day { opacity: 1; transition-delay: 0.45s; }
+.hv-hour {
+  position: absolute;
+  top: calc(var(--t) * 100%);
+  left: 0;
+  width: 100%;
+  font-size: 10.5px;
+  line-height: 1;
+  color: var(--text-tertiary);
+  transform: translateY(-50%);
+}
+.hv-hour::after { content: ""; position: absolute; top: 50%; left: 46px; right: 0; border-top: 0.5px solid color-mix(in srgb, var(--ink) 8%, transparent); }
+.hv-now { position: absolute; z-index: 2; top: calc(var(--t) * 100%); left: 50px; right: 0; height: 1.5px; background: #ea4335; }
+.hv-now::before { content: ""; position: absolute; top: -4px; left: -5px; width: 10px; height: 10px; border-radius: 50%; background: #ea4335; }
+
+.hv-event,
+.hv-ghost {
+  position: absolute;
+  top: calc(var(--t) * 100% + 1px);
+  left: 56px;
+  right: 4px;
+  box-sizing: border-box;
+  height: calc(var(--len) * 100% - 2px);
+  border-radius: 7px;
+}
+.hv-event {
+  z-index: 1;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 4px 10px 0 11px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--hue) 13%, #fff);
+  box-shadow: inset 3px 0 0 var(--hue);
+  font-size: 12px;
+  line-height: 1.25;
+  color: color-mix(in srgb, var(--hue) 30%, #1a1a1a);
+  transition: transform 0.9s var(--ease-sheet), opacity 0.6s var(--ease-out-quad);
+}
+.hv-event b { font-weight: 600; white-space: nowrap; }
+.hv-times { display: inline-grid; color: color-mix(in srgb, var(--hue) 35%, #6b6b68); white-space: nowrap; }
+.hv-was,
+.hv-is { grid-area: 1 / 1; transition: opacity 0.3s var(--ease-out-quad); }
+.hv-is { opacity: 0; }
+.hv-event[data-short] { align-items: center; padding-top: 0; font-size: 11.5px; line-height: 1; }
+.hv-paw { display: grid; place-items: center; margin-left: auto; align-self: center; opacity: 0; transition: opacity 0.3s var(--ease-out-quad); }
+.hv-ghost {
+  display: flex;
+  align-items: center;
+  padding: 0 11px;
+  border: 1px dashed color-mix(in srgb, var(--ink) 22%, transparent);
+  font-size: 11.5px;
+  color: var(--text-tertiary);
+  opacity: 0;
+  transition: opacity 0.4s var(--ease-out-quad);
+}
+
+/* The moves land one after another, a beat after the calendar shows */
+.hv-stage[data-beat="2"] .hv-event[data-move="later"] { transform: translateY(calc(var(--to) * 100cqh)); transition-delay: 1.5s; }
+.hv-stage[data-beat="2"] .hv-event[data-move="later"] .hv-was { opacity: 0; transition-delay: 1.9s; }
+.hv-stage[data-beat="2"] .hv-event[data-move="later"] :is(.hv-is, .hv-paw) { opacity: 1; transition-delay: 2s; }
+.hv-stage[data-beat="2"] .hv-ghost[data-move="later"] { opacity: 1; transition-delay: 2.2s; }
+.hv-stage[data-beat="2"] .hv-event[data-move="away"] { transform: translateX(30%); opacity: 0; transition-delay: 2.9s; }
+.hv-stage[data-beat="2"] .hv-ghost[data-move="away"] { opacity: 1; transition-delay: 3.3s; }
+.hv-event[data-added] { opacity: 0; transform: translateY(4px); }
+.hv-stage[data-beat="2"] .hv-event[data-added] { opacity: 1; transform: none; transition-delay: 3.9s; }
+.hv-stage[data-beat="2"] .hv-event[data-added] .hv-paw { opacity: 1; transition-delay: 3.9s; }
+
+/* What changed, with Undo */
+.hv-toast {
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: max-content;
+  max-width: calc(100% - 36px);
+  box-sizing: border-box;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 0 0 0.5px color-mix(in srgb, var(--ink) 14%, transparent), 0 8px 24px rgb(0 0 0 / 0.06);
+  font-size: 13px;
+  color: var(--text-secondary);
+  opacity: 0;
+  transform: translate(-50%, 8px);
+  transition: opacity 0.35s var(--ease-out-quad), transform 0.55s var(--ease-sheet);
+}
+.hv-toast b { margin-right: 4px; font-weight: 500; color: var(--ink); }
+.hv-toast em { margin-left: 8px; font-style: normal; font-weight: 500; color: var(--action, #2388ff); }
+.hv-stage[data-beat="2"] .hv-toast { opacity: 1; transform: translate(-50%, 0); transition-delay: 4.5s; }
+
+/* Dots to pick a beat */
+.hv-dots { display: flex; justify-content: center; gap: 8px; margin-top: 18px; }
+.hv-dots button {
+  width: 7px;
+  height: 7px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ink) 18%, transparent);
+  cursor: pointer;
+  transition: width 0.4s var(--ease-sheet), background-color 0.3s var(--ease-out-quad);
+}
+.hv-dots button[aria-pressed="true"] { width: 22px; background: var(--ink); }
+
+@media (prefers-reduced-motion: reduce) {
+  .hv-stage * { transition-duration: 0s !important; transition-delay: 0s !important; }
+}
+
+@media (max-width: 640px) {
+  .hv-stage { --ring: 84px; height: 740px; }
+  .hv-top { height: 52px; }
+  .hv-who { left: 16px; font-size: 13px; }
+  .hv-who span { display: none; }
+  .hv-kind { right: 12px; font-size: 11.5px; }
+  .hv-wall { inset: 62px 12px 12px; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+  .hv-tile { padding: 9px 9px 8px; }
+  .hv-tile small { font-size: 11px; }
+  .hv-tile b { font-size: 17px; }
+  .hv-chart { height: 22px; margin: 4px 0; }
+  .hv-delta { font-size: 10.5px; }
+  .hv-rings { gap: 8px; top: calc(50% + 26px); }
+  .hv-ring-wrap { width: 104px; }
+  .hv-ring small { font-size: 10.5px; margin-top: 2px; }
+  .hv-ring-name { font-size: 14px; }
+  .hv-ring-from li { font-size: 11.5px; }
+  .hv-stage[data-beat="2"] .hv-rings { top: 64px; transform: translateY(0) scale(0.8); }
+  .hv-stage[data-beat="2"] .hv-ring-name { font-size: 14px; }
+  .hv-day { top: 214px; bottom: 84px; width: calc(100% - 24px); }
+  .hv-event .hv-times { display: none; }
+  .hv-toast { font-size: 12px; padding: 9px 12px; }
+  .hv-toast span b { display: block; }
+}

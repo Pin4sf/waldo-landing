@@ -46,6 +46,7 @@ _2026-10-04: new title (was "Every tool, handled."), centred, and an endless car
 ### Same Waldo. / Different hats.
 Body: The same Waldo, in the place each of them already works. He reads the tools they already use, and tells you where each answer came from.
 _Layout (2026-10-04): centred headline and an endless carousel with the card in the middle moving, the same as "You can't keep up with everything. Waldo can."_
+_Layout (2026-10-10): replaced the carousel with one picture at a time, after "Right where you need it" on chatgpt.com/features/dots. A row of pills (Founders, Engineers, Investors, Designers, Sales) under the subtitle, then "More >" (a link to every job on Connectors, `/connectors#jobs`, so the five read as a sample), one big frame (the carousel card's shape at 85% of its size, 544px at its widest; the scenes scale with it), and the name and line centred under it. Picking a pill restarts that scene (`components/site/hats-tabs.tsx`). No mascot. All five scenes and lines are kept; nothing dropped._
 _Sources (2026-10-08): every answer in the five pictures now says where Waldo got it, then what he did because of it ("Google Calendar has the 9am with Priya, and Apple Health says you slept five hours. So the 9am moves to 11."). Tool names are set in bold, as plain text: no logos. They are tools from `connector-data.ts`, picked per job from "Pick your job" in `connectors.md`. He names what he read (volume, timing, what is open), never the words inside a message. The card lines under each picture name the tools too. Status check before launch: Granola, Stripe, HubSpot, Calendly, Notion, Oura, Vercel, GitHub, Linear and Figma are not "working today" in `connectors.md`; the pictures show them as if connected._
 
 - **Founders** — Three calls back to back, then the co-founder sync. Waldo reads your sleep in Apple Health, your day in Google Calendar and what was said in Granola, then puts ten minutes of air before the sync, so the snappy reply never happens.
@@ -111,6 +112,13 @@ No buttons.
   - _It grows once when it first comes into view: spots turn up week by week (a small week counter), clump, and the Tuesday Crash opens. With less motion it shows the end at once and nothing turns by itself._
   - _Code: `components/site/memory-map.tsx` and `memory-map.css`; where things sit in `see/constellation-layout.ts`; the words, tiers and what feeds what in `see/memory-data.ts`; icons from `see/pattern-art.ts` (the design's own). The old `see/force-sim.ts` and `see/memory-graph.ts` are gone._
 - _Open: "smarter" is on the banned-words list in AGENTS.md ("smart", "intelligent"), though that doc's own long-game block used it; and the body mixes "Waldo ... It finds" with the title's "he" (the pronoun question in the README is still open)._
+
+---
+
+### Things worth / noticing.
+Body: Plain-language notes about agents, your body, and the patterns hiding inside an ordinary day.
+Button: "All notes" (to `/blogs`)
+_Added 2026-10-12, after Suyash's screen recording of an arc of cards turned by scroll. Every published post rides one big wheel (`components/site/notes-wheel.tsx`). The wheel pins to the screen and scrolling turns it one note at a time, newest first; the picture at the top is the note named under the wheel (its title, then category and reading time in grey). After the last turn the wheel is back on the newest note, the other cards fade and that one stays a little larger, then the page moves on. Clicking any card opens the note, and the card's picture grows into the article's picture (a view transition; a plain link where the browser has none or reduced motion is on). Tabbing to a card turns the wheel to it. The words come from each post's frontmatter, so a new post joins the wheel with no edit here._
 
 ---
 

@@ -5,32 +5,69 @@ import { useEffect, useRef, useState, type CSSProperties } from "react";
 
 import { CONNECTOR_MARKS } from "@/components/site/connector-rows";
 
+// The tools Waldo could connect to beyond the ones with full-colour marks above (2026-10-12): one-colour brand marks
+// from Simple Icons (v16.30.0, CC0), in each brand's own colour (near-white ones set in ink), in
+// public/assets/connectors. With the 45 above, 211 in all, for "200+ tools across 27 categories".
+const MORE_MARKS: string[] = [
+  // Wearables & health
+  "samsung", "eightsleep", "huawei", "xiaomi", "peloton", "nike", "adidas", "underarmour", "headspace", "abbott",
+  // Calendar & meetings
+  "googlemeet", "webex", "caldotcom", "loom",
+  // Mail & messaging
+  "protonmail", "hey", "signal", "messenger", "imessage", "wechat", "line", "viber", "mattermost", "rocketdotchat", "element", "zulip", "threema",
+  // Tasks & projects
+  "todoist", "ticktick", "things", "googletasks", "basecamp", "shortcut", "plane", "coda",
+  // Notes & knowledge
+  "obsidian", "evernote", "roamresearch", "logseq", "simplenote", "googlekeep", "confluence", "gitbook", "instapaper", "anytype",
+  // Docs & files
+  "googledocs", "googlesheets", "googleslides", "box", "typeform", "googleforms", "surveymonkey",
+  // Design
+  "sketch", "framer", "miro", "mural", "excalidraw", "webflow", "penpot",
+  // Engineering
+  "gitlab", "bitbucket", "sentry", "datadog", "pagerduty", "opsgenie", "newrelic", "grafana", "netlify", "cloudflare", "render", "railway", "digitalocean", "googlecloud", "firebase", "docker", "postman", "circleci", "githubactions", "cursor", "windsurf", "replit", "codesandbox", "stackblitz", "warp", "raycast", "jetbrains",
+  // AI agents
+  "anthropic", "googlegemini", "perplexity", "mistralai", "huggingface", "ollama", "githubcopilot", "v0",
+  // Sales & support
+  "zoho", "helpscout", "livechat",
+  // Commerce & finance
+  "paypal", "square", "wise", "revolut", "monzo", "brex", "xero", "gusto", "expensify", "coinbase", "razorpay", "lemonsqueezy", "paddle", "gumroad", "woocommerce", "bigcommerce", "etsy",
+  // Social & content
+  "x", "instagram", "facebook", "threads", "bluesky", "mastodon", "reddit", "tiktok", "pinterest", "snapchat", "medium", "substack", "ghost", "wordpress", "mailchimp", "buffer", "hootsuite", "producthunt",
+  // Music & media
+  "applemusic", "soundcloud", "youtubemusic", "tidal", "deezer", "audible", "pocketcasts", "overcast", "netflix", "twitch", "vimeo",
+  // Travel & life
+  "uber", "lyft", "airbnb", "bookingdotcom", "tripadvisor", "expedia", "googlemaps", "waze", "ubereats", "doordash", "deliveroo", "instacart", "swiggy", "zomato", "1password", "bitwarden", "homeassistant", "philipshue", "googlehome", "ifttt", "zapier", "make", "n8n",
+];
+
+/** Every mark the heap is dealt from: each one lands at least once */
+const MARKS = [...CONNECTOR_MARKS, ...MORE_MARKS];
+
 // The picture for "Already fluent in your tools." (How it works): every connector Waldo has a mark for,
-// dropped into the Stage box from above. The tiles fall, tumble over one another and settle into a heap
-// along the foot of the box, and then they stay: nothing loops, drifts or falls again. The box clips the
-// heap at its edges and corners, like a frame on a pile.
+// dropped in from above. The tiles fall, tumble over one another and settle into a heap across the full width
+// of the page at the foot of the section, and then they stay: nothing loops, drifts or falls again. There is no
+// box round it any more (2026-10-12); the heap lies on the page.
 //
 // The tiles are real elements (the same marks as the homepage's rows), moved by a small physics world
-// (matter-js, loaded only when the box scrolls into view). Resizing or reduced motion skips the fall and
-// shows the settled heap straight away. The layer fills the whole Stage box (see "Stage pile" in
-// site-pages.css) and is read off the box's own size and bottom padding, so nothing here is sized by hand.
+// (matter-js, loaded only when the stage scrolls into view). Resizing or reduced motion skips the fall and
+// shows the settled heap straight away. The layer fills the whole stage (see "Stage pile" in site-pages.css)
+// and is read off the stage's own size and bottom padding, so nothing here is sized by hand.
 
 type Tile = { mark: string; scale: number };
 type Layout = { width: number; height: number; size: number; count: number; tiles: Tile[] };
 
-const MAX_TILES = 220;
+const MAX_TILES = 260;
 const STEP_MS = 1000 / 60;
 // The fall: tiles are let go one after another across this long, so it reads as a pour, not a block
 const POUR_MS = 1500;
 // Clear room kept between the button and the top of the heap, in px
 const HEAP_GAP = 40;
 
-// A shuffled run of every mark, repeated, so the same logo is never next to itself for long and a
-// smaller heap (a phone) still gets one of each before any repeat
+// A shuffled run of every mark, repeated, so the same logo is never next to itself for long and the heap gets
+// one of each before any repeat
 function dealTiles(): Tile[] {
   const tiles: Tile[] = [];
   while (tiles.length < MAX_TILES) {
-    const round = [...CONNECTOR_MARKS];
+    const round = [...MARKS];
     for (let i = round.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [round[i], round[j]] = [round[j], round[i]];
@@ -56,9 +93,11 @@ export function ConnectorPile() {
     const measure = () => {
       const { width, height } = stage.getBoundingClientRect();
       const room = Math.max(0, parseFloat(getComputedStyle(stage).paddingBottom) - HEAP_GAP);
-      const size = Math.min(60, Math.max(28, width / 22));
-      // A tumbled heap fills about 60% of the room it lies in; a tile averages 0.85 of `size` squared
-      const count = Math.round(Math.min(MAX_TILES, Math.max(24, (width * room * 0.6) / (size * size * 0.85))));
+      // A tumbled heap fills about 60% of the room it lies in; a tile averages 0.85 of `size` squared. Tiles are sized
+      // so every mark fits in the room once; on a phone, where that would make them too small, the heap is a sample
+      const area = width * room * 0.6;
+      const size = Math.min(56, Math.max(26, Math.sqrt(area / (MARKS.length * 0.85))));
+      const count = Math.round(Math.min(MAX_TILES, Math.max(24, area / (size * size * 0.85))));
       tilesRef.current ??= dealTiles();
       const tiles = tilesRef.current;
       setLayout((prev) =>
@@ -99,14 +138,15 @@ export function ConnectorPile() {
 
       const engine = Engine.create({ gravity: { x: 0, y: 1.1, scale: 0.001 }, positionIterations: 8, velocityIterations: 6 });
       const wall = 400;
-      // Floor a hair below the box's foot, and a wall each side; no ceiling, the tiles come from above
+      // Floor just inside the stage's foot (no box to clip the heap now, so every tile shows whole), a wall each side;
+      // no ceiling, the tiles come from above
       Composite.add(engine.world, [
-        Bodies.rectangle(width / 2, height + wall / 2 + 4, width + wall * 2, wall, { isStatic: true }),
+        Bodies.rectangle(width / 2, height + wall / 2 - 2, width + wall * 2, wall, { isStatic: true }),
         Bodies.rectangle(-wall / 2, height / 2 - height, wall, height * 3, { isStatic: true }),
         Bodies.rectangle(width + wall / 2, height / 2 - height, wall, height * 3, { isStatic: true }),
       ]);
 
-      type Drop = { body: Matter.Body; el: HTMLElement; at: number; half: number; added: boolean };
+      type Drop = { body: Matter.Body; el: HTMLElement; at: number; half: number; added: boolean; still: number };
       const drops: Drop[] = [];
       for (let i = 0; i < Math.min(count, els.length); i++) {
         const s = size * tiles[i].scale;
@@ -120,20 +160,23 @@ export function ConnectorPile() {
         });
         Body.setAngularVelocity(body, (Math.random() - 0.5) * 0.18);
         Body.setVelocity(body, { x: (Math.random() - 0.5) * 3, y: 2 + Math.random() * 5 });
-        drops.push({ body, el: els[i], at: (i / count) * POUR_MS * (0.85 + Math.random() * 0.3), added: false, half: s / 2 });
+        drops.push({ body, el: els[i], at: (i / count) * POUR_MS * (0.85 + Math.random() * 0.3), added: false, half: s / 2, still: 0 });
       }
 
       const paint = () => {
         for (const d of drops) {
           if (!d.added) continue;
           const { x, y } = d.body.position;
-          d.el.style.transform = `translate3d(${x - d.half}px, ${y - d.half}px, 0) rotate(${d.body.angle}rad)`;
+          d.el.style.transform = `translate3d(${(x - d.half).toFixed(2)}px, ${(y - d.half).toFixed(2)}px, 0) rotate(${d.body.angle.toFixed(4)}rad)`;
         }
       };
 
       let clock = 0;
-      let calm = 0;
-      // One 1/60s step. Returns true once every tile is down and has stopped moving.
+      // Each tile is frozen where it lies as soon as it has been nearly still for a moment. A dense heap never goes
+      // fully quiet (the tiles keep trading tiny nudges), so waiting for all of them to stop left the heap shimmering
+      // for ten seconds after it had landed. Frozen tiles are still solid: the ones falling on them land on them.
+      const FREEZE_FRAMES = 18;
+      // One 1/60s step. Returns true once every tile is down and frozen.
       const step = (): boolean => {
         clock += STEP_MS;
         for (const d of drops) {
@@ -144,11 +187,25 @@ export function ConnectorPile() {
           }
         }
         Engine.update(engine, STEP_MS);
-        if (clock < POUR_MS * 1.3) return false;
-        const moving = drops.some((d) => d.body.speed > 0.12 || d.body.angularSpeed > 0.004);
-        calm = moving ? 0 : calm + 1;
-        // Done when it has been still for a moment, or after a long fall and settle regardless
-        return calm > 40 || clock > POUR_MS + 9000;
+        let live = 0;
+        for (const d of drops) {
+          if (d.body.isStatic) continue;
+          live++;
+          if (!d.added) continue;
+          const nearlyStill = d.body.speed < 0.45 && d.body.angularSpeed < 0.015;
+          d.still = nearlyStill ? d.still + 1 : 0;
+          if (d.still > FREEZE_FRAMES && clock > d.at + 400) {
+            Body.setStatic(d.body, true);
+            live--;
+          }
+        }
+        if (live === 0) return true;
+        // Settled regardless after a few seconds: freeze whatever is left, wherever it is
+        if (clock > POUR_MS + 4500) {
+          for (const d of drops) if (!d.body.isStatic) Body.setStatic(d.body, true);
+          return true;
+        }
+        return false;
       };
 
       const settle = () => {
