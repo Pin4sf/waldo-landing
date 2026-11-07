@@ -11,7 +11,7 @@ type: article
 tags: [waldo, blog, connectors, professions]
 created: 2026-07-30
 published: 2026-07-30
-updated: 2026-07-30
+updated: 2026-10-12
 site_section: connectors-and-profession-cards
 image: /assets/blogs/connectors-and-professions.webp
 imageAlt: Different working days connected into one clear and protected window
@@ -61,7 +61,7 @@ What it buys you is less explaining. Waldo does not need to ask what kind of wee
 
 The forms disappear. That is the pitch. There is no profile to maintain, because the profile is your actual working life, arriving live.
 
-One thing worth being precise about, because it sounds worse than it is: communication connectors use metadata, not the contents of your private messages. Waldo works from the shape of your day. A long meeting coincided with an elevated signal. A burst of email activity continued after work. The shape is where the useful context is, and it costs you far less to hand over.
+One thing worth being precise about: when you connect Gmail, Waldo reads your messages, subjects and text included, and it sends nothing until you approve it. Much of the useful context is still the shape of your day. A long meeting coincided with an elevated signal. A burst of email activity continued after work.
 
 ## Different jobs, different shapes
 

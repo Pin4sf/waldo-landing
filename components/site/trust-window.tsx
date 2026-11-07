@@ -19,10 +19,10 @@ import "./trust-window.css";
 // while it is on screen, one beat after another, and goes round; the five steps along the top are buttons too,
 // so you can go straight to one. With less motion nothing moves by itself (it starts on the first beat).
 //
-// Every line is one the product code backs (docs/website/trust-carousel-review.md): the three Google permissions
-// are read-only; a change is a proposal that waits for approval; a saved note is written by Waldo, replaced by
-// saving the same note again, and is background, not an instruction; the data sits with Supabase, Anthropic
-// writes his replies and Telegram carries his messages. What the code can't back (retention, deletion,
+// Every line is one the product code backs (docs/website/trust-carousel-review.md): Gmail reads and can send, and
+// a send or any other change is a proposal that waits for approval; a saved note is written by Waldo, replaced by
+// saving the same note again, and is background, not an instruction; the data sits with Supabase and Anthropic
+// writes his replies. What the code can't back (retention, deletion,
 // encryption, "never trained on") is not in it. It is a drawing: nothing here connects to anything. The people
 // and meetings are made up.
 
@@ -33,8 +33,8 @@ const CORRECTION = "Mornings are only for focus on Tuesdays and Thursdays.";
 const BEATS = [
   {
     rail: "He sees",
-    title: "Reading and editing are separate permissions.",
-    text: "This example starts with read-only access. Moving an event also needs calendar write access and your approval.",
+    title: "He reads first. Changes wait for you.",
+    text: "In this example he can read Calendar, Gmail and Tasks. Sending an email or moving an event waits for your approval.",
   },
   {
     rail: "He asks",
@@ -305,7 +305,7 @@ export function TrustWindow() {
                 {["Calendar", "Gmail", "Tasks"].map((name, i) => (
                   <li key={name} style={{ "--i": i } as CSSProperties}>
                     <b>{name}</b>
-                    <span>read only</span>
+                    <span>{name === "Gmail" ? "read and send" : "read only"}</span>
                   </li>
                 ))}
               </ul>
@@ -385,7 +385,6 @@ export function TrustWindow() {
                 {[
                   { key: "supabase", logo: "supabase", name: "Supabase", text: "Example storage provider. App data details are under review." },
                   { key: "anthropic", logo: "claude", name: "Anthropic", text: "Example model provider. Final provider list is pending." },
-                  { key: "telegram", logo: "telegram", name: "Telegram", text: "Example messaging service, where enabled." },
                 ].map((s, i) => (
                   <li key={s.key} style={{ "--i": i } as CSSProperties}>
                     <Logo name={s.logo} />

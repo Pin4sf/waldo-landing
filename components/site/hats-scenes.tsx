@@ -23,8 +23,7 @@ import { useLive } from "./use-live";
 // Waldo says where he got it. Every answer names the tools it came from (set in bold, as plain text: no
 // logo) and then what he did because of them: "Google Calendar has the 9am, Apple Health says five
 // hours, so it moves to 11." The tools are the ones in components/connectors/connector-data.ts, picked
-// for the job (docs/website/pages/connectors.md, "Pick your job"). He names what he read (volume, timing,
-// what is open), never the words inside a message.
+// for the job (docs/website/pages/connectors.md, "Pick your job"). He names the tool and what he read there.
 
 type Agent = "Claude" | "Codex" | "Cursor";
 /** Plain words, an agent's name, or a tool he read from (`src`): the last two are set in bold */

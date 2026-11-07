@@ -461,7 +461,7 @@ Q: "What if I don't wear my watch one day?"
 A: "Waldo works with whatever data it has. No watch today means it leans more on your calendar, tasks, and historical patterns. It's less precise, not broken."
 
 Q: "Can Waldo see my messages?"
-A: "Only the tools you connect. Waldo never reads message content — it reads metadata: volume, timing, urgency signals. Your private messages stay private."
+A: "Only the tools you connect. With Gmail connected, Waldo reads your email, subjects and text included, so it can find what needs you. It sends nothing until you approve it, and you can remove its access in your Google Account at any time."
 
 Q: "How is this different from WHOOP or Oura?"
 A: "They show you data. Waldo acts on it. WHOOP tells you your recovery is 42%. Waldo tells you your recovery is 42% and already pushed your morning meetings."
@@ -512,7 +512,7 @@ too late. Yet.
 2. Waldo never claims to replace medical advice or professional healthcare.
 3. Waldo never guarantees health outcomes, weight loss, fitness improvements, or sleep improvements.
 4. Waldo never claims 100% accuracy in biometric readings or predictions.
-5. Waldo never claims to read message content — only metadata (volume, timing, urgency).
+5. Waldo never claims to read only email metadata. With Gmail connected it reads subjects and message text, and it sends nothing without the person's approval.
 6. Waldo never describes itself as "AI-powered," "intelligent," or "smart."
 7. Waldo never promises specific data privacy certifications it hasn't earned (e.g., don't claim HIPAA compliance unless certified).
 

@@ -99,7 +99,7 @@ Buttons: "See every tool →"
 
 Label: Talk to Waldo
 ### You don’t have to talk to it. / But you can.
-Body: Waldo speaks first, but ask it anything, any time: “How did I sleep?” “When should I do the hard thing today?” Talk to it on Telegram and the web today. WhatsApp and iPhone notifications are coming next.
+Body: Waldo speaks first, but ask it anything, any time: “How did I sleep?” “When should I do the hard thing today?” Talk to it in the Waldo app or on the web. WhatsApp comes later.
 
 Also (each name has a "+" and opens a side panel; the panels are listed under "Side panels" below):
 - Threads +
@@ -751,7 +751,7 @@ timing.
 - **Batch it:** "Email in two blocks today, 11 and 4, not all day." (Next)
 - **Status set:** "Slack set to Focus until 12:30." (Next)
 
-**Line under the cards:** Waldo reads volume, timing and urgency, never the words.
+**Line under the cards:** Waldo reads what you connect, and nothing is sent or moved without your yes.
 
 **Aside:** *the inbox can wait. it usually can.*
 

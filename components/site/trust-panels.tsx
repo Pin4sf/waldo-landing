@@ -188,7 +188,7 @@ export function AccessPanel() {
         detail={
           <ol className="tp-steps">
             <li>In your Google Account, open Security, then your connections to third-party apps and services. Choose Waldo, then Remove access.</li>
-            <li>Gmail access is read-only. Waldo reads when messages arrive and their labels, not subjects or text.</li>
+            <li>With Gmail connected, Waldo reads your email, subjects and text included. It sends nothing until you approve it.</li>
             <li>Removing access stops new reads. What Waldo already saved is a separate step.</li>
           </ol>
         }
@@ -279,7 +279,6 @@ export function DataPanel() {
   const services: { key: string; logo: string; name: string; text: string }[] = [
     { key: "supabase", logo: "supabase", name: "Supabase", text: "Stores your account, readings, calendar and message timing, notes and chats." },
     { key: "anthropic", logo: "claude", name: "Anthropic", text: "Writes Waldo’s replies from the context each message needs." },
-    { key: "telegram", logo: "telegram", name: "Telegram", text: "Carries his messages, if you chat there." },
   ];
   return (
     <Frame tone="data">

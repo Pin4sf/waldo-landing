@@ -14,7 +14,7 @@ Built from: `components/connectors/connector-data.ts` (45 tools), `Waldo/Docs/WA
 
 This is the copy on the built page right now, top to bottom. **Edit the words here**, then carry them into `app/connectors/page.tsx`. The words inside each picture live in its component (named under each section); the jobs and their days live in `components/site/put-to-work-data.ts`; tool statuses in `components/site/connector-tools.ts`.
 
-Everything inside the pictures (names, times, numbers) is illustrative, like the homepage's: **check it against the product before launch.** Mail is only ever shown as metadata (who, when, how many), never what's written.
+Everything inside the pictures (names, times, numbers) is illustrative, like the homepage's: **check it against the product before launch.**
 
 ### Connect it once. / Waldo takes it from there.
 Body: Your watch, your calendar, your inbox, your tasks, and the agents you already use. Connect them once, and Waldo reads what each one knows about your day, then acts on it.
@@ -118,7 +118,7 @@ How it works Part 3 becomes a **short teaser**: one logo strip plus "See every t
 - Same site rules (tapered Corben headlines, an italic aside per section, "Let Waldo in →", British spelling).
 - **Every tool shows its real status.** Never imply a tool works if it doesn't yet.
 - **Every tool shows what Waldo reads and whether it can change anything.**
-- Messages and email: **metadata only, never content**. Say it on every relevant card.
+- Messages and email: say what Waldo reads (for Gmail, subjects and message text) and that sending waits for the person's yes. Say it on every relevant card.
 - No clinical or medical-record connectors on the site, even though the ecosystem doc lists them (Epic, FHIR, and so on).
 
 ## Sections
@@ -201,7 +201,7 @@ more.
 |---|---|---|
 | **Body** | Sleep, heart rate, HRV, stress, movement | Works out Recovery, Form and Weight. Spots when you're running low. |
 | **Calendar** | Meetings, gaps, back-to-backs, late nights | Moves, blocks and protects time, within your limits |
-| **Mail & messages** | Volume, timing, urgency. **Never the words.** | Batches your inbox, goes quiet when it's too much, flags what needs you |
+| **Mail & messages** | Subjects and text from the accounts you connect. | Batches your inbox, goes quiet when it's too much, flags what needs you |
 | **Tasks & projects** | Due dates, overdue items, what's piling up | Reorders by deadline and energy, breaks big tasks down |
 | **Notes & files** | Documents you point it to | Pulls context together, so you don't re-explain |
 | **Engineering** | Reviews waiting on you, ticket load | Batches reviews into your focus time, updates tickets |
@@ -304,7 +304,7 @@ anytime.
 **Visual:** Four plain lines, each with a small icon:
 - **You approve every tool.** Nothing connects on its own.
 - **Read only, unless you say so.** Each card shows whether Waldo can change anything there.
-- **Words stay private.** From email and messages, Waldo reads volume and timing, never what's written.
+- **Nothing sent without a yes.** With Gmail connected, Waldo reads subjects and message text, and sends an email only after the person approves it.
 - **One tap to disconnect.** What Waldo learned from that tool goes with it. *(confirm this is true)*
 
 **Link:** Full detail → `/privacy`
@@ -374,8 +374,8 @@ The current `connector-data.ts` list, with a proposed status for each tool (from
 | Apple Health / Apple Watch | Body | Working today | Rename the "Apple" entry to "Apple Watch" |
 | Health Connect | Body | Working today | |
 | Google Calendar | Calendar | Working today | |
-| Gmail | Mail & messages | Working today | Metadata only |
-| Telegram | Mail & messages | Working today | Also where Waldo talks to you |
+| Gmail | Mail & messages | Working today | Reads subjects and text; sends on your yes |
+| Telegram | Mail & messages | Not offered | A test surface for the team, not a channel for people |
 | Oura · WHOOP · Garmin | Body | Coming next | |
 | Fitbit | Body | Coming next | ⚠️ The ecosystem doc says Fitbit's own API ends in Sep 2026. Connect through Health Connect instead. Confirm. |
 | Outlook | Mail · Calendar | Coming next | |

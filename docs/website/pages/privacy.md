@@ -32,7 +32,7 @@ Draft. This page is being written and reviewed, and the legal policy below isn't
 ### The short / version.
 
 - **You choose what Waldo connects to.** Nothing connects on its own.
-- **From email and messages, Waldo reads the pattern, never the words:** volume, timing, urgency.
+- **From email, Waldo reads subjects and message text** from the accounts you connect, to find what needs you. It sends nothing without your yes.
 - **We never sell your data** and never use it for ads.
 - **We don't train AI models on your data.**
 - **You can see it, download it and delete it,** any time.
@@ -66,7 +66,7 @@ Body: Only from what you connect.
 |---|---|---|
 | Your watch (Apple Health, Health Connect) | Sleep, heart rate, HRV, resting heart rate, breathing rate, blood oxygen, wrist temperature, steps, exercise, daylight | To work out how you're doing (Recovery, Form, Weight) |
 | Calendar | Event times, lengths, how packed your day is | To plan around your day, and move or protect time if you allow it |
-| Email (Gmail) | Metadata only: how many, when, whether they're waiting on you. Never the words. | To notice when messages are piling up |
+| Email (Gmail) | Subjects and message text, and when messages arrive. | To find what needs you, and to send emails you approve |
 | Tasks | Task names, due dates, what's overdue | To order your list by deadline and energy |
 | Location | Roughly where you are | For local weather and air quality |
 | What you tell Waldo | Your messages to Waldo, your corrections, your preferences | To answer you, and to remember what you've taught it |
@@ -81,7 +81,7 @@ Body: Waldo uses a few companies to run. They process data only to provide Waldo
 | Supabase | Stores your account and data | Everything above, encrypted |
 | Anthropic (Claude) | Writes Waldo's messages and replies | The context needed for each message |
 | Telegram (if you choose it) | Delivers Waldo's messages to you | The messages Waldo sends you |
-| Google (if you connect it) | Calendar, Gmail metadata, Tasks | Their own service, under your Google account |
+| Google (if you connect it) | Calendar, Gmail (subjects and message text), Tasks | Their own service, under your Google account |
 | Apple / Health Connect | Where your health data comes from | Their own service, on your phone |
 | Open-Meteo | Weather | A rough location, no identity |
 | Loops | Waitlist and update emails | Your email |
@@ -172,7 +172,7 @@ plainly.
 
 Five lines, big and calm:
 - **You choose what Waldo connects to.** Nothing connects on its own.
-- **From email and messages, Waldo reads the pattern, never the words:** volume, timing, urgency.
+- **From email, Waldo reads subjects and message text** from the accounts you connect, to find what needs you. It sends nothing without your yes.
 - **We never sell your data** and never use it for ads.
 - **We don't train AI models on your data.** ⚠️ *confirm with every AI provider's terms*
 - **You can see it, download it and delete it**, any time.
@@ -216,7 +216,7 @@ Only from what you connect.
 |---|---|---|
 | **Your watch** (Apple Health, Health Connect) | Sleep, heart rate, HRV, resting heart rate, breathing rate, blood oxygen, wrist temperature, steps, exercise, daylight | To work out how you're doing (Recovery, Form, Weight) |
 | **Calendar** | Event times, lengths, how packed your day is. ⚠️ *Titles and attendees too? Confirm.* | To plan around your day, and move or protect time if you allow it |
-| **Email** (Gmail) | **Metadata only:** how many, when, whether they're waiting on you. **Never the words.** | To notice when messages are piling up |
+| **Email** (Gmail) | **Subjects and message text**, and when messages arrive. | To find what needs you, and to send emails you approve |
 | **Tasks** | Task names, due dates, what's overdue | To order your list by deadline and energy |
 | **Music** (Spotify, once live) | The mood of what you play, not a list of songs ⚠️ *confirm* | One more clue to how you're doing |
 | **Location** | Roughly where you are | For local weather and air quality |
@@ -231,7 +231,7 @@ Waldo uses a few companies to run. They process data **only to provide Waldo's s
 | **Supabase** | Stores your account and data | Everything above, encrypted ⚠️ *confirm the data region* |
 | **Anthropic** (Claude) | Writes Waldo's messages and replies | The context needed for each message ⚠️ *confirm Anthropic's API terms (no training on API data) and put a data processing agreement in place* |
 | **Telegram** (if you choose it) | Delivers Waldo's messages to you | The messages Waldo sends you |
-| **Google** (if you connect it) | Calendar, Gmail metadata, Tasks | Their own service, under your Google account |
+| **Google** (if you connect it) | Calendar, Gmail (subjects and message text), Tasks | Their own service, under your Google account |
 | **Apple / Health Connect** | Where your health data comes from | Their own service, on your phone |
 | **Open-Meteo** | Weather | A rough location, no identity |
 | **Loops** | Waitlist and update emails | Your email |
@@ -310,7 +310,7 @@ Waldo is for people 18 and over. ⚠️ *Confirm the age, and make sure the Term
 |---|---|---|
 | **India, DPDP Act 2023** | Waldo appears to be India-based (.in domain) ⚠️ *confirm* | Clear notice, consent, a named grievance officer, a process for user rights |
 | **Apple HealthKit rules** | Waldo reads Apple Health | A privacy policy, no ads or data brokering from health data, no iCloud storage of health data, clear disclosure |
-| **Google API Services User Data Policy ("Limited Use")** | Waldo reads Gmail and Calendar | The exact "Limited Use" statement in the policy. Gmail metadata is a *restricted* scope, which also needs Google's verification and a security assessment before public launch. |
+| **Google API Services User Data Policy ("Limited Use")** | Waldo reads Gmail and Calendar | The exact "Limited Use" statement in the policy. Gmail reading (`gmail.readonly`) is a *restricted* scope, which also needs Google's verification and a security assessment before public launch. |
 | **EU / UK GDPR** | If anyone in Europe signs up | Legal basis, explicit consent for health data, transfer safeguards, possibly an EU representative |
 | **US state health-data laws** (e.g. Washington's My Health My Data Act) | If US users sign up | Possibly a separate consumer health data notice |
 | **Anthropic, Supabase, Loops, Telegram terms** | They process user data | Data processing agreements in place |

@@ -31,8 +31,8 @@ const securityCards = [
   },
   {
     icon: "file",
-    headline: "Metadata only for email.",
-    description: "Waldo reads headers: sender, timestamp, thread depth. Never message body content. Hard line.",
+    headline: "Email is read, never sent on its own.",
+    description: "Waldo reads subjects and message text from the accounts you connect. Nothing is sent without your tap.",
   },
   {
     icon: "check",

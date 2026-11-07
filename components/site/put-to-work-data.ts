@@ -4,7 +4,7 @@
 // app it landed in. In `body`, [[Tool]] marks a tool's name (underlined, and lit in the dock).
 //
 // The routines from the old professions table are kept word for word as titles where they fit. Everything in the
-// pictures (names, times, numbers) is illustrative. Mail is only ever metadata: who, when, how much, never the words.
+// pictures (names, times, numbers) is illustrative.
 
 export type Trigger = { kind: "ask"; text: string } | { kind: "noticed"; tool: string; text: string };
 
