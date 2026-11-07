@@ -1,4 +1,4 @@
-ECOFRESH GREENSYNC LLP ("Ecofresh", "we", "us") runs Waldo, a personal assistant that plans around your day and, if you choose, your health data. This policy explains what Waldo collects, why, who receives it, and the choices you have. It takes effect on 27 October 2026.
+ECOFRESH GREENSYNC LLP ("Ecofresh", "we", "us") runs Waldo, a personal assistant that plans around your day and, if you choose, your health data. This policy explains what Waldo collects, why, who receives it, and the choices you have. This is version 2. It takes effect on 2 November 2026 and replaces version 1, which took effect on 27 October 2026.
 
 Waldo is in beta. During the beta we record the full text of testers' conversations to find and fix problems. Section 10 explains what that covers and how long we keep it.
 
@@ -88,6 +88,10 @@ During the beta, our diagnostic records include the Google content Waldo read to
 
 Waldo keeps only the notes the model writes, in words and without numbers, and pointers to the events and email threads they rest on. You can confirm, correct or forget each note in the app, and a note you forget or correct isn't added again. Things Waldo found on the public web appear only as look-up findings (below).
 
+**Learning as your day goes.** After your welcome picture, Waldo keeps its notes about you up to date. A few times a day, and when new email or calendar changes arrive, Waldo's model looks over your recent emails (including their text), calendar events (including their descriptions and who is invited) and conversations, and may note a fact or pattern that would help it help you, such as a project you're running, someone you meet often or a bill that's due. A note learned this way is marked as Waldo's read, and Waldo doesn't treat it as something you said until you confirm it. You can confirm, correct or forget each note, and a note you forget or correct isn't added again. Waldo still doesn't keep a copy of your mailbox.
+
+**Finding the right note.** So Waldo can find a note when you ask about it in different words, it turns each memory note into an embedding: a list of numbers that captures what the note means. Cloudflare's AI service, which already runs Waldo's servers, computes it. To search, it does the same for the message you're asking with; that one isn't stored. A note's embedding is stored with your memory and deleted with the note or your account. Health readings are left out of what is sent, and none of it is used to train AI models.
+
 **Looking you up on the public web (only if you say yes).** If you say yes in the Waldo app, Waldo may look you up on the public web to learn about your work and public life, so it can help you better. It searches using your name and the handles, sites and email addresses you have given it, through Brave Search, which receives those search terms. It reads the public pages it finds, and those pages go to Waldo's AI model providers as part of the conversation (section 6).
 
 Waldo keeps only facts about you that a page shows plainly, such as your work, education, public work, where you say you are based, public profiles, interests and achievements. It is built not to record your health, religion, caste, politics or sexuality from these pages, and it doesn't look up other people. Everything it finds is listed in What Waldo knows with the page it came from, and stays unconfirmed until you keep, correct or forget it.
@@ -149,7 +153,7 @@ We don't sell your personal data, and we don't share it with advertisers. We sha
 
 | Provider | What it receives | Why |
 | --- | --- | --- |
-| Cloudflare | Everything Waldo holds for you: conversations, memory, files and service logs | Runs Waldo's servers and storage; loads websites for Waldo |
+| Cloudflare | Everything Waldo holds for you: conversations, memory and embeddings of your memory notes, files and service logs | Runs Waldo's servers and storage; loads websites for Waldo |
 | Supabase | Account details, health data, settings, and connected-account and notification tokens kept in an encrypted vault | Database and sign-in; sends sign-in codes by email |
 | OpenAI | What a reply needs (section 6), voice notes, and search queries | Writes replies; transcribes voice; web search |
 | Anthropic | What a reply needs (section 6), when OpenAI can't answer | Writes replies |
@@ -161,7 +165,7 @@ We don't sell your personal data, and we don't share it with advertisers. We sha
 | Loops | Your email address and campaign tags, if you join the waitlist | Waitlist emails |
 | Photon | Your phone number, the email you signed in with and a first name taken from it, and every message you and Waldo exchange on iMessage | Runs Waldo's iMessage numbers |
 | Twilio | Your phone number and the code you enter, when you ask for a texted code | Texts and checks phone verification codes |
-| Expo | Each device's notification token and a fixed line, "Your Brief is ready", with no health data, email content or names | Sends app notifications, which Apple's or Google's push service delivers to your device |
+| Expo | Each device's notification token and a short line about your day, such as "Your Brief is ready" or "Your 3pm with Priya moved to 5pm", which can include an event's title, time and the people in it. Never health data or the text of an email | Sends app notifications, which Apple's or Google's push service delivers to your device |
 
 **Services you connect.** When you use these with Waldo, they also handle your data under their own terms and privacy policies.
 
