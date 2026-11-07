@@ -41,11 +41,11 @@ export const JOBS: Job[] = [
         steps: [
           { tool: "Google Calendar", text: "Read today: 4 calls before noon" },
           { tool: "Google Calendar", text: "Moved the 9:00 hiring sync to Thursday" },
-          { tool: "Telegram", text: "Sent you the plan at 7:30" },
+          { tool: "WhatsApp", text: "Sent you the plan at 7:30" },
         ],
         result: {
           app: "chat",
-          tool: "Telegram",
+          tool: "WhatsApp",
           title: "Waldo",
           messages: ["Short night. The hiring sync is on Thursday now, and your first call is at 10.", "Board prep stays at 2. Lunch is protected."],
         },
@@ -164,7 +164,7 @@ export const JOBS: Job[] = [
         ],
         result: {
           app: "chat",
-          tool: "Telegram",
+          tool: "WhatsApp",
           title: "Waldo",
           messages: ["Claude Code finished the retry queue. Tests pass and it does what the issue asks.", "One file it shouldn't have touched is flagged for the morning."],
         },
@@ -258,17 +258,17 @@ export const JOBS: Job[] = [
       {
         time: "8:45 AM",
         title: "Walk into standup knowing what moved",
-        body: "Waldo reads what changed overnight in [[Linear]] and sends you three lines in [[Telegram]] before standup.",
+        body: "Waldo reads what changed overnight in [[Linear]] and sends you three lines in [[WhatsApp]] before standup.",
         trigger: { kind: "ask", text: "Every morning before standup, tell me what moved in Linear overnight." },
         thinking: "Skipping the noise, keeping what changed plans",
         steps: [
           { tool: "Linear", text: "Read 18 updates since 6pm" },
           { tool: "Linear", text: "2 slipped, 1 is blocked" },
-          { tool: "Telegram", text: "Sent at 8:45" },
+          { tool: "WhatsApp", text: "Sent at 8:45" },
         ],
         result: {
           app: "chat",
-          tool: "Telegram",
+          tool: "WhatsApp",
           title: "Waldo",
           messages: ["Two issues slipped to next cycle. Search is blocked on the API change.", "Everything else is on track."],
         },
@@ -334,11 +334,11 @@ export const JOBS: Job[] = [
         steps: [
           { tool: "Google Calendar", text: "Read 6 calls today" },
           { tool: "HubSpot", text: "Pulled each deal's stage and last touch" },
-          { tool: "Telegram", text: "Briefs arrive 10 minutes before each" },
+          { tool: "WhatsApp", text: "Briefs arrive 10 minutes before each" },
         ],
         result: {
           app: "doc",
-          tool: "Telegram",
+          tool: "WhatsApp",
           title: "Before your 10:30 with Acme",
           meta: "10:20 AM",
           blocks: [
@@ -437,7 +437,7 @@ export const JOBS: Job[] = [
         ],
         result: {
           app: "doc",
-          tool: "Telegram",
+          tool: "WhatsApp",
           title: "Before your 10am with Northwind",
           meta: "9:50 AM",
           blocks: [
@@ -456,11 +456,11 @@ export const JOBS: Job[] = [
         steps: [
           { tool: "Zoom", text: "Read 5 calls, 2 ran over" },
           { tool: "Notion", text: "Read today's notes" },
-          { tool: "Telegram", text: "Sent at 6:00" },
+          { tool: "WhatsApp", text: "Sent at 6:00" },
         ],
         result: {
           app: "chat",
-          tool: "Telegram",
+          tool: "WhatsApp",
           title: "Waldo",
           messages: ["Five pitches today. Two follow-ups to send.", "One to sleep on: Northwind's pricing."],
         },
@@ -560,7 +560,7 @@ export const JOBS: Job[] = [
         ],
         result: {
           app: "chat",
-          tool: "Telegram",
+          tool: "WhatsApp",
           title: "Waldo",
           messages: ["Recovery's low. Easy 40 minutes today.", "Intervals move to Thursday, your light work day."],
         },
@@ -598,11 +598,11 @@ export const JOBS: Job[] = [
         steps: [
           { tool: "Strava", text: "Tomorrow: race-pace session" },
           { tool: "Google Calendar", text: "First meeting at 9" },
-          { tool: "Telegram", text: "A wind-down nudge at 10" },
+          { tool: "WhatsApp", text: "A wind-down nudge at 10" },
         ],
         result: {
           app: "chat",
-          tool: "Telegram",
+          tool: "WhatsApp",
           title: "Waldo",
           messages: ["Race pace tomorrow, and three short nights behind you.", "Lights out by 10:30 gives you eight hours."],
         },

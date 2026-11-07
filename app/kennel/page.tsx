@@ -166,7 +166,7 @@ export default function KennelPage() {
       <Section size="auto">
         <Header
           lines={["Kennel is", "Waldo at work."]}
-          subtitle="Waldo is one personal agent across work and life. Kennel is where it starts: your agents, your outcomes, on your Mac. The same Waldo is coming to your iPhone, where it knows how you're actually doing."
+          subtitle="Waldo is one personal agent across work and life. Kennel is where it starts: your agents, your outcomes, on your Mac. The same Waldo is on your iPhone and Android, where it knows how you're actually doing."
           body="Same dog, first room."
           actions={{ secondary: { label: "See the whole of Waldo", href: "/how-it-works" } }}
           center
@@ -174,8 +174,8 @@ export default function KennelPage() {
         <Body>
           <Grid cols={3} boxed>
             <Item meta="You are here" title="Kennel for Mac">Waldo at work.</Item>
-            <Item meta="Coming soon" title="Waldo for iPhone">Waldo in your personal life.</Item>
-            <Item meta="Coming soon" title="Messaging & browser">Waldo everywhere else.</Item>
+            <Item meta="Available" title="Waldo for iPhone and Android">Waldo in your personal life.</Item>
+            <Item meta="Available" title="Messaging">WhatsApp, iMessage and email.</Item>
           </Grid>
         </Body>
       </Section>

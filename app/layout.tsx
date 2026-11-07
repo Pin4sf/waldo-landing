@@ -114,7 +114,7 @@ const jsonLd = {
       "@id": `${SITE_URL}/#software`,
       name: SITE_NAME,
       applicationCategory: "Personal agent",
-      operatingSystem: "iOS, web",
+      operatingSystem: "iOS, Android, web",
       description: BRAND_POSITIONING,
       image: HAPPY_WALDO_IMAGE_URL,
       url: SITE_URL,

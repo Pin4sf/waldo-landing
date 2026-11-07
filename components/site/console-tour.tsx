@@ -46,7 +46,7 @@ const SCREENS = [
     line: "Only what you connect.",
     rows: [
       ["Google", "Calendar, Gmail"],
-      ["Telegram", "Not connected"],
+      ["WhatsApp", "Not connected"],
     ],
   },
   {

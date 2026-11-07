@@ -9,7 +9,7 @@ import { OG_IMAGE_URL, SITE_URL } from "@/lib/site-metadata";
 
 const WAITLIST_URL = `${SITE_URL}/waitlist`;
 const KENNEL_REPO = "https://github.com/waldoco/Waldo-Kennel";
-const WAITLIST_DESCRIPTION = "Join the Waldo waitlist. First access to Waldo for iPhone and the Kennel Mac app.";
+const WAITLIST_DESCRIPTION = "Join the Waldo waitlist. First access to Waldo on iPhone and Android, and the Kennel Mac app.";
 
 export const metadata: Metadata = {
   title: "Let Waldo in",
@@ -69,7 +69,7 @@ export default async function WaitlistRoute({
                   },
                   {
                     q: "What can I use today?",
-                    a: "Kennel for Mac is in open beta now. iPhone and messaging come next, and people on the list get in first.",
+                    a: "The Waldo app is on iPhone and Android, and you can talk to Waldo on WhatsApp, on iMessage and by email. Kennel for Mac is in open beta. People on the list get in first.",
                   },
                   {
                     q: "How much will Waldo cost?",
@@ -79,7 +79,7 @@ export default async function WaitlistRoute({
                     q: "Which watches work?",
                     a: "Apple Watch works best. Oura, WHOOP, Garmin and Fitbit are coming. The full list is on the Connectors page.",
                   },
-                  { q: "Is there an Android app?", a: "iPhone comes first. Android follows. Join the list to hear when." },
+                  { q: "Is there an Android app?", a: "Yes. The Waldo app is on iPhone and Android. Join the list to get in." },
                   {
                     q: "I joined the waitlist but didn't get an email.",
                     a: "Check spam and promotions first. Still nothing? Write to us from the same address, and we'll sort it out.",
